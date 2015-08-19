@@ -14,8 +14,8 @@ public class SonarQubeConnector {
         this.restTemplate = new RestTemplateWithAuthentication(username, password);
     }
 
-    public ResponseEntity<String> getForEntity(final String action, final Class<String> responseClass) {
-        return  restTemplate.getForEntity(url + action, responseClass);
+    public <T> ResponseEntity<T> getForEntity(final String action, final Class<T> responseClass) {
+        return restTemplate.getForEntity(url + action, responseClass);
     }
 
 }

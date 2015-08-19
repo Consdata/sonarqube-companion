@@ -1,7 +1,9 @@
 package net.lipecki.sqcompanion.sonarqube;
 
+import net.lipecki.sqcompanion.sonarqube.timemachine.SonarQubeTimeMachineResultsDto;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SonarQubeMetricCollector {
@@ -16,13 +18,12 @@ public class SonarQubeMetricCollector {
         final String metricKeys = "critical_violations";
         final String fromDate = "2000-01-01T00:00:00+0200";
 
+        final String url = String.format("/api/timemachine/index?format=json&metrics=%s&resource=%s&fromDateTime=%s", metricKeys, project.getKey(), fromDate);
 
-        final String url = String.format("/api/timemachine/index?format=json&metrics=%s&resource" +
-                "=%s&fromDateTime=%s", metricKeys, project.getKey(), fromDate);
+        final ResponseEntity<SonarQubeTimeMachineResultsDto[]> result = sonarQubeConnector.getForEntity(url,
+                SonarQubeTimeMachineResultsDto[].class);
 
-        final ResponseEntity<String> result = sonarQubeConnector.getForEntity(url, String.class);
-
-        System.out.println(result);
+        System.out.println(Arrays.toString(result.getBody()));
     }
 
 }
