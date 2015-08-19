@@ -1,0 +1,4 @@
+sonarqube:
+  url: http://sonarqube.consdata.local
+  username: sonar
+#  password:
