@@ -13,6 +13,11 @@ public class SonarQubeInjector {
     }
 
     @Bean
+    public SonarQubeMetricService sonarQubeMetricService(final SonarQubeMetricCollector sonarQubeMetricCollector) {
+        return new SonarQubeMetricService(sonarQubeMetricCollector);
+    }
+
+    @Bean
     public SonarQubeConnector sonarQubeConnector() {
         return new SonarQubeConnector(sonarQubeUrl, sonarQubeUsername, sonarQubePassword);
     }

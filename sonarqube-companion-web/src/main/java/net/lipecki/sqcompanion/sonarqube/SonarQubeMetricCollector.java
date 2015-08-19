@@ -15,18 +15,19 @@ public class SonarQubeMetricCollector {
     }
 
     public Map<String, List<Metric>> getMetrics(final Project project, final List<String> metricDefinitions) {
-        final String fromDate = "2000-01-01T00:00:00+0200";
+        final String url = String.format("/api/timemachine/index?format=json&metrics=%s&resource=%s",
+                asMetricKeys(metricDefinitions),
+                project.getKey());
 
-        final String url = String.format("/api/timemachine/index?format=json&metrics=%s&resource=%s&fromDateTime=%s",
-                asMetricKeys(metricDefinitions), project.getKey(), fromDate);
-
-        final ResponseEntity<SonarQubeTimeMachineResultsDto[]> serviceResult = sonarQubeConnector.getForEntity(url,
-                SonarQubeTimeMachineResultsDto[].class);
-
+        final ResponseEntity<SonarQubeTimeMachineResultsDto[]> serviceResult =
+                sonarQubeConnector.getForEntity(url, SonarQubeTimeMachineResultsDto[].class);
         final SonarQubeTimeMachineResultsDto firstResult = serviceResult.getBody()[0];
 
+        return mapAsResult(firstResult);
+    }
 
-        final Map<String,List<Metric>> result = new HashMap<>();
+    private Map<String, List<Metric>> mapAsResult(final SonarQubeTimeMachineResultsDto firstResult) {
+        final Map<String, List<Metric>> result = new HashMap<>();
 
         Arrays.stream(firstResult.getCols()).forEach(col -> {
             result.put(col.getMetric(), new ArrayList<>());
