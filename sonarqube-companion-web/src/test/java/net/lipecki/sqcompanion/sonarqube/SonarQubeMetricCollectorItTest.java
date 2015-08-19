@@ -8,6 +8,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SonarQubeCompanion.class)
@@ -18,7 +20,13 @@ public class SonarQubeMetricCollectorItTest {
 
     @Test
     public void call() {
-        collector.getMetrics(Project.of("pl.consdata.eximee.webforms:webforms"), Arrays.asList(MetricDefinition.of("critical_violations")));
+        final Map<String, List<Metric>> result =
+                collector.getMetrics(
+                        Project.of("pl.consdata.eximee.webforms:webforms"),
+                        Arrays.asList("critical_violations")
+                );
+
+        System.out.println(result);
     }
 
 }
