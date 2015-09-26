@@ -17,6 +17,8 @@
 
     <modules>
         <module>sonarqube-companion-web</module>
+        <module>sonarqube-companion-dao</module>
+        <module>sonarqube-companion-business</module>
     </modules>
 
     <properties>
@@ -29,7 +31,8 @@
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
 
         <!-- -->
-        <httpclient.version>4.5</httpclient.version>
+        <gson.version>2.3.1</gson.version>
+        <guava.version>19.0-rc2</guava.version>
 
         <!-- Test dependencies -->
         <junit.version>4.12</junit.version>
@@ -37,11 +40,27 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Internal -->
+
+            <!-- Utils -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- Test -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

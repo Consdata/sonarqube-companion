@@ -1,0 +1,220 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h1 class="page-header">{{ ctrl.group.name }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green" class="panel" ng-class="{
+                    'panel-red': ctrl.group.statusName === 'blocker',
+                    'panel-yellow': ctrl.group.statusName === 'critical',
+                    'panel-green': ctrl.group.statusName === 'healthy'
+                }">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <i class="fa fa-4x" ng-class="{
+                                'fa-thumbs-o-down': ctrl.group.statusName !== 'healthy',
+                                'fa-thumbs-o-up': ctrl.group.statusName === 'healthy'
+                            }">
+                        </i>
+                        <div>overall score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel" ng-class="{
+                    'panel-red': ctrl.group.blockers > 0,
+                    'panel-green': !(ctrl.group.blockers > 0)
+                }">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-ban fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ ctrl.group.blockers }}</div>
+                        <div>blockers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel" class="panel" ng-class="{
+                    'panel-yellow': ctrl.group.criticals > 0,
+                    'panel-green': !(ctrl.group.criticals > 0)
+                }">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-warning fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ ctrl.group.criticals }}</div>
+                        <div>criticals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel" class="panel" ng-class="{
+                    'panel-default': ctrl.group.otherIssues > 0,
+                    'panel-green': !(ctrl.group.otherIssues > 0)
+                }">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-info fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ ctrl.group.otherIssues }}</div>
+                        <div>other issues</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel" ng-class="{
+                    'panel-green': ctrl.group.projects.length > 0,
+                    'panel-red': !(ctrl.group.projects.length > 0)
+                }">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-briefcase fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ ctrl.group.projects.length }}</div>
+                        <div>projects</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-heart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreak >= 0">
+                        <div class="huge">{{ ctrl.group.healthyStreak }}</div>
+                        <div>days without new issue</div>
+                    </div>
+                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreak < 0">
+                        <div class="huge">∞</div>
+                        <div>no significant issues!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Details <small>detailed information about group</small></h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Projects
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Bockers</th>
+                            <th>Criticals</th>
+                            <th>SonarQube URL</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="project in ctrl.group.projects | orderBy:['-statusCode','-blockers','-criticals']">
+                        <tr ng-class="{
+                                    'danger': project.statusName == 'blocker',
+                                    'warning': project.statusName == 'critical',
+                                    'success': project.statusName == 'healthy'
+                                }">
+                            <td>{{ project.name }}</td>
+                            <td>{{ project.blockers }}</td>
+                            <td>{{ project.criticals }}</td>
+                            <td><a href="http://sonarqube.consdata.local/dashboard/index/{{ project.name }}" target="_blank"
+                                    >http://sonarqube.consdata.local/dashboard/index/{{ project.name }}</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Historical SonarQube violations
+            </div>
+            <div class="panel-body">
+                <div id="project-history"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                SonarQube Violations
+            </div>
+            <div class="panel-body" ng-show="ctrl.group.issues.length <= 0">
+                Good job! No significant issues.
+            </div>
+            <div class="panel-body" ng-show="ctrl.group.issues.length > 0">
+                <div class="text-danger" ng-show="ctrl.group.issues.length > ctrl.maxIssuesCount">
+                    Issues list was limited to {{ ctrl.maxIssuesCount }} top entries!
+                </div>
+                <div class="table-responsive">
+                    <table id="issuesTable" class="table" style="word-wrap: break-word;">
+                        <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Violation</th>
+                            <th>Rank</th>
+                            <th>Since</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-class="{
+                                    'danger': issue.severity === 'BLOCKER',
+                                    'warning': issue.severity === 'CRITICAL',
+                                    'info': !(issue.severity === 'BLOCKER') && !(issue.severity === 'CRITICAL')
+                                }"
+                            ng-repeat="issue in ctrl.group.issues | orderBy:['-violationRankCode','projectId','-creationDate'] | limitTo:ctrl.maxIssuesCount ">
+                            <td>{{ issue.project }}</td>
+                            <td>
+                                <div>{{ issue.message }}</div>
+                                <div><small>{{ issue.component }}</small></div>
+                            </td>
+                            <td>{{ issue.severity}}</td>
+                            <td>{{ issue.creationDate | date }}</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

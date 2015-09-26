@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.rest;
+package net.lipecki.rest.util;
 
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;

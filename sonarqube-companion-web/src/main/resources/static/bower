@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# verify node
+command -v node >/dev/null 2>&1 || {
+    echo "Missing node, pleas install node in version at least 0.10.0"
+    exit 1
+}
+
+# verify bower npm installed
+if [ ! -d  node_modules/bower ]; then
+    echo "Missing bower node module installed, please run npm install first"
+    exit 1
+fi
+
+# run bower
+./node_modules/bower/bin/bower $@

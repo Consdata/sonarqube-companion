@@ -7,26 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SonarQubeCompanion.class)
 public class SonarQubeMetricCollectorItTest {
 
     @Autowired
-    private SonarQubeMetricCollector collector;
+    private SonarQubeService collector;
 
     @Test
     public void call() {
-        final Map<String, List<Metric>> result =
-                collector.getMetrics(
-                        Project.of("pl.consdata.eximee.webforms:webforms"),
-                        Arrays.asList("critical_violations")
-                );
+//        final Map<String, List<SQMetric>> result =
+//                collector.getTimeMachineResults(
+//                        SQProject.of("pl.consdata.eximee.webforms:webforms"),
+//                        Arrays.asList("critical_violations")
+//                );
+//
+//        System.out.println(result);
 
-        System.out.println(result);
+        collector.getProjectIssues("pl.consdata.eximee.webforms:webforms", "CRITICAL");
     }
 
 }

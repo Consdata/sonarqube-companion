@@ -1,0 +1,52 @@
+{
+  "groups": [
+    {
+      "name": "Eximee",
+      "id": "eximee",
+      "projects": [
+        "webforms", "router", "repository"
+      ]
+    },
+    {
+      "name": "Eximee BZWBK",
+      "id": "eximee-bzwbk",
+      "projects": [
+      ]
+    },
+    {
+      "name": "Eximee mBank",
+      "id": "eximee-mbank",
+      "projects": [
+      ]
+    },
+    {
+      "name": "iBiznes24",
+      "id": "ibiznes24",
+      "projects": [
+        "ib24"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "WebForms",
+      "id": "webforms",
+      "sonarqube-id": "pl.consdata.eximee.webforms:webforms"
+    },
+    {
+      "name": "Router",
+      "id": "router",
+      "sonarqube-id": "pl.consdata.eximee.router:router"
+    },
+    {
+      "name": "Repository",
+      "id": "repository",
+      "sonarqube-id": "pl.consdata.eximee.repository:repository"
+    },
+    {
+      "name": "iBiznes24",
+      "id": "ib24",
+      "sonarqube-id": ""
+    }
+  ]
+}

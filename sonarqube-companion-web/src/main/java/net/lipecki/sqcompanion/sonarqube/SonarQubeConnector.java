@@ -1,6 +1,6 @@
 package net.lipecki.sqcompanion.sonarqube;
 
-import net.lipecki.sqcompanion.rest.RestTemplateWithAuthentication;
+import net.lipecki.rest.util.RestTemplateWithAuthentication;
 import org.springframework.http.ResponseEntity;
 
 public class SonarQubeConnector {

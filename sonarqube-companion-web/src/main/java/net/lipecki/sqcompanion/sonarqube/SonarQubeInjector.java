@@ -8,13 +8,8 @@ import org.springframework.context.annotation.Configuration;
 public class SonarQubeInjector {
 
     @Bean
-    public SonarQubeMetricCollector sonarQubeMetricCollector(final SonarQubeConnector sonarQubeConnector) {
-        return new SonarQubeMetricCollector(sonarQubeConnector);
-    }
-
-    @Bean
-    public SonarQubeMetricService sonarQubeMetricService(final SonarQubeMetricCollector sonarQubeMetricCollector) {
-        return new SonarQubeMetricService(sonarQubeMetricCollector);
+    public SonarQubeService sonarQubeMetricCollector(final SonarQubeConnector sonarQubeConnector) {
+        return new SonarQubeService(sonarQubeConnector);
     }
 
     @Bean

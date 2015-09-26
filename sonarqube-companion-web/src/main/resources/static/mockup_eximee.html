@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SonarQube Companion">
+    <meta name="author" content="grzegorz.lipecki@gmail.com">
+
+    <title>SonarQube Companion</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="dist/css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="bower_components/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+        <!-- Header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="mockup_index.html">SonarQube Companion</a>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="active">
+                        <!-- <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard<span
+                            class="fa arrow"></span></a> -->
+                        <a href="mockup_index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#">SonarQube Companion</a>
+                            </li>
+                            <li>
+                                <a href="mockup_eximee.html">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="#">iBiznes24</a>
+                            </li>
+                            <li>
+                                <a href="#">Eximee - mBank</a>
+                            </li>
+                            <li>
+                                <a href="#">Eximee - BZWBK</a>
+                            </li>
+                            <li>
+                                <a href="#">Eximee - PayU</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-header">Eximee</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <i class="fa fa-thumbs-o-up fa-4x"></i>
+                                <div>overall score</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-ban fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">0</div>
+                                <div>blockers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-warning fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">0</div>
+                                <div>criticals</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-info fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">150</div>
+                                <div>other issues</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-briefcase fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">5</div>
+                                <div>projects</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-heart fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">7</div>
+                                <div>days without new issue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Details <small>detailed information about projects group</small></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        SonarQube Violations
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Violation</th>
+                                        <th>Rank</th>
+                                        <th>Since</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="danger">
+                                        <td>WebForms</td>
+                                        <td>Avoid too complex method.</td>
+                                        <td>Blocker</td>
+                                        <td>24 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="danger">
+                                        <td>WebForms</td>
+                                        <td>1 branches need to be covered by unit tests to reach the minimum
+                                            treshold of 65.0% branch coverage.</td>
+                                        <td>Blocker</td>
+                                        <td>4 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="danger">
+                                        <td>WebForms</td>
+                                        <td>New exception is thrown in catch block, original stack trace may be
+                                            lost.</td>
+                                        <td>Blocker</td>
+                                        <td>190 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="warning">
+                                        <td>OSGi-Bridge</td>
+                                        <td>Switch without "default" clause.</td>
+                                        <td>Critical</td>
+                                        <td>2 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="info">
+                                        <td>ServiceProxy</td>
+                                        <td>Unused import - org.sonar.api.resources.Project</td>
+                                        <td>Major</td>
+                                        <td>12 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="info">
+                                        <td>ServiceProxy</td>
+                                        <td>Must include both @java.lang.Deprecated annotation and #deprecated
+                                            Javadoc tag with description.</td>
+                                        <td>Major</td>
+                                        <td>12 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="info">
+                                        <td>ServiceProxy</td>
+                                        <td>Must include both @java.lang.Deprecated annotation and #deprecated
+                                            Javadoc tag with description.</td>
+                                        <td>Minor</td>
+                                        <td>12 days</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="info">
+                                        <td>ServiceProxy</td>
+                                        <td>New exception is thrown in catch block, original stack trace may be
+                                            lost.</td>
+                                        <td>Trivial</td>
+                                        <td>12 days</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Historical data
+                    </div>
+                    <div class="panel-body">
+                        <div id="project-history"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Group projects
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Bockers</th>
+                                        <th>Criticals</th>
+                                        <th>SonarQube</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="danger">
+                                        <td>OSGi-Bridge</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td><a href="#">www.sonarqube.com/osgi-bridge</a></td>
+                                    </tr>
+                                    <tr class="warning">
+                                        <td>Router</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td><a href="#">www.sonarqube.com/router</a></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td>Repository</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a href="#">www.sonarqube.com/webforms</a></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td>ServiceProxy</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a href="#">www.sonarqube.com/webforms</a></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td>WebForms</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td><a href="#">www.sonarqube.com/webforms</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- jQuery -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<!-- <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script> -->
+
+<!-- Morris Charts JavaScript -->
+<script src="bower_components/raphael/raphael-min.js"></script>
+<script src="bower_components/morrisjs/morris.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="dist/js/sb-admin-2.js"></script>
+
+<script>
+    $(function() {
+        new Morris.Line({
+            element: 'project-history',
+            data: [
+                { date: '2015-07-01', blocker: 0, critical: 10 },
+                { date: '2015-07-02', blocker: 1, critical: 15 },
+                { date: '2015-07-03', blocker: 0, critical: 13 },
+                { date: '2015-07-04', blocker: 1, critical: 12 },
+                { date: '2015-07-05', blocker: 2, critical: 20 },
+                { date: '2015-07-06', blocker: 3, critical: 19 },
+                { date: '2015-07-07', blocker: 4, critical: 18 },
+                { date: '2015-07-08', blocker: 3, critical: 10 },
+                { date: '2015-07-09', blocker: 2, critical: 9 },
+                { date: '2015-07-10', blocker: 0, critical: 9 },
+                { date: '2015-07-11', blocker: 0, critical: 9 },
+                { date: '2015-07-12', blocker: 0, critical: 12 }
+            ],
+            xkey: 'date',
+            xLabels: 'day',
+            ykeys: ['blocker', 'critical'],
+            labels: ['Blocker', 'Critical']
+        });
+    });
+</script>
+
+</body>
+
+</html>
