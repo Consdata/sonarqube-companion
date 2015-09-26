@@ -8,6 +8,20 @@ console.log('Initializing app...');
 
 app.config(['$urlRouterProvider', function($urlRouterProvider) {
     $urlRouterProvider.otherwise('/groups');
+}]).run(['$rootScope', function($rootScope) {
+    $rootScope
+        .$on('$stateChangeStart',
+        function() {
+            $("[ui-view]").addClass("hidden");
+            $(".page-loading").removeClass("hidden");
+        });
+
+    $rootScope
+        .$on('$stateChangeSuccess',
+        function() {
+            $("[ui-view]").removeClass("hidden");
+            $(".page-loading").addClass("hidden");
+        });
 }]);
 
 /**
