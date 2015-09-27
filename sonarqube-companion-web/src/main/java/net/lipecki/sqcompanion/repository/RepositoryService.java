@@ -6,6 +6,7 @@ import net.lipecki.sqcompanion.sonarqube.issue.SonarQubeIssuesIssueResultDto;
 import net.lipecki.sqcompanion.sonarqube.timemachine.SonarQubeTimeMachineResultCellsDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class RepositoryService {
         this.sonarQubeService = sonarQubeService;
     }
 
+    @Scheduled(initialDelayString =  "${app.syncDelay}", fixedDelayString = "${app.syncDelay}")
     public void loadData() {
         final Long startTime = System.currentTimeMillis();
 

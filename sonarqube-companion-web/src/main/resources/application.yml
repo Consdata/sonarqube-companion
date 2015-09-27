@@ -4,3 +4,4 @@ sonarqube:
 #  password:
 app:
   layoutConfiguration: classpath:layoutConfiguration.json
+  syncDelay: 600000
