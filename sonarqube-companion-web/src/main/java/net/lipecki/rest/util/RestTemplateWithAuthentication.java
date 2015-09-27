@@ -1,11 +1,11 @@
 package net.lipecki.rest.util;
 
-import com.sun.xml.internal.messaging.saaj.util.Base64;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Base64;
 
 public class RestTemplateWithAuthentication extends RestTemplate {
 
@@ -17,7 +17,7 @@ public class RestTemplateWithAuthentication extends RestTemplate {
                 super.prepareConnection(connection, httpMethod);
 
                 final String authorisation = String.format("%s:%s", username, password);
-                final byte[] encodedAuthorisation = Base64.encode(authorisation.getBytes());
+                final byte[] encodedAuthorisation = Base64.getEncoder().encode(authorisation.getBytes());
                 connection.setRequestProperty("Authorization", String.format("Basic %s", new String
                         (encodedAuthorisation)));
             }
