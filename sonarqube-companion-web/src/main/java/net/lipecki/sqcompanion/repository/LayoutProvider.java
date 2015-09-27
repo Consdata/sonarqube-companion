@@ -21,11 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class LayoutProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LayoutProvider.class);
-
     private final Cache<String, LayoutConfiguration> layoutConfigurationCache;
-
     private final ResourceLoader resourceLoader;
-
     private final String configFilePath;
 
     public LayoutProvider(final ResourceLoader resourceLoader, final int cacheDuration, final TimeUnit cacheTimeUnit, final String configFilePath) {

@@ -6,13 +6,9 @@ package net.lipecki.sqcompanion.repository;
 public enum IssueSeverity {
 
     BLOCKER(5, true),
-
     CRITICAL(4, true),
-
     MAJOR(3, false),
-
     MINOR(2, false),
-
     INFO(1, false);
 
     private final int code;

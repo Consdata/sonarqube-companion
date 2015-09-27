@@ -14,7 +14,6 @@ import java.net.URL;
 public class ResourceLoader {
 
     public static final String RESOURCE_CLASSPATH = "classpath:";
-
     private static final String RESOURCE_FILESYSTEM = "filesystem:";
 
     public String getAsString(final String resource) {

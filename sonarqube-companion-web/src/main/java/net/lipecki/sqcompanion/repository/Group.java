@@ -9,15 +9,10 @@ import java.util.List;
 public class Group {
 
     private String key;
-
     private String name;
-
     private String description;
-
     private Issues issues = new Issues();
-
     private History history = new History();
-
     private List<Project> projects = new ArrayList<>();
 
     public Group(final String key, final String name, final String description) {

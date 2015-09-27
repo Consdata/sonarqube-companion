@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.group;
+package net.lipecki.sqcompanion.dto;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;

@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.group;
+package net.lipecki.sqcompanion.dto;
 
 import net.lipecki.sqcompanion.sonarqube.issue.SonarQubeIssuesIssueResultDto;
 

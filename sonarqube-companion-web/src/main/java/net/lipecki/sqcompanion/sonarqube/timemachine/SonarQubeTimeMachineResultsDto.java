@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public class SonarQubeTimeMachineResultsDto {
 
-    private SonarQubeTimeMachineResultColsDto[] cols;
+    private SonarQubeTimeMachineResultColsDto[] cols = new SonarQubeTimeMachineResultColsDto[0];
 
-    private SonarQubeTimeMachineResultCellsDto[] cells;
+    private SonarQubeTimeMachineResultCellsDto[] cells = new SonarQubeTimeMachineResultCellsDto[0];
 
     public SonarQubeTimeMachineResultColsDto[] getCols() {
         return cols;

@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.group;
+package net.lipecki.sqcompanion.dto;
 
 import net.lipecki.sqcompanion.repository.HealthStatus;
 
@@ -11,9 +11,7 @@ public enum StatusCodeDto {
 
     CRITICAL(2),
 
-    HEALTHY(1),
-
-    UNKNOWN(-1);
+    HEALTHY(1);
 
     private final int code;
 

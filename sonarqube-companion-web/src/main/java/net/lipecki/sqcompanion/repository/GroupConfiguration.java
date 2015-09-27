@@ -9,10 +9,17 @@ import java.util.List;
 public class GroupConfiguration {
 
     private String key;
-
     private String name;
-
     private List<String> projects = new ArrayList<>();
+
+    public GroupConfiguration() {
+    }
+
+    public GroupConfiguration(final String key, final String name, final List<String> projects) {
+        this.key = key;
+        this.name = name;
+        this.projects = projects;
+    }
 
     public String getKey() {
         return key;

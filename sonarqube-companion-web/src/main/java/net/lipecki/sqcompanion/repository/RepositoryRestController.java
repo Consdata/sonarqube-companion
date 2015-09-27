@@ -1,12 +1,13 @@
 package net.lipecki.sqcompanion.repository;
 
-import net.lipecki.sqcompanion.group.*;
-import net.lipecki.sqcompanion.project.ProjectSummaryDto;
+import net.lipecki.sqcompanion.dto.*;
+import net.lipecki.sqcompanion.dto.ProjectSummaryDto;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +80,7 @@ public class RepositoryRestController {
                                         .getIssues()
                                         .getAll()
                                         .stream()
-                                        .map(i -> mapAsIssueDto(i))
+                                        .map(issue -> mapAsIssueDto(issue))
                                         .collect(toList()),
                                 group
                                         .getIssues()
@@ -94,8 +95,18 @@ public class RepositoryRestController {
                                         .getHistoryPoints()
                                         .values()
                                         .stream()
-                                        .map(point -> mapAsIssueHistoryPointDto(point))
+                                        .sorted((a, b) -> -1 * a.getDate().compareTo(b.getDate()))
+                                        .limit(60)
+                                        .map(historyPoint -> mapAsIssueHistoryPointDto(historyPoint))
                                         .collect(toList()))))
+                .orElse(null);
+    }
+
+    @RequestMapping(value = "/projects/{id}", method = RequestMethod.GET)
+    public Project getProject(@PathVariable final String id) {
+        return repositoryService
+                .getRepositoryModel()
+                .getProject(id)
                 .orElse(null);
     }
 
@@ -110,20 +121,20 @@ public class RepositoryRestController {
 
     private IssuesHistoryPointDto mapAsIssueHistoryPointDto(final HistoryPoint point) {
         return new IssuesHistoryPointDto(
-                new Date(point.getDate().toEpochDay()),
+                Date.from(point.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
                 point.getBlockers(),
                 point.getCriticals());
     }
 
-    private IssueDto mapAsIssueDto(final Issue i) {
+    private IssueDto mapAsIssueDto(final Issue issue) {
         return new IssueDto(
-                i.getKey(),
-                i.getProject().map(p -> p.getName()).orElse("[missing]"),
-                i.getComponent(),
-                i.getMessage(),
-                i.getSeverity().name(),
-                i.getSeverity().getCode(),
-                i.getCreationDate()
+                issue.getKey(),
+                issue.getProject().map(p -> p.getName()).orElse("[missing]"),
+                issue.getComponent(),
+                issue.getMessage(),
+                issue.getSeverity().name(),
+                issue.getSeverity().getCode(),
+                issue.getCreationDate()
         );
     }
 

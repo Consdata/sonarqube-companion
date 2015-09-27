@@ -1,6 +1,4 @@
-package net.lipecki.sqcompanion.project;
-
-import net.lipecki.sqcompanion.group.StatusCodeDto;
+package net.lipecki.sqcompanion.dto;
 
 /**
  * Created by gregorry on 26.09.2015.

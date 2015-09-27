@@ -42,19 +42,12 @@ public class Issues {
     }
 
     private final List<Issue> all = new ArrayList<>();
-
     private final List<Issue> blockers = new ArrayList<>();
-
     private final List<Issue> criticals = new ArrayList<>();
-
     private final List<Issue> majors = new ArrayList<>();
-
     private final List<Issue> minors = new ArrayList<>();
-
     private final List<Issue> infos = new ArrayList<>();
-
     private final List<Issue> significant = new ArrayList<>();
-
     private final List<Issue> nonSignificant = new ArrayList<>();
 
     Issues() {

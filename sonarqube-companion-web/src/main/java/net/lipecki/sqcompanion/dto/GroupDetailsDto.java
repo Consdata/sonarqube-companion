@@ -1,7 +1,6 @@
-package net.lipecki.sqcompanion.group;
+package net.lipecki.sqcompanion.dto;
 
 import com.google.common.base.Objects;
-import net.lipecki.sqcompanion.project.ProjectSummaryDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,28 +14,23 @@ public class GroupDetailsDto {
 
     private String name;
 
-    private Integer blockers = -1;
+    private Integer blockers;
 
-    private Integer criticals = -1;
+    private Integer criticals;
 
-    private Integer otherIssues = -1;
+    private Integer otherIssues;
 
-    private StatusCodeDto status = StatusCodeDto.UNKNOWN;
+    private StatusCodeDto status;
 
     private List<ProjectSummaryDto> projects = new ArrayList<>();
 
     private List<IssueDto> issues = new ArrayList<>();
 
-    private Integer healthyStreak = -1;
+    private Integer healthyStreak;
 
     private List<IssuesHistoryPointDto> historicalData = new ArrayList<>();
 
     public GroupDetailsDto() {
-    }
-
-    public GroupDetailsDto(final String id, final String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public GroupDetailsDto(final String id, final String name, final Integer blockers, final Integer criticals, final Integer otherIssues, final StatusCodeDto status, final List<ProjectSummaryDto> projects, final List<IssueDto> issues, final Integer healthyStreak, final List<IssuesHistoryPointDto> historicalData) {
@@ -124,11 +118,6 @@ public class GroupDetailsDto {
     public int hashCode() {
         return Objects.hashCode(id);
     }
-
-    public static GroupDetailsDto of(final GroupDto groupDto) {
-        return new GroupDetailsDto(groupDto.getId(), groupDto.getName());
-    }
-
 
     public void setOtherIssues(final int otherIssues) {
         this.otherIssues = otherIssues;

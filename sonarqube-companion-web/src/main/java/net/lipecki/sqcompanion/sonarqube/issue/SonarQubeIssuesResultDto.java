@@ -11,15 +11,45 @@ public class SonarQubeIssuesResultDto {
 
     private Integer total;
 
-    private SonarQubeIssuesProjectResultDto[] projects;
+    private Integer p;
 
-    private SonarQubeIssuesComponentResultDto[] components;
+    private Integer ps;
 
-    private SonarQubeIssuesIssueResultDto[] issues;
+    private SonarQubeIssuesPagingResultDto paging = new SonarQubeIssuesPagingResultDto();
 
-    private SonarQubeIssuesRuleResultDto[] rules;
+    private SonarQubeIssuesProjectResultDto[] projects = new SonarQubeIssuesProjectResultDto[0];
+
+    private SonarQubeIssuesComponentResultDto[] components = new SonarQubeIssuesComponentResultDto[0];
+
+    private SonarQubeIssuesIssueResultDto[] issues = new SonarQubeIssuesIssueResultDto[0];
+
+    private SonarQubeIssuesRuleResultDto[] rules = new SonarQubeIssuesRuleResultDto[0];
 
     public SonarQubeIssuesResultDto() {
+    }
+
+    public Integer getP() {
+        return p;
+    }
+
+    public void setP(final Integer p) {
+        this.p = p;
+    }
+
+    public Integer getPs() {
+        return ps;
+    }
+
+    public void setPs(final Integer ps) {
+        this.ps = ps;
+    }
+
+    public SonarQubeIssuesPagingResultDto getPaging() {
+        return paging;
+    }
+
+    public void setPaging(final SonarQubeIssuesPagingResultDto paging) {
+        this.paging = paging;
     }
 
     public Integer getTotal() {

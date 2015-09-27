@@ -6,15 +6,10 @@ package net.lipecki.sqcompanion.repository;
 public class Project {
 
     private final String key;
-
     private final String name;
-
     private final String sonarqubeKey;
-
     private final String description;
-
     private Issues issues = new Issues();
-
     private History history = new History();
 
     public Project(final String key, final String name, final String sonarqubeKey, final String description) {

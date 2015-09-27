@@ -6,10 +6,17 @@ package net.lipecki.sqcompanion.repository;
 public class ProjectConfiguration {
 
     private String name;
-
     private String key;
-
     private String sonarqubeKey;
+
+    public ProjectConfiguration() {
+    }
+
+    public ProjectConfiguration(final String name, final String key, final String sonarqubeKey) {
+        this.name = name;
+        this.key = key;
+        this.sonarqubeKey = sonarqubeKey;
+    }
 
     public String getName() {
         return name;

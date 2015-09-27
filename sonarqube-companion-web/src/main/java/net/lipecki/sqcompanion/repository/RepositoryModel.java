@@ -38,4 +38,8 @@ public class RepositoryModel {
         return Optional.ofNullable(groups.get(id));
     }
 
+    public Optional<Project> getProject(final String id) {
+        return Optional.ofNullable(projects.get(id));
+    }
+
 }

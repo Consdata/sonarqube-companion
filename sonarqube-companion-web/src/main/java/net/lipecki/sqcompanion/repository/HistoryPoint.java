@@ -7,7 +7,26 @@ import java.time.LocalDate;
  */
 public class HistoryPoint {
 
-    public static HistoryPoint sum(HistoryPoint original, HistoryPoint other) {
+    private final LocalDate date;
+    private Integer blockers = 0;
+    private Integer criticals = 0;
+    private Integer majors = 0;
+    private Integer minors = 0;
+    private Integer infos = 0;
+    public HistoryPoint(final LocalDate date) {
+        this.date = date;
+    }
+
+    public HistoryPoint(final LocalDate date, final Integer blockers, final Integer criticals, final Integer majors, final Integer minors, final Integer infos) {
+        this.date = date;
+        this.blockers = blockers;
+        this.criticals = criticals;
+        this.majors = majors;
+        this.minors = minors;
+        this.infos = infos;
+    }
+
+    public static HistoryPoint merge(HistoryPoint original, HistoryPoint other) {
         final HistoryPoint point = new HistoryPoint(original.getDate());
 
         point.addBlockers(original.getBlockers());
@@ -26,22 +45,6 @@ public class HistoryPoint {
         point.addInfos(other.getInfos());
 
         return point;
-    }
-
-    private Integer blockers = 0;
-
-    private Integer criticals = 0;
-
-    private Integer majors = 0;
-
-    private Integer minors = 0;
-
-    private Integer infos = 0;
-
-    private final LocalDate date;
-
-    public HistoryPoint(final LocalDate date) {
-        this.date = date;
     }
 
     public Integer getBlockers() {
@@ -86,5 +89,13 @@ public class HistoryPoint {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public void addOtherPoint(final HistoryPoint other) {
+        addBlockers(other.getBlockers());
+        addCriticals(other.getCriticals());
+        addMajors(other.getMajors());
+        addMinors(other.getMinors());
+        addInfos(other.getInfos());
     }
 }

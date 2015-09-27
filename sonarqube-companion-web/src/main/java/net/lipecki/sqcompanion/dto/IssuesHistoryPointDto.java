@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.group;
+package net.lipecki.sqcompanion.dto;
 
 import java.util.Date;
 
