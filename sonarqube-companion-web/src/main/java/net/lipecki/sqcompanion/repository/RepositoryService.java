@@ -127,7 +127,7 @@ public class RepositoryService {
     }
 
     private Project loadProjectData(final ProjectConfiguration config) {
-        final Project project = new Project(config.getKey(), config.getKey(), config.getSonarqubeKey(), "");
+        final Project project = new Project(config.getKey(), config.getName(), config.getSonarqubeKey(), "");
 
         project.setIssues(
                 Issues.of(

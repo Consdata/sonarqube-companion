@@ -18,11 +18,6 @@ public class ProjectSummaryDto {
     public ProjectSummaryDto() {
     }
 
-    public ProjectSummaryDto(final String id, final String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public ProjectSummaryDto(final String id, final String name, final Integer blockers, final Integer criticals, final StatusCodeDto status) {
         this.id = id;
         this.name = name;
