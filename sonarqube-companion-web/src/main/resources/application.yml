@@ -2,3 +2,5 @@ sonarqube:
   url: http://sonarqube.consdata.local
   username: sonar
 #  password:
+app:
+  layoutConfiguration: classpath:layoutConfiguration.json

@@ -77,7 +77,7 @@ app.config(['$stateProvider', function($stateProvider) {
 
 }]).controller('GroupDetailsController', ['groupPromise', function(groupPromise) {
     this.group = groupPromise.data;
-    this.maxIssuesCount = 50;
+    this.maxIssuesCount = 30;
     new Morris.Line({
         element: 'project-history',
         data: this.group.historicalData,

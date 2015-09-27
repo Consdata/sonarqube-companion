@@ -1,6 +1,7 @@
 package net.lipecki.sqcompanion.repository;
 
 import net.lipecki.sqcompanion.sonarqube.SonarQubeService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
 import java.util.concurrent.TimeUnit;
@@ -25,13 +26,16 @@ public class RepositoryInjector {
 
     @Bean
     public LayoutProvider layoutProvider(final ResourceLoader resourceLoader) {
-        return new LayoutProvider(resourceLoader, 5, TimeUnit.MINUTES, "classpath:layoutConfiguration.json");
+        return new LayoutProvider(resourceLoader, 5, TimeUnit.MINUTES, layoutConfigurationFile);
     }
 
     @Bean
     public ResourceLoader resourceLoader() {
         return new ResourceLoader();
     }
+
+    @Value("${app.layoutConfiguration}")
+    private String layoutConfigurationFile;
 
     // TODO reload model periodically
 

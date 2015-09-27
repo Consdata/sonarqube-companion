@@ -78,7 +78,7 @@ public class RepositoryRestController {
                                         .collect(toList()),
                                 group
                                         .getIssues()
-                                        .getAll()
+                                        .getSignificant()
                                         .stream()
                                         .map(issue -> mapAsIssueDto(issue))
                                         .collect(toList()),
@@ -96,7 +96,7 @@ public class RepositoryRestController {
                                         .values()
                                         .stream()
                                         .sorted((a, b) -> -1 * a.getDate().compareTo(b.getDate()))
-                                        .limit(60)
+                                        .limit(90)
                                         .map(historyPoint -> mapAsIssueHistoryPointDto(historyPoint))
                                         .collect(toList()))))
                 .orElse(null);

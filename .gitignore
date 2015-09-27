@@ -3,6 +3,8 @@ bin/
 bower_components/
 node_modules/
 
+*-own.json
+
 .project
 .settings
 *.sublime-project
