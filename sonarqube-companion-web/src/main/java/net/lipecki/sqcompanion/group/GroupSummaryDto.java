@@ -6,27 +6,28 @@ import com.google.common.base.Objects;
 /**
  * Created by gregorry on 26.09.2015.
  */
-public class GroupSummary {
+public class GroupSummaryDto {
 
     private String id;
 
     private String name;
 
-    private StatusCode status;
+    // TODO change to HealthStatus
+    private StatusCodeDto status;
 
     private Integer blockers;
 
     private Integer criticals;
 
-    public GroupSummary() {
+    public GroupSummaryDto() {
     }
 
-    public GroupSummary(final String id, final String name) {
+    public GroupSummaryDto(final String id, final String name) {
         this.id = id;
         this.name = name;
     }
 
-    public GroupSummary(final String id, final String name, final StatusCode status, final Integer blockers, final Integer criticals) {
+    public GroupSummaryDto(final String id, final String name, final StatusCodeDto status, final Integer blockers, final Integer criticals) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -50,11 +51,11 @@ public class GroupSummary {
         this.name = name;
     }
 
-    public StatusCode getStatus() {
+    public StatusCodeDto getStatus() {
         return status;
     }
 
-    public void setStatus(final StatusCode status) {
+    public void setStatus(final StatusCodeDto status) {
         this.status = status;
     }
 
@@ -86,7 +87,7 @@ public class GroupSummary {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final GroupSummary that = (GroupSummary) o;
+        final GroupSummaryDto that = (GroupSummaryDto) o;
         return Objects.equal(id, that.id);
     }
 
@@ -106,7 +107,7 @@ public class GroupSummary {
                 .toString();
     }
 
-    public static GroupSummary of(final Group group) {
-        return new GroupSummary(group.getId(), group.getName());
+    public static GroupSummaryDto of(final GroupDto groupDto) {
+        return new GroupSummaryDto(groupDto.getId(), groupDto.getName());
     }
 }

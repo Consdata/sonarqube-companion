@@ -201,7 +201,7 @@
                                     'warning': issue.severity === 'CRITICAL',
                                     'info': !(issue.severity === 'BLOCKER') && !(issue.severity === 'CRITICAL')
                                 }"
-                            ng-repeat="issue in ctrl.group.issues | orderBy:['-violationRankCode','projectId','-creationDate'] | limitTo:ctrl.maxIssuesCount ">
+                            ng-repeat="issue in ctrl.group.issues | orderBy:['-severityCode','project','-creationDate'] | limitTo:ctrl.maxIssuesCount ">
                             <td>{{ issue.project }}</td>
                             <td>
                                 <div>{{ issue.message }}</div>

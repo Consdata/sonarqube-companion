@@ -1,48 +1,62 @@
 package net.lipecki.sqcompanion.group;
 
 import com.google.common.base.Objects;
-import net.lipecki.sqcompanion.project.ProjectSummary;
+import net.lipecki.sqcompanion.project.ProjectSummaryDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gregorry on 26.09.2015.
  */
-public class GroupDetails {
+public class GroupDetailsDto {
 
     private String id;
 
     private String name;
 
-    private Integer blockers;
+    private Integer blockers = -1;
 
-    private Integer criticals;
+    private Integer criticals = -1;
 
-    private Integer otherIssues;
+    private Integer otherIssues = -1;
 
-    private StatusCode status;
+    private StatusCodeDto status = StatusCodeDto.UNKNOWN;
 
-    private List<ProjectSummary> projects;
+    private List<ProjectSummaryDto> projects = new ArrayList<>();
 
-    private List<Issue> issues;
+    private List<IssueDto> issues = new ArrayList<>();
 
-    private Integer healthyStreak;
+    private Integer healthyStreak = -1;
 
-    private List<IssuesHistoryPoint> historicalData;
+    private List<IssuesHistoryPointDto> historicalData = new ArrayList<>();
 
-    public GroupDetails() {
+    public GroupDetailsDto() {
     }
 
-    public GroupDetails(final String id, final String name) {
+    public GroupDetailsDto(final String id, final String name) {
         this.id = id;
         this.name = name;
     }
 
-    public List<IssuesHistoryPoint> getHistoricalData() {
+    public GroupDetailsDto(final String id, final String name, final Integer blockers, final Integer criticals, final Integer otherIssues, final StatusCodeDto status, final List<ProjectSummaryDto> projects, final List<IssueDto> issues, final Integer healthyStreak, final List<IssuesHistoryPointDto> historicalData) {
+        this.id = id;
+        this.name = name;
+        this.blockers = blockers;
+        this.criticals = criticals;
+        this.otherIssues = otherIssues;
+        this.status = status;
+        this.projects = projects;
+        this.issues = issues;
+        this.healthyStreak = healthyStreak;
+        this.historicalData = historicalData;
+    }
+
+    public List<IssuesHistoryPointDto> getHistoricalData() {
         return historicalData;
     }
 
-    public void setHistoricalData(final List<IssuesHistoryPoint> historicalData) {
+    public void setHistoricalData(final List<IssuesHistoryPointDto> historicalData) {
         this.historicalData = historicalData;
     }
 
@@ -58,11 +72,11 @@ public class GroupDetails {
         this.otherIssues = otherIssues;
     }
 
-    public List<ProjectSummary> getProjects() {
+    public List<ProjectSummaryDto> getProjects() {
         return projects;
     }
 
-    public void setProjects(final List<ProjectSummary> projects) {
+    public void setProjects(final List<ProjectSummaryDto> projects) {
         this.projects = projects;
     }
 
@@ -102,7 +116,7 @@ public class GroupDetails {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final GroupDetails that = (GroupDetails) o;
+        final GroupDetailsDto that = (GroupDetailsDto) o;
         return Objects.equal(id, that.id);
     }
 
@@ -111,8 +125,8 @@ public class GroupDetails {
         return Objects.hashCode(id);
     }
 
-    public static GroupDetails of(final Group group) {
-        return new GroupDetails(group.getId(), group.getName());
+    public static GroupDetailsDto of(final GroupDto groupDto) {
+        return new GroupDetailsDto(groupDto.getId(), groupDto.getName());
     }
 
 
@@ -132,19 +146,19 @@ public class GroupDetails {
         return this.status.getCode();
     }
 
-    public void setStatus(final StatusCode status) {
+    public void setStatus(final StatusCodeDto status) {
         this.status = status;
     }
 
-    public StatusCode getStatus() {
+    public StatusCodeDto getStatus() {
         return status;
     }
 
-    public List<Issue> getIssues() {
+    public List<IssueDto> getIssues() {
         return issues;
     }
 
-    public void setIssues(final List<Issue> issues) {
+    public void setIssues(final List<IssueDto> issues) {
         this.issues = issues;
     }
 }

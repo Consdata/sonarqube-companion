@@ -30,7 +30,7 @@ app.config(['$urlRouterProvider', function($urlRouterProvider) {
 
 app.controller('SidebarNavigationController', ['$http', function($http) {
     var controller = this;
-    $http.get('/api/group/infos').success(function(data) {
+    $http.get('/api/repository/groups').success(function(data) {
         controller.groups = data;
     }).error(function(reason) {
         console.log('error... ' + reason);
@@ -49,7 +49,7 @@ app.config(['$stateProvider', function($stateProvider) {
         controllerAs: 'ctrl',
         resolve: {
             groupsPromise: ['$http', function($http) {
-                return $http.get('/api/group/summaries');
+                return $http.get('/api/repository/groups/summaries');
             }]
         }
     });
@@ -70,7 +70,7 @@ app.config(['$stateProvider', function($stateProvider) {
         resolve: {
             groupPromise: ['$stateParams', '$http', function($stateParams, $http) {
                 console.log('get...');
-                return $http.get('/api/group/' + $stateParams.id);
+                return $http.get('/api/repository/groups/' + $stateParams.id);
             }]
         }
     });

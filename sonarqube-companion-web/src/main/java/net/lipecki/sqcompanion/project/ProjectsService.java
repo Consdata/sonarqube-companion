@@ -1,7 +1,7 @@
 package net.lipecki.sqcompanion.project;
 
-import net.lipecki.sqcompanion.group.StatusCode;
-import net.lipecki.sqcompanion.sonarqube.SonarQubeService;
+import net.lipecki.sqcompanion.group.StatusCodeDto;
+import net.lipecki.sqcompanion.sonarqube.SonarQubeServiceOld;
 import net.lipecki.sqcompanion.sonarqube.issue.SonarQubeIssuesIssueResultDto;
 import net.lipecki.sqcompanion.sonarqube.timemachine.SonarQubeTimeMachineResultsDto;
 
@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class ProjectsService {
 
-    private final SonarQubeService collector;
+    private final SonarQubeServiceOld collector;
 
-    public ProjectsService(final SonarQubeService collector) {
+    public ProjectsService(final SonarQubeServiceOld collector) {
         this.collector = collector;
     }
 
@@ -53,18 +53,18 @@ public class ProjectsService {
         return getOtherIssues(id).size();
     }
 
-    public ProjectSummary getProjectSummary(final String id) {
-        final ProjectSummary projectSummary = new ProjectSummary(id, id);
+    public ProjectSummaryDto getProjectSummary(final String id) {
+        final ProjectSummaryDto projectSummary = new ProjectSummaryDto(id, id);
 
         projectSummary.setBlockers(getBlockerCount(id));
         projectSummary.setCriticals(getCriticalCount(id));
 
         if (projectSummary.getBlockers() > 0) {
-            projectSummary.setStatus(StatusCode.BLOCKER);
+            projectSummary.setStatus(StatusCodeDto.BLOCKER);
         } else if (projectSummary.getCriticals() > 0) {
-            projectSummary.setStatus(StatusCode.CRITICAL);
+            projectSummary.setStatus(StatusCodeDto.CRITICAL);
         } else {
-            projectSummary.setStatus(StatusCode.HEALTHY);
+            projectSummary.setStatus(StatusCodeDto.HEALTHY);
         }
 
         return projectSummary;

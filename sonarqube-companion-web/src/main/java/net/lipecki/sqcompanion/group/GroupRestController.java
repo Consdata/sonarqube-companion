@@ -26,7 +26,7 @@ public class GroupRestController {
     public GroupRestController(final ProjectsService projectsService) {
         this.projectsService = projectsService;
 
-        groups.put("eximee", new Group("eximee", "Eximee",
+        groups.put("eximee", new GroupDto("eximee", "Eximee",
                 "pl.consdata.eximee.webforms:webforms",
                 "pl.consdata.eximee:eximee-alfresco-core",
                 "pl.consdata.eximee:repository:mssql",
@@ -35,92 +35,92 @@ public class GroupRestController {
                 "pl.consdata.eximee:eximee-dms-connector",
                 "pl.consdata.iew.serviceproxy:serviceproxy",
                 "pl.consdata.eximee:router"));
-        groups.put("eximee-bzwbk", new Group("eximee-bzwbk", "Eximee BZWBK",
+        groups.put("eximee-bzwbk", new GroupDto("eximee-bzwbk", "Eximee BZWBK",
                 "pl.consdata.eximee.bzwbk:webforms-bzwbk",
                 "pl.consdata.eximee.webforms:bzwbk-serviceproxy",
                 "pl.consdata.eximee.bzwbk.alfresco:eximee-alfresco-bzwbk",
                 "pl.consdata.reports:eximee-report-bzwbk",
                 "pl.consdata.eximee.bzwbk:eximee-router-bzwbk"));
-        groups.put("eximee-mbank", new Group("eximee-mbank", "Eximee mBank",
+        groups.put("eximee-mbank", new GroupDto("eximee-mbank", "Eximee mBank",
                 "pl.consdata.reports:rpt-bre-dataprocessor-reactor",
                 "pl.consdata.eximee.mbank.alfresco:eximee-mbank-alfresco",
                 "pl.consdata.eximee:eximee-mbank-status"));
-        groups.put("ib24", new Group("ib24", "iBiznes24",
+        groups.put("ib24", new GroupDto("ib24", "iBiznes24",
                 "pl.com.pbpolsoft.emb24:emb24-app:default"));
 
-        groups.put("mbank-dpd", new Group("mbank-dpd", "mBank/DPD",
+        groups.put("mbank-dpd", new GroupDto("mbank-dpd", "mBank/DPD",
                 "pl.consdata.iew.serviceproxy:eximee-mbank-serviceproxy-dpd",
                 "pl.consdata.iew.serviceproxy:eximee-mbank-serviceproxy-disposition",
                 "pl.consdata.iew.serviceproxy:eximee-mbank-serviceproxy-commons"));
     }
 
     @RequestMapping(value = "/infos", method = RequestMethod.GET)
-    public List<GroupInfo> getGroups() {
+    public List<GroupInfoDto> getGroups() {
         return groups
                 .values()
                 .stream()
-                .map(g -> GroupInfo.of(g))
+                .map(g -> GroupInfoDto.of(g))
                 .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/summaries", method = RequestMethod.GET)
-    public List<GroupSummary> getGroupSummaries() {
+    public List<GroupSummaryDto> getGroupSummaries() {
         return groups
                 .values()
                 .stream()
-                .map(g -> fillWithSummaryData(GroupSummary.of(g), g))
+                .map(g -> fillWithSummaryData(GroupSummaryDto.of(g), g))
                 .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public GroupDetails getGroup(@PathVariable final String id) {
+    public GroupDetailsDto getGroup(@PathVariable final String id) {
         if (groups.containsKey(id)) {
-            return fillWithDetailsData(GroupDetails.of(groups.get(id)), groups.get(id));
+            return fillWithDetailsData(GroupDetailsDto.of(groups.get(id)), groups.get(id));
         } else {
             return null;
         }
     }
 
-    private GroupSummary fillWithSummaryData(final GroupSummary groupSummary, final Group group) {
+    private GroupSummaryDto fillWithSummaryData(final GroupSummaryDto groupSummary, final GroupDto groupDto) {
         groupSummary
-                .setBlockers(group
+                .setBlockers(groupDto
                         .getProjects()
                         .stream()
                         .mapToInt(projectsService::getBlockerCount)
                         .sum());
         groupSummary
-                .setCriticals(group
+                .setCriticals(groupDto
                         .getProjects()
                         .stream()
                         .mapToInt(projectsService::getCriticalCount)
                         .sum());
 
         if (groupSummary.getBlockers() > 0) {
-            groupSummary.setStatus(StatusCode.BLOCKER);
+            groupSummary.setStatus(StatusCodeDto.BLOCKER);
         } else if (groupSummary.getCriticals() > 0) {
-            groupSummary.setStatus(StatusCode.CRITICAL);
+            groupSummary.setStatus(StatusCodeDto.CRITICAL);
         } else {
-            groupSummary.setStatus(StatusCode.HEALTHY);
+            groupSummary.setStatus(StatusCodeDto.HEALTHY);
         }
 
 
         return groupSummary;
     }
 
-    private GroupDetails fillWithDetailsData(final GroupDetails groupDetails, final Group group) {
+    private GroupDetailsDto fillWithDetailsData(final GroupDetailsDto groupDetails, final GroupDto groupDto) {
 
-        groupDetails.setProjects(group
+        groupDetails.setProjects(groupDto
                 .getProjects()
                 .stream()
                 .map(p -> projectsService.getProjectSummary(p))
                 .collect(Collectors.toList()));
 
-        final List<SonarQubeIssuesIssueResultDto> blockers = group.getProjects()
+        final List<SonarQubeIssuesIssueResultDto> blockers = groupDto.getProjects()
                 .stream()
                 .map(p -> projectsService.getBlockers(p))
                 .collect(ArrayList::new, List::addAll, List::addAll);
 
-        final List<SonarQubeIssuesIssueResultDto> criticals = group.getProjects()
+        final List<SonarQubeIssuesIssueResultDto> criticals = groupDto.getProjects()
                 .stream()
                 .map(p -> projectsService.getCriticals(p))
                 .collect(ArrayList::new, List::addAll, List::addAll);
@@ -128,18 +128,18 @@ public class GroupRestController {
         groupDetails.setBlockers(blockers.size());
         groupDetails.setCriticals(criticals.size());
         groupDetails
-                .setOtherIssues(group
+                .setOtherIssues(groupDto
                         .getProjects()
                         .stream()
                         .mapToInt(projectsService::getOtherIssueCount)
                         .sum());
 
         if (groupDetails.getBlockers() > 0) {
-            groupDetails.setStatus(StatusCode.BLOCKER);
+            groupDetails.setStatus(StatusCodeDto.BLOCKER);
         } else if (groupDetails.getCriticals() > 0) {
-            groupDetails.setStatus(StatusCode.CRITICAL);
+            groupDetails.setStatus(StatusCodeDto.CRITICAL);
         } else {
-            groupDetails.setStatus(StatusCode.HEALTHY);
+            groupDetails.setStatus(StatusCodeDto.HEALTHY);
         }
 
         final List<SonarQubeIssuesIssueResultDto> issues = new ArrayList<>();
@@ -148,7 +148,7 @@ public class GroupRestController {
 
         groupDetails.setIssues(issues
                 .stream()
-                .map(i -> Issue.of(i))
+                .map(i -> IssueDto.of(i))
                 .collect(Collectors.toList()));
 
         final Optional<Date> newsetIssueDate = issues
@@ -166,20 +166,20 @@ public class GroupRestController {
             groupDetails.setHealthyStreak(-1);
         }
 
-        final List<SonarQubeTimeMachineResultsDto> rawHistData = group.getProjects()
+        final List<SonarQubeTimeMachineResultsDto> rawHistData = groupDto.getProjects()
                 .stream()
                 .map(p -> projectsService.getHistoricalData(p))
                 .collect(Collectors.toList());
 
-        final Map<Date, IssuesHistoryPoint> combinedHistory = new HashMap<>();
+        final Map<Date, IssuesHistoryPointDto> combinedHistory = new HashMap<>();
         for (final SonarQubeTimeMachineResultsDto rawData : rawHistData) {
             final SonarQubeTimeMachineResultCellsDto[] cells = rawData.getCells();
             for (final SonarQubeTimeMachineResultCellsDto cell : cells) {
                 final Date date = normalizeDateToDay(cell.getD());
                 if (!combinedHistory.containsKey(date)) {
-                    combinedHistory.put(date, new IssuesHistoryPoint(date, 0, 0));
+                    combinedHistory.put(date, new IssuesHistoryPointDto(date, 0, 0));
                 }
-                final IssuesHistoryPoint point = combinedHistory.get(date);
+                final IssuesHistoryPointDto point = combinedHistory.get(date);
                 point.setBlockers(point.getBlockers() + Integer.parseInt(cell.getV()[0]));
                 point.setCriticals(point.getCriticals() + Integer.parseInt(cell.getV()[1]));
             }
@@ -198,6 +198,6 @@ public class GroupRestController {
         return new Date(date.getTime() - msPortion + HOUR_MS);
     }
 
-    private final Map<String, Group> groups = new HashMap<>();
+    private final Map<String, GroupDto> groups = new HashMap<>();
 
 }

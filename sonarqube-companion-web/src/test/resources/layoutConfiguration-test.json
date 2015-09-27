@@ -1,0 +1,16 @@
+{
+  "groups": [
+  ],
+  "projects": [
+    {
+      "name": "Sample 1",
+      "key": "sample-1",
+      "sonarqubeKey": "sq-sample-1"
+    },
+    {
+      "name": "Sample 2",
+      "key": "sample-2",
+      "sonarqubeKey": "sq-sample-2"
+    }
+  ]
+}

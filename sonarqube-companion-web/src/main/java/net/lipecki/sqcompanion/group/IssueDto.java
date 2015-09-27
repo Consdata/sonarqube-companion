@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by gregorry on 26.09.2015.
  */
-public class Issue {
+public class IssueDto {
 
     private final String key;
     private final String project;
@@ -15,18 +15,23 @@ public class Issue {
     private final String message;
     private final String severity;
     private final Date creationDate;
+    private final Integer severityCode;
 
-    public Issue(final String key, final String project, final String component, final String message, final String severity, final Date creationDate) {
+    public IssueDto(final String key, final String project, final String component, final String message, final
+    String severity, final Integer severityCode, final Date creationDate) {
         this.key = key;
         this.project = project;
         this.component = component;
         this.message = message;
         this.severity = severity;
+        this.severityCode = severityCode;
         this.creationDate = creationDate;
     }
 
-    public static Issue of(final SonarQubeIssuesIssueResultDto dto) {
-        return new Issue(dto.getKey(), dto.getProject(), dto.getComponent(), dto.getMessage(), dto.getSeverity(), dto
+    public static IssueDto of(final SonarQubeIssuesIssueResultDto dto) {
+        return new IssueDto(dto.getKey(), dto.getProject(), dto.getComponent(), dto.getMessage(), dto.getSeverity(),
+                0,
+                dto
                 .getCreationDate());
     }
 
@@ -48,6 +53,10 @@ public class Issue {
 
     public String getSeverity() {
         return severity;
+    }
+    
+    public Integer getSeverityCode() {
+        return severityCode;
     }
 
     public Date getCreationDate() {

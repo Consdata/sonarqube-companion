@@ -1,11 +1,11 @@
 package net.lipecki.sqcompanion.project;
 
-import net.lipecki.sqcompanion.group.StatusCode;
+import net.lipecki.sqcompanion.group.StatusCodeDto;
 
 /**
  * Created by gregorry on 26.09.2015.
  */
-public class ProjectSummary {
+public class ProjectSummaryDto {
 
     private String id;
 
@@ -15,14 +15,22 @@ public class ProjectSummary {
 
     private Integer criticals;
 
-    private StatusCode status;
+    private StatusCodeDto status;
 
-    public ProjectSummary() {
+    public ProjectSummaryDto() {
     }
 
-    public ProjectSummary(final String id, final String name) {
+    public ProjectSummaryDto(final String id, final String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public ProjectSummaryDto(final String id, final String name, final Integer blockers, final Integer criticals, final StatusCodeDto status) {
+        this.id = id;
+        this.name = name;
+        this.blockers = blockers;
+        this.criticals = criticals;
+        this.status = status;
     }
 
     public String getId() {
@@ -57,11 +65,11 @@ public class ProjectSummary {
         this.criticals = criticals;
     }
 
-    public StatusCode getStatus() {
+    public StatusCodeDto getStatus() {
         return status;
     }
 
-    public void setStatus(final StatusCode status) {
+    public void setStatus(final StatusCodeDto status) {
         this.status = status;
     }
 

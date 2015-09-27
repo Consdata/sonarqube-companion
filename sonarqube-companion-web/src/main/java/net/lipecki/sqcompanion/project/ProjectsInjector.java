@@ -1,6 +1,6 @@
 package net.lipecki.sqcompanion.project;
 
-import net.lipecki.sqcompanion.sonarqube.SonarQubeService;
+import net.lipecki.sqcompanion.sonarqube.SonarQubeServiceOld;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectsInjector {
 
     @Bean
-    public ProjectsService projectService(final SonarQubeService collector) {
+    public ProjectsService projectService(final SonarQubeServiceOld collector) {
         return new ProjectsService(collector);
     }
 

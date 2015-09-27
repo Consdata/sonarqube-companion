@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by gregorry on 26.09.2015.
  */
-public class IssuesHistoryPoint {
+public class IssuesHistoryPointDto {
 
     private Date date;
 
@@ -13,10 +13,10 @@ public class IssuesHistoryPoint {
 
     private Integer criticals;
 
-    public IssuesHistoryPoint() {
+    public IssuesHistoryPointDto() {
     }
 
-    public IssuesHistoryPoint(final Date date, final Integer blockers, final Integer criticals) {
+    public IssuesHistoryPointDto(final Date date, final Integer blockers, final Integer criticals) {
         this.date = date;
         this.blockers = blockers;
         this.criticals = criticals;

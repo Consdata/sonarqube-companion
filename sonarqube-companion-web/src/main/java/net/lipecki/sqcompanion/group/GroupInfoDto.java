@@ -3,44 +3,45 @@ package net.lipecki.sqcompanion.group;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by gregorry on 26.09.2015.
  */
-public class Group {
+public class GroupInfoDto {
 
-    private final String id;
+    private String name;
 
-    private final String name;
+    private String id;
 
-    private final List<String> projects;
-
-    public Group(final String id, final String name, final String... projects) {
-        this.id = id;
-        this.name = name;
-        this.projects = Arrays.asList(projects);
+    public GroupInfoDto() {
     }
 
-    public String getId() {
-        return id;
+    public GroupInfoDto(final String id, final String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<String> getProjects() {
-        return projects;
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final Group group = (Group) o;
-        return Objects.equal(id, group.id);
+        final GroupInfoDto groupInfo = (GroupInfoDto) o;
+        return Objects.equal(id, groupInfo.id);
     }
 
     @Override
@@ -51,10 +52,13 @@ public class Group {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
                 .add("name", name)
-                .add("projects", projects)
+                .add("id", id)
                 .toString();
+    }
+
+    public static GroupInfoDto of(final GroupDto groupDto) {
+        return new GroupInfoDto(groupDto.getId(), groupDto.getName());
     }
 
 }

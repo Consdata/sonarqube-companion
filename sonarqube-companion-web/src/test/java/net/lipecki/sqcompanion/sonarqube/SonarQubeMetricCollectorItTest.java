@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SonarQubeMetricCollectorItTest {
 
     @Autowired
-    private SonarQubeService collector;
+    private SonarQubeServiceOld collector;
 
     @Test
     public void call() {

@@ -1,0 +1,23 @@
+{
+  "groups": [
+    {
+      "key": "eximee",
+      "name": "Eximee",
+      "projects": [
+        "eximee-webforms", "eximee-parking"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "WebForms",
+      "key": "eximee-webforms",
+      "sonarqubeKey": "pl.consdata.eximee.webforms:webforms"
+    },
+    {
+      "name": "Eximee Parking",
+      "key": "eximee-parking",
+      "sonarqubeKey": "pl.consdata.eximee:eximee-parking"
+    }
+  ]
+}
