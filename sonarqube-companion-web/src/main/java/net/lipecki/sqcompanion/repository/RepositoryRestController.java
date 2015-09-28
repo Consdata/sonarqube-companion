@@ -114,6 +114,7 @@ public class RepositoryRestController {
         return new ProjectSummaryDto(
                 project.getKey(),
                 project.getName(),
+                project.getSonarqubeKey(),
                 project.getIssues().getBlockers().size(),
                 project.getIssues().getCriticals().size(),
                 StatusCodeDto.of(project.getHealthStatus()));

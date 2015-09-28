@@ -149,9 +149,10 @@
                             <td>{{ project.name }}</td>
                             <td>{{ project.blockers }}</td>
                             <td>{{ project.criticals }}</td>
-                            <td><a href="http://sonarqube.consdata.local/dashboard/index/{{ project.key }}"
-                                   target="_blank"
-                                    >http://sonarqube.consdata.local/dashboard/index/{{ project.key }}</a></td>
+                            <td>
+                                <a href="http://sonarqube.consdata.local/dashboard/index/{{ project.sonarqubeKey }}"
+                                   target="_blank">{{ project.sonarqubeKey }}</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

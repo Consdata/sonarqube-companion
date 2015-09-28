@@ -9,6 +9,8 @@ public class ProjectSummaryDto {
 
     private String name;
 
+    private String sonarqubeKey;
+
     private Integer blockers;
 
     private Integer criticals;
@@ -18,12 +20,21 @@ public class ProjectSummaryDto {
     public ProjectSummaryDto() {
     }
 
-    public ProjectSummaryDto(final String id, final String name, final Integer blockers, final Integer criticals, final StatusCodeDto status) {
+    public ProjectSummaryDto(final String id, final String name, final String sonarqubeKey, final Integer blockers, final Integer criticals, final StatusCodeDto status) {
         this.id = id;
         this.name = name;
+        this.sonarqubeKey = sonarqubeKey;
         this.blockers = blockers;
         this.criticals = criticals;
         this.status = status;
+    }
+
+    public String getSonarqubeKey() {
+        return sonarqubeKey;
+    }
+
+    public void setSonarqubeKey(final String sonarqubeKey) {
+        this.sonarqubeKey = sonarqubeKey;
     }
 
     public String getId() {
