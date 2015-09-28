@@ -1,6 +1,6 @@
 target/
 bin/
-#bower_components/
+bower_components/
 node_modules/
 
 *-own.json
