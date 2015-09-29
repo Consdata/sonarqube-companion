@@ -91,6 +91,26 @@ public class HistoryPoint {
         return date;
     }
 
+    public Integer getAll() {
+        return getBlockers() + getCriticals() + getMajors() + getMinors() + getInfos();
+    }
+
+    public Integer getSignificant() {
+        return (IssueSeverity.BLOCKER.isSignificant() ? getBlockers() : 0)
+                + (IssueSeverity.CRITICAL.isSignificant() ? getCriticals() : 0)
+                + (IssueSeverity.MAJOR.isSignificant() ? getMajors() : 0)
+                + (IssueSeverity.MINOR.isSignificant() ? getMinors() : 0)
+                + (IssueSeverity.INFO.isSignificant() ? getInfos() : 0);
+    }
+
+    public Integer getNonsignificant() {
+        return (!IssueSeverity.BLOCKER.isSignificant() ? getBlockers() : 0)
+                + (!IssueSeverity.CRITICAL.isSignificant() ? getCriticals() : 0)
+                + (!IssueSeverity.MAJOR.isSignificant() ? getMajors() : 0)
+                + (!IssueSeverity.MINOR.isSignificant() ? getMinors() : 0)
+                + (!IssueSeverity.INFO.isSignificant() ? getInfos() : 0);
+    }
+
     public void addOtherPoint(final HistoryPoint other) {
         addBlockers(other.getBlockers());
         addCriticals(other.getCriticals());

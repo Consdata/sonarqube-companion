@@ -76,16 +76,53 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 
 }]).controller('GroupDetailsController', ['groupPromise', function(groupPromise) {
-    this.group = groupPromise.data;
-    this.maxIssuesCount = 30;
-    new Morris.Line({
-        element: 'project-history',
-        data: this.group.historicalData,
-        xkey: 'date',
-        xLabels: 'day',
-        ykeys: ['blockers', 'criticals'],
-        labels: ['Blocker', 'Critical']
-    });
+    var ctrl = this;
+    ctrl.showIssues = {
+        'blockers': true,
+        'criticals': true,
+        'majors': false,
+        'minors': false,
+        'infos': false
+    };
+    ctrl.historySize = 90;
+    ctrl.group = groupPromise.data;
+    ctrl.maxIssuesCount = 30;
+    ctrl.trimmedData = function(data, size) {
+        return data.slice(0, size);
+    }
+    ctrl.toggleVisibleIssues = function(type) {
+        var keys = [];
+        var labels = [];
+
+        if (typeof type === 'string') {
+            console.log('toggle' + type);
+            ctrl.showIssues[type] = !ctrl.showIssues[type];
+        }
+
+        for (var key in ctrl.showIssues) {
+            if (ctrl.showIssues.hasOwnProperty(key)) {
+                if(ctrl.showIssues[key]) {
+                    keys.push(key);
+                    labels.push(key);
+                }
+            }
+        }
+
+        $('#project-history').html('');
+        new Morris.Line({
+            element: 'project-history',
+            data: ctrl.trimmedData(ctrl.group.historicalData, ctrl.historySize),
+            xkey: 'date',
+            xLabels: 'day',
+            ykeys: keys,
+            labels: labels
+        });
+    }
+    ctrl.setHistorySize = function(newSize) {
+        ctrl.historySize = newSize;
+        ctrl.toggleVisibleIssues();
+    }
+    ctrl.toggleVisibleIssues();
 }]);
 
 /**

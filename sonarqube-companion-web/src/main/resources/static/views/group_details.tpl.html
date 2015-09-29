@@ -168,6 +168,65 @@
                 Historical SonarQube violations
             </div>
             <div class="panel-body">
+                <div>
+                    Issues:
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['blockers']}"
+                       ng-click="ctrl.toggleVisibleIssues('blockers')">
+                        blocker</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['criticals']}"
+                       ng-click="ctrl.toggleVisibleIssues('criticals')">critical</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['majors']}"
+                       ng-click="ctrl.toggleVisibleIssues('majors')">major</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['minors']}"
+                       ng-click="ctrl.toggleVisibleIssues('minors')">minor</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['infos']}"
+                       ng-click="ctrl.toggleVisibleIssues('infos')">info</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['all']}"
+                       ng-click="ctrl.toggleVisibleIssues('all')">all</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['significant']}"
+                       ng-click="ctrl.toggleVisibleIssues('significant')">significant</a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.showIssues['nonsignificant']}"
+                       ng-click="ctrl.toggleVisibleIssues('nonsignificant')">nonsignificant</a>
+                </div>
+                <div>
+                    History:
+                    <a href="" ng-class="{'text-success': ctrl.historySize == 90}"
+                       ng-click="ctrl.setHistorySize(90)">
+                        90
+                    </a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.historySize == 60}"
+                       ng-click="ctrl.setHistorySize(60)">
+                        60
+                    </a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.historySize == 30}"
+                       ng-click="ctrl.setHistorySize(30)">
+                        30
+                    </a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.historySize == 14}"
+                       ng-click="ctrl.setHistorySize(14)">
+                        14
+                    </a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.historySize == 7}"
+                       ng-click="ctrl.setHistorySize(7)">
+                        7
+                    </a>
+                    |
+                    <a href="" ng-class="{'text-success': ctrl.historySize == 5}"
+                       ng-click="ctrl.setHistorySize(5)">
+                        5
+                    </a>
+                </div>
                 <div id="project-history"></div>
             </div>
         </div>

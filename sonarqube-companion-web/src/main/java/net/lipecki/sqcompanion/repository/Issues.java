@@ -9,6 +9,66 @@ import java.util.List;
  */
 public class Issues {
 
+    private final List<Issue> all = new ArrayList<>();
+    private final List<Issue> blockers = new ArrayList<>();
+    private final List<Issue> criticals = new ArrayList<>();
+    private final List<Issue> majors = new ArrayList<>();
+    private final List<Issue> minors = new ArrayList<>();
+    private final List<Issue> infos = new ArrayList<>();
+    private final List<Issue> significant = new ArrayList<>();
+    private final List<Issue> nonSignificant = new ArrayList<>();
+
+    Issues() {
+    }
+
+    public static Issues of(final Project project, final List<Issue> allIssues) {
+        final Issues issues = new Issues();
+
+        allIssues.forEach(issue -> {
+            issue.setProject(project);
+            mapIssuesToGroupsBaseOnSeveroty(issues, issue);
+
+        });
+
+        return issues;
+    }
+
+    public static Issues of(final List<Issue> allIssues) {
+        final Issues issues = new Issues();
+
+        allIssues.forEach(issue -> {
+            mapIssuesToGroupsBaseOnSeveroty(issues, issue);
+        });
+
+        return issues;
+    }
+
+    private static void mapIssuesToGroupsBaseOnSeveroty(final Issues issues, final Issue issue) {
+        issues.all.add(issue);
+        switch (issue.getSeverity()) {
+            case BLOCKER:
+                issues.blockers.add(issue);
+                break;
+            case CRITICAL:
+                issues.criticals.add(issue);
+                break;
+            case MAJOR:
+                issues.majors.add(issue);
+                break;
+            case MINOR:
+                issues.minors.add(issue);
+                break;
+            case INFO:
+                issues.infos.add(issue);
+                break;
+        }
+        if (issue.getSeverity().isSignificant()) {
+            issues.significant.add(issue);
+        } else {
+            issues.nonSignificant.add(issue);
+        }
+    }
+
     public List<Issue> getAll() {
         return Collections.unmodifiableList(all);
     }
@@ -39,82 +99,5 @@ public class Issues {
 
     public List<Issue> getNonSignificant() {
         return Collections.unmodifiableList(nonSignificant);
-    }
-
-    private final List<Issue> all = new ArrayList<>();
-    private final List<Issue> blockers = new ArrayList<>();
-    private final List<Issue> criticals = new ArrayList<>();
-    private final List<Issue> majors = new ArrayList<>();
-    private final List<Issue> minors = new ArrayList<>();
-    private final List<Issue> infos = new ArrayList<>();
-    private final List<Issue> significant = new ArrayList<>();
-    private final List<Issue> nonSignificant = new ArrayList<>();
-
-    Issues() {
-    }
-
-    public static Issues of(final Project project, final List<Issue> allIssues) {
-        final Issues issues = new Issues();
-
-        allIssues.forEach(issue -> {
-            issue.setProject(project);
-            issues.all.add(issue);
-            switch (issue.getSeverity()) {
-                case BLOCKER:
-                    issues.blockers.add(issue);
-                    break;
-                case CRITICAL:
-                    issues.criticals.add(issue);
-                    break;
-                case MAJOR:
-                    issues.majors.add(issue);
-                    break;
-                case MINOR:
-                    issues.minors.add(issue);
-                    break;
-                case INFO:
-                    issues.infos.add(issue);
-                    break;
-            }
-            if (issue.getSeverity().isSignificant()) {
-                issues.significant.add(issue);
-            } else {
-                issues.nonSignificant.add(issue);
-            }
-        });
-
-        return issues;
-    }
-
-    public static Issues of(final List<Issue> allIssues) {
-        final Issues issues = new Issues();
-
-        allIssues.forEach(issue -> {
-            issues.all.add(issue);
-            switch (issue.getSeverity()) {
-                case BLOCKER:
-                    issues.blockers.add(issue);
-                    break;
-                case CRITICAL:
-                    issues.criticals.add(issue);
-                    break;
-                case MAJOR:
-                    issues.majors.add(issue);
-                    break;
-                case MINOR:
-                    issues.minors.add(issue);
-                    break;
-                case INFO:
-                    issues.infos.add(issue);
-                    break;
-            }
-            if (issue.getSeverity().isSignificant()) {
-                issues.significant.add(issue);
-            } else {
-                issues.nonSignificant.add(issue);
-            }
-        });
-
-        return issues;
     }
 }

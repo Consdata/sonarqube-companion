@@ -124,7 +124,13 @@ public class RepositoryRestController {
         return new IssuesHistoryPointDto(
                 Date.from(point.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
                 point.getBlockers(),
-                point.getCriticals());
+                point.getCriticals(),
+                point.getMajors(),
+                point.getMinors(),
+                point.getInfos(),
+                point.getAll(),
+                point.getSignificant(),
+                point.getNonsignificant());
     }
 
     private IssueDto mapAsIssueDto(final Issue issue) {
