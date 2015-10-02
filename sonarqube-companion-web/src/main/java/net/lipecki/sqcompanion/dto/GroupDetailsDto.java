@@ -11,29 +11,21 @@ import java.util.List;
 public class GroupDetailsDto {
 
     private String id;
-
     private String name;
-
     private Integer blockers;
-
     private Integer criticals;
-
     private Integer otherIssues;
-
     private StatusCodeDto status;
-
     private List<ProjectSummaryDto> projects = new ArrayList<>();
-
     private List<IssueDto> issues = new ArrayList<>();
-
-    private Integer healthyStreak;
-
+    private Integer healthyStreakSiginificant;
+    private Integer healthyStreakAny;
     private List<IssuesHistoryPointDto> historicalData = new ArrayList<>();
 
     public GroupDetailsDto() {
     }
 
-    public GroupDetailsDto(final String id, final String name, final Integer blockers, final Integer criticals, final Integer otherIssues, final StatusCodeDto status, final List<ProjectSummaryDto> projects, final List<IssueDto> issues, final Integer healthyStreak, final List<IssuesHistoryPointDto> historicalData) {
+    public GroupDetailsDto(final String id, final String name, final Integer blockers, final Integer criticals, final Integer otherIssues, final StatusCodeDto status, final List<ProjectSummaryDto> projects, final List<IssueDto> issues, final Integer healthyStreakSignificant, final Integer healthyStreakAny, final List<IssuesHistoryPointDto> historicalData) {
         this.id = id;
         this.name = name;
         this.blockers = blockers;
@@ -42,7 +34,8 @@ public class GroupDetailsDto {
         this.status = status;
         this.projects = projects;
         this.issues = issues;
-        this.healthyStreak = healthyStreak;
+        this.healthyStreakSiginificant = healthyStreakSignificant;
+        this.healthyStreakAny = healthyStreakAny;
         this.historicalData = historicalData;
     }
 
@@ -54,12 +47,12 @@ public class GroupDetailsDto {
         this.historicalData = historicalData;
     }
 
-    public Integer getHealthyStreak() {
-        return healthyStreak;
+    public Integer getHealthyStreakSiginificant() {
+        return healthyStreakSiginificant;
     }
 
-    public void setHealthyStreak(final Integer healthyStreak) {
-        this.healthyStreak = healthyStreak;
+    public void setHealthyStreakSiginificant(final Integer healthyStreakSiginificant) {
+        this.healthyStreakSiginificant = healthyStreakSiginificant;
     }
 
     public void setOtherIssues(final Integer otherIssues) {
@@ -119,12 +112,12 @@ public class GroupDetailsDto {
         return Objects.hashCode(id);
     }
 
-    public void setOtherIssues(final int otherIssues) {
-        this.otherIssues = otherIssues;
-    }
-
     public int getOtherIssues() {
         return otherIssues;
+    }
+
+    public void setOtherIssues(final int otherIssues) {
+        this.otherIssues = otherIssues;
     }
 
     public String getStatusName() {
@@ -135,12 +128,12 @@ public class GroupDetailsDto {
         return this.status.getCode();
     }
 
-    public void setStatus(final StatusCodeDto status) {
-        this.status = status;
-    }
-
     public StatusCodeDto getStatus() {
         return status;
+    }
+
+    public void setStatus(final StatusCodeDto status) {
+        this.status = status;
     }
 
     public List<IssueDto> getIssues() {
@@ -150,4 +143,13 @@ public class GroupDetailsDto {
     public void setIssues(final List<IssueDto> issues) {
         this.issues = issues;
     }
+
+    public Integer getHealthyStreakAny() {
+        return healthyStreakAny;
+    }
+
+    public void setHealthyStreakAny(final Integer healthyStreakAny) {
+        this.healthyStreakAny = healthyStreakAny;
+    }
+
 }

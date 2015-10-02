@@ -105,13 +105,32 @@
                     <div class="col-xs-3">
                         <i class="fa fa-heart fa-5x"></i>
                     </div>
-                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreak >= 0">
-                        <div class="huge">{{ ctrl.group.healthyStreak }}</div>
-                        <div>days without new issue</div>
+                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakSiginificant >= 0">
+                        <div><span class="huge">{{ ctrl.group.healthyStreakSiginificant }}</span> <small>days</small></div>
+                        <div>since significant</div>
                     </div>
-                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreak < 0">
+                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakSiginificant < 0">
                         <div class="huge">∞</div>
                         <div>no significant issues!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-heart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakAny >= 0">
+                        <div><span class="huge">{{ ctrl.group.healthyStreakAny }}</span> <small>days</small></div>
+                        <div>since any</div>
+                    </div>
+                    <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakAny < 0">
+                        <div class="huge">∞</div>
+                        <div>no issues!</div>
                     </div>
                 </div>
             </div>

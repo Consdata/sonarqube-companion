@@ -91,6 +91,14 @@ public class RepositoryRestController {
                                         .map(issue -> getWihtoutIssueStreak(issue))
                                         .orElse(-1),
                                 group
+                                        .getIssues()
+                                        .getAll()
+                                        .stream()
+                                        .sorted((a, b) -> byCreationDateReverse(a, b))
+                                        .findFirst()
+                                        .map(issue -> getWihtoutIssueStreak(issue))
+                                        .orElse(-1),
+                                group
                                         .getHistory()
                                         .getHistoryPoints()
                                         .values()
