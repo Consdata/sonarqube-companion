@@ -127,44 +127,6 @@
     <div class="col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Projects
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Bockers</th>
-                            <th>Criticals</th>
-                            <th>SonarQube URL</th>
-                        </tr>
-                        </thead>
-                        <tbody ng-repeat="project in ctrl.group.projects | orderBy:['-statusCode','-blockers','-criticals']">
-                        <tr ng-class="{
-                                    'danger': project.statusName == 'blocker',
-                                    'warning': project.statusName == 'critical',
-                                    'success': project.statusName == 'healthy'
-                                }">
-                            <td>{{ project.name }}</td>
-                            <td>{{ project.blockers }}</td>
-                            <td>{{ project.criticals }}</td>
-                            <td>
-                                <a href="http://sonarqube.consdata.local/dashboard/index/{{ project.sonarqubeKey }}"
-                                   target="_blank">{{ project.sonarqubeKey }}</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
                 Historical SonarQube violations
             </div>
             <div class="panel-body">
@@ -228,6 +190,44 @@
                     </a>
                 </div>
                 <div id="project-history"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Projects
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Bockers</th>
+                            <th>Criticals</th>
+                            <th>SonarQube URL</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="project in ctrl.group.projects | orderBy:['-statusCode','-blockers','-criticals']">
+                        <tr ng-class="{
+                                    'danger': project.statusName == 'blocker',
+                                    'warning': project.statusName == 'critical',
+                                    'success': project.statusName == 'healthy'
+                                }">
+                            <td>{{ project.name }}</td>
+                            <td>{{ project.blockers }}</td>
+                            <td>{{ project.criticals }}</td>
+                            <td>
+                                <a href="http://sonarqube.consdata.local/dashboard/index/{{ project.sonarqubeKey }}"
+                                   target="_blank">{{ project.sonarqubeKey }}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
