@@ -208,28 +208,35 @@
                     Issues:
                     <a href="" ng-class="{'text-success': ctrl.showIssues['blockers']}"
                        ng-click="ctrl.toggleVisibleIssues('blockers')">
-                        blocker</a>
+                        blocker ({{ctrl.lastHistoryPoint.blockers - ctrl.firstHistoryPoint.blockers}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['criticals']}"
-                       ng-click="ctrl.toggleVisibleIssues('criticals')">critical</a>
+                       ng-click="ctrl.toggleVisibleIssues('criticals')">
+                        critical ({{ctrl.lastHistoryPoint.criticals - ctrl.firstHistoryPoint.criticals}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['majors']}"
-                       ng-click="ctrl.toggleVisibleIssues('majors')">major</a>
+                       ng-click="ctrl.toggleVisibleIssues('majors')">
+                        major ({{ctrl.lastHistoryPoint.majors - ctrl.firstHistoryPoint.majors}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['minors']}"
-                       ng-click="ctrl.toggleVisibleIssues('minors')">minor</a>
+                       ng-click="ctrl.toggleVisibleIssues('minors')">
+                        minor ({{ctrl.lastHistoryPoint.minors - ctrl.firstHistoryPoint.minors}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['infos']}"
-                       ng-click="ctrl.toggleVisibleIssues('infos')">info</a>
+                       ng-click="ctrl.toggleVisibleIssues('infos')">
+                        info ({{ctrl.lastHistoryPoint.infos - ctrl.firstHistoryPoint.infos}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['all']}"
-                       ng-click="ctrl.toggleVisibleIssues('all')">all</a>
+                       ng-click="ctrl.toggleVisibleIssues('all')">
+                        all ({{ctrl.lastHistoryPoint.all - ctrl.firstHistoryPoint.all}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['significant']}"
-                       ng-click="ctrl.toggleVisibleIssues('significant')">significant</a>
+                       ng-click="ctrl.toggleVisibleIssues('significant')">
+                        significant ({{ctrl.lastHistoryPoint.significant - ctrl.firstHistoryPoint.significant}})</a>
                     |
                     <a href="" ng-class="{'text-success': ctrl.showIssues['nonsignificant']}"
-                       ng-click="ctrl.toggleVisibleIssues('nonsignificant')">nonsignificant</a>
+                       ng-click="ctrl.toggleVisibleIssues('nonsignificant')">
+                        nonsignificant ({{ctrl.lastHistoryPoint.nonsignificant - ctrl.firstHistoryPoint.nonsignificant}})</a>
                 </div>
                 <div>
                     History:

@@ -111,9 +111,12 @@ app.config(['$stateProvider', function($stateProvider) {
         }
 
         $('#project-history').html('');
+        currentShowData = ctrl.trimmedData(ctrl.group.historicalData, ctrl.historySize);
+        ctrl.firstHistoryPoint = currentShowData[currentShowData.length - 1];
+        ctrl.lastHistoryPoint = currentShowData[0];
         new Morris.Line({
             element: 'project-history',
-            data: ctrl.trimmedData(ctrl.group.historicalData, ctrl.historySize),
+            data: currentShowData,
             xkey: 'date',
             xLabels: 'day',
             ykeys: keys,
