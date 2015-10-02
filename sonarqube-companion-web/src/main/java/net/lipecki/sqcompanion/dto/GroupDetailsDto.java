@@ -1,6 +1,7 @@
 package net.lipecki.sqcompanion.dto;
 
 import com.google.common.base.Objects;
+import net.lipecki.sqcompanion.repository.Issue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,13 @@ public class GroupDetailsDto {
     private Integer healthyStreakSiginificant;
     private Integer healthyStreakAny;
     private List<IssuesHistoryPointDto> historicalData = new ArrayList<>();
+    private Issue newsetSignificantIssue;
+    private Issue newestAnyIssue;
 
     public GroupDetailsDto() {
     }
 
-    public GroupDetailsDto(final String id, final String name, final Integer blockers, final Integer criticals, final Integer otherIssues, final StatusCodeDto status, final List<ProjectSummaryDto> projects, final List<IssueDto> issues, final Integer healthyStreakSignificant, final Integer healthyStreakAny, final List<IssuesHistoryPointDto> historicalData) {
+    public GroupDetailsDto(final String id, final String name, final Integer blockers, final Integer criticals, final Integer otherIssues, final StatusCodeDto status, final List<ProjectSummaryDto> projects, final List<IssueDto> issues, final Integer healthyStreakSignificant, final Integer healthyStreakAny, final List<IssuesHistoryPointDto> historicalData, final Issue newsetSignificantIssue, final Issue newestAnyIssue) {
         this.id = id;
         this.name = name;
         this.blockers = blockers;
@@ -37,6 +40,8 @@ public class GroupDetailsDto {
         this.healthyStreakSiginificant = healthyStreakSignificant;
         this.healthyStreakAny = healthyStreakAny;
         this.historicalData = historicalData;
+        this.newsetSignificantIssue = newsetSignificantIssue;
+        this.newestAnyIssue = newestAnyIssue;
     }
 
     public List<IssuesHistoryPointDto> getHistoricalData() {
@@ -150,6 +155,22 @@ public class GroupDetailsDto {
 
     public void setHealthyStreakAny(final Integer healthyStreakAny) {
         this.healthyStreakAny = healthyStreakAny;
+    }
+
+    public Issue getNewsetSignificantIssue() {
+        return newsetSignificantIssue;
+    }
+
+    public void setNewsetSignificantIssue(final Issue newsetSignificantIssue) {
+        this.newsetSignificantIssue = newsetSignificantIssue;
+    }
+
+    public Issue getNewestAnyIssue() {
+        return newestAnyIssue;
+    }
+
+    public void setNewestAnyIssue(final Issue newestAnyIssue) {
+        this.newestAnyIssue = newestAnyIssue;
     }
 
 }

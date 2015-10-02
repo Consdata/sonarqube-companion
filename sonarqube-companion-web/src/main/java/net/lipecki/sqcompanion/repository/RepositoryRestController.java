@@ -63,50 +63,58 @@ public class RepositoryRestController {
         return repositoryService
                 .getRepositoryModel()
                 .getGroup(id)
-                .flatMap(group -> Optional.of(
-                        new GroupDetailsDto(
-                                group.getKey(),
-                                group.getName(),
-                                group.getIssues().getBlockers().size(),
-                                group.getIssues().getCriticals().size(),
-                                group.getIssues().getNonSignificant().size(),
-                                StatusCodeDto.of(group.getHealthStatus()),
-                                group
-                                        .getProjects()
-                                        .stream()
-                                        .map(project -> mapAsProjectSummaryDto(project))
-                                        .collect(toList()),
-                                group
-                                        .getIssues()
-                                        .getSignificant()
-                                        .stream()
-                                        .map(issue -> mapAsIssueDto(issue))
-                                        .collect(toList()),
-                                group
-                                        .getIssues()
-                                        .getSignificant()
-                                        .stream()
-                                        .sorted((a, b) -> byCreationDateReverse(a, b))
-                                        .findFirst()
-                                        .map(issue -> getWihtoutIssueStreak(issue))
-                                        .orElse(-1),
-                                group
-                                        .getIssues()
-                                        .getAll()
-                                        .stream()
-                                        .sorted((a, b) -> byCreationDateReverse(a, b))
-                                        .findFirst()
-                                        .map(issue -> getWihtoutIssueStreak(issue))
-                                        .orElse(-1),
-                                group
-                                        .getHistory()
-                                        .getHistoryPoints()
-                                        .values()
-                                        .stream()
-                                        .sorted((a, b) -> -1 * a.getDate().compareTo(b.getDate()))
-                                        .limit(90)
-                                        .map(historyPoint -> mapAsIssueHistoryPointDto(historyPoint))
-                                        .collect(toList()))))
+                .flatMap(group -> {
+                    final Optional<Issue> lastSignificantIssue = group
+                            .getIssues()
+                            .getSignificant()
+                            .stream()
+                            .sorted((a, b) -> byCreationDateReverse(a, b))
+                            .findFirst();
+                    final Optional<Issue> lastAnyIssue = group
+                            .getIssues()
+                            .getAll()
+                            .stream()
+                            .sorted((a, b) -> byCreationDateReverse(a, b))
+                            .findFirst();
+                    return Optional.of(
+                            new GroupDetailsDto(
+                                    group.getKey(),
+                                    group.getName(),
+                                    group.getIssues().getBlockers().size(),
+                                    group.getIssues().getCriticals().size(),
+                                    group.getIssues().getNonSignificant().size(),
+                                    StatusCodeDto.of(group.getHealthStatus()),
+                                    group
+                                            .getProjects()
+                                            .stream()
+                                            .map(project -> mapAsProjectSummaryDto(project))
+                                            .collect(toList()),
+                                    group
+                                            .getIssues()
+                                            .getSignificant()
+                                            .stream()
+                                            .map(issue -> mapAsIssueDto(issue))
+                                            .collect(toList()),
+                                    lastSignificantIssue
+                                            .map(issue -> getWihtoutIssueStreak(issue))
+                                            .orElse(-1),
+                                    lastAnyIssue
+                                            .map(issue -> getWihtoutIssueStreak(issue))
+                                            .orElse(-1),
+                                    group
+                                            .getHistory()
+                                            .getHistoryPoints()
+                                            .values()
+                                            .stream()
+                                            .sorted((a, b) -> -1 * a.getDate().compareTo(b.getDate()))
+                                            .limit(90)
+                                            .map(historyPoint -> mapAsIssueHistoryPointDto(historyPoint))
+                                            .collect(toList()),
+                                    lastSignificantIssue
+                                            .orElse(null),
+                                    lastAnyIssue
+                                            .orElse(null)));
+                })
                 .orElse(null);
     }
 

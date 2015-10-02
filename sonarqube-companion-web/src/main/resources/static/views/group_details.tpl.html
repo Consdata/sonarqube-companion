@@ -1,3 +1,31 @@
+<div class="modal fade" id="healthStreakModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{ctrl.modal.healthStreak.title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div><strong>{{ctrl.modal.healthStreak.severity}}</strong> from
+                    {{ctrl.modal.healthStreak.creationDate|date:'dd/MM/yyyy @ HH:mm'}}</div>
+                <div>{{ctrl.modal.healthStreak.message}}</div>
+                <div><small>{{ctrl.modal.healthStreak.component}}</small></div>
+                <div>
+                    <a
+                        href="http://sonarqube.consdata.local/issues/search#issues={{ctrl.modal.healthStreak.key}}"
+                        target="_blank">
+                        <i class="fa fa-external-link"></i> open issue in sonarqube
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
 <div class="row">
     <div class="col-xs-12">
         <h1 class="page-header">{{ ctrl.group.name }}</h1>
@@ -18,6 +46,7 @@
                                 'fa-thumbs-o-up': ctrl.group.statusName === 'healthy'
                             }">
                         </i>
+
                         <div>overall score</div>
                     </div>
                 </div>
@@ -100,16 +129,18 @@
     </div>
     <div class="col-lg-3 col-md-6">
         <div class="panel" ng-class="{
-                    'panel-yellow': ctrl.group.healthyStreakSiginificant == 0,
-                    'panel-green': !(ctrl.group.healthyStreakSiginificant == 0)
-                }">
+                        'panel-yellow': ctrl.group.healthyStreakSiginificant == 0,
+                        'panel-green': !(ctrl.group.healthyStreakSiginificant == 0)
+                    }">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-heart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakSiginificant >= 0">
-                        <div><span class="huge">{{ ctrl.group.healthyStreakSiginificant }}</span> <small>days</small></div>
+                        <div><span class="huge">{{ ctrl.group.healthyStreakSiginificant }}</span>
+                            <small>days</small>
+                        </div>
                         <div>since significant</div>
                     </div>
                     <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakSiginificant < 0">
@@ -118,20 +149,30 @@
                     </div>
                 </div>
             </div>
+            <a href="" ng-click="ctrl.showStreakModal('significant')">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                    <div class="clearfix"></div>
+                </div>
+            </a>
         </div>
     </div>
     <div class="col-lg-3 col-md-6">
         <div class="panel" ng-class="{
-                    'panel-yellow': ctrl.group.healthyStreakAny == 0,
-                    'panel-green': !(ctrl.group.healthyStreakAny == 0)
-                }">
+                        'panel-yellow': ctrl.group.healthyStreakAny == 0,
+                        'panel-green': !(ctrl.group.healthyStreakAny == 0)
+                    }">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
                         <i class="fa fa-heart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakAny >= 0">
-                        <div><span class="huge">{{ ctrl.group.healthyStreakAny }}</span> <small>days</small></div>
+                        <div><span class="huge">{{ ctrl.group.healthyStreakAny }}</span>
+                            <small>days</small>
+                        </div>
                         <div>since any</div>
                     </div>
                     <div class="col-xs-9 text-right" ng-show="ctrl.group.healthyStreakAny < 0">
@@ -140,12 +181,22 @@
                     </div>
                 </div>
             </div>
+            <a href="" ng-click="ctrl.showStreakModal('any')">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                    <div class="clearfix"></div>
+                </div>
+            </a>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <h2>Details <small>detailed information about group</small></h2>
+        <h2>Details
+            <small>detailed information about group</small>
+        </h2>
     </div>
 </div>
 <div class="row">
@@ -291,11 +342,19 @@
                             <td>{{ issue.project }}</td>
                             <td>
                                 <div>{{ issue.message }}</div>
-                                <div><small>{{ issue.component }}</small></div>
+                                <div>
+                                    <small>{{ issue.component }}</small>
+                                </div>
                             </td>
                             <td>{{ issue.severity}}</td>
                             <td>{{ issue.creationDate | date }}</td>
-                            <td></td>
+                            <td>
+                                <a
+                                        href="http://sonarqube.consdata.local/issues/search#issues={{issue.key}}"
+                                        target="_blank">
+                                    <i class="fa fa-external-link"></i> open
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

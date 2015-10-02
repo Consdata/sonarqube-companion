@@ -90,6 +90,8 @@ app.config(['$stateProvider', function($stateProvider) {
     ctrl.trimmedData = function(data, size) {
         return data.slice(0, size);
     }
+    ctrl.modal = {};
+    ctrl.modal.healthStreak = {};
     ctrl.toggleVisibleIssues = function(type) {
         var keys = [];
         var labels = [];
@@ -121,6 +123,15 @@ app.config(['$stateProvider', function($stateProvider) {
     ctrl.setHistorySize = function(newSize) {
         ctrl.historySize = newSize;
         ctrl.toggleVisibleIssues();
+    };
+    ctrl.showStreakModal = function(what) {
+        if (what === 'significant') {
+            ctrl.modal.healthStreak = ctrl.group.newsetSignificantIssue;
+        } else {
+            ctrl.modal.healthStreak = ctrl.group.newestAnyIssue;
+        }
+        ctrl.modal.healthStreak
+        $('#healthStreakModal').modal('show');
     }
     ctrl.toggleVisibleIssues();
 }]);
