@@ -2,27 +2,59 @@
 /// <reference path="typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/chartjs/chart.d.ts" />
-var ListGroupsController = (function () {
+
+/** missing JQuery modal typings */
+interface JQuery { modal:any; }
+
+/** missing Morris.js typings */
+declare module Morris {
+    export class Line {
+        constructor(any);
+    }
+}
+
+class ListGroupsController {
+
+    private groups;
+
     /**
      * @param groupsPromise
      */
-    function ListGroupsController(groupsPromise) {
+    constructor(groupsPromise) {
         this.groups = groupsPromise.data;
     }
+
     /**
      * Used by View.
      * @returns {any}
      */
-    ListGroupsController.prototype.getGroups = function () {
+    getGroups() {
         return this.groups;
-    };
-    return ListGroupsController;
-})();
-var GroupDetailsController = (function () {
+    }
+
+}
+
+interface VisibleIssues {
+    blockers:boolean;
+    criticals:boolean;
+    majors:boolean;
+    minors:boolean;
+    infos:boolean;
+}
+
+class GroupDetailsController {
+
+    private group;
+    private historySize:number;
+    private issuesToDisplay:VisibleIssues;
+    private modal;
+    private firstHistoryPoint;
+    private lastHistoryPoint;
+
     /**
      * @param groupPromise
      */
-    function GroupDetailsController(groupPromise) {
+    constructor(groupPromise) {
         this.group = groupPromise.data;
         this.historySize = 90;
         this.issuesToDisplay = {
@@ -33,44 +65,51 @@ var GroupDetailsController = (function () {
             infos: false
         };
         this.modal = {};
+
         this.toggleVisibleIssues();
     }
+
     /**
      * Gets current group.
      * @returns {any}
      */
-    GroupDetailsController.prototype.getGroup = function () {
+    getGroup() {
         return this.group;
-    };
+    }
+
     /**
      * Gets current issue severities to display.
      * @returns {VisibleIssues}
      */
-    GroupDetailsController.prototype.getIssuesToDisplay = function () {
+    getIssuesToDisplay():VisibleIssues {
         return this.issuesToDisplay;
-    };
+    }
+
     /**
      * Gets current history size.
      * @returns {number} number of days before today to display
      */
-    GroupDetailsController.prototype.getHistorySize = function () {
+    getHistorySize():number {
         return this.historySize;
-    };
+    }
+
     /**
      * Sets current history size.
      * @param newSize number of days before today to display
      */
-    GroupDetailsController.prototype.setHistorySize = function (newSize) {
+    setHistorySize(newSize:number) {
         this.historySize = newSize;
         this.toggleVisibleIssues();
-    };
+    }
+
     /**
      * Gets issues limit to display in issue details view.
      * @returns {number}
      */
-    GroupDetailsController.prototype.getMaxIssueDetails = function () {
+    getMaxIssueDetails():number {
         return 30;
-    };
+    }
+
     /**
      * Shows user modal with issue breaking streak.
      * <p>
@@ -78,27 +117,29 @@ var GroupDetailsController = (function () {
      * </p>
      * @param what streak to show breaking issue
      */
-    GroupDetailsController.prototype.showStreakModal = function (what) {
+    showStreakModal(what:string) {
         if (what === 'significant') {
             this.modal.healthStreak = this.group.newsetSignificantIssue;
-        }
-        else {
+        } else {
             this.modal.healthStreak = this.group.newestAnyIssue;
         }
         $('#healthStreakModal').modal('show');
-    };
+    }
+
     /**
      * Toggels issue type to display and redraws history graph.
      * @param typeToChange optional name of issue severity to toggle on/off
      */
-    GroupDetailsController.prototype.toggleVisibleIssues = function (typeToChange) {
-        var keys = [];
-        var labels = [];
-        var currentShowData;
+    toggleVisibleIssues(typeToChange?:string) {
+        let keys = [];
+        let labels = [];
+        let currentShowData;
+
         if (typeof typeToChange === 'string') {
             this.issuesToDisplay[typeToChange] = !this.issuesToDisplay[typeToChange];
         }
-        for (var key in this.issuesToDisplay) {
+
+        for (let key in this.issuesToDisplay) {
             if (this.issuesToDisplay.hasOwnProperty(key)) {
                 if (this.issuesToDisplay[key]) {
                     keys.push(key);
@@ -106,22 +147,24 @@ var GroupDetailsController = (function () {
                 }
             }
         }
+
         $('#project-history').html('');
         currentShowData = this.trimData(this.getGroup().historicalData, this.getHistorySize());
+
         this.firstHistoryPoint = currentShowData[currentShowData.length - 1];
         this.lastHistoryPoint = currentShowData[0];
         if (keys.length > 0) {
-            var min;
-            var max;
-            currentShowData.forEach(function (e) {
-                keys.forEach(function (key) {
+            let min:number;
+            let max:number;
+            currentShowData.forEach((e) => {
+                keys.forEach((key) => {
                     if (min === undefined || e[key] < min) {
                         min = e[key];
                     }
                     if (max === undefined || e[key] > max) {
                         max = e[key];
                     }
-                });
+                })
             });
             new Morris.Line({
                 element: 'project-history',
@@ -134,31 +177,34 @@ var GroupDetailsController = (function () {
                 ymax: max
             });
         }
-    };
+    }
+
+
     /**
      * Trimes data to expected size.
      * @param dataToTrim
      * @param size
      * @returns {T[]}
      */
-    GroupDetailsController.prototype.trimData = function (dataToTrim, size) {
+    private trimData(dataToTrim:any[], size:number):any[] {
         return dataToTrim.slice(0, size);
-    };
-    return GroupDetailsController;
-})();
-var SidebarNavigationController = (function () {
-    function SidebarNavigationController($http) {
-        var _this = this;
-        $http.get('/api/repository/groups').success(function (data) {
-            _this.groups = data;
-        }).error(function (reason) {
+    }
+
+}
+
+class SidebarNavigationController {
+    private groups;
+    constructor($http:ng.IHttpService) {
+        $http.get('/api/repository/groups').success((data) => {
+            this.groups = data;
+        }).error((reason) => {
             console.log('error... ' + reason);
         });
     }
-    return SidebarNavigationController;
-})();
+}
+
 angular.module('sqcomp', ['ui.router'])
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', ($stateProvider:ng.ui.IStateProvider, $urlRouterProvider:ng.ui.IUrlRouterProvider) => {
         $urlRouterProvider.otherwise('/groups');
         $stateProvider.state('groups', {
             url: '/groups',
@@ -166,9 +212,9 @@ angular.module('sqcomp', ['ui.router'])
             controller: 'ListGroupsController',
             controllerAs: 'ctrl',
             resolve: {
-                groupsPromise: ['$http', function ($http) {
-                        return $http.get('/api/repository/groups/summaries');
-                    }]
+                groupsPromise: ['$http', ($http) => {
+                    return $http.get('/api/repository/groups/summaries');
+                }]
             }
         }).state('group_details', {
             url: '/group/{id}',
@@ -176,24 +222,27 @@ angular.module('sqcomp', ['ui.router'])
             controller: 'GroupDetailsController',
             controllerAs: 'ctrl',
             resolve: {
-                groupPromise: ['$stateParams', '$http', function ($stateParams, $http) {
-                        return $http.get('/api/repository/groups/' + $stateParams.id);
-                    }]
+                groupPromise: ['$stateParams', '$http', ($stateParams, $http:ng.IHttpService) => {
+                    return $http.get('/api/repository/groups/' + $stateParams.id);
+                }]
             }
         });
     }])
     .controller('ListGroupsController', ['groupsPromise', ListGroupsController])
     .controller('GroupDetailsController', ['groupPromise', GroupDetailsController])
     .controller('SidebarNavigationController', ['$http', SidebarNavigationController])
-    .run(['$rootScope', function ($rootScope) {
+    .run(['$rootScope', ($rootScope:ng.IRootScopeService) => {
         $rootScope
-            .$on('$stateChangeStart', function () {
-            $("[ui-view]").addClass("hidden");
-            $(".page-loading").removeClass("hidden");
-        });
+            .$on('$stateChangeStart',
+                () => {
+                    $("[ui-view]").addClass("hidden");
+                    $(".page-loading").removeClass("hidden");
+                });
+
         $rootScope
-            .$on('$stateChangeSuccess', function () {
-            $("[ui-view]").removeClass("hidden");
-            $(".page-loading").addClass("hidden");
-        });
+            .$on('$stateChangeSuccess',
+                () => {
+                    $("[ui-view]").removeClass("hidden");
+                    $(".page-loading").addClass("hidden");
+                });
     }]);

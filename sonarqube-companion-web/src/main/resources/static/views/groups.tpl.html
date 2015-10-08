@@ -5,7 +5,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12 col-md-6"
-         ng-repeat="group in ctrl.groups | orderBy:['-statusCode','-blockers','-criticals']">
+         ng-repeat="group in ctrl.getGroups() | orderBy:['-statusCode','-blockers','-criticals']">
         <div class="panel" ng-class="{
                     'panel-red': group.statusName == 'blocker',
                     'panel-yellow': group.statusName == 'critical',

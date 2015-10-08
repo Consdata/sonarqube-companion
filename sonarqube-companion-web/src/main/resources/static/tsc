@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# verify node
+command -v node >/dev/null 2>&1 || {
+    echo "Missing node, pleas install node in version at least 0.10.0"
+    exit 1
+}
+
+# verify typescript npm module installed
+if [ ! -d  node_modules/typescript ]; then
+    echo "Missing typescript node module installed, please run npm update first"
+    exit 1
+fi
+
+# run bower
+./node_modules/typescript/bin/tsc $@

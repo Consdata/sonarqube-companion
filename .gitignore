@@ -2,6 +2,7 @@ target/
 bin/
 bower_components/
 node_modules/
+typings/
 
 *-own.json
 

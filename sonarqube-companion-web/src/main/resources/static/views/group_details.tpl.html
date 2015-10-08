@@ -151,7 +151,7 @@
             </div>
             <a href="" ng-click="ctrl.showStreakModal('significant')" ng-show="ctrl.group.healthyStreakSiginificant >= 0">
                 <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">View new issue</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -182,7 +182,7 @@
             </div>
             <a href="" ng-click="ctrl.showStreakModal('any')" ng-show="ctrl.group.healthyStreakAny >= 0">
                 <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">View new issue</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -206,35 +206,35 @@
             <div class="panel-body">
                 <div>
                     Issues:
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['blockers']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['blockers']}"
                        ng-click="ctrl.toggleVisibleIssues('blockers')">
                         blocker ({{ctrl.lastHistoryPoint.blockers - ctrl.firstHistoryPoint.blockers}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['criticals']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['criticals']}"
                        ng-click="ctrl.toggleVisibleIssues('criticals')">
                         critical ({{ctrl.lastHistoryPoint.criticals - ctrl.firstHistoryPoint.criticals}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['majors']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['majors']}"
                        ng-click="ctrl.toggleVisibleIssues('majors')">
                         major ({{ctrl.lastHistoryPoint.majors - ctrl.firstHistoryPoint.majors}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['minors']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['minors']}"
                        ng-click="ctrl.toggleVisibleIssues('minors')">
                         minor ({{ctrl.lastHistoryPoint.minors - ctrl.firstHistoryPoint.minors}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['infos']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['infos']}"
                        ng-click="ctrl.toggleVisibleIssues('infos')">
                         info ({{ctrl.lastHistoryPoint.infos - ctrl.firstHistoryPoint.infos}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['all']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['all']}"
                        ng-click="ctrl.toggleVisibleIssues('all')">
                         all ({{ctrl.lastHistoryPoint.all - ctrl.firstHistoryPoint.all}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['significant']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['significant']}"
                        ng-click="ctrl.toggleVisibleIssues('significant')">
                         significant ({{ctrl.lastHistoryPoint.significant - ctrl.firstHistoryPoint.significant}})</a>
                     |
-                    <a href="" ng-class="{'text-success': ctrl.showIssues['nonsignificant']}"
+                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['nonsignificant']}"
                        ng-click="ctrl.toggleVisibleIssues('nonsignificant')">
                         nonsignificant ({{ctrl.lastHistoryPoint.nonsignificant - ctrl.firstHistoryPoint.nonsignificant}})</a>
                 </div>
