@@ -206,70 +206,30 @@
             <div class="panel-body">
                 <div>
                     Issues:
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['blockers']}"
-                       ng-click="ctrl.toggleVisibleIssues('blockers')">
-                        blocker ({{ctrl.lastHistoryPoint.blockers - ctrl.firstHistoryPoint.blockers}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['criticals']}"
-                       ng-click="ctrl.toggleVisibleIssues('criticals')">
-                        critical ({{ctrl.lastHistoryPoint.criticals - ctrl.firstHistoryPoint.criticals}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['majors']}"
-                       ng-click="ctrl.toggleVisibleIssues('majors')">
-                        major ({{ctrl.lastHistoryPoint.majors - ctrl.firstHistoryPoint.majors}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['minors']}"
-                       ng-click="ctrl.toggleVisibleIssues('minors')">
-                        minor ({{ctrl.lastHistoryPoint.minors - ctrl.firstHistoryPoint.minors}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['infos']}"
-                       ng-click="ctrl.toggleVisibleIssues('infos')">
-                        info ({{ctrl.lastHistoryPoint.infos - ctrl.firstHistoryPoint.infos}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['all']}"
-                       ng-click="ctrl.toggleVisibleIssues('all')">
-                        all ({{ctrl.lastHistoryPoint.all - ctrl.firstHistoryPoint.all}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['significant']}"
-                       ng-click="ctrl.toggleVisibleIssues('significant')">
-                        significant ({{ctrl.lastHistoryPoint.significant - ctrl.firstHistoryPoint.significant}})</a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.getIssuesToDisplay()['nonsignificant']}"
-                       ng-click="ctrl.toggleVisibleIssues('nonsignificant')">
-                        nonsignificant ({{ctrl.lastHistoryPoint.nonsignificant - ctrl.firstHistoryPoint.nonsignificant}})</a>
+                    <span ng-repeat="(type, visible) in ctrl.getIssuesToDisplay()">
+                        <a href="" ng-class="{
+                            'text-success': ctrl.getIssuesToDisplay()[type]
+                            }" ng-click="ctrl.toggleVisibleIssues(type)">
+                            <i class="fa" ng-class="{
+                                'fa-check-square-o': ctrl.getIssuesToDisplay()[type],
+                                'fa-square-o': !ctrl.getIssuesToDisplay()[type]
+                            }"></i>
+                            {{ type }} ({{ ctrl.lastHistoryPoint[type] - ctrl.firstHistoryPoint[type] }})
+                        </a>
+                        <span ng-show="!$last">|</span>
+                    </span>
                 </div>
                 <div>
                     History:
-                    <a href="" ng-class="{'text-success': ctrl.historySize == 90}"
-                       ng-click="ctrl.setHistorySize(90)">
-                        90
-                    </a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.historySize == 60}"
-                       ng-click="ctrl.setHistorySize(60)">
-                        60
-                    </a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.historySize == 30}"
-                       ng-click="ctrl.setHistorySize(30)">
-                        30
-                    </a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.historySize == 14}"
-                       ng-click="ctrl.setHistorySize(14)">
-                        14
-                    </a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.historySize == 7}"
-                       ng-click="ctrl.setHistorySize(7)">
-                        7
-                    </a>
-                    |
-                    <a href="" ng-class="{'text-success': ctrl.historySize == 5}"
-                       ng-click="ctrl.setHistorySize(5)">
-                        5
-                    </a>
+                    <span ng-repeat="hist in ctrl.getAvailableHistoryRanges()">
+                        <a href="" ng-class="{'text-success': ctrl.historySize == hist}"
+                           ng-click="ctrl.setHistorySize(hist)">
+                            {{ hist }}
+                        </a>
+                        <span ng-show="!$last">|</span>
+                    </span>
                 </div>
+                <hr />
                 <div id="project-history"></div>
             </div>
         </div>

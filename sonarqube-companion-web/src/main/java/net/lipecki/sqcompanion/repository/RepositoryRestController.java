@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -68,13 +70,13 @@ public class RepositoryRestController {
                             .getIssues()
                             .getSignificant()
                             .stream()
-                            .sorted((a, b) -> byCreationDateReverse(a, b))
+                            .sorted(comparing(Issue::getCreationDate).reversed())
                             .findFirst();
                     final Optional<Issue> lastAnyIssue = group
                             .getIssues()
                             .getAll()
                             .stream()
-                            .sorted((a, b) -> byCreationDateReverse(a, b))
+                            .sorted(comparing(Issue::getCreationDate).reversed())
                             .findFirst();
                     return Optional.of(
                             new GroupDetailsDto(
@@ -106,7 +108,7 @@ public class RepositoryRestController {
                                             .getHistoryPoints()
                                             .values()
                                             .stream()
-                                            .sorted((a, b) -> -1 * a.getDate().compareTo(b.getDate()))
+                                            .sorted(comparing(HistoryPoint::getDate).reversed())
                                             .limit(90)
                                             .map(historyPoint -> mapAsIssueHistoryPointDto(historyPoint))
                                             .collect(toList()),
@@ -161,9 +163,6 @@ public class RepositoryRestController {
         );
     }
 
-    private int byCreationDateReverse(final Issue a, final Issue b) {
-        return -1 * a.getCreationDate().compareTo(b.getCreationDate());
-    }
 
     private int getWihtoutIssueStreak(final Issue issue) {
         return (int) Math.floor((new Date().getTime() - issue.getCreationDate().getTime()) / DAY_MS);

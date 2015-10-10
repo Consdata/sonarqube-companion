@@ -40,6 +40,9 @@ interface VisibleIssues {
     majors:boolean;
     minors:boolean;
     infos:boolean;
+    all:boolean;
+    significant:boolean;
+    nonsignificant:boolean;
 }
 
 class GroupDetailsController {
@@ -62,7 +65,10 @@ class GroupDetailsController {
             criticals: true,
             majors: false,
             minors: false,
-            infos: false
+            infos: false,
+            all: false,
+            significant: false,
+            nonsignificant: false
         };
         this.modal = {};
 
@@ -83,6 +89,10 @@ class GroupDetailsController {
      */
     getIssuesToDisplay():VisibleIssues {
         return this.issuesToDisplay;
+    }
+
+    getAvailableHistoryRanges():number[] {
+        return [90, 60, 30, 14, 7, 5];
     }
 
     /**

@@ -30,7 +30,10 @@ var GroupDetailsController = (function () {
             criticals: true,
             majors: false,
             minors: false,
-            infos: false
+            infos: false,
+            all: false,
+            significant: false,
+            nonsignificant: false
         };
         this.modal = {};
         this.toggleVisibleIssues();
@@ -48,6 +51,9 @@ var GroupDetailsController = (function () {
      */
     GroupDetailsController.prototype.getIssuesToDisplay = function () {
         return this.issuesToDisplay;
+    };
+    GroupDetailsController.prototype.getAvailableHistoryRanges = function () {
+        return [90, 60, 30, 14, 7, 5];
     };
     /**
      * Gets current history size.
