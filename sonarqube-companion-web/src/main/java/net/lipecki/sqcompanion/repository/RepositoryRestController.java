@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.maxBy;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -70,14 +71,12 @@ public class RepositoryRestController {
                             .getIssues()
                             .getSignificant()
                             .stream()
-                            .sorted(comparing(Issue::getCreationDate).reversed())
-                            .findFirst();
+                            .collect(maxBy(comparing(Issue::getCreationDate)));
                     final Optional<Issue> lastAnyIssue = group
                             .getIssues()
                             .getAll()
                             .stream()
-                            .sorted(comparing(Issue::getCreationDate).reversed())
-                            .findFirst();
+                            .collect(maxBy(comparing(Issue::getCreationDate)));
                     return Optional.of(
                             new GroupDetailsDto(
                                     group.getKey(),
