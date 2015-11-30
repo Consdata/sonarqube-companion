@@ -32,7 +32,7 @@ public class SonarQubeService {
         final SonarQubeIssuesResultDto firstResult = sonarQubeConnector
                 .getForEntity(String.format(GET_ISSUES, key), SonarQubeIssuesResultDto.class)
                 .getBody();
-        if (firstResult.getPaging().getPages() > 1) {
+        if (firstResult.getPaging().getPages() != null && firstResult.getPaging().getPages() > 1) {
             for (int page = 2; page <= firstResult.getPaging().getPages(); ++page) {
                 LOGGER.info("Request for issues [project={}, page={}]", key, page);
                 final SonarQubeIssuesResultDto partialResult = sonarQubeConnector
