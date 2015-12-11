@@ -31,6 +31,7 @@
         <!-- -->
         <gson.version>2.3.1</gson.version>
         <guava.version>19.0-rc2</guava.version>
+        <httpclient.version>4.5.1</httpclient.version>
 
         <!-- Test dependencies -->
         <junit.version>4.12</junit.version>
@@ -51,6 +52,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}}</version>
             </dependency>
 
             <!-- Test -->

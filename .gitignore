@@ -6,6 +6,9 @@ typings/
 
 *-own.json
 
+sonarqube-keystore.keystore
+consdata-ca.crt
+
 .project
 .settings
 *.sublime-project

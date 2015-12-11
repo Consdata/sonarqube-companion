@@ -5,3 +5,6 @@ sonarqube:
 app:
   layoutConfiguration: classpath:layoutConfiguration.json
   syncDelay: 600000
+  keystore:
+    file: file:sonarqube-keystore.keystore
+    password: q1w2e3r4

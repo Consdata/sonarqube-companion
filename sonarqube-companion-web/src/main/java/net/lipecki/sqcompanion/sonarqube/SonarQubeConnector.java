@@ -1,17 +1,17 @@
 package net.lipecki.sqcompanion.sonarqube;
 
-import net.lipecki.rest.util.RestTemplateWithAuthentication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 public class SonarQubeConnector {
 
     private final String url;
 
-    private final RestTemplateWithAuthentication restTemplate;
+    private final RestTemplate restTemplate;
 
-    public SonarQubeConnector(final String url, final String username, final String password) {
+    public SonarQubeConnector(final String url, final RestTemplate restTemplate) {
         this.url = url;
-        this.restTemplate = new RestTemplateWithAuthentication(username, password);
+        this.restTemplate = restTemplate;
     }
 
     public <T> ResponseEntity<T> getForEntity(final String action, final Class<T> responseClass) {
