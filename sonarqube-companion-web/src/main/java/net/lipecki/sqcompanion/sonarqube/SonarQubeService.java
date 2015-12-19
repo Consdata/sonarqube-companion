@@ -2,6 +2,7 @@ package net.lipecki.sqcompanion.sonarqube;
 
 import com.google.common.collect.ObjectArrays;
 import net.lipecki.sqcompanion.sonarqube.issue.SonarQubeIssuesIssueResultDto;
+import net.lipecki.sqcompanion.sonarqube.issue.SonarQubeIssuesPagingResultDto;
 import net.lipecki.sqcompanion.sonarqube.issue.SonarQubeIssuesResultDto;
 import net.lipecki.sqcompanion.sonarqube.timemachine.SonarQubeTimeMachineResultsDto;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class SonarQubeService {
     private static final String GET_HISTORY =
             "/api/timemachine/index?format=json&metrics=blocker_violations,critical_violations,major_violations" +
                     ",minor_violations,info_violations&resource=%s";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SonarQubeService.class);
     private final SonarQubeConnector sonarQubeConnector;
 
     public SonarQubeService(final SonarQubeConnector sonarQubeConnector) {
@@ -32,15 +33,15 @@ public class SonarQubeService {
         final SonarQubeIssuesResultDto firstResult = sonarQubeConnector
                 .getForEntity(String.format(GET_ISSUES, key), SonarQubeIssuesResultDto.class)
                 .getBody();
-        if (firstResult.getPaging().getPages() != null && firstResult.getPaging().getPages() > 1) {
-            for (int page = 2; page <= firstResult.getPaging().getPages(); ++page) {
-                LOGGER.info("Request for issues [project={}, page={}]", key, page);
-                final SonarQubeIssuesResultDto partialResult = sonarQubeConnector
-                        .getForEntity(String.format(GET_ISSUES_PAGING, page, key), SonarQubeIssuesResultDto.class)
-                        .getBody();
-                firstResult.setIssues(ObjectArrays.concat(firstResult.getIssues(), partialResult.getIssues(),
-                        SonarQubeIssuesIssueResultDto.class));
-            }
+        final SonarQubeIssuesPagingResultDto paging = firstResult.getPaging();
+        int pageCount = paging.getTotal() / paging.getPageSize() + 1;
+        for (int page = 2; page <= pageCount; ++page) {
+            LOGGER.info("Request for issues [project={}, page={}]", key, page);
+            final SonarQubeIssuesResultDto partialResult = sonarQubeConnector
+                    .getForEntity(String.format(GET_ISSUES_PAGING, page, key), SonarQubeIssuesResultDto.class)
+                    .getBody();
+            firstResult.setIssues(ObjectArrays.concat(firstResult.getIssues(), partialResult.getIssues(),
+                    SonarQubeIssuesIssueResultDto.class));
         }
         return firstResult;
     }
@@ -50,7 +51,5 @@ public class SonarQubeService {
         final String serviceUrl = String.format(GET_HISTORY, key);
         return sonarQubeConnector.getForEntity(serviceUrl, SonarQubeTimeMachineResultsDto[].class).getBody()[0];
     }
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SonarQubeService.class);
 
 }

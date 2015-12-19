@@ -13,7 +13,7 @@
                 <div><small>{{ctrl.modal.healthStreak.component}}</small></div>
                 <div>
                     <a
-                        href="http://sonarqube.consdata.local/issues/search#issues={{ctrl.modal.healthStreak.key}}"
+                        href="https://sonarqube.consdata.local/issues/search#issues={{ctrl.modal.healthStreak.key}}"
                         target="_blank">
                         <i class="fa fa-external-link"></i> open issue in sonarqube
                     </a>
@@ -262,7 +262,7 @@
                             <td>{{ project.blockers }}</td>
                             <td>{{ project.criticals }}</td>
                             <td>
-                                <a href="http://sonarqube.consdata.local/dashboard/index/{{ project.sonarqubeKey }}"
+                                <a href="https://sonarqube.consdata.local/dashboard/index/{{ project.sonarqubeKey }}"
                                    target="_blank">{{ project.sonarqubeKey }}</a>
                             </td>
                         </tr>
@@ -315,7 +315,7 @@
                             <td>{{ issue.creationDate | date }}</td>
                             <td>
                                 <a
-                                        href="http://sonarqube.consdata.local/issues/search#issues={{issue.key}}"
+                                        href="https://sonarqube.consdata.local/issues/search#issues={{issue.key}}"
                                         target="_blank">
                                     <i class="fa fa-external-link"></i> open
                                 </a>

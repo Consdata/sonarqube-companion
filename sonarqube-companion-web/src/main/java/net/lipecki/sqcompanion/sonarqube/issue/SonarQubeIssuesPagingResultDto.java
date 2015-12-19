@@ -11,9 +11,6 @@ public class SonarQubeIssuesPagingResultDto {
 
     private Integer total;
 
-    private Integer fTotal;
-
-    private Integer pages;
 
     public Integer getPageIndex() {
         return pageIndex;
@@ -39,19 +36,4 @@ public class SonarQubeIssuesPagingResultDto {
         this.total = total;
     }
 
-    public Integer getfTotal() {
-        return fTotal;
-    }
-
-    public void setfTotal(final Integer fTotal) {
-        this.fTotal = fTotal;
-    }
-
-    public Integer getPages() {
-        return pages;
-    }
-
-    public void setPages(final Integer pages) {
-        this.pages = pages;
-    }
 }
