@@ -1,8 +1,7 @@
 target/
+!.mvn/wrapper/maven-wrapper.jar
 bin/
-bower_components/
 node_modules/
-typings/
 
 *-own.json
 
