@@ -1,26 +1,37 @@
 package pl.consdata.ico.sqcompanion.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.group.Group;
-import pl.consdata.ico.sqcompanion.group.GroupDefinition;
-import pl.consdata.ico.sqcompanion.project.Project;
-import pl.consdata.ico.sqcompanion.project.ProjectLink;
-import pl.consdata.ico.sqcompanion.project.ProjectLinkType;
+import pl.consdata.ico.sqcompanion.config.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 
 import java.util.UUID;
 
-public class GetGroupSummaryTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class GetGroupsTest {
 
     private AppConfig appConfig;
     private RepositoryService service;
+    private ProjectLinkResolverFactory projectLinkResolverFactory;
 
     @Before
     public void setup() {
         appConfig = AppConfig.builder().build();
-        service = new RepositoryService(appConfig);
+
+        projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
+        when(
+                projectLinkResolverFactory.getResolver(Mockito.eq(ProjectLinkType.DIRECT))
+        ).thenReturn(
+                new DirectProjectLinkResolver()
+        );
+
+        service = new RepositoryService(appConfig, projectLinkResolverFactory);
     }
 
     @Test
@@ -32,11 +43,11 @@ public class GetGroupSummaryTest {
         appConfig.setRootGroup(GroupDefinition.builder().uuid(uuid).name(name).build());
 
         // when
-        final Group result = service.getGroupSummary();
+        final Group result = service.getRootGroup();
 
         // then
-        Assertions.assertThat(result.getName()).isEqualTo(name);
-        Assertions.assertThat(result.getUuid()).isEqualTo(uuid);
+        assertThat(result.getName()).isEqualTo(name);
+        assertThat(result.getUuid()).isEqualTo(uuid);
     }
 
     @Test
@@ -58,11 +69,12 @@ public class GetGroupSummaryTest {
         );
 
         // when
-        final Group result = service.getGroupSummary();
+        final Group result = service.getRootGroup();
 
         // then
-        Assertions.assertThat(result.getProjects()).isNotEmpty();
+        assertThat(result.getProjects()).isNotEmpty();
         final Project project = result.getProjects().get(0);
+        assertThat(project.getKey()).isEqualTo(projectLink);
     }
 
 }

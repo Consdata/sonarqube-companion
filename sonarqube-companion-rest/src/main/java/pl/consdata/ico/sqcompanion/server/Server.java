@@ -7,6 +7,4 @@ import lombok.Data;
 @Builder
 public class Server {
 
-    private final ServerDefinition definition;
-
 }

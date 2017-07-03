@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.server;
+package pl.consdata.ico.sqcompanion.config;
 
 import lombok.Builder;
 import lombok.Data;

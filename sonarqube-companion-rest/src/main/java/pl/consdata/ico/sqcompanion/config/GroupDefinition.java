@@ -1,9 +1,8 @@
-package pl.consdata.ico.sqcompanion.group;
+package pl.consdata.ico.sqcompanion.config;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
-import pl.consdata.ico.sqcompanion.project.ProjectLink;
 
 import java.util.List;
 

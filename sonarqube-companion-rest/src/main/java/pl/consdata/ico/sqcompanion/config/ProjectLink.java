@@ -1,8 +1,7 @@
-package pl.consdata.ico.sqcompanion.project;
+package pl.consdata.ico.sqcompanion.config;
 
 import lombok.Builder;
 import lombok.Data;
-import pl.consdata.ico.sqcompanion.server.ServerDefinition;
 
 @Data
 @Builder
