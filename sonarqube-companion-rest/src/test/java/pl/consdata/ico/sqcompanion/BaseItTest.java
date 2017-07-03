@@ -4,9 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.GroupDefinition;
@@ -15,17 +14,16 @@ import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {BaseItTest.TestAppConfigConfiguration.class})
 public abstract class BaseItTest {
 
 	// TODO: move to static class representing companion test config
 	public static final String PROJECT_001_KEY = "project001";
 
-	@Configuration
+	@TestConfiguration
 	static class TestAppConfigConfiguration {
 
 		@Bean
-		@Primary
 		public AppConfig appConfig() {
 			return AppConfig.builder()
 					.rootGroup(
