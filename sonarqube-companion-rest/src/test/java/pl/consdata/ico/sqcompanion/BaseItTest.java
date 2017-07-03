@@ -5,38 +5,24 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {BaseItTest.TestAppConfigConfiguration.class})
+@SpringBootTest(classes = {BaseItTest.ItTestConfiguration.class})
 public abstract class BaseItTest {
 
-	// TODO: move to static class representing companion test config
-	public static final String PROJECT_001_KEY = "project001";
-
 	@TestConfiguration
-	static class TestAppConfigConfiguration {
+	static class ItTestConfiguration {
 
 		@Bean
 		public AppConfig appConfig() {
-			return AppConfig.builder()
-					.rootGroup(
-							GroupDefinition.builder()
-									.projectLink(
-											ProjectLink.builder()
-													.link(PROJECT_001_KEY)
-													.type(ProjectLinkType.DIRECT)
-													.build()
-									)
-									.build()
-					)
-					.build();
+			return TestAppConfig.config();
 		}
 
 	}
@@ -44,8 +30,12 @@ public abstract class BaseItTest {
 	@Autowired
 	protected RepositoryService repositoryService;
 
+	@Autowired
+	protected ApplicationContext applicationContext;
+
 	@Test
 	public void contextLoads() {
+		assertThat(applicationContext).isNotNull();
 	}
 
 }

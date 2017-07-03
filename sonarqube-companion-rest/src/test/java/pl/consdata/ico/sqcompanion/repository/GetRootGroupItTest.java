@@ -2,6 +2,7 @@ package pl.consdata.ico.sqcompanion.repository;
 
 import org.junit.Test;
 import pl.consdata.ico.sqcompanion.BaseItTest;
+import pl.consdata.ico.sqcompanion.TestAppConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +19,7 @@ public class GetRootGroupItTest extends BaseItTest {
 		// then
 		assertThat(rootGroup).isNotNull();
 		assertThat(rootGroup.getProjects()).isNotEmpty();
-		assertThat(rootGroup.getProjects().get(0).getKey()).isEqualTo(PROJECT_001_KEY);
+		assertThat(rootGroup.getProjects().get(0).getKey()).isEqualTo(TestAppConfig.RootGroup.Project1.KEY);
 	}
 
 }

@@ -2,6 +2,7 @@ package pl.consdata.ico.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQProject;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Slf4j
 public class SonarQubeFacade {
 
-	public List<SonarQubeProject> getProjects() {
+	public List<SQProject> getProjects() {
 		return null;
 	}
 
