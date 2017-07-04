@@ -1,13 +1,16 @@
 package pl.consdata.ico.sqcompanion.sonarqube.sqapi;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * @author gregorry
  */
 @Data
-public abstract class SQPaginatedResponse {
+@Builder
+public class SonarQubeProject {
 
-	private SQPaging paging;
+	private String key;
+	private String name;
 
 }

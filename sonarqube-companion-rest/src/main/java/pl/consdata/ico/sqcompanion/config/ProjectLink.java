@@ -7,8 +7,9 @@ import lombok.Data;
 @Builder
 public class ProjectLink {
 
-    private final ServerDefinition server;
+    private final String serverId;
     private final ProjectLinkType type;
     private final String link;
+    // TODO: dodatkowo dla regex exclude?
 
 }

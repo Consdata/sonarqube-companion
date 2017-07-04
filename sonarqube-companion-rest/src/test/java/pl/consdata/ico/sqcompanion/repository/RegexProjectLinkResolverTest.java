@@ -8,12 +8,13 @@ import pl.consdata.ico.sqcompanion.config.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
-import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeProject;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SonarQubeProject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +35,7 @@ public class RegexProjectLinkResolverTest {
 
 		mockedSonarQubeProjects = new ArrayList<>();
 		sonarQubeFacade = mock(SonarQubeFacade.class);
-		when(sonarQubeFacade.getProjects()).thenReturn(mockedSonarQubeProjects);
+		when(sonarQubeFacade.getProjects(anyString())).thenReturn(mockedSonarQubeProjects);
 
 		projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
 		when(

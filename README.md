@@ -6,6 +6,7 @@
 
 - lista projektów
   - GET api/projects/provisioned
+  - GET api/projects/search (internal api)
 - listy błędów na podstawie historii metryk
   - GET api/measures/search_history (since SQ 6.3)
   - https://docs.sonarqube.org/display/SONAR/Metric+Definitions
