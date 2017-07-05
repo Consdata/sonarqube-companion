@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.sonarqube.sqapi;
+package pl.consdata.ico.sqcompanion.sonarqube;
 
 import lombok.Builder;
 import lombok.Data;

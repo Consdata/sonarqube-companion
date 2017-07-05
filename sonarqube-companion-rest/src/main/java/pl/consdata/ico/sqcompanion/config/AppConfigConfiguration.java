@@ -16,6 +16,10 @@ import java.util.UUID;
 @Slf4j
 public class AppConfigConfiguration {
 
+    /**
+     * TODO: refresh config via cron
+     */
+
     @Bean
     public AppConfig appConfig() throws IOException {
         final Path appConfigPath = Paths.get(appConfigFile);

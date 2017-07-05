@@ -8,7 +8,7 @@ import pl.consdata.ico.sqcompanion.config.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SonarQubeProject;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeProject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +58,9 @@ public class RegexProjectLinkResolverTest {
 						.projectLink(
 								ProjectLink
 										.builder()
-										.link("pl.consdata.sqcompanion.*")
+										.link("pl\\.consdata\\.sqcompanion.*")
 										.type(ProjectLinkType.REGEX)
+										.serverId("any-server-id")
 										.build()
 						)
 						.build()
@@ -67,6 +68,7 @@ public class RegexProjectLinkResolverTest {
 		mockedSonarQubeProjects.add(SonarQubeProject.builder().key(expectedProjectKey).build());
 
 		// when
+		service.syncGroups();
 		final Group rootGroup = service.getRootGroup();
 
 		// then

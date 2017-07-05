@@ -30,6 +30,7 @@ public class RegexProjectLinkResolver implements ProjectLinkResolver {
 						project -> Project.builder()
 								.key(project.getKey())
 								.name(project.getName())
+								.serverId(projectLink.getServerId())
 								.build()
 				)
 				.collect(Collectors.toList());

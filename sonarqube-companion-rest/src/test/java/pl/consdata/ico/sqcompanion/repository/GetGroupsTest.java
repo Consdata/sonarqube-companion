@@ -43,6 +43,7 @@ public class GetGroupsTest {
         appConfig.setRootGroup(GroupDefinition.builder().uuid(uuid).name(name).build());
 
         // when
+        service.syncGroups();
         final Group result = service.getRootGroup();
 
         // then
@@ -69,6 +70,7 @@ public class GetGroupsTest {
         );
 
         // when
+        service.syncGroups();
         final Group result = service.getRootGroup();
 
         // then

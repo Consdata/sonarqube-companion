@@ -1,5 +1,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+*.mv.db
 bin/
 node_modules/
 sq-companion-config.json

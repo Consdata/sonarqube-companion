@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class Project {
 
+    private String serverId;
     private String key;
     private String name;
 

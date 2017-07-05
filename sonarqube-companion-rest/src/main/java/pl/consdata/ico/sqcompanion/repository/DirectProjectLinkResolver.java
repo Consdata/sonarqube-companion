@@ -17,6 +17,7 @@ public class DirectProjectLinkResolver implements ProjectLinkResolver {
 		return Collections.singletonList(
 				Project.builder()
 						.key(projectLink.getLink())
+						.serverId(projectLink.getServerId())
 						.build()
 		);
 	}
