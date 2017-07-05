@@ -3,6 +3,8 @@ package pl.consdata.ico.sqcompanion.config;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 @Builder
 public class ProjectLink {
@@ -10,6 +12,7 @@ public class ProjectLink {
     private final String serverId;
     private final ProjectLinkType type;
     private final String link;
-    // TODO: dodatkowo dla regex exclude?
+    // TODO: obsługa np exclude
+    private final Map<String, Object> additional;
 
 }

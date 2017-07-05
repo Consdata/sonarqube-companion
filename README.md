@@ -28,6 +28,10 @@
 - https://hub.docker.com/_/sonarqube/
 - https://docs.sonarqube.org/display/DEV/Web+API
 
+## Pytania
+
+- być może na liście projektów przy regex odsiać te, które nie miały analizy od X dni?
+
 # Keystore
 keytool -keystore sonarqube-keystore.keystore -genkey -v -alias sonarqube-keystore
 keytool -import -alias consdata-ca -keystore sonarqube-keystore.keystore -file consdata-ca.crt
