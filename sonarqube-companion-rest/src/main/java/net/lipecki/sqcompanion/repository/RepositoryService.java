@@ -12,15 +12,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Możliwości rozwoju:
+ * - odświeżanie automatyczne przez cron
+ *
  * @author gregorry
  */
 @Slf4j
 @Service
 public class RepositoryService {
-
-	/**
-	 * TODO: refresh via cron
-	 */
 
 	private final AppConfig appConfig;
 	private final ProjectLinkResolverFactory projectLinkResolverFactory;

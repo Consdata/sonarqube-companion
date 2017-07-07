@@ -1,7 +1,8 @@
 package net.lipecki.sqcompanion.repository;
 
-import org.springframework.stereotype.Service;
+import net.lipecki.sqcompanion.SQCompanionException;
 import net.lipecki.sqcompanion.config.ProjectLinkType;
+import org.springframework.stereotype.Service;
 
 /**
  * @author gregorry
@@ -25,7 +26,7 @@ public class ProjectLinkResolverFactory {
 		} else if (ProjectLinkType.REGEX == type) {
 			return regexProjectLinkResolver;
 		} else {
-			throw new RuntimeException(String.format("Unmapped project link type [type=%s]", type));
+			throw new SQCompanionException(String.format("Unmapped project link type [type=%s]", type));
 		}
 	}
 

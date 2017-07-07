@@ -7,25 +7,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+/**
+ * Możliwości rozwoju:
+ * - odświeżanie automatyczne przez cron
+ */
 @Configuration
 @Slf4j
 public class AppConfigConfiguration {
 
-    /**
-     * TODO: refresh config via cron
-     */
+    @Value("${app.configFile:sq-companion-config.json}")
+    private String appConfigFile;
 
     @Bean
     public AppConfig appConfig() throws IOException {
         final Path appConfigPath = Paths.get(appConfigFile);
         log.info("Reading app configuration from path: {}", appConfigPath);
 
-        if (!Files.exists(appConfigPath)) {
+        if (!appConfigPath.toFile().exists()) {
             log.info("App configuration not exist, creating default [path={}]", appConfigPath);
             new ObjectMapper().writeValue(appConfigPath.toFile(), getDefaultAppConfig());
         }
@@ -47,8 +49,5 @@ public class AppConfigConfiguration {
                 )
                 .build();
     }
-
-    @Value("${app.configFile:sq-companion-config.json}")
-    private String appConfigFile;
 
 }

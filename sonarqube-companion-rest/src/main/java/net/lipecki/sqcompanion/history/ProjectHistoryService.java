@@ -6,13 +6,13 @@ import net.lipecki.sqcompanion.repository.RepositoryService;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
 import org.springframework.stereotype.Service;
 
+/**
+ * Możliwości rozwoju:
+ * - odświeżanie automatyczne przez cron
+ */
 @Slf4j
 @Service
 public class ProjectHistoryService {
-
-    /**
-     * TODO: refresh via cron
-     */
 
     private final RepositoryService repositoryService;
     private final SonarQubeFacade sonarQubeFacade;

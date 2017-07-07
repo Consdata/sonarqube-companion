@@ -29,11 +29,11 @@ public class SQIssue {
     private Boolean updatable;
     private Date createdAt;
 
-    // TODO: textRange
-    // TODO: startLine
-    // TODO: comments
-    // TODO: attr / jira-issue-key
-    // TODO: transitions
-    // TODO: actions
+    // inne potencjalnie przydatne pola: textRange
+    // inne potencjalnie przydatne pola: startLine
+    // inne potencjalnie przydatne pola: comments
+    // inne potencjalnie przydatne pola: attr / jira-issue-key
+    // inne potencjalnie przydatne pola: transitions
+    // inne potencjalnie przydatne pola: actions
 
 }
