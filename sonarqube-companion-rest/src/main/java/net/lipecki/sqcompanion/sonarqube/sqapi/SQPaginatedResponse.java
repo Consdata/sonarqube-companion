@@ -1,14 +1,19 @@
 package net.lipecki.sqcompanion.sonarqube.sqapi;
 
-import lombok.Data;
-
 /**
  * @author gregorry
  */
-@Data
 public abstract class SQPaginatedResponse {
 
 	private SQPaging paging;
+
+    public SQPaging getPaging() {
+        return paging;
+    }
+
+    public void setPaging(SQPaging paging) {
+        this.paging = paging;
+    }
 
     public boolean hasMorePages() {
         return paging.getPageIndex() < paging.getTotal();
