@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity(name = "project_history_entries")
 @Data
@@ -19,10 +20,11 @@ public class ProjectHistoryEntry {
     @Id
     @GeneratedValue
     private Long id;
-    private Long blockers;
-    private Long criticals;
-    private Long majors;
-    private Long minors;
-    private Long infos;
+    private Integer blockers;
+    private Integer criticals;
+    private Integer majors;
+    private Integer minors;
+    private Integer infos;
+    private LocalDate date;
 
 }

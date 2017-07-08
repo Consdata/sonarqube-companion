@@ -12,8 +12,6 @@ public interface SonarQubeFacade {
 
 	List<SonarQubeIssue> getIssues(String serverId, String projectKey);
 
-	List<SonarQubeMessure> getProjectMessureHistory(String serverId, String projectKey);
-
 	List<SonarQubeMessure> getProjectMessureHistory(String serverId, String projectKey, Date fromDate);
 
 }

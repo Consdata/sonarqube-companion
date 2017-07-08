@@ -51,11 +51,6 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 	}
 
 	@Override
-	public List<SonarQubeMessure> getProjectMessureHistory(final String serverId, final String projectKey) {
-		return getProjectMessureHistory(serverId, projectKey, null);
-	}
-
-	@Override
 	public List<SonarQubeMessure> getProjectMessureHistory(final String serverId, final String projectKey, final Date fromDate) {
 		return inMemoryRepository
 				.getProjects()

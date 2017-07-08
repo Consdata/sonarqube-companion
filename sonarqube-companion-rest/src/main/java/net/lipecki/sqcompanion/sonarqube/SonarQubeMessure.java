@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import net.lipecki.sqcompanion.SQCompanionException;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -37,6 +38,10 @@ public class SonarQubeMessure {
             default:
                 throw new SQCompanionException("Unknown messure metric: " + metricKey);
         }
+    }
+
+    public SonarQubeMessure cloneForDate(final LocalDate date) {
+        return null;
     }
 
 }

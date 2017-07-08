@@ -42,10 +42,6 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 		).collect(Collectors.toList());
 	}
 
-	public List<SonarQubeMessure> getProjectMessureHistory(final String serverId, final String projectKey) {
-		return getProjectMessureHistory(serverId, projectKey, null);
-	}
-
 	public List<SonarQubeMessure> getProjectMessureHistory(final String serverId, final String projectKey, final Date fromDate) {
 		final StringBuilder serviceUri = new StringBuilder("api/measures/search_history")
 				.append("?component=" + projectKey)
