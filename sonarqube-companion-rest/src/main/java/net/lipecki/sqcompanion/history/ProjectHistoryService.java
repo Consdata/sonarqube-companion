@@ -61,17 +61,20 @@ public class ProjectHistoryService {
 					.stream()
 					.collect(mapOptionalValuesToValues());
 
-			// calculate historic entry for each past day, use previous available if non generated for analyzed day
+			// calculate historic entry for each past day, use previous available if non available for analyzed day
 			final List<ProjectHistoryEntry> history = new ArrayList<>();
-			SonarQubeMeasure lastMeasure = combined.values().stream().sorted(Comparator.comparing(SonarQubeMeasure::getDate)).findFirst().orElseThrow(() -> new SQCompanionException("Can't find any measure"));
+			SonarQubeMeasure lastMeasure = combined
+					.values()
+					.stream()
+					.sorted(Comparator.comparing(SonarQubeMeasure::getDate))
+					.findFirst()
+					.orElseThrow(() -> new SQCompanionException("Can't find any measure"));
 			for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
 				if (combined.containsKey(date)) {
 					lastMeasure = combined.get(date);
 				}
 				history.add(mapMeasureToHistoryEntry(date, lastMeasure));
 			}
-
-			log.debug("Project violations history builded [history={}]", history);
 
 			// TODO: store in db
 		} catch (final Exception exception) {
