@@ -4,7 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.sqcompanion.repository.Project;
 import net.lipecki.sqcompanion.repository.RepositoryService;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
+import net.lipecki.sqcompanion.sonarqube.SonarQubeMessure;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Możliwości rozwoju:
@@ -25,6 +33,7 @@ public class ProjectHistoryService {
         this.repositoryService = repositoryService;
         this.sonarQubeFacade = sonarQubeFacade;
         this.projectHistoryRepository = projectHistoryRepository;
+        syncProjectsHistory();
     }
 
     public void syncProjectsHistory() {
@@ -33,7 +42,24 @@ public class ProjectHistoryService {
 
     private void synProjectHistory(final Project project) {
         log.debug("Syncing project [project={}]", project);
-        sonarQubeFacade.getIssues(project.getServerId(), project.getKey());
+        final List<SonarQubeMessure> messures = sonarQubeFacade.getProjectMessureHistory(
+                project.getServerId(),
+                project.getKey()
+        );
+        log.info("Messures: {}", messures);
+
+        // aggregate to days
+        // fill missing days with last value
+        // sync values to db
+
+        final Map<LocalDate, List<SonarQubeMessure>> aggregated = messures
+                .stream()
+                .sorted(Comparator.comparing(SonarQubeMessure::getDate))
+                .collect(Collectors.groupingBy(e -> asLocalDate(e.getDate())));
+    }
+
+    private LocalDate asLocalDate(final Date date) {
+        return LocalDate.ofEpochDay(date.getTime());
     }
 
 }
