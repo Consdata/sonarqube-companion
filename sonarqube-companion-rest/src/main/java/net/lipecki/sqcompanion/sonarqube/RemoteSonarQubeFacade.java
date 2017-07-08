@@ -42,7 +42,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 		).collect(Collectors.toList());
 	}
 
-	public List<SonarQubeMessure> getProjectMessureHistory(final String serverId, final String projectKey, final Date fromDate) {
+	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final Date fromDate) {
 		final StringBuilder serviceUri = new StringBuilder("api/measures/search_history")
 				.append("?component=" + projectKey)
 				.append("&metrics=" + ALL_VIOLATION_METRICS);
@@ -50,29 +50,29 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 			serviceUri.append("&from=" + new SimpleDateFormat("yyyy-MM-dd").format(fromDate));
 		}
 
-		final List<SQMessure> messures = sonarQubeConnector.getForPaginatedList(
+		final List<SQMeasure> measures = sonarQubeConnector.getForPaginatedList(
 				serverId,
 				serviceUri.toString(),
-				SQMessuresSearchHistoryResponse.class,
-				SQMessuresSearchHistoryResponse::getMeasures
+				SQMeasuresSearchHistoryResponse.class,
+				SQMeasuresSearchHistoryResponse::getMeasures
 		).collect(Collectors.toList());
 
-		final Map<Date, SonarQubeMessure> messureDateIndex = new HashMap<>();
-		for (final SQMessure messure : messures) {
-			for (final SQMessureHistory historyEntry : messure.getHistory()) {
-				messureDateIndex.putIfAbsent(
+		final Map<Date, SonarQubeMeasure> measureDateIndex = new HashMap<>();
+		for (final SQMeasure measure : measures) {
+			for (final SQMeasureHistory historyEntry : measure.getHistory()) {
+				measureDateIndex.putIfAbsent(
 						historyEntry.getDate(),
-						SonarQubeMessure.builder().date(historyEntry.getDate()).build()
+						SonarQubeMeasure.builder().date(historyEntry.getDate()).build()
 				);
-				final SonarQubeMessure dateMessure = messureDateIndex.get(historyEntry.getDate());
-				dateMessure.putMetric(messure.getMetric(), historyEntry.getValue());
+				final SonarQubeMeasure dateMeasure = measureDateIndex.get(historyEntry.getDate());
+				dateMeasure.putMetric(measure.getMetric(), historyEntry.getValue());
 			}
 		}
 
-		return messureDateIndex
+		return measureDateIndex
 				.values()
 				.stream()
-				.sorted(Comparator.comparing(SonarQubeMessure::getDate))
+				.sorted(Comparator.comparing(SonarQubeMeasure::getDate))
 				.collect(Collectors.toList());
 	}
 

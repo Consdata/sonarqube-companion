@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.sqcompanion.repository.Project;
 import net.lipecki.sqcompanion.repository.RepositoryService;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
-import net.lipecki.sqcompanion.sonarqube.SonarQubeMessure;
+import net.lipecki.sqcompanion.sonarqube.SonarQubeMeasure;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -41,40 +42,32 @@ public class ProjectHistoryService {
 		try {
 			log.debug("Syncing project [project={}]", project);
 
-			// get messures
-			final List<SonarQubeMessure> historicAnalyses = sonarQubeFacade.getProjectMessureHistory(
+			// get measures
+			final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
 					project.getServerId(),
 					project.getKey(),
 					null // TODO: use last existing in db date
 			);
 
-			// aggregate messures if multiple for one day
-			final Map<LocalDate, List<SonarQubeMessure>> aggregated = historicAnalyses
+			// combine measures by dates and use latest for each day
+			final Map<LocalDate, SonarQubeMeasure> combined = historicAnalyses
 					.stream()
-					.sorted(Comparator.comparing(SonarQubeMessure::getDate))
-					.collect(Collectors.groupingBy(e -> asLocalDate(e.getDate())));
+					.collect(Collectors.groupingBy(
+							this::getLocalDate,
+							Collectors.reducing(this::useLaterMeasure)
+					))
+					.entrySet()
+					.stream()
+					.collect(mapOptionalValuesToValues());
 
-			// combine multiple messures to one messure for each day
-			final Map<LocalDate, SonarQubeMessure> combined = new HashMap<>();
-			for (final Map.Entry<LocalDate, List<SonarQubeMessure>> entry : aggregated.entrySet()) {
-				combined.put(
-						entry.getKey(),
-						entry.getValue()
-								.stream()
-								.sorted(Comparator.comparing(SonarQubeMessure::getDate))
-								.findFirst()
-								.get()
-				);
-			}
-
-			// calculate historic entry for each past day
+			// calculate historic entry for each past day, use previous available if non generated for analyzed day
 			final List<ProjectHistoryEntry> history = new ArrayList<>();
-			SonarQubeMessure lastMessure = combined.values().stream().sorted(Comparator.comparing(SonarQubeMessure::getDate)).findFirst().get();
-			for (LocalDate date = asLocalDate(lastMessure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
+			SonarQubeMeasure lastMeasure = combined.values().stream().sorted(Comparator.comparing(SonarQubeMeasure::getDate)).findFirst().get();
+			for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
 				if (combined.containsKey(date)) {
-					lastMessure = combined.get(date);
+					lastMeasure = combined.get(date);
 				}
-				history.add(mapMessureToHistoryEntry(date, lastMessure));
+				history.add(mapMeasureToHistoryEntry(date, lastMeasure));
 			}
 
 			log.debug("Project violations history builded [history={}]", history);
@@ -85,18 +78,30 @@ public class ProjectHistoryService {
 		}
 	}
 
+	private Collector<Map.Entry<LocalDate, Optional<SonarQubeMeasure>>, ?, Map<LocalDate, SonarQubeMeasure>> mapOptionalValuesToValues() {
+		return Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get());
+	}
+
+	private SonarQubeMeasure useLaterMeasure(final SonarQubeMeasure a, final SonarQubeMeasure b) {
+		return a.getDate().after(b.getDate()) ? a : b;
+	}
+
+	private LocalDate getLocalDate(final SonarQubeMeasure measure) {
+		return asLocalDate(measure.getDate());
+	}
+
 	private LocalDate asLocalDate(final Date date) {
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
-	private ProjectHistoryEntry mapMessureToHistoryEntry(final LocalDate date, final SonarQubeMessure messure) {
+	private ProjectHistoryEntry mapMeasureToHistoryEntry(final LocalDate date, final SonarQubeMeasure measure) {
 		return ProjectHistoryEntry
 				.builder()
-				.blockers(messure.getBlockers())
-				.criticals(messure.getCriticals())
-				.majors(messure.getMajors())
-				.minors(messure.getMinors())
-				.infos(messure.getInfos())
+				.blockers(measure.getBlockers())
+				.criticals(measure.getCriticals())
+				.majors(measure.getMajors())
+				.minors(measure.getMinors())
+				.infos(measure.getInfos())
 				.date(date)
 				.build();
 	}

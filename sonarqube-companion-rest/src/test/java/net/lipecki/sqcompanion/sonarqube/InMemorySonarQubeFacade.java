@@ -51,11 +51,11 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 	}
 
 	@Override
-	public List<SonarQubeMessure> getProjectMessureHistory(final String serverId, final String projectKey, final Date fromDate) {
+	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final Date fromDate) {
 		return inMemoryRepository
 				.getProjects()
 				.get(projectKey)
-				.getMessures()
+				.getMeasures()
 				.stream()
 				.filter(m -> fromDate == null || m.getDate().after(fromDate))
 				.collect(Collectors.toList());

@@ -19,6 +19,6 @@ public class InMemoryProject {
 	private List<SonarQubeIssue> issues;
 
 	@Singular
-	private List<SonarQubeMessure> messures;
+	private List<SonarQubeMeasure> measures;
 
 }

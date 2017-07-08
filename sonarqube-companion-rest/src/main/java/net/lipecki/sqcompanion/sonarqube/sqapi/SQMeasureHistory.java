@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class SQMessureHistory {
+public class SQMeasureHistory {
 
     private Date date;
     private Integer value;

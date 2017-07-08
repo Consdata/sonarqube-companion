@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @Builder
-public class SonarQubeMessure {
+public class SonarQubeMeasure {
 
     private Date date;
     private Integer blockers;
@@ -36,11 +36,11 @@ public class SonarQubeMessure {
                 setInfos(value);
                 break;
             default:
-                throw new SQCompanionException("Unknown messure metric: " + metricKey);
+                throw new SQCompanionException("Unknown measure metric: " + metricKey);
         }
     }
 
-    public SonarQubeMessure cloneForDate(final LocalDate date) {
+    public SonarQubeMeasure cloneForDate(final LocalDate date) {
         return null;
     }
 

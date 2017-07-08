@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SQMessure {
+public class SQMeasure {
 
     private String metric;
-    private List<SQMessureHistory> history;
+    private List<SQMeasureHistory> history;
 
 }
