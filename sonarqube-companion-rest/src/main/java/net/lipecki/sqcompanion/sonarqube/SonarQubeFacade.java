@@ -1,6 +1,6 @@
 package net.lipecki.sqcompanion.sonarqube;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,6 +12,6 @@ public interface SonarQubeFacade {
 
 	List<SonarQubeIssue> getIssues(String serverId, String projectKey);
 
-	List<SonarQubeMeasure> getProjectMeasureHistory(String serverId, String projectKey, Date fromDate);
+	List<SonarQubeMeasure> getProjectMeasureHistory(String serverId, String projectKey, LocalDate fromDate);
 
 }

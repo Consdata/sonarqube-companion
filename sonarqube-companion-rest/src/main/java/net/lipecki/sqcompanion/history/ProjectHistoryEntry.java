@@ -20,6 +20,7 @@ public class ProjectHistoryEntry {
     @Id
     @GeneratedValue
     private Long id;
+    private String projectKey;
     private Integer blockers;
     private Integer criticals;
     private Integer majors;

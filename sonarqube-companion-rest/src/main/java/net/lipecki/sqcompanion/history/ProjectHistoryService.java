@@ -7,6 +7,7 @@ import net.lipecki.sqcompanion.repository.RepositoryService;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeMeasure;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -35,6 +36,7 @@ public class ProjectHistoryService {
 		this.projectHistoryRepository = projectHistoryRepository;
 	}
 
+	@Transactional
 	public void syncProjectsHistory() {
 		repositoryService.getRootGroup().accept(gr -> gr.getProjects().stream().forEach(this::synProjectHistory));
 	}
@@ -44,42 +46,52 @@ public class ProjectHistoryService {
 			log.debug("Syncing project [project={}]", project);
 
 			// get measures
+			final Optional<ProjectHistoryEntry> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
 			final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
 					project.getServerId(),
 					project.getKey(),
-					null // TODO: use last existing in db date
+					lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate().plusDays(1) : null
 			);
+			if (!historicAnalyses.isEmpty()) {
+				// combine measures by dates and use latest for each day
+				final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
 
-			// combine measures by dates and use latest for each day
-			final Map<LocalDate, SonarQubeMeasure> combined = historicAnalyses
-					.stream()
-					.collect(Collectors.groupingBy(
-							this::getLocalDate,
-							Collectors.reducing(this::useLaterMeasure)
-					))
-					.entrySet()
-					.stream()
-					.collect(mapOptionalValuesToValues());
-
-			// calculate historic entry for each past day, use previous available if non available for analyzed day
-			final List<ProjectHistoryEntry> history = new ArrayList<>();
-			SonarQubeMeasure lastMeasure = combined
-					.values()
-					.stream()
-					.sorted(Comparator.comparing(SonarQubeMeasure::getDate))
-					.findFirst()
-					.orElseThrow(() -> new SQCompanionException("Can't find any measure"));
-			for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
-				if (combined.containsKey(date)) {
-					lastMeasure = combined.get(date);
+				// calculate historic entry for each past day, use previous available if non available for analyzed day
+				final List<ProjectHistoryEntry> history = new ArrayList<>();
+				SonarQubeMeasure lastMeasure = getFirstAvailableMeasure(combined);
+				for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
+					if (combined.containsKey(date)) {
+						lastMeasure = combined.get(date);
+					}
+					history.add(mapMeasureToHistoryEntry(date, project, lastMeasure));
 				}
-				history.add(mapMeasureToHistoryEntry(date, lastMeasure));
-			}
 
-			// TODO: store in db
+				projectHistoryRepository.saveAll(history);
+			}
 		} catch (final Exception exception) {
 			log.error("Project history synchronization failed [project={}]", project, exception);
 		}
+	}
+
+	private SonarQubeMeasure getFirstAvailableMeasure(final Map<LocalDate, SonarQubeMeasure> combined) {
+		return combined
+				.values()
+				.stream()
+				.sorted(Comparator.comparing(SonarQubeMeasure::getDate))
+				.findFirst()
+				.orElseThrow(() -> new SQCompanionException("Can't find any measure"));
+	}
+
+	private Map<LocalDate, SonarQubeMeasure> combineToSingleMeasurePerDay(final List<SonarQubeMeasure> historicAnalyses) {
+		return historicAnalyses
+				.stream()
+				.collect(Collectors.groupingBy(
+						this::getLocalDate,
+						Collectors.reducing(this::useLaterMeasure)
+				))
+				.entrySet()
+				.stream()
+				.collect(mapOptionalValuesToValues());
 	}
 
 	private Collector<Map.Entry<LocalDate, Optional<SonarQubeMeasure>>, ?, Map<LocalDate, SonarQubeMeasure>> mapOptionalValuesToValues() {
@@ -98,15 +110,16 @@ public class ProjectHistoryService {
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
-	private ProjectHistoryEntry mapMeasureToHistoryEntry(final LocalDate date, final SonarQubeMeasure measure) {
+	private ProjectHistoryEntry mapMeasureToHistoryEntry(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
 		return ProjectHistoryEntry
 				.builder()
+				.projectKey(project.getKey())
+				.date(date)
 				.blockers(measure.getBlockers())
 				.criticals(measure.getCriticals())
 				.majors(measure.getMajors())
 				.minors(measure.getMinors())
 				.infos(measure.getInfos())
-				.date(date)
 				.build();
 	}
 

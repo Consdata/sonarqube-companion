@@ -4,7 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.sqcompanion.sonarqube.sqapi.*;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,12 +43,12 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 		).collect(Collectors.toList());
 	}
 
-	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final Date fromDate) {
+	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final LocalDate fromDate) {
 		final StringBuilder serviceUri = new StringBuilder("api/measures/search_history")
 				.append("?component=" + projectKey)
 				.append("&metrics=" + ALL_VIOLATION_METRICS);
 		if (fromDate != null) {
-			serviceUri.append("&from=" + new SimpleDateFormat("yyyy-MM-dd").format(fromDate));
+			serviceUri.append("&from=" + fromDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		}
 
 		final List<SQMeasure> measures = sonarQubeConnector.getForPaginatedList(

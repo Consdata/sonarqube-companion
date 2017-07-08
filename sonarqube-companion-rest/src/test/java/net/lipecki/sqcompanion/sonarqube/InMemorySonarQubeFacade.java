@@ -2,6 +2,8 @@ package net.lipecki.sqcompanion.sonarqube;
 
 import net.lipecki.sqcompanion.TestAppConfig;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,13 +53,14 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 	}
 
 	@Override
-	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final Date fromDate) {
+	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final LocalDate fromLocalDate) {
+		final Date fromDate = Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		return inMemoryRepository
 				.getProjects()
 				.get(projectKey)
 				.getMeasures()
 				.stream()
-				.filter(m -> fromDate == null || m.getDate().after(fromDate))
+				.filter(m -> fromLocalDate == null || m.getDate().after(fromDate))
 				.collect(Collectors.toList());
 	}
 
