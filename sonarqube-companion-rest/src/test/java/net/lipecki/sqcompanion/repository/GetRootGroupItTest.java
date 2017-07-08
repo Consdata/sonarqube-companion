@@ -1,5 +1,6 @@
 package net.lipecki.sqcompanion.repository;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import net.lipecki.sqcompanion.BaseItTest;
 import net.lipecki.sqcompanion.TestAppConfig;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class GetRootGroupItTest extends BaseItTest {
 
+	@Ignore
 	@Test
 	public void shouldLoadRootGroup() {
 		// when

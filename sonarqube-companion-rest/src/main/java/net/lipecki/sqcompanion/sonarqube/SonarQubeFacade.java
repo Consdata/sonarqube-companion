@@ -127,7 +127,7 @@ public class SonarQubeFacade {
                             server.getUrl(),
                             uri,
                             pageIdx,
-                            1 // DEFAULT_PAGE_SIZE
+                            DEFAULT_PAGE_SIZE
                     ),
                     responseClass
             );

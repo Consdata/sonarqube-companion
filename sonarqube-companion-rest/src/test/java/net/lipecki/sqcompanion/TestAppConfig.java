@@ -1,10 +1,7 @@
 package net.lipecki.sqcompanion;
 
 import lombok.experimental.UtilityClass;
-import net.lipecki.sqcompanion.config.AppConfig;
-import net.lipecki.sqcompanion.config.GroupDefinition;
-import net.lipecki.sqcompanion.config.ProjectLink;
-import net.lipecki.sqcompanion.config.ProjectLinkType;
+import net.lipecki.sqcompanion.config.*;
 
 /**
  * @author gregorry
@@ -17,12 +14,12 @@ public class TestAppConfig {
                 .builder()
                 .rootGroup(
                         GroupDefinition.builder()
-                                .projectLink(
-                                        ProjectLink.builder()
-                                                .link(TestAppConfig.RootGroup.Project1.KEY)
-                                                .type(ProjectLinkType.DIRECT)
-                                                .build()
-                                )
+//                                .projectLink(
+//                                        ProjectLink.builder()
+//                                                .link(TestAppConfig.RootGroup.Project1.KEY)
+//                                                .type(ProjectLinkType.DIRECT)
+//                                                .build()
+//                                )
                                 .build()
                 )
                 .build();
