@@ -57,6 +57,7 @@ public class RepositoryService {
 					.projects(projects)
 					.build();
 		} catch (final Exception exception) {
+			log.error("Can't sync group details [group={}]", group, exception);
 			return Group.builder().build();
 		}
 	}
