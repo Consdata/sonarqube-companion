@@ -38,38 +38,43 @@ public class ProjectHistoryService {
 
 	@Transactional
 	public void syncProjectsHistory() {
-		repositoryService.getRootGroup().accept(gr -> gr.getProjects().stream().forEach(this::synProjectHistory));
+		repositoryService.getRootGroup().accept(gr -> gr.getProjects().stream().forEach(
+				pr -> {
+					try {
+						synProjectHistory(pr);
+					} catch (final Exception ex) {
+						log.error("Project history synchronization failed [project={}]", pr, ex);
+					}
+				}
+		));
 	}
 
 	private void synProjectHistory(final Project project) {
-		try {
-			log.debug("Syncing project [project={}]", project);
+		log.debug("Syncing project [project={}]", project);
 
-			// get measures
-			final Optional<ProjectHistoryEntry> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
-			final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
-					project.getServerId(),
-					project.getKey(),
-					lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate().plusDays(1) : null
-			);
-			if (!historicAnalyses.isEmpty()) {
-				// combine measures by dates and use latest for each day
-				final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
+		// get measures
+		final Optional<ProjectHistoryEntry> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
+		final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
+				project.getServerId(),
+				project.getKey(),
+				lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate().plusDays(1) : null
+		);
 
-				// calculate historic entry for each past day, use previous available if non available for analyzed day
-				final List<ProjectHistoryEntry> history = new ArrayList<>();
-				SonarQubeMeasure lastMeasure = getFirstAvailableMeasure(combined);
-				for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
-					if (combined.containsKey(date)) {
-						lastMeasure = combined.get(date);
-					}
-					history.add(mapMeasureToHistoryEntry(date, project, lastMeasure));
+		if (!historicAnalyses.isEmpty()) {
+			// combine measures by dates and use latest for each day
+			final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
+
+			// calculate historic entry for each past day, use previous available if non available for analyzed day
+			final List<ProjectHistoryEntry> history = new ArrayList<>();
+			SonarQubeMeasure lastMeasure = getFirstAvailableMeasure(combined);
+			for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
+				if (combined.containsKey(date)) {
+					lastMeasure = combined.get(date);
 				}
-
-				projectHistoryRepository.saveAll(history);
+				history.add(mapMeasureToHistoryEntry(date, project, lastMeasure));
 			}
-		} catch (final Exception exception) {
-			log.error("Project history synchronization failed [project={}]", project, exception);
+
+			projectHistoryRepository.saveAll(history);
 		}
 	}
 
