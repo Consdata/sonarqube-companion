@@ -1,18 +1,12 @@
 package net.lipecki.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.sqcompanion.config.AppConfig;
-import net.lipecki.sqcompanion.config.ServerDefinition;
 import net.lipecki.sqcompanion.sonarqube.sqapi.*;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author gregorry
@@ -21,22 +15,15 @@ import java.util.stream.Stream;
 @Slf4j
 public class RemoteSonarQubeFacade implements SonarQubeFacade {
 
-	public static final int DEFAULT_PAGE_SIZE = 100;
-	// SonarQube WEB Api uses 1-based page indexes
-	public static final int FIRST_PAGE = 1;
-	public static final String PAGING_TEMPLATE = "p=%d&ps=%d";
-	public static final String SERVER_WITH_URI_TEMPLATE = "%s%s";
-	public static final String ALL_VIOLATION_METRICS = " blocker_violations,critical_violations,major_violations,minor_violations,info_violations";
-	private final AppConfig config;
-	private final RestTemplate restTemplate;
+	public static final String ALL_VIOLATION_METRICS = "blocker_violations,critical_violations,major_violations,minor_violations,info_violations";
+	private final SonarQubeConnector sonarQubeConnector;
 
-	public RemoteSonarQubeFacade(final AppConfig config, final RestTemplate restTemplate) {
-		this.config = config;
-		this.restTemplate = restTemplate;
+	public RemoteSonarQubeFacade(final SonarQubeConnector sonarQubeConnector) {
+		this.sonarQubeConnector = sonarQubeConnector;
 	}
 
 	public List<SonarQubeProject> getProjects(final String serverId) {
-		return getForPaginatedList(
+		return sonarQubeConnector.getForPaginatedList(
 				serverId,
 				"api/projects/search",
 				SQProjectsSearchResponse.class,
@@ -46,7 +33,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 	}
 
 	public List<SonarQubeIssue> getIssues(final String serverId, final String projectKey) {
-		return getForPaginatedList(
+		return sonarQubeConnector.getForPaginatedList(
 				serverId,
 				"api/issues/search?projectKeys=" + projectKey,
 				SQIssuesSearchResponse.class,
@@ -67,7 +54,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 			serviceUri.append("&from=" + new SimpleDateFormat("yyyy-MM-dd").format(fromDate));
 		}
 
-		final List<SQMessure> messures = getForPaginatedList(
+		final List<SQMessure> messures = sonarQubeConnector.getForPaginatedList(
 				serverId,
 				serviceUri.toString(),
 				SQMessuresSearchHistoryResponse.class,
@@ -91,43 +78,6 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 				.stream()
 				.sorted(Comparator.comparing(SonarQubeMessure::getDate))
 				.collect(Collectors.toList());
-	}
-
-	private <T extends SQPaginatedResponse, R> Stream<R> getForPaginatedList(
-			final String serverId,
-			final String uri,
-			final Class<T> responseClass,
-			final Function<T, List<R>> dataExtractor) {
-		final List<R> result = new ArrayList<>();
-
-		final ServerDefinition server = getServerDefinition(serverId);
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor("admin", "admin"));
-
-		T lastResponse = null;
-		do {
-			int pageIdx = lastResponse != null ? lastResponse.getNextPage() : FIRST_PAGE;
-			lastResponse = restTemplate.getForObject(
-					String.format(
-							SERVER_WITH_URI_TEMPLATE + (uri.contains("?") ? "&" : "?") + PAGING_TEMPLATE,
-							server.getUrl(),
-							uri,
-							pageIdx,
-							DEFAULT_PAGE_SIZE
-					),
-					responseClass
-			);
-			result.addAll(dataExtractor.apply(lastResponse));
-		} while (lastResponse.hasMorePages());
-
-		return result.stream();
-	}
-
-	private ServerDefinition getServerDefinition(final String serverId) {
-		return config.getServers()
-				.stream()
-				.filter(s -> s.getId().equals(serverId))
-				.findFirst()
-				.orElseThrow(() -> new RuntimeException("Can't find server for id: " + serverId));
 	}
 
 	private SonarQubeProject mapComponentToProject(final SQComponent component) {
