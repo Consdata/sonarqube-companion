@@ -1,9 +1,9 @@
 package net.lipecki.sqcompanion.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import net.lipecki.sqcompanion.config.ProjectLink;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
 import org.springframework.stereotype.Service;
-import net.lipecki.sqcompanion.config.ProjectLink;
 
 import java.util.List;
 import java.util.stream.Collectors;

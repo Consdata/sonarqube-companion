@@ -28,7 +28,6 @@ public class RepositoryService {
 	public RepositoryService(final AppConfig appConfig, final ProjectLinkResolverFactory projectLinkResolverFactory) {
 		this.appConfig = appConfig;
 		this.projectLinkResolverFactory = projectLinkResolverFactory;
-		syncGroups();
 	}
 
 	public Group getRootGroup() {
@@ -45,24 +44,33 @@ public class RepositoryService {
 	}
 
 	private Group buildGroup(final GroupDefinition group) {
-		final List<Group> subGroups = group.getGroups().stream().map(this::buildGroup).collect(Collectors.toList());
-		final List<Project> projects = group.getProjectLinks()
-				.stream()
-				.flatMap(this::linkProjects)
-				.collect(Collectors.toList());
-		return Group.builder()
-				.uuid(group.getUuid())
-				.name(group.getName())
-				.groups(subGroups)
-				.projects(projects)
-				.build();
+		try {
+			final List<Group> subGroups = group.getGroups().stream().map(this::buildGroup).collect(Collectors.toList());
+			final List<Project> projects = group.getProjectLinks()
+					.stream()
+					.flatMap(this::linkProjects)
+					.collect(Collectors.toList());
+			return Group.builder()
+					.uuid(group.getUuid())
+					.name(group.getName())
+					.groups(subGroups)
+					.projects(projects)
+					.build();
+		} catch (final Exception exception) {
+			return Group.builder().build();
+		}
 	}
 
 	private Stream<Project> linkProjects(final ProjectLink projectLink) {
-		return projectLinkResolverFactory
-				.getResolver(projectLink.getType())
-				.resolveProjectLink(projectLink)
-				.stream();
+		try {
+			return projectLinkResolverFactory
+					.getResolver(projectLink.getType())
+					.resolveProjectLink(projectLink)
+					.stream();
+		} catch (final Exception exception) {
+			log.error("Can't resolve project link [projectLink={}]", projectLink, exception);
+			return Stream.empty();
+		}
 	}
 
 }

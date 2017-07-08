@@ -33,7 +33,6 @@ public class ProjectHistoryService {
         this.repositoryService = repositoryService;
         this.sonarQubeFacade = sonarQubeFacade;
         this.projectHistoryRepository = projectHistoryRepository;
-        syncProjectsHistory();
     }
 
     public void syncProjectsHistory() {
@@ -41,21 +40,24 @@ public class ProjectHistoryService {
     }
 
     private void synProjectHistory(final Project project) {
-        log.debug("Syncing project [project={}]", project);
-        final List<SonarQubeMessure> messures = sonarQubeFacade.getProjectMessureHistory(
-                project.getServerId(),
-                project.getKey()
-        );
-        log.info("Messures: {}", messures);
+        try {
+            log.debug("Syncing project [project={}]", project);
+            final List<SonarQubeMessure> messures = sonarQubeFacade.getProjectMessureHistory(
+                    project.getServerId(),
+                    project.getKey()
+            );
 
-        // aggregate to days
-        // fill missing days with last value
-        // sync values to db
+            // aggregate to days
+            // fill missing days with last value
+            // sync values to db
 
-        final Map<LocalDate, List<SonarQubeMessure>> aggregated = messures
-                .stream()
-                .sorted(Comparator.comparing(SonarQubeMessure::getDate))
-                .collect(Collectors.groupingBy(e -> asLocalDate(e.getDate())));
+            final Map<LocalDate, List<SonarQubeMessure>> aggregated = messures
+                    .stream()
+                    .sorted(Comparator.comparing(SonarQubeMessure::getDate))
+                    .collect(Collectors.groupingBy(e -> asLocalDate(e.getDate())));
+        } catch (final Exception exception) {
+            log.error("Project history synchronization failed [project={}]", project, exception);
+        }
     }
 
     private LocalDate asLocalDate(final Date date) {
