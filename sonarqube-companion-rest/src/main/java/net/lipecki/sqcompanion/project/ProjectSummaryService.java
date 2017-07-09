@@ -30,27 +30,31 @@ public class ProjectSummaryService {
 	public List<ProjectSummary> getProjectSummaries(final List<Project> allProjects) {
 		return allProjects
 				.stream()
-				.map(p -> {
-							final ProjectHistoryEntry historyEntry = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(p.getKey()).orElse(null);
-							return ProjectSummary
-									.builder()
-									.name(p.getName())
-									.key(p.getKey())
-									.serverId(p.getServerId())
-									.health(healthCheckService.checkHealth(p))
-									.violations(
-											ProjectViolations
-													.builder()
-													.blockers(historyEntry != null ? historyEntry.getBlockers() : null)
-													.criticals(historyEntry != null ? historyEntry.getCriticals() : null)
-													.majors(historyEntry != null ? historyEntry.getMajors() : null)
-													.minors(historyEntry != null ? historyEntry.getMinors() : null)
-													.infos(historyEntry != null ? historyEntry.getInfos() : null)
-													.build()
-									)
-									.build();
-						}
-				).collect(Collectors.toList());
+				.map(this::asProjectSummary)
+				.collect(Collectors.toList());
+	}
+
+	private ProjectSummary asProjectSummary(final Project p) {
+		final ProjectHistoryEntry historyEntry = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(p.getKey()).orElse(null);
+		final ProjectSummary.ProjectSummaryBuilder builder = ProjectSummary
+				.builder()
+				.name(p.getName())
+				.key(p.getKey())
+				.serverId(p.getServerId())
+				.health(healthCheckService.checkHealth(p));
+		if (historyEntry != null) {
+			builder.violations(
+					ProjectViolations
+							.builder()
+							.blockers(historyEntry != null ? historyEntry.getBlockers() : null)
+							.criticals(historyEntry != null ? historyEntry.getCriticals() : null)
+							.majors(historyEntry != null ? historyEntry.getMajors() : null)
+							.minors(historyEntry != null ? historyEntry.getMinors() : null)
+							.infos(historyEntry != null ? historyEntry.getInfos() : null)
+							.build()
+			);
+		}
+		return builder.build();
 	}
 
 }
