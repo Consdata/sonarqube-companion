@@ -30,15 +30,15 @@ public class Group {
 	}
 
 	public List<Project> getAllProjects() {
-		final Set<Project> projects = new HashSet<>();
-		accept(gr -> projects.addAll(gr.getProjects()));
-		return new ArrayList<>(projects);
+		final Set<Project> result = new HashSet<>();
+		accept(gr -> result.addAll(gr.getProjects()));
+		return new ArrayList<>(result);
 	}
 
 	public List<Group> getAllGroups() {
-		final List<Group> groups = new ArrayList<>();
-		accept(gr -> groups.add(gr));
-		return groups;
+		final List<Group> result = new ArrayList<>();
+		accept(result::add);
+		return result;
 	}
 
 	public List<Group> getGroups() {
