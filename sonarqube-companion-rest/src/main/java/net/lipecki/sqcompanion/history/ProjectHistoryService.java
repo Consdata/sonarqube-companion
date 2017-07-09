@@ -39,15 +39,19 @@ public class ProjectHistoryService {
 
 	@Transactional
 	public void syncProjectsHistory() {
-		repositoryService.getRootGroup().accept(gr -> gr.getProjects().stream().forEach(
-				pr -> {
-					try {
-						synProjectHistory(pr);
-					} catch (final Exception ex) {
-						log.error("Project history synchronization failed [project={}]", pr, ex);
-					}
-				}
-		));
+		repositoryService
+				.getRootGroup()
+				.accept(
+						gr -> gr.getProjects().stream().forEach(
+								pr -> {
+									try {
+										synProjectHistory(pr);
+									} catch (final Exception ex) {
+										log.error("Project history synchronization failed [project={}]", pr, ex);
+									}
+								}
+						)
+				);
 	}
 
 	private void synProjectHistory(final Project project) {
