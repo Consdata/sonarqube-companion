@@ -75,7 +75,7 @@ public class ProjectHistoryService {
 				history.add(mapMeasureToHistoryEntry(date, project, lastMeasure));
 			}
 
-			// store or update
+			// store
 			projectHistoryRepository.saveAll(history);
 		}
 	}

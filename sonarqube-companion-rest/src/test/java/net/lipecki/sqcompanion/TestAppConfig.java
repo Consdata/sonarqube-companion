@@ -52,7 +52,7 @@ public class TestAppConfig {
 		@UtilityClass
 		public static class Project1 {
 
-			public static final String KEY = "pl.proj.project1";
+			public static final String KEY = "pl.proj.";
 
 			public static final String NAME = "Project1";
 

@@ -2,6 +2,7 @@ package net.lipecki.sqcompanion.config;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Singular;
 
 import java.util.Map;
 
@@ -13,9 +14,10 @@ import java.util.Map;
 @Builder
 public class ProjectLink {
 
-    private final String serverId;
-    private final ProjectLinkType type;
-    private final String link;
-    private final Map<String, Object> additional;
+    private String serverId;
+    private ProjectLinkType type;
+    private String link;
+    @Singular
+    private Map<String, Object> additionals;
 
 }

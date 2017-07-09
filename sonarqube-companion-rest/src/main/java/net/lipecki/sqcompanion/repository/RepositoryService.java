@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,10 +31,6 @@ public class RepositoryService {
 		this.projectLinkResolverFactory = projectLinkResolverFactory;
 	}
 
-	public Group getRootGroup() {
-		return rootGroup;
-	}
-
 	public void syncGroups() {
 		final GroupDefinition rootGroupConfig = appConfig.getRootGroup();
 		if (Objects.nonNull(rootGroupConfig)) {
@@ -41,6 +38,18 @@ public class RepositoryService {
 		} else {
 			log.info("Root group not synced due to empty configuration");
 		}
+	}
+
+	public Group getRootGroup() {
+		return rootGroup;
+	}
+
+	public Optional<Group> getGroup(final String uuid) {
+		return rootGroup
+				.getAllGroups()
+				.stream()
+				.filter(g -> g.getUuid().equals(uuid))
+				.findFirst();
 	}
 
 	private Group buildGroup(final GroupDefinition group) {

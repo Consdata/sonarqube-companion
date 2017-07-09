@@ -4,20 +4,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
 public class GroupDefinition {
 
-    private final String uuid;
-    private final String name;
-    private final String description;
-
+    private String uuid;
+    private String name;
+    private String description;
     @Singular
-    private final List<GroupDefinition> groups;
-
+    private List<GroupDefinition> groups;
     @Singular
-    private final List<ProjectLink> projectLinks;
+    private List<ProjectLink> projectLinks;
+
+    public List<GroupDefinition> getGroups() {
+        return groups != null ? groups : new ArrayList<>();
+    }
+
+    public List<ProjectLink> getProjectLinks() {
+        return projectLinks != null ? projectLinks : new ArrayList<>();
+    }
+
+
 
 }
