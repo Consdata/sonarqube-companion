@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
@@ -18,8 +17,7 @@ import java.time.LocalDate;
 public class ProjectHistoryEntry {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
     private String projectKey;
     private Integer blockers;
     private Integer criticals;

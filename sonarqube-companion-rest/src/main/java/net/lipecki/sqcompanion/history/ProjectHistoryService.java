@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class ProjectHistoryService {
 		final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
 				project.getServerId(),
 				project.getKey(),
-				lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate().plusDays(1) : null
+				lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate() : null
 		);
 
 		if (!historicAnalyses.isEmpty()) {
@@ -67,13 +68,14 @@ public class ProjectHistoryService {
 			// calculate historic entry for each past day, use previous available if non available for analyzed day
 			final List<ProjectHistoryEntry> history = new ArrayList<>();
 			SonarQubeMeasure lastMeasure = getFirstAvailableMeasure(combined);
-			for (LocalDate date = asLocalDate(lastMeasure.getDate()); date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
+			for (LocalDate date = asLocalDate(lastMeasure.getDate()); !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
 				if (combined.containsKey(date)) {
 					lastMeasure = combined.get(date);
 				}
 				history.add(mapMeasureToHistoryEntry(date, project, lastMeasure));
 			}
 
+			// store or update
 			projectHistoryRepository.saveAll(history);
 		}
 	}
@@ -118,6 +120,7 @@ public class ProjectHistoryService {
 	private ProjectHistoryEntry mapMeasureToHistoryEntry(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
 		return ProjectHistoryEntry
 				.builder()
+				.id(String.format("%s$%s", project.getKey(), date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
 				.projectKey(project.getKey())
 				.date(date)
 				.blockers(measure.getBlockers())
