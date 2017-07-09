@@ -46,11 +46,11 @@ public class ProjectSummaryService {
 			builder.violations(
 					ProjectViolations
 							.builder()
-							.blockers(historyEntry != null ? historyEntry.getBlockers() : null)
-							.criticals(historyEntry != null ? historyEntry.getCriticals() : null)
-							.majors(historyEntry != null ? historyEntry.getMajors() : null)
-							.minors(historyEntry != null ? historyEntry.getMinors() : null)
-							.infos(historyEntry != null ? historyEntry.getInfos() : null)
+							.blockers(historyEntry.getBlockers())
+							.criticals(historyEntry.getCriticals())
+							.majors(historyEntry.getMajors())
+							.minors(historyEntry.getMinors())
+							.infos(historyEntry.getInfos())
 							.build()
 			);
 		}
