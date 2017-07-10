@@ -24,14 +24,13 @@ public class RegexProjectLinkResolverTest {
 
     private AppConfig appConfig;
     private RepositoryService service;
-    private ProjectLinkResolverFactory projectLinkResolverFactory;
     private SonarQubeFacade sonarQubeFacade;
 
     @Before
     public void setup() {
         appConfig = AppConfig.builder().build();
         sonarQubeFacade = mock(SonarQubeFacade.class);
-        projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
+        final ProjectLinkResolverFactory projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
         when(projectLinkResolverFactory.getResolver(Mockito.eq(ProjectLinkType.REGEX)))
                 .thenReturn(new RegexProjectLinkResolver(sonarQubeFacade));
         service = new RepositoryService(appConfig, projectLinkResolverFactory);

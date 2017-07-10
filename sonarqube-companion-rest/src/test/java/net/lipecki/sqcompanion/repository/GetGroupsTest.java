@@ -17,15 +17,13 @@ public class GetGroupsTest {
 
     private AppConfig appConfig;
     private RepositoryService service;
-    private ProjectLinkResolverFactory projectLinkResolverFactory;
-    private ProjectLinkResolver linkResolver;
 
     @Before
     public void setup() {
         appConfig = AppConfig.builder().build();
 
-        projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
-        linkResolver = mock(ProjectLinkResolver.class);
+        final ProjectLinkResolverFactory projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
+        final ProjectLinkResolver linkResolver = mock(ProjectLinkResolver.class);
         when(projectLinkResolverFactory.getResolver(Mockito.eq(ProjectLinkType.DIRECT))).thenReturn(linkResolver);
 
         service = new RepositoryService(appConfig, projectLinkResolverFactory);
