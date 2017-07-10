@@ -1,6 +1,7 @@
 package net.lipecki.sqcompanion.group;
 
 import net.lipecki.sqcompanion.SQCompanionException;
+import net.lipecki.sqcompanion.health.HealthCheckService;
 import net.lipecki.sqcompanion.health.HealthStatus;
 import net.lipecki.sqcompanion.project.ProjectSummary;
 import net.lipecki.sqcompanion.project.ProjectSummaryService;
@@ -25,20 +26,18 @@ public class GroupController {
 
 	private final RepositoryService repositoryService;
 	private final ProjectSummaryService projectSummaryService;
+	private final HealthCheckService healthCheckService;
 
 	public GroupController(
 			final RepositoryService repositoryService,
-			final ProjectSummaryService projectSummaryService) {
+			final ProjectSummaryService projectSummaryService,
+			final HealthCheckService healthCheckService) {
 		this.repositoryService = repositoryService;
 		this.projectSummaryService = projectSummaryService;
+		this.healthCheckService = healthCheckService;
 	}
 
 	@RequestMapping({"", "/"})
-	public GroupWithSubGroupsSummary getAllGrups() {
-		return asGroupWithSubGroupsSummary(repositoryService.getRootGroup());
-	}
-
-	@RequestMapping("/root")
 	public GroupDetails getRootGroup() {
 		return asGroupDetails(repositoryService.getRootGroup());
 	}
@@ -55,7 +54,7 @@ public class GroupController {
 
 	private GroupDetails asGroupDetails(final Group group) {
 		final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-		final HealthStatus healthStatus = getProjectsHealthStatus(projectSummaries);
+		final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
 
 		return GroupDetails
 				.builder()
@@ -74,7 +73,7 @@ public class GroupController {
 
 	private GroupSummary asGroupSummary(final Group group) {
 		final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-		final HealthStatus healthStatus = getProjectsHealthStatus(projectSummaries);
+		final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
 		return GroupSummary
 				.builder()
 				.healthStatus(healthStatus)
@@ -83,28 +82,8 @@ public class GroupController {
 				.build();
 	}
 
-	private GroupWithSubGroupsSummary asGroupWithSubGroupsSummary(final Group group) {
-		final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-		final HealthStatus healthStatus = getProjectsHealthStatus(projectSummaries);
-		return GroupWithSubGroupsSummary
-				.builder()
-				.healthStatus(healthStatus)
-				.uuid(group.getUuid())
-				.name(group.getName())
-				.groups(group.getGroups().stream().map(this::asGroupWithSubGroupsSummary).collect(Collectors.toList()))
-				.build();
-	}
-
 	private int getProjectViolationsSum(final List<ProjectSummary> projectSummaries, final ToIntFunction<ProjectViolations> violationsExtractor) {
 		return projectSummaries.stream().map(ProjectSummary::getViolations).mapToInt(violationsExtractor).sum();
-	}
-
-	private HealthStatus getProjectsHealthStatus(final List<ProjectSummary> projectSummaries) {
-		return projectSummaries
-				.stream()
-				.map(ProjectSummary::getHealth)
-				.reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b)
-				.orElseThrow(() -> new SQCompanionException("Can't calculate group status"));
 	}
 
 }

@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.group;
+package net.lipecki.sqcompanion.overview;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +11,11 @@ import java.util.List;
  */
 @Data
 @Builder
-public class GroupWithSubGroupsSummary {
+public class GroupOverview {
 
 	private String uuid;
 	private String name;
 	private HealthStatus healthStatus;
-	private List<GroupWithSubGroupsSummary> groups;
+	private List<GroupOverview> groups;
 
 }
