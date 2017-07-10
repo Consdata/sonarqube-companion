@@ -110,13 +110,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "sqc",
+      "sq",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "sqc",
+      "sq",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

@@ -27,6 +27,7 @@
         <java.version>1.8</java.version>
         <!-- Versions -->
         <jacoco.version>0.7.9</jacoco.version>
+        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
     </properties>
 
     <dependencyManagement>
@@ -35,6 +36,11 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
