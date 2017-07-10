@@ -54,7 +54,7 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 
 	@Override
 	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final LocalDate fromLocalDate) {
-		final Date fromDate = Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date fromDate = fromLocalDate != null ? Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
 		return inMemoryRepository
 				.getProjects()
 				.get(projectKey)
