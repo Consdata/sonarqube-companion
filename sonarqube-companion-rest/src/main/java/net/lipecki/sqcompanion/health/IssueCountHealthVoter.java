@@ -34,7 +34,7 @@ public class IssueCountHealthVoter implements HealthVoter {
 				return HealthStatus.HEALTHY;
 			}
 		} else {
-			return null;
+			return HealthStatus.UNKNOWN;
 		}
 	}
 

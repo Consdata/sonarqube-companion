@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -102,7 +103,7 @@ public class GroupController {
     }
 
     private int getProjectViolationsSum(final List<ProjectSummary> projectSummaries, final ToIntFunction<ProjectViolations> violationsExtractor) {
-        return projectSummaries.stream().map(ProjectSummary::getViolations).mapToInt(violationsExtractor).sum();
+        return projectSummaries.stream().map(ProjectSummary::getViolations).filter(Objects::nonNull).mapToInt(violationsExtractor).sum();
     }
 
 }

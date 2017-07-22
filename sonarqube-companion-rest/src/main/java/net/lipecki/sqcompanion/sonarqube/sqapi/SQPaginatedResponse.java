@@ -16,7 +16,7 @@ public abstract class SQPaginatedResponse {
     }
 
     public boolean hasMorePages() {
-        int maxPages = paging.getTotal() / paging.getPageSize();
+        int maxPages = paging.getTotal() % paging.getPageSize() == 0 ? paging.getTotal() / paging.getPageSize() : paging.getTotal() / paging.getPageSize() + 1;
         return paging.getPageIndex() < maxPages;
     }
 

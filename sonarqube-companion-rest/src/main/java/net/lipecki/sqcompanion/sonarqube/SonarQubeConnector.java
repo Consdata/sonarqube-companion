@@ -41,7 +41,9 @@ public class SonarQubeConnector {
 		final List<R> result = new ArrayList<>();
 
 		final ServerDefinition server = getServerDefinition(serverId);
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor("admin", "admin"));
+		restTemplate.getInterceptors().clear();
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(server.getAuthentication().getValue(), ""));
+		// restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor("admin", "admin"));
 
 		T lastResponse = null;
 		do {

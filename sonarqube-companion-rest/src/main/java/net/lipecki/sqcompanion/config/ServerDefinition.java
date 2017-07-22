@@ -8,7 +8,7 @@ import lombok.Data;
 public class ServerDefinition {
 
     private String id;
-
     private String url;
+    private ServerAuthentication authentication;
 
 }

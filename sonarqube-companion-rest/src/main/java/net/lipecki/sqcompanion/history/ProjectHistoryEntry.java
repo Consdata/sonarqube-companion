@@ -7,9 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity(name = "project_history_entries")
+@Table(
+        indexes = {
+                @Index(name = "IDX_HISTORY_ENTRIES_PROJECT_KEY", columnList = "projectKey"),
+                @Index(name = "IDX_HISTORY_ENTRIES_PROJECT_KEY_DATE", columnList = "projectKey,date")
+        }
+)
 @Data
 @Builder
 @RequiredArgsConstructor
