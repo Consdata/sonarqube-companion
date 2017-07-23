@@ -52,6 +52,21 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+    "prefixInterfaces": false,
+    "component": {
+      "inlineTemplate": true,
+      "spec": false
+    },
+    "spec": {
+      "class": false,
+      "component": false,
+      "directive": false,
+      "module": false,
+      "pipe": false,
+      "service": false
+    },
+    "serve": {
+      "port": 4000
+    }
   }
 }
