@@ -10,12 +10,18 @@
     </parent>
 
     <artifactId>sonarqube-companion-rest</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>sonarqube-companion-rest</name>
 
     <dependencies>
+        <!-- Internal -->
+        <dependency>
+            <groupId>net.lipecki</groupId>
+            <artifactId>sonarqube-companion-frontend</artifactId>
+            <type>zip</type>
+        </dependency>
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,6 +88,29 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.lipecki</groupId>
+                                    <artifactId>sonarqube-companion-frontend</artifactId>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/classes/resources</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
