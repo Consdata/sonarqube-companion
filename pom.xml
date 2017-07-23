@@ -26,18 +26,15 @@
     </prerequisites>
 
     <properties>
-        <!-- Project configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <!-- Versions -->
         <jacoco.version>0.7.9</jacoco.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Internal -->
             <dependency>
                 <groupId>net.lipecki</groupId>
                 <artifactId>sonarqube-companion-frontend</artifactId>
@@ -45,7 +42,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- External -->
             <dependency>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
