@@ -2,13 +2,20 @@ package net.lipecki.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.sqcompanion.config.AppConfig;
+import net.lipecki.sqcompanion.config.ServerAuthentication;
 import net.lipecki.sqcompanion.config.ServerDefinition;
 import net.lipecki.sqcompanion.sonarqube.sqapi.SQPaginatedResponse;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -25,6 +32,8 @@ public class SonarQubeConnector {
 	public static final int FIRST_PAGE = 1;
 	public static final String PAGING_TEMPLATE = "p=%d&ps=%d";
 	public static final String SERVER_WITH_URI_TEMPLATE = "%s%s";
+	public static final String BASIC_AUTH_TEMPLATE = "Basic %s";
+	public static final String BASIC_AUTH_VALUE_TEMPLATE = "%s:%s";
 	private final AppConfig config;
 	private final RestTemplate restTemplate;
 
@@ -41,27 +50,69 @@ public class SonarQubeConnector {
 		final List<R> result = new ArrayList<>();
 
 		final ServerDefinition server = getServerDefinition(serverId);
-		restTemplate.getInterceptors().clear();
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(server.getAuthentication().getValue(), ""));
-		// restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor("admin", "admin"));
 
 		T lastResponse = null;
 		do {
 			int pageIdx = lastResponse != null ? lastResponse.getNextPage() : FIRST_PAGE;
-			lastResponse = restTemplate.getForObject(
-					String.format(
-							SERVER_WITH_URI_TEMPLATE + (uri.contains("?") ? "&" : "?") + PAGING_TEMPLATE,
-							server.getUrl(),
-							uri,
-							pageIdx,
-							DEFAULT_PAGE_SIZE
-					),
-					responseClass
+			final String url = String.format(
+					SERVER_WITH_URI_TEMPLATE + (uri.contains("?") ? "&" : "?") + PAGING_TEMPLATE,
+					server.getUrl(),
+					uri,
+					pageIdx,
+					DEFAULT_PAGE_SIZE
 			);
+
+			final HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+
+			if (server.hasAuthentication()) {
+				addAuthentication(server.getAuthentication(), headers);
+			}
+
+			lastResponse = restTemplate.exchange(
+					url,
+					HttpMethod.GET,
+					new HttpEntity<String>(null, headers),
+					responseClass
+			).getBody();
+
 			result.addAll(dataExtractor.apply(lastResponse));
 		} while (lastResponse.hasMorePages());
 
 		return result.stream();
+	}
+
+	private void addAuthentication(final ServerAuthentication authentication, final HttpHeaders headers) {
+		if (authentication.getType().equals("token")) {
+			headers.add(
+					"Authorization",
+					basicAuthorization(
+							authentication.getParams().get("token"),
+							""
+					)
+			);
+		} else if (authentication.getType().equals("basic")) {
+			headers.add(
+					"Authorization",
+					basicAuthorization(
+							authentication.getParams().get("user"),
+							authentication.getParams().get("password")
+					)
+			);
+		} else {
+			throw new RuntimeException("Unknown server authentication type: " + authentication);
+		}
+	}
+
+	private String basicAuthorization(final String user, final String password) {
+		return String.format(
+				BASIC_AUTH_TEMPLATE,
+				Base64Utils.encodeToString(
+						String
+								.format(BASIC_AUTH_VALUE_TEMPLATE, user, password)
+								.getBytes(StandardCharsets.UTF_8)
+				)
+		);
 	}
 
 	private ServerDefinition getServerDefinition(final String serverId) {

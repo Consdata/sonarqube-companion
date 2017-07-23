@@ -55,7 +55,7 @@ public class ProjectHistoryService {
 	}
 
 	private void synProjectHistory(final Project project) {
-		log.debug("Syncing project [project={}]", project);
+		log.info("Syncing project [project={}]", project);
 
 		// get measures
 		final Optional<ProjectHistoryEntry> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
@@ -65,6 +65,7 @@ public class ProjectHistoryService {
 				lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate() : null
 		);
 
+		log.info("Project analyses to store [project={}, analyses={}]", project, historicAnalyses.size());
 		if (!historicAnalyses.isEmpty()) {
 			// combine measures by dates and use latest for each day
 			final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);

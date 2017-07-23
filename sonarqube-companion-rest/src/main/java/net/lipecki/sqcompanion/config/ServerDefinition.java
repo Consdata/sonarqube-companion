@@ -7,8 +7,14 @@ import lombok.Data;
 @Builder
 public class ServerDefinition {
 
-    private String id;
-    private String url;
-    private ServerAuthentication authentication;
+	private String id;
+	private String url;
+	private ServerAuthentication authentication;
+
+	public boolean hasAuthentication() {
+		return authentication != null
+				&& authentication.getType() != null
+				&& !authentication.getType().isEmpty();
+	}
 
 }

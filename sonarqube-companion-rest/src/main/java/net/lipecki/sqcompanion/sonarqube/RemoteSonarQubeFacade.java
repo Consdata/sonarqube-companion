@@ -23,6 +23,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 		this.sonarQubeConnector = sonarQubeConnector;
 	}
 
+	@Override
 	public List<SonarQubeProject> getProjects(final String serverId) {
 		return sonarQubeConnector.getForPaginatedList(
 				serverId,
@@ -33,6 +34,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 		).collect(Collectors.toList());
 	}
 
+	@Override
 	public List<SonarQubeIssue> getIssues(final String serverId, final String projectKey) {
 		return sonarQubeConnector.getForPaginatedList(
 				serverId,
@@ -43,6 +45,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 		).collect(Collectors.toList());
 	}
 
+	@Override
 	public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final LocalDate fromDate) {
 		final StringBuilder serviceUri = new StringBuilder("api/measures/search_history")
 				.append("?component=" + projectKey)
