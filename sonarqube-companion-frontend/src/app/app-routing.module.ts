@@ -13,6 +13,11 @@ const routes: Routes = [
     component: NotFoundComponent
   },
   {
+    path: '',
+    redirectTo: '/overview',
+    pathMatch: 'full'
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }

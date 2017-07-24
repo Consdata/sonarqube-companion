@@ -6,7 +6,7 @@ import {BaseComponent} from '../base-component';
   selector: 'sq-not-found',
   template: `
     <div class="icon">
-      <i class="fa fa-frown-o"></i>
+      <i class="material-icons">bug_report</i>
     </div>
     <div class="message">
       Page not found

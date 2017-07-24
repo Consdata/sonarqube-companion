@@ -3,7 +3,9 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'sq-navbar',
   template: `
-    <div class="app-name">{{appName}}</div>
+    <div class="app-name">
+      <a routerLink="/">{{appName}}</a>
+    </div>
     <div class="menu">
       <a class="menu-item" routerLink="/overview" routerLinkActive="active">Overview</a>
       <a class="menu-item" routerLink="/project" routerLinkActive="active">Projects</a>

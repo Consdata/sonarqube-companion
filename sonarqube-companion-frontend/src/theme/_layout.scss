@@ -15,8 +15,6 @@ sq-sonarqube-companion {
 }
 main {
   flex-grow: 1;
-}
-footer {
-  // without this browser will render vertical scroll event when content fits screen
-  padding-bottom: 0.1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
