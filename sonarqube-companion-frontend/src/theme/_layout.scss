@@ -1,0 +1,22 @@
+/** Body horizontal indent */
+body {
+  padding: 0px $layout-app-indent;
+}
+
+/** Vertically expandable main content */
+body {
+  height: 100vh;
+}
+sq-sonarqube-companion {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+}
+main {
+  flex-grow: 1;
+}
+footer {
+  // without this browser will render vertical scroll event when content fits screen
+  padding-bottom: 0.1rem;
+}

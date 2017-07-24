@@ -1,0 +1,7 @@
+a {
+  color: $color-success;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
