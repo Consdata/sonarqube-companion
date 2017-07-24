@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'sq-root',
@@ -7,8 +7,7 @@ import { Component } from '@angular/core';
       Welcome to {{title}}!!
     </h1>
     <router-outlet></router-outlet>
-  `,
-  styles: []
+  `
 })
 export class AppComponent {
   title = 'sq';
