@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class ProjectViolations {
+public class Violations {
 
 	private int blockers;
 	private int criticals;

@@ -1,7 +1,7 @@
 sq-navbar {
   $item-padding-vertical: 5px;
   $item-line-height: 40px;
-  $background-color: $color-primary;
+  $background-color: $color-default;
   background: $background-color;
   color: #fff;
   display: flex;
@@ -12,7 +12,7 @@ sq-navbar {
     color: #fff;
     &:hover {
       text-decoration: none;
-      color: $color-success;
+      color: $color-primary;
     }
   }
   .app-name {

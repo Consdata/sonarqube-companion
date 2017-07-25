@@ -8,7 +8,8 @@ import {Component} from '@angular/core';
     </div>
     <div class="menu">
       <a class="menu-item" routerLink="/overview" routerLinkActive="active">Overview</a>
-      <a class="menu-item" routerLink="/project" routerLinkActive="active">Projects</a>
+      <a class="menu-item" routerLink="/groups" routerLinkActive="active">Groups</a>
+      <a class="menu-item" routerLink="/projects" routerLinkActive="active">Projects</a>
     </div>
     <div class="expander">
     </div>
