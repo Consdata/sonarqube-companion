@@ -5,6 +5,7 @@ import net.lipecki.sqcompanion.health.HealthCheckService;
 import net.lipecki.sqcompanion.history.ProjectHistoryEntry;
 import net.lipecki.sqcompanion.history.ProjectHistoryRepository;
 import net.lipecki.sqcompanion.repository.Project;
+import net.lipecki.sqcompanion.violations.Violations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class ProjectSummaryService {
 				.health(healthCheckService.checkHealth(p));
 		if (historyEntry != null) {
 			builder.violations(
-					ProjectViolations
+					Violations
 							.builder()
 							.blockers(historyEntry.getBlockers())
 							.criticals(historyEntry.getCriticals())

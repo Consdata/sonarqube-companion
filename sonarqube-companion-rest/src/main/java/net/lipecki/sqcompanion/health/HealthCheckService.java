@@ -1,7 +1,6 @@
 package net.lipecki.sqcompanion.health;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.sqcompanion.SQCompanionException;
 import net.lipecki.sqcompanion.project.ProjectSummary;
 import net.lipecki.sqcompanion.repository.Project;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class HealthCheckService {
 				.stream()
 				.map(ProjectSummary::getHealth)
 				.reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b)
-				.orElseThrow(() -> new SQCompanionException("Can't calculate group status"));
+				.orElse(HealthStatus.UNKNOWN);
 	}
 
 	public HealthStatus checkHealth(final Project project) {

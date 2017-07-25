@@ -6,7 +6,7 @@ import net.lipecki.sqcompanion.health.HealthCheckService;
 import net.lipecki.sqcompanion.health.HealthStatus;
 import net.lipecki.sqcompanion.project.ProjectSummary;
 import net.lipecki.sqcompanion.project.ProjectSummaryService;
-import net.lipecki.sqcompanion.project.ProjectViolations;
+import net.lipecki.sqcompanion.violations.Violations;
 import net.lipecki.sqcompanion.repository.Group;
 import net.lipecki.sqcompanion.repository.RepositoryService;
 import org.springframework.http.MediaType;
@@ -83,11 +83,16 @@ public class GroupController {
                 .name(group.getName())
                 .projects(projectSummaries)
                 .healthStatus(healthStatus)
-                .blockers(getProjectViolationsSum(projectSummaries, ProjectViolations::getBlockers))
-                .criticals(getProjectViolationsSum(projectSummaries, ProjectViolations::getCriticals))
-                .majors(getProjectViolationsSum(projectSummaries, ProjectViolations::getMajors))
-                .minors(getProjectViolationsSum(projectSummaries, ProjectViolations::getMinors))
-                .infos(getProjectViolationsSum(projectSummaries, ProjectViolations::getInfos))
+                .violations(
+                        Violations
+                                .builder()
+                                .blockers(getProjectViolationsSum(projectSummaries, Violations::getBlockers))
+                                .criticals(getProjectViolationsSum(projectSummaries, Violations::getCriticals))
+                                .majors(getProjectViolationsSum(projectSummaries, Violations::getMajors))
+                                .minors(getProjectViolationsSum(projectSummaries, Violations::getMinors))
+                                .infos(getProjectViolationsSum(projectSummaries, Violations::getInfos))
+                                .build()
+                )
                 .build();
     }
 
@@ -102,7 +107,7 @@ public class GroupController {
                 .build();
     }
 
-    private int getProjectViolationsSum(final List<ProjectSummary> projectSummaries, final ToIntFunction<ProjectViolations> violationsExtractor) {
+    private int getProjectViolationsSum(final List<ProjectSummary> projectSummaries, final ToIntFunction<Violations> violationsExtractor) {
         return projectSummaries.stream().map(ProjectSummary::getViolations).filter(Objects::nonNull).mapToInt(violationsExtractor).sum();
     }
 

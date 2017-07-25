@@ -3,6 +3,7 @@ package net.lipecki.sqcompanion.project;
 import lombok.Builder;
 import lombok.Data;
 import net.lipecki.sqcompanion.health.HealthStatus;
+import net.lipecki.sqcompanion.violations.Violations;
 
 /**
  * @author gregorry
@@ -15,6 +16,6 @@ public class ProjectSummary {
 	private String key;
 	private String serverId;
 	private HealthStatus health;
-	private ProjectViolations violations;
+	private Violations violations;
 
 }

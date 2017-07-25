@@ -1,4 +1,4 @@
-package net.lipecki.sqcompanion.project;
+package net.lipecki.sqcompanion.violations;
 
 import lombok.Builder;
 import lombok.Data;
