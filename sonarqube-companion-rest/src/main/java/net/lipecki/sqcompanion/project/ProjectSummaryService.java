@@ -42,7 +42,7 @@ public class ProjectSummaryService {
 				.name(p.getName())
 				.key(p.getKey())
 				.serverId(p.getServerId())
-				.health(healthCheckService.checkHealth(p));
+				.healthStatus(healthCheckService.checkHealth(p));
 		if (historyEntry != null) {
 			builder.violations(
 					Violations

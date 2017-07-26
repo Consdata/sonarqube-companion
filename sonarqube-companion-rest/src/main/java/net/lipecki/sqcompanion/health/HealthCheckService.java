@@ -23,7 +23,7 @@ public class HealthCheckService {
 	public HealthStatus getCombinedProjectsHealth(final List<ProjectSummary> projectSummaries) {
 		return projectSummaries
 				.stream()
-				.map(ProjectSummary::getHealth)
+				.map(ProjectSummary::getHealthStatus)
 				.reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b)
 				.orElse(HealthStatus.UNKNOWN);
 	}
