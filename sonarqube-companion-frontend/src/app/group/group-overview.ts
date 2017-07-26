@@ -1,4 +1,5 @@
 import {HealthStatus} from '../health/health-status';
+import {Violations} from '../violations/violations';
 
 export class GroupOverview {
 
@@ -6,6 +7,7 @@ export class GroupOverview {
   name: string;
   description: string;
   healthStatus: string;
+  violations: Violations;
   groups: GroupOverview[];
 
   constructor(data: any) {
@@ -14,6 +16,7 @@ export class GroupOverview {
     this.description = data.description;
     this.healthStatus = HealthStatus[data.healthStatus];
     this.groups = data.groups ? data.groups.map(groupData => new GroupOverview(groupData)) : [];
+    this.violations = new Violations(data.violations || {});
   }
 
   get healthStatusString(): string {

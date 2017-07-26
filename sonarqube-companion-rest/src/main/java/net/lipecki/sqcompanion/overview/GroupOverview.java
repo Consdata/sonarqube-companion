@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import net.lipecki.sqcompanion.health.HealthStatus;
+import net.lipecki.sqcompanion.violations.Violations;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class GroupOverview {
 	private String name;
 	@ApiModelProperty(value = "Health status", example = "HEALTHY", required = true)
 	private HealthStatus healthStatus;
+	@ApiModelProperty(value = "Group violations", required = true)
+	private Violations violations;
 	private List<GroupOverview> groups;
 
 }

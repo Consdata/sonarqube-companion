@@ -6,7 +6,9 @@ import net.lipecki.sqcompanion.health.HealthStatus;
 import net.lipecki.sqcompanion.project.ProjectSummary;
 import net.lipecki.sqcompanion.project.ProjectSummaryService;
 import net.lipecki.sqcompanion.repository.Group;
+import net.lipecki.sqcompanion.repository.Project;
 import net.lipecki.sqcompanion.repository.RepositoryService;
+import net.lipecki.sqcompanion.violations.Violations;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,6 +55,7 @@ public class OverviewController {
                 .healthStatus(healthStatus)
                 .uuid(group.getUuid())
                 .name(group.getName())
+                .violations(ProjectSummary.summarizedViolations(projectSummaries))
                 .groups(group.getGroups().stream().map(this::asGroupWithSubGroupsSummary).collect(Collectors.toList()))
                 .build();
     }

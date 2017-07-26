@@ -83,16 +83,7 @@ public class GroupController {
                 .name(group.getName())
                 .projects(projectSummaries)
                 .healthStatus(healthStatus)
-                .violations(
-                        Violations
-                                .builder()
-                                .blockers(getProjectViolationsSum(projectSummaries, Violations::getBlockers))
-                                .criticals(getProjectViolationsSum(projectSummaries, Violations::getCriticals))
-                                .majors(getProjectViolationsSum(projectSummaries, Violations::getMajors))
-                                .minors(getProjectViolationsSum(projectSummaries, Violations::getMinors))
-                                .infos(getProjectViolationsSum(projectSummaries, Violations::getInfos))
-                                .build()
-                )
+                .violations(ProjectSummary.summarizedViolations(projectSummaries))
                 .build();
     }
 
@@ -105,10 +96,6 @@ public class GroupController {
                 .uuid(group.getUuid())
                 .name(group.getName())
                 .build();
-    }
-
-    private int getProjectViolationsSum(final List<ProjectSummary> projectSummaries, final ToIntFunction<Violations> violationsExtractor) {
-        return projectSummaries.stream().map(ProjectSummary::getViolations).filter(Objects::nonNull).mapToInt(violationsExtractor).sum();
     }
 
 }
