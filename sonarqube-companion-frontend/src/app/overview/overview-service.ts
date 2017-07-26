@@ -11,7 +11,7 @@ export class OverviewService {
 
   getRootGroupOverview(): Observable<GroupOverview> {
     return this.http
-      .get('api/v1/groups')
+      .get('api/v1/overview')
       .map(response => new GroupOverview(response.json()));
   }
 

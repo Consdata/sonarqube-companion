@@ -5,7 +5,7 @@ import {GroupOverview} from '../group/group-overview';
 @Component({
   selector: 'sq-overview-tree-item',
   template: `
-    <a routerLink="/groups">
+    <a routerLink="/groups/{{group.uuid}}">
       <div class="group">
         <div class="name">{{group.name}}</div>
         <div class="description" *ngIf="group.description">{{group.description}}</div>
