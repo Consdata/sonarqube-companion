@@ -1,28 +1,30 @@
 import {HealthStatus} from '../health/health-status';
 import {Violations} from '../violations/violations';
+import {GroupSummary} from './group-summary';
+import {ProjectSummary} from '../project/project-summary';
 
 export class GroupDetails {
 
   uuid: string;
   name: string;
-  healthStatus: string;
+  healthStatus: HealthStatus;
   violations: Violations;
-  groups: any[];
-  projects: any[];
+  groups: GroupSummary[];
+  projects: ProjectSummary[];
   issues: any[];
 
   constructor(data: any) {
     this.uuid = data.uuid;
     this.name = data.name;
-    this.healthStatus = HealthStatus[data.healthStatus];
-    this.violations = new Violations(data.violations);
-    this.groups = [];
-    this.projects = [];
+    this.healthStatus = HealthStatus[data.healthStatus] as HealthStatus;
+    this.violations = new Violations(data.violations || {});
+    this.groups = data.groups ? data.groups.map(groupData => new GroupSummary(groupData)) : [];
+    this.projects = data.projects ? data.projects.map(projectData => new ProjectSummary(projectData)) : [];
     this.issues = [];
   }
 
   get healthStatusString(): string {
-    return (HealthStatus[this.healthStatus] as string).toLowerCase();
+    return HealthStatus[this.healthStatus].toLowerCase();
   }
 
 }

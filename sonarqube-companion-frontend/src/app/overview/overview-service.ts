@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Http} from '@angular/http';
-import {GroupOverview} from '../group/group-overview';
+import {GroupOverview} from './group-overview';
 
 @Injectable()
 export class OverviewService {

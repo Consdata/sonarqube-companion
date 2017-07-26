@@ -12,6 +12,8 @@ import {NotFoundComponent} from './not-found/not-found-component';
 import {OverviewService} from './overview/overview-service';
 import {SpinnerComponent} from './spinner/spinner-component';
 import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-item-component';
+import {GroupService} from './group/group-service';
+import {GroupComponent} from './group/group-component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-ite
     OverviewComponent,
     NotFoundComponent,
     SpinnerComponent,
+    GroupComponent,
     GroupOverviewTreeItemComponent
   ],
   imports: [
@@ -30,7 +33,8 @@ import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-ite
     HttpModule
   ],
   providers: [
-    OverviewService
+    OverviewService,
+    GroupService
   ],
   bootstrap: [
     SonarQubeCompanionComponent

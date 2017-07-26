@@ -95,6 +95,7 @@ public class GroupController {
                 .healthStatus(healthStatus)
                 .uuid(group.getUuid())
                 .name(group.getName())
+                .violations(ProjectSummary.summarizedViolations(projectSummaries))
                 .build();
     }
 

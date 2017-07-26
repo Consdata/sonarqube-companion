@@ -1,6 +1,6 @@
 import {Component, HostBinding, Input} from '@angular/core';
 import {BaseComponent} from '../base-component';
-import {GroupOverview} from '../group/group-overview';
+import {GroupOverview} from './group-overview';
 
 @Component({
   selector: 'sq-overview-tree-item',

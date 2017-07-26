@@ -6,7 +6,7 @@ export class GroupOverview {
   uuid: string;
   name: string;
   description: string;
-  healthStatus: string;
+  healthStatus: HealthStatus;
   violations: Violations;
   groups: GroupOverview[];
   projectCount: number;
@@ -15,14 +15,14 @@ export class GroupOverview {
     this.uuid = data.uuid;
     this.name = data.name;
     this.description = data.description;
-    this.healthStatus = HealthStatus[data.healthStatus];
+    this.healthStatus = HealthStatus[data.healthStatus] as HealthStatus;
     this.groups = data.groups ? data.groups.map(groupData => new GroupOverview(groupData)) : [];
     this.violations = new Violations(data.violations || {});
     this.projectCount = data.projectCount || 0;
   }
 
   get healthStatusString(): string {
-    return (HealthStatus[this.healthStatus] as string).toLowerCase();
+    return HealthStatus[this.healthStatus].toLowerCase();
   }
 
 }
