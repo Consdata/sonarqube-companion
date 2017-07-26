@@ -23,6 +23,8 @@ public class GroupOverview {
 	private HealthStatus healthStatus;
 	@ApiModelProperty(value = "Group violations", required = true)
 	private Violations violations;
+	@ApiModelProperty(value = "Project in group count", example = "42", required = true)
+	private Integer projectCount;
 	private List<GroupOverview> groups;
 
 }

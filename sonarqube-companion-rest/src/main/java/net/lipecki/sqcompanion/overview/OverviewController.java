@@ -56,6 +56,7 @@ public class OverviewController {
                 .uuid(group.getUuid())
                 .name(group.getName())
                 .violations(ProjectSummary.summarizedViolations(projectSummaries))
+                .projectCount(projectSummaries.size())
                 .groups(group.getGroups().stream().map(this::asGroupWithSubGroupsSummary).collect(Collectors.toList()))
                 .build();
     }

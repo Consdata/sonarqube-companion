@@ -9,6 +9,7 @@ export class GroupOverview {
   healthStatus: string;
   violations: Violations;
   groups: GroupOverview[];
+  projectCount: number;
 
   constructor(data: any) {
     this.uuid = data.uuid;
@@ -17,6 +18,7 @@ export class GroupOverview {
     this.healthStatus = HealthStatus[data.healthStatus];
     this.groups = data.groups ? data.groups.map(groupData => new GroupOverview(groupData)) : [];
     this.violations = new Violations(data.violations || {});
+    this.projectCount = data.projectCount || 0;
   }
 
   get healthStatusString(): string {

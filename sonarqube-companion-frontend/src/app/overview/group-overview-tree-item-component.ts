@@ -9,7 +9,9 @@ import {GroupOverview} from '../group/group-overview';
       <div class="group">
         <div class="name">{{group.name}}</div>
         <div class="description">
-          <span *ngIf="group.description">{{group.description}} - </span>
+          <span *ngIf="group.description">{{group.description}} | </span>
+          <span>projects: {{group.projectCount}}</span>
+          <span>|</span>
           <span>{{group.healthStatusString}} ({{healthDescription}})</span>
         </div>
         <div class="expander"></div>
