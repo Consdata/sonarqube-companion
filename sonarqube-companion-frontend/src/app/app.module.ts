@@ -25,6 +25,7 @@ import {GroupComponent} from './group/group-component';
     NotFoundComponent,
     SpinnerComponent,
     GroupComponent,
+    GroupComponent,
     GroupOverviewTreeItemComponent
   ],
   imports: [

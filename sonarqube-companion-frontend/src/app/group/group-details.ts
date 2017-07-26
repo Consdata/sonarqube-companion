@@ -21,6 +21,14 @@ export class GroupDetails {
     this.groups = data.groups ? data.groups.map(groupData => new GroupSummary(groupData)) : [];
     this.projects = data.projects ? data.projects.map(projectData => new ProjectSummary(projectData)) : [];
     this.issues = [];
+
+    this.projects = this.projects.sort((a, b) => {
+      if (a.violations.blockers === b.violations.blockers) {
+        return b.violations.criticals - a.violations.criticals;
+      } else {
+        return b.violations.blockers - a.violations.blockers;
+      }
+    });
   }
 
   get healthStatusString(): string {
