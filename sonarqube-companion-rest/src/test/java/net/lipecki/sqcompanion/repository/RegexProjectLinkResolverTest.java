@@ -44,7 +44,7 @@ public class RegexProjectLinkResolverTest {
                         .projectLink(
                                 ProjectLink
                                         .builder()
-                                        .config(RegexProjectLink.INCLUDE, "net\\.lipecki\\.sqcompanion.*")
+                                        .config(RegexProjectLink.INCLUDE, Arrays.asList("net\\.lipecki\\.sqcompanion.*"))
                                         .type(ProjectLinkType.REGEX)
                                         .serverId("any-server-id")
                                         .build()
