@@ -88,9 +88,6 @@ import {ProjectViolationsHistory} from '../violations/project-violations-history
         <div *ngIf="!violationsHistory">
           <sq-spinner></sq-spinner>
         </div>
-        <div *ngIf="violationsHistory">
-          <pre>{{violationsHistory | json}}</pre>
-        </div>
       </div>
       <div>
         <h2>Groups</h2>
@@ -130,10 +127,9 @@ export class GroupComponent implements OnInit {
   group: GroupDetails;
   violationsHistory: ProjectViolationsHistory;
 
-  constructor(
-    private route: ActivatedRoute,
-    private groupService: GroupService,
-    private projectViolationsHistoryService: ProjectViolationsHistoryService) {
+  constructor(private route: ActivatedRoute,
+              private groupService: GroupService,
+              private projectViolationsHistoryService: ProjectViolationsHistoryService) {
   }
 
   ngOnInit(): void {

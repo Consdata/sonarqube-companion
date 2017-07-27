@@ -15,6 +15,7 @@ import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-ite
 import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
 import {ProjectViolationsHistoryService} from './violations/project-violations-history-service';
+import {VersionService} from "./version/version-service";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {ProjectViolationsHistoryService} from './violations/project-violations-h
   providers: [
     OverviewService,
     GroupService,
+    VersionService,
     ProjectViolationsHistoryService
   ],
   bootstrap: [
