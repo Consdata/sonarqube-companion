@@ -14,6 +14,7 @@ import {SpinnerComponent} from './spinner/spinner-component';
 import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-item-component';
 import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
+import {VersionService} from "./version/version-service";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {GroupComponent} from './group/group-component';
   ],
   providers: [
     OverviewService,
-    GroupService
+    GroupService,
+    VersionService
   ],
   bootstrap: [
     SonarQubeCompanionComponent
