@@ -11,7 +11,7 @@
     "e2e": "yarn ng -- e2e --proxy-config proxy.local.conf.json",
     "build": "yarn ng -- build -prod",
     "start": "yarn start-local",
-    "start-local": "yarn ng -- serve --host 0.0.0.0 --proxy-config proxy.local.conf.json"
+    "start-local": "yarn ng -- serve --proxy-config proxy.local.conf.json"
   },
   "private": true,
   "dependencies": {
