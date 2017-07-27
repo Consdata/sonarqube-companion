@@ -2,6 +2,7 @@ package net.lipecki.sqcompanion.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.sqcompanion.config.ProjectLink;
+import net.lipecki.sqcompanion.config.RegexProjectLink;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
 import org.springframework.stereotype.Service;
 
@@ -15,25 +16,27 @@ import java.util.stream.Collectors;
 @Service
 public class RegexProjectLinkResolver implements ProjectLinkResolver {
 
-	private final SonarQubeFacade sonarQubeFacade;
+    private final SonarQubeFacade sonarQubeFacade;
 
-	public RegexProjectLinkResolver(final SonarQubeFacade sonarQubeFacade) {
-		this.sonarQubeFacade = sonarQubeFacade;
-	}
+    public RegexProjectLinkResolver(final SonarQubeFacade sonarQubeFacade) {
+        this.sonarQubeFacade = sonarQubeFacade;
+    }
 
-	@Override
-	public List<Project> resolveProjectLink(final ProjectLink projectLink) {
-		return sonarQubeFacade.getProjects(projectLink.getServerId())
-				.stream()
-				.filter(project -> project.getKey().matches(projectLink.getLink()))
-				.map(
-						project -> Project.builder()
-								.key(project.getKey())
-								.name(project.getName())
-								.serverId(projectLink.getServerId())
-								.build()
-				)
-				.collect(Collectors.toList());
-	}
+    @Override
+    public List<Project> resolveProjectLink(final ProjectLink projectLink) {
+        final RegexProjectLink regexProjectLink = RegexProjectLink.of(projectLink);
+        return sonarQubeFacade.getProjects(projectLink.getServerId())
+                .stream()
+                .filter(project -> regexProjectLink.includes(project.getKey()))
+                .filter(project -> !regexProjectLink.excludes(project.getKey()))
+                .map(
+                        project -> Project.builder()
+                                .key(project.getKey())
+                                .name(project.getName())
+                                .serverId(projectLink.getServerId())
+                                .build()
+                )
+                .collect(Collectors.toList());
+    }
 
 }

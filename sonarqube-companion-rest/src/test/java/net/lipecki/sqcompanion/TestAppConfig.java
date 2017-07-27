@@ -23,7 +23,7 @@ public class TestAppConfig {
 								.projectLink(
 										ProjectLink.builder()
 												.serverId(Servers.Server1.ID)
-												.link(TestAppConfig.RootGroup.Project1.KEY)
+												.config(DirectProjectLink.LINK, TestAppConfig.RootGroup.Project1.KEY)
 												.type(ProjectLinkType.DIRECT)
 												.build()
 								)

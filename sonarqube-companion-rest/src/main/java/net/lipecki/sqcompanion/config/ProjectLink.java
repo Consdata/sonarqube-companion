@@ -16,8 +16,7 @@ public class ProjectLink {
 
     private String serverId;
     private ProjectLinkType type;
-    private String link;
-    @Singular
-    private Map<String, Object> additionals;
+    @Singular("config")
+    private Map<String, Object> config;
 
 }

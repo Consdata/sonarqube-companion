@@ -99,6 +99,7 @@ import {ActivatedRoute} from '@angular/router';
             <td>Key</td>
             <td>Blockers</td>
             <td>Criticals</td>
+            <td>Other</td>
             <td>SonarQube</td>
           </tr>
           <tr *ngFor="let project of group.projects" [attr.health-status]="project.healthStatusString" class="project-row">
@@ -106,6 +107,7 @@ import {ActivatedRoute} from '@angular/router';
             <td>{{project.key}}</td>
             <td>{{project.violations.blockers}}</td>
             <td>{{project.violations.criticals}}</td>
+            <td>{{project.violations.nonRelevant}}</td>
             <td>{{project.serverId}}</td>
           </tr>
         </table>
