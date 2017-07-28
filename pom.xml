@@ -10,8 +10,7 @@
         <version>2.0.0.M2</version>
     </parent>
 
-
-    <groupId>net.lipecki</groupId>
+    <groupId>pl.consdata.ico</groupId>
     <artifactId>sonarqube-companion</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -36,7 +35,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>net.lipecki</groupId>
+                <groupId>pl.consdata.ico</groupId>
                 <artifactId>sonarqube-companion-frontend</artifactId>
                 <type>zip</type>
                 <version>${project.version}</version>
