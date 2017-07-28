@@ -15,6 +15,7 @@
   },
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts3-angular": "^1.2.1",
     "@angular/animations": "4.3.1",
     "@angular/common": "4.3.1",
     "@angular/compiler": "4.3.1",
@@ -24,6 +25,7 @@
     "@angular/platform-browser": "4.3.1",
     "@angular/platform-browser-dynamic": "4.3.1",
     "@angular/router": "4.3.1",
+    "amcharts3": "amcharts/amcharts3",
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
     "moment": "2.18.1",

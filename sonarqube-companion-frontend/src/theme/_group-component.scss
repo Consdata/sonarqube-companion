@@ -29,6 +29,15 @@ sq-group {
     }
   }
 
+  // violations history view
+  .history-chart-bullet {
+    font-size: 16px;
+  }
+  #violations-history-chart {
+    width: 100%;
+    height: 300px;
+  }
+
   // overview card
   .overview-card {
     display: flex;

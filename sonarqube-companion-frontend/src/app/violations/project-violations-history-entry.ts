@@ -10,4 +10,40 @@ export class ProjectViolationsHistoryEntry {
     this.violations = new Violations(data.violations || {});
   }
 
+  get blockers() {
+    return this.violations.blockers;
+  }
+
+  get criticals() {
+    return this.violations.criticals;
+  }
+
+  get majors() {
+    return this.violations.majors;
+  }
+
+  get minors() {
+    return this.violations.minors;
+  }
+
+  get infos() {
+    return this.violations.infos;
+  }
+
+  get relevant() {
+    return this.violations.relevant;
+  }
+
+  get nonrelevant() {
+    return this.nonRelevant;
+  }
+
+  get nonRelevant() {
+    return this.violations.nonRelevant;
+  }
+
+  get all() {
+    return this.violations.all;
+  }
+
 }

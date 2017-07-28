@@ -9,6 +9,7 @@
       "outDir": "target/webapp",
       "assets": [
         "assets",
+        "amcharts",
         "favicon.ico"
       ],
       "index": "index.html",
@@ -22,6 +23,9 @@
         "styles.scss"
       ],
       "scripts": [
+        "../node_modules/amcharts3/amcharts/amcharts.js",
+        "../node_modules/amcharts3/amcharts/lang/pl.js",
+        "../node_modules/amcharts3/amcharts/serial.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
