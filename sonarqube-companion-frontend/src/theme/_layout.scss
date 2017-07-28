@@ -1,0 +1,20 @@
+/** Body horizontal indent */
+body {
+  padding: 0px $layout-app-indent;
+}
+
+/** Vertically expandable main content */
+body {
+  height: 100vh;
+}
+sq-sonarqube-companion {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+}
+main {
+  flex-grow: 1;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

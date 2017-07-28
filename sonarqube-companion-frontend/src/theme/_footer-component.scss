@@ -1,0 +1,12 @@
+sq-footer {
+  margin: 0px -1 * $layout-app-indent;
+  padding: 20px $layout-app-indent;
+  background-color: $color-gray-lighter;
+  font-style: italic;
+  text-align: center;
+  font-size: 0.8rem;
+  color: $color-gray-dark;
+  a {
+    color: $color-gray;
+  }
+}

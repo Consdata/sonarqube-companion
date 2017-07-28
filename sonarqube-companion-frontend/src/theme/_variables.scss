@@ -1,0 +1,40 @@
+/**
+ * Colors
+ */
+//$color-default: #2c3e50;
+//$color-primary: #2c3e50;
+//$color-success: #18bc9c;
+//$color-info: #3498db;
+//$color-warning: #f39c12;
+//$color-danger: #e74c3c;
+
+$color-default: #121212;
+$color-primary: #2780e3;
+$color-success: #3fb618;
+$color-info: #9954bb;
+$color-warning: #ff7518;
+$color-danger: #ff0039;
+
+$color-gray-dark: #7b8a8b;
+$color-gray: #95a5a6;
+$color-gray-light: #b4bcc2;
+$color-gray-lighter: #ecf0f1;
+
+/**
+ * Font weights
+ */
+$font-weight-normal: 500;
+$font-weight-semibold: 600;
+
+/**
+ * Libs config
+ */
+$fa-font-path: '../node_modules/font-awesome/fonts';
+$spinkit-size: 4rem;
+$spinkit-spinner-color: $color-default;
+$spinkit-spinner-margin: 6rem auto;
+
+/**
+ * Layout
+ */
+$layout-app-indent: 10px;

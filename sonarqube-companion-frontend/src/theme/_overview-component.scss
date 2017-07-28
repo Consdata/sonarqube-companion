@@ -1,0 +1,39 @@
+sq-overview {
+  // positioning
+  .group {
+    display: flex;
+    align-items: baseline;
+    color: #fff;
+    padding: 10px;
+    margin: 5px;
+    //border-radius: 3px;
+    .expander {
+      flex-grow: 1;
+    }
+    .description {
+      margin-left: 0.5rem;
+      font-size: 0.8em;
+      font-style: italic;
+    }
+  }
+  .subgroups {
+    padding-left: 15px;
+  }
+  // links
+  a:hover {
+    text-decoration: none;
+  }
+  // health status colors
+  [health-status="unknown"] > a > .group {
+    background-color: $color-gray;
+  }
+  [health-status="healthy"] > a > .group {
+    background-color: $color-success;
+  }
+  [health-status="warning"] > a > .group {
+    background-color: $color-warning;
+  }
+  [health-status="unhealthy"] > a > .group {
+    background-color: $color-danger;
+  }
+}

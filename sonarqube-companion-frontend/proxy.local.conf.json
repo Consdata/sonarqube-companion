@@ -1,0 +1,26 @@
+{
+  "/api": {
+    "target": "http://localhost:8080/api/",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  },
+  "/redoc": {
+    "target": "http://localhost:8080/redoc/",
+    "pathRewrite": {
+      "^/redoc": ""
+    }
+  },
+  "/swagger": {
+    "target": "http://localhost:8080/swagger/",
+    "pathRewrite": {
+      "^/swagger": ""
+    }
+  },
+  "/v2": {
+    "target": "http://localhost:8080/v2/",
+    "pathRewrite": {
+      "^/v2": ""
+    }
+  }
+}

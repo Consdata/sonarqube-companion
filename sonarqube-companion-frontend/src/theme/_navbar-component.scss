@@ -1,0 +1,42 @@
+sq-navbar {
+  $item-padding-vertical: 5px;
+  $item-line-height: 40px;
+  $background-color: $color-default;
+  background: $background-color;
+  color: #fff;
+  display: flex;
+  padding: 0px $layout-app-indent;
+  margin: 0px -1 * $layout-app-indent;
+  line-height: $item-line-height;
+  a {
+    color: #fff;
+    &:hover {
+      text-decoration: none;
+      color: $color-primary;
+    }
+  }
+  .app-name {
+    padding: $item-padding-vertical 0;
+    font-size: 1.6rem;
+    font-weight: $font-weight-semibold;
+  }
+  .expander {
+    flex-grow: 1;
+  }
+  .menu {
+    display: flex;
+    margin-left: 15px;
+  }
+  .menu-item {
+    padding: $item-padding-vertical 10px;
+    &.active {
+      background-color: darken($background-color, 10%);
+    }
+  }
+  .user-menu {
+    display: flex;
+  }
+  .settings-icon {
+    font-size: 1.4rem;
+  }
+}
