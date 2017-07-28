@@ -2,6 +2,7 @@ import {HealthStatus} from '../health/health-status';
 import {Violations} from '../violations/violations';
 import {GroupSummary} from './group-summary';
 import {ProjectSummary} from '../project/project-summary';
+import {SortByViolationsDesc} from '../violations/sort-by-violations';
 
 export class GroupDetails {
 
@@ -22,13 +23,7 @@ export class GroupDetails {
     this.projects = data.projects ? data.projects.map(projectData => new ProjectSummary(projectData)) : [];
     this.issues = [];
 
-    this.projects = this.projects.sort((a, b) => {
-      if (a.violations.blockers === b.violations.blockers) {
-        return b.violations.criticals - a.violations.criticals;
-      } else {
-        return b.violations.blockers - a.violations.blockers;
-      }
-    });
+    this.projects = this.projects.sort(SortByViolationsDesc);
   }
 
   get healthStatusString(): string {

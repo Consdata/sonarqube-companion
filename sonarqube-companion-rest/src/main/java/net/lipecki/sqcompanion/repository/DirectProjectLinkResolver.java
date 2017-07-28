@@ -1,6 +1,7 @@
 package net.lipecki.sqcompanion.repository;
 
 import net.lipecki.sqcompanion.SQCompanionException;
+import net.lipecki.sqcompanion.config.DirectProjectLink;
 import net.lipecki.sqcompanion.config.ProjectLink;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeProject;
@@ -23,11 +24,12 @@ public class DirectProjectLinkResolver implements ProjectLinkResolver {
 
 	@Override
 	public List<Project> resolveProjectLink(final ProjectLink projectLink) {
+		final DirectProjectLink directProjectLink = DirectProjectLink.of(projectLink);
 		final SonarQubeProject project = sonarQubeFacade.getProjects(projectLink.getServerId())
 				.stream()
-				.filter(p -> p.getKey().equals(projectLink.getLink()))
+				.filter(p -> p.getKey().equals(directProjectLink.getLink()))
 				.findFirst()
-				.orElseThrow(() -> new SQCompanionException("Can't find project by direct project link with key: " + projectLink.getLink()));
+				.orElseThrow(() -> new SQCompanionException("Can't find project by direct project link with key: " + directProjectLink.getLink()));
 		return Collections.singletonList(
 				Project.builder()
 						.key(project.getKey())

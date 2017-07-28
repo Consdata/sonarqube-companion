@@ -4,6 +4,8 @@ import {BaseComponent} from '../base-component';
 import {GroupDetails} from './group-details';
 import {GroupService} from './group-service';
 import {ActivatedRoute} from '@angular/router';
+import {ProjectViolationsHistoryService} from '../violations/project-violations-history-service';
+import {ProjectViolationsHistory} from '../violations/project-violations-history';
 
 @Component({
   selector: 'sq-group',
@@ -83,7 +85,9 @@ import {ActivatedRoute} from '@angular/router';
       </div>
       <div>
         <h2>Violations</h2>
-        <em>Violations graph with history</em>
+        <div *ngIf="!violationsHistory">
+          <sq-spinner></sq-spinner>
+        </div>
       </div>
       <div>
         <h2>Groups</h2>
@@ -99,6 +103,7 @@ import {ActivatedRoute} from '@angular/router';
             <td>Key</td>
             <td>Blockers</td>
             <td>Criticals</td>
+            <td>Other</td>
             <td>SonarQube</td>
           </tr>
           <tr *ngFor="let project of group.projects" [attr.health-status]="project.healthStatusString" class="project-row">
@@ -106,6 +111,7 @@ import {ActivatedRoute} from '@angular/router';
             <td>{{project.key}}</td>
             <td>{{project.violations.blockers}}</td>
             <td>{{project.violations.criticals}}</td>
+            <td>{{project.violations.nonRelevant}}</td>
             <td>{{project.serverId}}</td>
           </tr>
         </table>
@@ -119,15 +125,23 @@ import {ActivatedRoute} from '@angular/router';
 export class GroupComponent implements OnInit {
 
   group: GroupDetails;
+  violationsHistory: ProjectViolationsHistory;
 
-  constructor(private route: ActivatedRoute, private service: GroupService) {
+  constructor(private route: ActivatedRoute,
+              private groupService: GroupService,
+              private projectViolationsHistoryService: ProjectViolationsHistoryService) {
   }
 
   ngOnInit(): void {
     const parmasSnapshot = this.route.snapshot.params;
-    this.service
+    this.groupService
       .getGroup(parmasSnapshot.uuid)
-      .subscribe(group => this.group = group);
+      .subscribe(group => {
+        this.group = group
+        this.projectViolationsHistoryService
+          .getHistory(this.group.uuid)
+          .subscribe(violationsHistory => this.violationsHistory = violationsHistory);
+      });
   }
 
 }

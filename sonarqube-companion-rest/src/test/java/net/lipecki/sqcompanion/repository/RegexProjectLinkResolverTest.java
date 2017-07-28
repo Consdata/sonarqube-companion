@@ -1,9 +1,6 @@
 package net.lipecki.sqcompanion.repository;
 
-import net.lipecki.sqcompanion.config.AppConfig;
-import net.lipecki.sqcompanion.config.GroupDefinition;
-import net.lipecki.sqcompanion.config.ProjectLink;
-import net.lipecki.sqcompanion.config.ProjectLinkType;
+import net.lipecki.sqcompanion.config.*;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeFacade;
 import net.lipecki.sqcompanion.sonarqube.SonarQubeProject;
 import org.junit.Before;
@@ -47,7 +44,7 @@ public class RegexProjectLinkResolverTest {
                         .projectLink(
                                 ProjectLink
                                         .builder()
-                                        .link("net\\.lipecki\\.sqcompanion.*")
+                                        .config(RegexProjectLink.INCLUDE, Arrays.asList("net\\.lipecki\\.sqcompanion.*"))
                                         .type(ProjectLinkType.REGEX)
                                         .serverId("any-server-id")
                                         .build()
