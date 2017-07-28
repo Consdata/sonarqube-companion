@@ -30,7 +30,7 @@ export class FooterComponent implements AfterViewInit, OnDestroy {
   gitsha = '';
   gitbranch = '';
   buildTimestamp = '';
-  href = 'https://github.com/glipecki/sonarqube-companion';
+  href = 'https://github.com/Consdata/sonarqube-companion';
   baseHref = BaseHrefHelper.getBaseHref();
   versionSubscription: Subscription;
 
