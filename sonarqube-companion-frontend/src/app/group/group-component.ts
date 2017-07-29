@@ -43,7 +43,7 @@ import {ActivatedRoute} from '@angular/router';
             <td>{{project.violations.blockers}}</td>
             <td>{{project.violations.criticals}}</td>
             <td>{{project.violations.nonRelevant}}</td>
-            <td>{{project.serverId}}</td>
+            <td><a [href]="project.url">{{project.serverId}}</a></td>
           </tr>
         </table>
       </div>

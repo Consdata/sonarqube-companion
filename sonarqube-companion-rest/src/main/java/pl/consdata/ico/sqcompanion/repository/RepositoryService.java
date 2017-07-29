@@ -2,10 +2,14 @@ package pl.consdata.ico.sqcompanion.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.ServerDefinition;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -77,11 +81,29 @@ public class RepositoryService {
             return projectLinkResolverFactory
                     .getResolver(projectLink.getType())
                     .resolveProjectLink(projectLink)
-                    .stream();
+                    .stream()
+                    .map(project -> project.withUrl(getProjectUrl(project.getKey(), project.getServerId())));
         } catch (final Exception exception) {
             log.error("Can't resolve project link [projectLink={}]", projectLink, exception);
             return Stream.empty();
         }
+    }
+
+    private String getProjectUrl(final String projectKey, final String serverId) {
+        final ServerDefinition server = getServerDefinition(serverId);
+        return String.format("%sdashboard?id=%s", server.getUrl(), encodeUrl(projectKey));
+    }
+
+    private String encodeUrl(String projectKey) {
+        try {
+            return URLEncoder.encode(projectKey, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new SQCompanionException(e.getMessage(), e);
+        }
+    }
+
+    private ServerDefinition getServerDefinition(final String serverId) {
+        return appConfig.getServer(serverId);
     }
 
 }

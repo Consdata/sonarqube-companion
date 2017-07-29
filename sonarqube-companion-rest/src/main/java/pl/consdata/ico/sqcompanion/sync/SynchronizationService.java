@@ -38,10 +38,13 @@ public class SynchronizationService {
         }
         if (permit) {
             try {
+                log.info("Starting synchronization... This may take a while.");
+                long startTime = System.currentTimeMillis();
                 repositoryService.syncGroups();
                 synchronizationStateService.initSynchronization(getProjectsCount());
                 projectHistoryService.syncProjectsHistory();
                 synchronizationStateService.finishSynchronization();
+                log.info("Synchronization finished in {}ms", (System.currentTimeMillis() - startTime));
             } finally {
                 semaphore.release();
             }

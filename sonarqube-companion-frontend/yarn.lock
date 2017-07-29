@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@amcharts/amcharts3-angular@^1.2.1":
+"@amcharts/amcharts3-angular@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@amcharts/amcharts3-angular/-/amcharts3-angular-1.2.1.tgz#c098ee96c5635ac35e741e546ad2077e8cc56a2a"
 

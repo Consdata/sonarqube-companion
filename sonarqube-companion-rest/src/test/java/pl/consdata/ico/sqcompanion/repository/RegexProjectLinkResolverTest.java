@@ -1,15 +1,11 @@
 package pl.consdata.ico.sqcompanion.repository;
 
-import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
-import pl.consdata.ico.sqcompanion.config.RegexProjectLink;
-import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
-import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeProject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import pl.consdata.ico.sqcompanion.config.*;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeProject;
 
 import java.util.Arrays;
 
@@ -23,6 +19,7 @@ import static org.mockito.Mockito.when;
  */
 public class RegexProjectLinkResolverTest {
 
+    public static final String ANY_SERVER_ID = "any-server-id";
     private AppConfig appConfig;
     private RepositoryService service;
     private SonarQubeFacade sonarQubeFacade;
@@ -42,6 +39,14 @@ public class RegexProjectLinkResolverTest {
         final String expectedProjectKey = "pl.consdata.ico.sqcompanion:expected-project:master";
 
         // given
+        appConfig.setServers(
+                Arrays.asList(
+                        ServerDefinition
+                                .builder()
+                                .id(ANY_SERVER_ID)
+                                .build()
+                )
+        );
         appConfig.setRootGroup(
                 GroupDefinition
                         .builder()
@@ -50,7 +55,7 @@ public class RegexProjectLinkResolverTest {
                                         .builder()
                                         .config(RegexProjectLink.INCLUDE, Arrays.asList("pl.consdata.ico.sqcompanion.*"))
                                         .type(ProjectLinkType.REGEX)
-                                        .serverId("any-server-id")
+                                        .serverId(ANY_SERVER_ID)
                                         .build()
                         )
                         .build()

@@ -26,7 +26,13 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void initSynchronization(long tasks) {
-        this.synchronizationStateRepository.saveAndFlush(SynchronizationState.builder().startTimestamp(System.currentTimeMillis()).allTasks(tasks).build());
+        this.synchronizationStateRepository.saveAndFlush(
+                SynchronizationState
+                        .builder()
+                        .startTimestamp(System.currentTimeMillis())
+                        .allTasks(tasks)
+                        .build()
+        );
     }
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)

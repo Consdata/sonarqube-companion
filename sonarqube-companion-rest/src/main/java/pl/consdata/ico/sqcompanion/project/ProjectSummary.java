@@ -34,6 +34,7 @@ public class ProjectSummary {
 	private String name;
 	private String key;
 	private String serverId;
+	private String url;
 	private HealthStatus healthStatus;
 	private Violations violations;
 

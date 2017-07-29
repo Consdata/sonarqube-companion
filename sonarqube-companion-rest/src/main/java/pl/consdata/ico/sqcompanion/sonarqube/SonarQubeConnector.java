@@ -116,11 +116,7 @@ public class SonarQubeConnector {
 	}
 
 	private ServerDefinition getServerDefinition(final String serverId) {
-		return config.getServers()
-				.stream()
-				.filter(s -> s.getId().equals(serverId))
-				.findFirst()
-				.orElseThrow(() -> new RuntimeException("Can't find server for id: " + serverId));
+		return config.getServer(serverId);
 	}
 
 }
