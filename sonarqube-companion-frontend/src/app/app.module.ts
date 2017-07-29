@@ -18,6 +18,9 @@ import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
 import {ProjectViolationsHistoryService} from './violations/project-violations-history-service';
 import {VersionService} from './version/version-service';
+import {GroupViolationsHistoryComponent} from './group/group-violations-history';
+import {GroupOverviewCardComponent} from './group/group-overview-card';
+import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import {VersionService} from './version/version-service';
     SpinnerComponent,
     GroupComponent,
     GroupComponent,
-    GroupOverviewTreeItemComponent
+    GroupOverviewTreeItemComponent,
+    GroupViolationsHistoryComponent,
+    GroupOverviewCardComponent,
+    GroupOverviewCardsComponent
   ],
   imports: [
     BrowserModule,

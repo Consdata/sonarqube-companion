@@ -1,16 +1,16 @@
 package pl.consdata.ico.sqcompanion.violations;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.history.ProjectHistoryEntry;
 import pl.consdata.ico.sqcompanion.history.ProjectHistoryRepository;
 import pl.consdata.ico.sqcompanion.repository.Group;
+import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +38,8 @@ public class ViolationsHistoryController {
 	@ApiOperation(
 			value = "Returns group violations history"
 	)
-	public ViolationsHistory getRootGroupViolationsHistory() {
-		return getGroupViolationsHistory(repositoryService.getRootGroup());
+	public ViolationsHistory getRootGroupViolationsHistory(@RequestParam Optional<Integer> daysLimit) {
+		return getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
 	}
 
 	@RequestMapping(
@@ -50,20 +50,20 @@ public class ViolationsHistoryController {
 	@ApiOperation(
 			value = "Returns group violations history"
 	)
-	public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid) {
+	public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid, @RequestParam Optional<Integer> daysLimit) {
 		final Optional<Group> group = repositoryService.getGroup(uuid);
 		if (group.isPresent()) {
-			return getGroupViolationsHistory(group.get());
+			return getGroupViolationsHistory(group.get(), daysLimit);
 		} else {
 			throw new SQCompanionException("Can't find requested group uuid: " + uuid);
 		}
 	}
 
-	private ViolationsHistory getGroupViolationsHistory(final Group group) {
+	private ViolationsHistory getGroupViolationsHistory(final Group group, Optional<Integer> daysLimit) {
 		final List<ViolationHistoryEntry> history = group
 				.getAllProjects()
 				.stream()
-				.flatMap(project -> projectHistoryRepository.findAllByProjectKey(project.getKey()).stream())
+				.flatMap(project -> getProjectViolationsHistory(project, daysLimit).stream())
 				.map(
 						entry -> ViolationHistoryEntry
 								.builder()
@@ -98,6 +98,17 @@ public class ViolationsHistoryController {
 				.builder()
 				.violationHistoryEntries(history)
 				.build();
+	}
+
+	private List<ProjectHistoryEntry> getProjectViolationsHistory(final Project project, final Optional<Integer> daysLimit) {
+		if (daysLimit.isPresent()) {
+			return projectHistoryRepository.findAllByProjectKeyAndDateGreaterThanEqual(
+					project.getKey(),
+					LocalDate.now().minusDays(daysLimit.get())
+			);
+		} else {
+			return projectHistoryRepository.findAllByProjectKey(project.getKey());
+		}
 	}
 
 }
