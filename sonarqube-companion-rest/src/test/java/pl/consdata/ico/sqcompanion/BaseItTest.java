@@ -4,6 +4,7 @@ import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,7 @@ public abstract class BaseItTest {
 		assertThat(applicationContext).isNotNull();
 	}
 
-	protected void tickSynchronization() {
+	protected void tickSynchronization() throws SynchronizationException {
 		synchronizationService.runSynchronization();
 	}
 

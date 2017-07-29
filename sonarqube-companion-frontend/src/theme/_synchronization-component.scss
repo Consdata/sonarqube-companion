@@ -1,0 +1,45 @@
+sq-synchronization {
+
+  text-align: right;
+
+  .sq-synchronize-button {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  @keyframes rotating {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .synchronization-in-progress {
+    animation: rotating 2s linear infinite;
+  }
+
+  .sq-synchronization-progress-bar {
+    position: absolute;
+    right: 20px;
+    bottom: 2px;
+    width: 100px;
+    height: 10px;
+    display: inline-block;
+    border: 1px solid $color-gray-dark;
+    text-align: left;
+    line-height: 1;
+  }
+
+  .sq-synchronization-progress {
+    position: absolute;
+    width: 1px;
+    height: 8px;
+    display: inline-block;
+    background-color: $color-success;
+    line-height: 1;
+    transition: width .5s;
+  }
+
+}

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Możliwości rozwoju:
@@ -45,6 +46,13 @@ public class AppConfigConfiguration {
                                 .builder()
                                 .uuid(UUID.randomUUID().toString())
                                 .name("All projects")
+                                .build()
+                )
+                .scheduler(
+                        SchedulerConfig
+                                .builder()
+                                .interval(30L)
+                                .timeUnit(TimeUnit.MINUTES)
                                 .build()
                 )
                 .build();

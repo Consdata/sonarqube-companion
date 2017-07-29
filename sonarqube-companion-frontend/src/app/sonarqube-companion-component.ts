@@ -7,7 +7,7 @@ import {Component} from '@angular/core';
       <sq-navbar></sq-navbar>
     </nav>
     <!--<aside>-->
-      <!--<sq-sidebar></sq-sidebar>-->
+    <!--<sq-sidebar></sq-sidebar>-->
     <!--</aside>-->
     <main>
       <router-outlet></router-outlet>

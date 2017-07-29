@@ -18,6 +18,8 @@ import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
 import {ProjectViolationsHistoryService} from './violations/project-violations-history-service';
 import {VersionService} from './version/version-service';
+import {SynchronizationService} from 'app/synchronization/synchronization-service';
+import {SynchronizationComponent} from './synchronization/synchronization-component';
 import {GroupViolationsHistoryComponent} from './group/group-violations-history';
 import {GroupOverviewCardComponent} from './group/group-overview-card';
 import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
@@ -36,7 +38,8 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
     GroupOverviewTreeItemComponent,
     GroupViolationsHistoryComponent,
     GroupOverviewCardComponent,
-    GroupOverviewCardsComponent
+    GroupOverviewCardsComponent,
+    SynchronizationComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
     OverviewService,
     GroupService,
     VersionService,
-    ProjectViolationsHistoryService
+    ProjectViolationsHistoryService,
+    SynchronizationService
   ],
   bootstrap: [
     SonarQubeCompanionComponent

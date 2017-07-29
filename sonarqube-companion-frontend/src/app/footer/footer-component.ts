@@ -2,25 +2,29 @@ import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 
 import {BaseComponent} from '../base-component';
 import {BaseHrefHelper} from '../util/base-href-helper';
-import {VersionService} from "../version/version-service";
-import {ApplicationVersion} from "../version/application-version";
-import {Subscription} from "rxjs/Subscription";
+import {VersionService} from '../version/version-service';
+import {ApplicationVersion} from '../version/application-version';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'sq-footer',
   template: `
-    <div>
-      {{appName}} - {{version}} - {{buildTimestamp}}
+    <div class="footer-left">
     </div>
-    <div>
-      (<a [href]="href + '/tree/' + gitbranch">{{gitbranch}}</a>)
-      (<a [href]="href + '/commit/' + gitsha">{{gitsha}}</a>)
-      (<a [href]="baseHref + 'swagger/index.html'">rest api</a>)
+    <div class="footer-center">
+      <div>
+        {{appName}} - {{version}} - {{buildTimestamp}}
+      </div>
+      <div>
+        (<a [href]="href + '/tree/' + gitbranch">{{gitbranch}}</a>)
+        (<a [href]="href + '/commit/' + gitsha">{{gitsha}}</a>)
+        (<a [href]="baseHref + 'swagger/index.html'">rest api</a>)
+      </div>
     </div>
-  `,
-  styles: [
-    BaseComponent.DISPLAY_BLOCK
-  ]
+    <div class="footer-right">
+      <sq-synchronization></sq-synchronization>
+    </div>
+  `
 })
 export class FooterComponent implements AfterViewInit, OnDestroy {
 

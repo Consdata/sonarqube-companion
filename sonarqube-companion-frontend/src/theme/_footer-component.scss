@@ -1,4 +1,5 @@
 sq-footer {
+  display: flex;
   margin: 0px -1 * $layout-app-indent;
   padding: 20px $layout-app-indent;
   background-color: $color-gray-lighter;
@@ -8,5 +9,14 @@ sq-footer {
   color: $color-gray-dark;
   a {
     color: $color-gray;
+  }
+  .footer-left {
+    flex: 1;
+  }
+  .footer-center {
+    flex-grow: 1;
+  }
+  .footer-right {
+    flex: 1;
   }
 }

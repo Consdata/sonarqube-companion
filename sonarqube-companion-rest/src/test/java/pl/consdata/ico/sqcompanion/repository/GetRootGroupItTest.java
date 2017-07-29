@@ -3,6 +3,7 @@ package pl.consdata.ico.sqcompanion.repository;
 import pl.consdata.ico.sqcompanion.BaseItTest;
 import pl.consdata.ico.sqcompanion.TestAppConfig;
 import org.junit.Test;
+import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GetRootGroupItTest extends BaseItTest {
 
 	@Test
-	public void shouldLoadRootGroup() {
+	public void shouldLoadRootGroup() throws SynchronizationException {
 		// when
 		tickSynchronization();
 		final Group rootGroup = repositoryService.getRootGroup();
