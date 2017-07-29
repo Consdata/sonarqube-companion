@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Data
 @Builder
-public class SQProjectsSearchResponse extends SQPaginatedResponse {
+public class SQComponentSearchResponse extends SQPaginatedResponse {
 
 	private List<SQComponent> components;
 

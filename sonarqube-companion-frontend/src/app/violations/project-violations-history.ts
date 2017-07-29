@@ -8,4 +8,8 @@ export class ProjectViolationsHistory {
     this.history = data.violationHistoryEntries.map(entry => new ProjectViolationsHistoryEntry(entry));
   }
 
+  isEmpty(): boolean {
+    return !this.history || this.history.length === 0;
+  }
+
 }

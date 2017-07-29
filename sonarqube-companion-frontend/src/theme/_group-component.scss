@@ -4,50 +4,6 @@ sq-group {
     margin-bottom: 25px;
   }
 
-  // detail cards
-  .overview-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    & > div {
-      color: #fff;
-      margin: 10px;
-      padding: 15px;
-      width: 250px;
-    }
-    .unknown, .gray {
-      background-color: $color-gray;
-    }
-    .healthy, .success {
-      background-color: $color-success;
-    }
-    .warning {
-      background-color: $color-warning;
-    }
-    .unhealthy, .danger {
-      background-color: $color-danger;
-    }
-  }
-
-  // overview card
-  .overview-card {
-    display: flex;
-  }
-  .icon {
-    font-size: 2rem;
-  }
-  .details {
-    margin-left: 15px;
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-  .metric {
-    font-style: italic;
-    font-size: 0.8rem;
-  }
-
   // projects table
   .projects-table {
     width: 100%;

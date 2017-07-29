@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 @Profile("default")
 public class SyncAfterAppInitialization {
 
-
     private final SynchronizationTrigger synchronizationTrigger;
 
     public SyncAfterAppInitialization(SynchronizationTrigger synchronizationTrigger) {
@@ -23,7 +22,8 @@ public class SyncAfterAppInitialization {
 
     @PostConstruct
     public void tickSynchronizationAfterAppInit() {
-        synchronizationTrigger.scheduleTaskImmediately();
+        // synchronizationTrigger.scheduleTaskImmediately();
+        synchronizationTrigger.run();
     }
 
 }

@@ -6,6 +6,7 @@ import pl.consdata.ico.sqcompanion.repository.Group;
  * @author pogoma
  */
 public class AllProjectsCounter implements Group.GroupVisitor {
+
     private long count;
 
     @Override
@@ -16,4 +17,5 @@ public class AllProjectsCounter implements Group.GroupVisitor {
     public long getCount() {
         return count;
     }
+
 }

@@ -30,7 +30,7 @@ public class SynchronizationTrigger {
         this.configuration = configuration;
     }
 
-    private void run() {
+    public void run() {
         try {
             synchronizationService.runSynchronization();
         } catch (SynchronizationException e) {
@@ -56,4 +56,5 @@ public class SynchronizationTrigger {
             this.lastTask.cancel(false);
         }
     }
+
 }

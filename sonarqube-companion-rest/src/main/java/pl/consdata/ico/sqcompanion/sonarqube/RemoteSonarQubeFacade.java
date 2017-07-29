@@ -8,7 +8,7 @@ import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQIssuesSearchResponse;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasure;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasureHistory;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasuresSearchHistoryResponse;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQProjectsSearchResponse;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQComponentSearchResponse;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,9 +33,9 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 	public List<SonarQubeProject> getProjects(final String serverId) {
 		return sonarQubeConnector.getForPaginatedList(
 				serverId,
-				"api/projects/search",
-				SQProjectsSearchResponse.class,
-				SQProjectsSearchResponse::getComponents
+				"api/components/search_projects",
+				SQComponentSearchResponse.class,
+				SQComponentSearchResponse::getComponents
 		).map(this::mapComponentToProject
 		).collect(Collectors.toList());
 	}

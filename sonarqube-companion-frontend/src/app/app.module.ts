@@ -2,6 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpModule} from '@angular/http';
 
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
+
 import {AppRoutingModule} from './app-routing.module';
 import {SonarQubeCompanionComponent} from './sonarqube-companion-component';
 import {NavbarComponent} from './navbar/navbar-component';
@@ -18,6 +20,9 @@ import {ProjectViolationsHistoryService} from './violations/project-violations-h
 import {VersionService} from './version/version-service';
 import {SynchronizationService} from 'app/synchronization/synchronization-service';
 import {SynchronizationComponent} from './synchronization/synchronization-component';
+import {GroupViolationsHistoryComponent} from './group/group-violations-history';
+import {GroupOverviewCardComponent} from './group/group-overview-card';
+import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
 
 @NgModule({
   declarations: [
@@ -31,12 +36,16 @@ import {SynchronizationComponent} from './synchronization/synchronization-compon
     GroupComponent,
     GroupComponent,
     GroupOverviewTreeItemComponent,
+    GroupViolationsHistoryComponent,
+    GroupOverviewCardComponent,
+    GroupOverviewCardsComponent,
     SynchronizationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    AmChartsModule
   ],
   providers: [
     OverviewService,

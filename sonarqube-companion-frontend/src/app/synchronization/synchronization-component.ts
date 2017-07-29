@@ -3,6 +3,7 @@ import {SynchronizationService} from './synchronization-service';
 import {SynchronizationState} from './synchronization-state';
 import {TimerObservable} from 'rxjs/observable/TimerObservable';
 import {Subscription} from 'rxjs/Subscription';
+import {BaseComponent} from 'app/base-component';
 
 @Component({
   selector: 'sq-synchronization',
@@ -18,7 +19,10 @@ import {Subscription} from 'rxjs/Subscription';
       class="fa fa-refresh sq-synchronize-button"
       title="Start synchronization"
       (click)="startSynchronization()"></span>
-  `
+  `,
+  styles: [
+    BaseComponent.DISPLAY_BLOCK
+  ]
 })
 export class SynchronizationComponent implements AfterViewInit, OnDestroy {
   readonly SYNCHRONIZATION_IN_PROGRESS_INTERVAL = 1000;

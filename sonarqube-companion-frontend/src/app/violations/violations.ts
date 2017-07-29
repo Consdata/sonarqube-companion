@@ -22,6 +22,10 @@ export class Violations {
     return this.relevant > 0;
   }
 
+  get all(): number {
+    return this.blockers + this.criticals + this.majors + this.minors + this.infos;
+  }
+
   get relevant(): number {
     return this.blockers + this.criticals;
   }
