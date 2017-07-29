@@ -17,10 +17,6 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-/**
- * Możliwości rozwoju:
- * - odświeżanie automatyczne przez cron
- */
 @Slf4j
 @Service
 public class ProjectHistoryService {
