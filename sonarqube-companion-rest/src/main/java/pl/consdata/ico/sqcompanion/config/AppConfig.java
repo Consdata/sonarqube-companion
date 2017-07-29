@@ -15,4 +15,6 @@ public class AppConfig {
 
     private GroupDefinition rootGroup;
 
+    private SchedulerConfig scheduler;
+
 }

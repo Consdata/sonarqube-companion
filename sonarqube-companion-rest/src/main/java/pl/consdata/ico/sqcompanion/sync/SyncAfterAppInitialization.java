@@ -1,11 +1,10 @@
 package pl.consdata.ico.sqcompanion.sync;
 
-import javax.annotation.PostConstruct;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
 
 /**
  * @author gregorry
@@ -15,18 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 @Profile("default")
 public class SyncAfterAppInitialization {
 
-	private final SynchronizationService synchronizationService;
 
-	public SyncAfterAppInitialization(final SynchronizationService synchronizationService) {
-		this.synchronizationService = synchronizationService;
-	}
+    private final SynchronizationTrigger synchronizationTrigger;
 
-	/**
-	 * TODO (mp): to nie powinno blokować wstawania aplikacji
-	 */
-	@PostConstruct
-	public void tickSynchronizationAfterAppInit() {
-		synchronizationService.runSynchronization();
-	}
+    public SyncAfterAppInitialization(SynchronizationTrigger synchronizationTrigger) {
+        this.synchronizationTrigger = synchronizationTrigger;
+    }
+
+    @PostConstruct
+    public void tickSynchronizationAfterAppInit() {
+        synchronizationTrigger.scheduleTaskImmediately();
+    }
 
 }

@@ -2,9 +2,9 @@ import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 
 import {BaseComponent} from '../base-component';
 import {BaseHrefHelper} from '../util/base-href-helper';
-import {VersionService} from "../version/version-service";
-import {ApplicationVersion} from "../version/application-version";
-import {Subscription} from "rxjs/Subscription";
+import {VersionService} from '../version/version-service';
+import {ApplicationVersion} from '../version/application-version';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'sq-footer',
@@ -17,6 +17,7 @@ import {Subscription} from "rxjs/Subscription";
       (<a [href]="href + '/commit/' + gitsha">{{gitsha}}</a>)
       (<a [href]="baseHref + 'swagger/index.html'">rest api</a>)
     </div>
+    <sq-synchronization></sq-synchronization>
   `,
   styles: [
     BaseComponent.DISPLAY_BLOCK
