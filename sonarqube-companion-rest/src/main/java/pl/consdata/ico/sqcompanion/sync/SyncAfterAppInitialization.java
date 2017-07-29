@@ -14,15 +14,16 @@ import javax.annotation.PostConstruct;
 @Profile("default")
 public class SyncAfterAppInitialization {
 
-	private final SynchronizationService synchronizationService;
 
-	public SyncAfterAppInitialization(final SynchronizationService synchronizationService) {
-		this.synchronizationService = synchronizationService;
-	}
+    private final SynchronizationTrigger synchronizationTrigger;
 
-	@PostConstruct
-	public void tickSynchronizationAfterAppInit() {
-		synchronizationService.runSynchronization();
-	}
+    public SyncAfterAppInitialization(SynchronizationTrigger synchronizationTrigger) {
+        this.synchronizationTrigger = synchronizationTrigger;
+    }
+
+    @PostConstruct
+    public void tickSynchronizationAfterAppInit() {
+        synchronizationTrigger.scheduleTaskImmediately();
+    }
 
 }

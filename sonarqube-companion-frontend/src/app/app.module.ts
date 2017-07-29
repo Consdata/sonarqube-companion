@@ -15,7 +15,9 @@ import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-ite
 import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
 import {ProjectViolationsHistoryService} from './violations/project-violations-history-service';
-import {VersionService} from "./version/version-service";
+import {VersionService} from './version/version-service';
+import {SynchronizationService} from 'app/synchronization/synchronization-service';
+import {SynchronizationComponent} from './synchronization/synchronization-component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import {VersionService} from "./version/version-service";
     SpinnerComponent,
     GroupComponent,
     GroupComponent,
-    GroupOverviewTreeItemComponent
+    GroupOverviewTreeItemComponent,
+    SynchronizationComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +42,8 @@ import {VersionService} from "./version/version-service";
     OverviewService,
     GroupService,
     VersionService,
-    ProjectViolationsHistoryService
+    ProjectViolationsHistoryService,
+    SynchronizationService
   ],
   bootstrap: [
     SonarQubeCompanionComponent

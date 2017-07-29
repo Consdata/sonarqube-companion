@@ -1,11 +1,11 @@
 package pl.consdata.ico.sqcompanion.repository;
 
-import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import pl.consdata.ico.sqcompanion.config.AppConfig;
+import pl.consdata.ico.sqcompanion.config.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
 
 import java.util.UUID;
 
