@@ -7,16 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
-import pl.consdata.ico.sqcompanion.health.HealthCheckService;
-import pl.consdata.ico.sqcompanion.health.HealthStatus;
-import pl.consdata.ico.sqcompanion.project.ProjectSummary;
-import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author gregorry
@@ -26,16 +20,13 @@ import java.util.stream.Collectors;
 public class GroupController {
 
     private final RepositoryService repositoryService;
-    private final ProjectSummaryService projectSummaryService;
-    private final HealthCheckService healthCheckService;
+    private final GroupService groupService;
 
     public GroupController(
             final RepositoryService repositoryService,
-            final ProjectSummaryService projectSummaryService,
-            final HealthCheckService healthCheckService) {
+            final GroupService groupService) {
         this.repositoryService = repositoryService;
-        this.projectSummaryService = projectSummaryService;
-        this.healthCheckService = healthCheckService;
+        this.groupService = groupService;
     }
 
     @RequestMapping(
@@ -48,7 +39,7 @@ public class GroupController {
             notes = "<p>Returns root group details with current violations state, health status and sub groups and projects.</p>"
     )
     public GroupDetails getRootGroup() {
-        return asGroupDetails(repositoryService.getRootGroup());
+        return groupService.getGroupDetails(repositoryService.getRootGroup());
     }
 
     @RequestMapping(
@@ -63,37 +54,10 @@ public class GroupController {
     public GroupDetails getGroup(@PathVariable final String uuid) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return asGroupDetails(group.get());
+            return groupService.getGroupDetails(group.get());
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
-    }
-
-    private GroupDetails asGroupDetails(final Group group) {
-        final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-        final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
-
-        return GroupDetails
-                .builder()
-                .groups(group.getGroups().stream().map(this::asGroupSummary).collect(Collectors.toList()))
-                .uuid(group.getUuid())
-                .name(group.getName())
-                .projects(projectSummaries)
-                .healthStatus(healthStatus)
-                .violations(ProjectSummary.summarizedViolations(projectSummaries))
-                .build();
-    }
-
-    private GroupSummary asGroupSummary(final Group group) {
-        final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-        final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
-        return GroupSummary
-                .builder()
-                .healthStatus(healthStatus)
-                .uuid(group.getUuid())
-                .name(group.getName())
-                .violations(ProjectSummary.summarizedViolations(projectSummaries))
-                .build();
     }
 
 }
