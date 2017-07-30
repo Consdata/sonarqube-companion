@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProjectHistoryRepository extends JpaRepository<ProjectHistoryEntry, Long> {
+public interface ProjectHistoryRepository extends JpaRepository<ProjectHistoryEntryEntity, Long> {
 
-	Optional<ProjectHistoryEntry> findFirstByProjectKeyOrderByDateDesc(String projectKey);
+    Optional<ProjectHistoryEntryEntity> findFirstByProjectKeyOrderByDateDesc(String projectKey);
 
-	List<ProjectHistoryEntry> findAllByProjectKey(final String projectKey);
+    List<ProjectHistoryEntryEntity> findAllByProjectKey(final String projectKey);
 
-	List<ProjectHistoryEntry> findAllByProjectKeyAndDateGreaterThanEqual(final String projectKey, final LocalDate date);
+    List<ProjectHistoryEntryEntity> findAllByProjectKeyAndDateGreaterThanEqual(final String projectKey, final LocalDate date);
 
 }

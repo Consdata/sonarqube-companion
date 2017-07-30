@@ -12,9 +12,9 @@ import pl.consdata.ico.sqcompanion.violations.Violations;
 @Builder
 public class GroupSummary {
 
-	private String uuid;
-	private String name;
-	private HealthStatus healthStatus;
-	private Violations violations;
+    private String uuid;
+    private String name;
+    private HealthStatus healthStatus;
+    private Violations violations;
 
 }

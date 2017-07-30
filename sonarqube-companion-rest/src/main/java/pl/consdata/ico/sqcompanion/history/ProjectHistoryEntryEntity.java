@@ -22,10 +22,11 @@ import java.time.LocalDate;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ProjectHistoryEntry {
+public class ProjectHistoryEntryEntity {
 
     @Id
     private String id;
+    private String serverId;
     private String projectKey;
     private Integer blockers;
     private Integer criticals;

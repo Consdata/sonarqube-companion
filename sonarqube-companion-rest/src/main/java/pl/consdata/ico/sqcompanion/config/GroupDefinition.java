@@ -27,6 +27,4 @@ public class GroupDefinition {
         return projectLinks != null ? projectLinks : new ArrayList<>();
     }
 
-
-
 }

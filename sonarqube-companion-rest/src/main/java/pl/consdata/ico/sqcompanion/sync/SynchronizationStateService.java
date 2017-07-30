@@ -20,14 +20,14 @@ public class SynchronizationStateService {
     }
 
     @Transactional(propagation = REQUIRES_NEW)
-    public SynchronizationState getCurrentState() {
+    public SynchronizationStateEntity getCurrentState() {
         return this.synchronizationStateRepository.findFirstByOrderByIdDesc();
     }
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void initSynchronization(long tasks) {
         this.synchronizationStateRepository.saveAndFlush(
-                SynchronizationState
+                SynchronizationStateEntity
                         .builder()
                         .startTimestamp(System.currentTimeMillis())
                         .allTasks(tasks)
@@ -37,7 +37,7 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void addFailedTask() {
-        SynchronizationState currentState = getCurrentState();
+        SynchronizationStateEntity currentState = getCurrentState();
         if (currentState.getFinishTimestamp() != null) {
             return;
         }
@@ -51,7 +51,7 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void addFinishedTask() {
-        SynchronizationState currentState = getCurrentState();
+        SynchronizationStateEntity currentState = getCurrentState();
         if (currentState.getFinishTimestamp() != null) {
             return;
         }
@@ -65,7 +65,7 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void finishSynchronization() {
-        SynchronizationState currentState = getCurrentState();
+        SynchronizationStateEntity currentState = getCurrentState();
         if (currentState.getFinishTimestamp() != null) {
             return;
         }

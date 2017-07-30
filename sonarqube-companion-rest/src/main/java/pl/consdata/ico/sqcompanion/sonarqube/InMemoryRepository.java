@@ -13,7 +13,7 @@ import java.util.Map;
 @Builder
 public class InMemoryRepository {
 
-	@Singular
-	private Map<String, InMemoryProject> projects;
+    @Singular
+    private Map<String, InMemoryProject> projects;
 
 }

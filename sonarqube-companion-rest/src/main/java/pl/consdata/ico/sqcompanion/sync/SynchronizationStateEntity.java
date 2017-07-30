@@ -5,7 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class SynchronizationState {
+public class SynchronizationStateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -5,7 +5,7 @@ package pl.consdata.ico.sqcompanion.sonarqube.sqapi;
  */
 public abstract class SQPaginatedResponse {
 
-	private SQPaging paging;
+    private SQPaging paging;
 
     public SQPaging getPaging() {
         return paging;

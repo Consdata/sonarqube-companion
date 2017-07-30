@@ -16,14 +16,13 @@ public class SyncAfterAppInitialization {
 
     private final SynchronizationTrigger synchronizationTrigger;
 
-    public SyncAfterAppInitialization(SynchronizationTrigger synchronizationTrigger) {
+    public SyncAfterAppInitialization(final SynchronizationTrigger synchronizationTrigger) {
         this.synchronizationTrigger = synchronizationTrigger;
     }
 
     @PostConstruct
     public void tickSynchronizationAfterAppInit() {
-        // synchronizationTrigger.scheduleTaskImmediately();
-        synchronizationTrigger.run();
+        synchronizationTrigger.scheduleTaskImmediately();
     }
 
 }

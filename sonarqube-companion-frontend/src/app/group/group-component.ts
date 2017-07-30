@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {BaseComponent} from '../base-component';
 import {GroupDetails} from './group-details';
@@ -53,17 +53,14 @@ import {ActivatedRoute} from '@angular/router';
     BaseComponent.DISPLAY_BLOCK
   ]
 })
-export class GroupComponent implements OnInit {
+export class GroupComponent {
 
   group: GroupDetails;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService) {
-  }
-
-  ngOnInit(): void {
-    const parmasSnapshot = this.route.snapshot.params;
-    this.groupService
-      .getGroup(parmasSnapshot.uuid)
+  constructor(route: ActivatedRoute, groupService: GroupService) {
+    route
+      .paramMap
+      .switchMap(params => groupService.getGroup(params.get('uuid')))
       .subscribe(group => this.group = group);
   }
 
