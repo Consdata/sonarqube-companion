@@ -36,7 +36,7 @@ public class SynchronizationService {
     public synchronized void acquireAndStartSynchronization() throws SynchronizationException {
         boolean permit;
         try {
-            permit = semaphore.tryAcquire(1, TimeUnit.SECONDS);
+            permit = semaphore.tryAcquire( 1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             throw new CannotStartSynchronizationException();
         }
