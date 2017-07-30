@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 
 import {BaseComponent} from '../base-component';
 import {ProjectViolationsHistoryService} from '../violations/project-violations-history-service';
@@ -37,7 +37,7 @@ import {AmChartsService} from '@amcharts/amcharts3-angular';
     BaseComponent.DISPLAY_BLOCK
   ]
 })
-export class GroupViolationsHistoryComponent implements OnInit, OnDestroy {
+export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
 
   static readonly DEFAULT_GRAPH = 'all';
   static readonly SERIES = [
@@ -51,28 +51,11 @@ export class GroupViolationsHistoryComponent implements OnInit, OnDestroy {
   constructor(private service: ProjectViolationsHistoryService, private amCharts: AmChartsService) {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.service
       .getHistory(90, this.uuid)
       .subscribe((violationsHistory: ProjectViolationsHistory) => {
-        this.currentGraph = GroupViolationsHistoryComponent.DEFAULT_GRAPH;
-        this.chart = this.amCharts.makeChart('violations-history-chart', {
-          ...this.standardLinearChart(this.currentGraph),
-          dataProvider: violationsHistory.history,
-          graphs: GroupViolationsHistoryComponent.SERIES.map(this.graphDefinition.bind(this))
-        });
-
-        GroupViolationsHistoryComponent.SERIES
-          .filter(serie => serie !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
-          .forEach(serie => this.chart.hideGraph(this.chart.getGraphById(serie)));
-
-        this.chart.addListener('dataUpdated', (ev) => {
-          const historyLength = ev.chart.dataProvider.length;
-          this.chart.zoomToIndexes(historyLength - 8, historyLength - 1);
-          this.chart.zoomOutValueAxes();
-        });
-
-        this.chart.validateData();
+        this.initializeChart(violationsHistory);
       });
   }
 
@@ -95,6 +78,30 @@ export class GroupViolationsHistoryComponent implements OnInit, OnDestroy {
       // store requsted graph as current
       this.currentGraph = issueType;
     });
+  }
+
+  private initializeChart(violationsHistory: ProjectViolationsHistory) {
+    if (this.chart) {
+      this.amCharts.destroyChart(this.chart);
+    }
+    this.currentGraph = GroupViolationsHistoryComponent.DEFAULT_GRAPH;
+    this.chart = this.amCharts.makeChart('violations-history-chart', {
+      ...this.standardLinearChart(this.currentGraph),
+      dataProvider: violationsHistory.history,
+      graphs: GroupViolationsHistoryComponent.SERIES.map(this.graphDefinition.bind(this))
+    });
+
+    GroupViolationsHistoryComponent.SERIES
+      .filter(serie => serie !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
+      .forEach(serie => this.chart.hideGraph(this.chart.getGraphById(serie)));
+
+    this.chart.addListener('dataUpdated', (ev) => {
+      const historyLength = ev.chart.dataProvider.length;
+      this.chart.zoomToIndexes(historyLength - 8, historyLength - 1);
+      this.chart.zoomOutValueAxes();
+    });
+
+    this.chart.validateData();
   }
 
   private graphDefinition(fieldId: string): any {
