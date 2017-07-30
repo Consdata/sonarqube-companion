@@ -12,6 +12,6 @@ import java.util.List;
 @Builder
 public class SQComponentSearchResponse extends SQPaginatedResponse {
 
-	private List<SQComponent> components;
+    private List<SQComponent> components;
 
 }

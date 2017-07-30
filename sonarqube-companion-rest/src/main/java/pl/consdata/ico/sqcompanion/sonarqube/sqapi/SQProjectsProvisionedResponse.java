@@ -12,6 +12,6 @@ import java.util.List;
 @Builder
 public class SQProjectsProvisionedResponse extends SQPaginatedResponse {
 
-	private List<SQProject> projects;
+    private List<SQProject> projects;
 
 }

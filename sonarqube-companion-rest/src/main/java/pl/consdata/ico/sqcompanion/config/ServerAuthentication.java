@@ -9,7 +9,7 @@ import java.util.Map;
 @Builder
 public class ServerAuthentication {
 
-	private String type;
-	private Map<String, String> params;
+    private String type;
+    private Map<String, String> params;
 
 }

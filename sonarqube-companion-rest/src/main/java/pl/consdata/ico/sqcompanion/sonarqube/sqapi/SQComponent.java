@@ -10,11 +10,11 @@ import lombok.Data;
 @Builder
 public class SQComponent {
 
-	private String id;
-	private String key;
-	private String name;
-	private String organization;
-	private String qualifier;
-	private String visibility;
+    private String id;
+    private String key;
+    private String name;
+    private String organization;
+    private String qualifier;
+    private String visibility;
 
 }

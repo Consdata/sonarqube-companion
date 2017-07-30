@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface ProjectHistoryRepository extends JpaRepository<ProjectHistoryEntryEntity, Long> {
 
-	Optional<ProjectHistoryEntryEntity> findFirstByProjectKeyOrderByDateDesc(String projectKey);
+    Optional<ProjectHistoryEntryEntity> findFirstByProjectKeyOrderByDateDesc(String projectKey);
 
-	List<ProjectHistoryEntryEntity> findAllByProjectKey(final String projectKey);
+    List<ProjectHistoryEntryEntity> findAllByProjectKey(final String projectKey);
 
-	List<ProjectHistoryEntryEntity> findAllByProjectKeyAndDateGreaterThanEqual(final String projectKey, final LocalDate date);
+    List<ProjectHistoryEntryEntity> findAllByProjectKeyAndDateGreaterThanEqual(final String projectKey, final LocalDate date);
 
 }

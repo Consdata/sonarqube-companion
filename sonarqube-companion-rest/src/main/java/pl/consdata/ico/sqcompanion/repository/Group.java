@@ -12,41 +12,41 @@ import java.util.Set;
 @Builder
 public class Group {
 
-	private String uuid;
-	private String name;
-	private List<Group> groups;
-	private List<Project> projects;
+    private String uuid;
+    private String name;
+    private List<Group> groups;
+    private List<Project> projects;
 
-	@FunctionalInterface
-	public interface GroupVisitor {
+    public void accept(final GroupVisitor visitor) {
+        visitor.visit(this);
+        groups.forEach(gr -> gr.accept(visitor));
+    }
 
-		void visit(final Group group);
+    public List<Project> getAllProjects() {
+        final Set<Project> result = new HashSet<>();
+        accept(gr -> result.addAll(gr.getProjects()));
+        return new ArrayList<>(result);
+    }
 
-	}
+    public List<Group> getAllGroups() {
+        final List<Group> result = new ArrayList<>();
+        accept(result::add);
+        return result;
+    }
 
-	public void accept(final GroupVisitor visitor) {
-		visitor.visit(this);
-		groups.forEach(gr -> gr.accept(visitor));
-	}
+    public List<Group> getGroups() {
+        return groups != null ? groups : new ArrayList<>();
+    }
 
-	public List<Project> getAllProjects() {
-		final Set<Project> result = new HashSet<>();
-		accept(gr -> result.addAll(gr.getProjects()));
-		return new ArrayList<>(result);
-	}
+    public List<Project> getProjects() {
+        return projects != null ? projects : new ArrayList<>();
+    }
 
-	public List<Group> getAllGroups() {
-		final List<Group> result = new ArrayList<>();
-		accept(result::add);
-		return result;
-	}
+    @FunctionalInterface
+    public interface GroupVisitor {
 
-	public List<Group> getGroups() {
-		return groups != null ? groups : new ArrayList<>();
-	}
+        void visit(final Group group);
 
-	public List<Project> getProjects() {
-		return projects != null ? projects : new ArrayList<>();
-	}
+    }
 
 }

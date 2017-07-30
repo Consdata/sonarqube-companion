@@ -20,7 +20,7 @@ public class RegexProjectLink {
         final List<String> includes = (List<String>) projectLink.getConfig().get(INCLUDE);
         if (includes != null) {
             return matchesAny(key, includes);
-        }  else {
+        } else {
             return false;
         }
     }
