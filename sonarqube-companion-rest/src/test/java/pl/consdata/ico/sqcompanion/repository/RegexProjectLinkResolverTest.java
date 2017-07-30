@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pl.consdata.ico.sqcompanion.config.*;
-import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
-import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeProject;
+import pl.consdata.ico.sqcompanion.project.ProjectEntity;
+import pl.consdata.ico.sqcompanion.project.ProjectService;
 
 import java.util.Arrays;
 
@@ -22,15 +22,15 @@ public class RegexProjectLinkResolverTest {
     public static final String ANY_SERVER_ID = "any-server-id";
     private AppConfig appConfig;
     private RepositoryService service;
-    private SonarQubeFacade sonarQubeFacade;
+    private ProjectService projectService;
 
     @Before
     public void setup() {
         appConfig = AppConfig.builder().build();
-        sonarQubeFacade = mock(SonarQubeFacade.class);
+        projectService = mock(ProjectService.class);
         final ProjectLinkResolverFactory projectLinkResolverFactory = mock(ProjectLinkResolverFactory.class);
         when(projectLinkResolverFactory.getResolver(Mockito.eq(ProjectLinkType.REGEX)))
-                .thenReturn(new RegexProjectLinkResolver(sonarQubeFacade));
+                .thenReturn(new RegexProjectLinkResolver(projectService));
         service = new RepositoryService(appConfig, projectLinkResolverFactory);
     }
 
@@ -60,8 +60,8 @@ public class RegexProjectLinkResolverTest {
                         )
                         .build()
         );
-        when(sonarQubeFacade.getProjects(anyString())).thenReturn(
-                Arrays.asList(SonarQubeProject.builder().key(expectedProjectKey).build())
+        when(projectService.getProjects(anyString())).thenReturn(
+                Arrays.asList(ProjectEntity.builder().key(expectedProjectKey).build())
         );
 
         // when

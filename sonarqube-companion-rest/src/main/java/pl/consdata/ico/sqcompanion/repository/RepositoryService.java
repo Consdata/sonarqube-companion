@@ -34,6 +34,7 @@ public class RepositoryService {
                              final ProjectLinkResolverFactory projectLinkResolverFactory) {
         this.appConfig = appConfig;
         this.projectLinkResolverFactory = projectLinkResolverFactory;
+        syncGroups();
     }
 
     public void syncGroups() {

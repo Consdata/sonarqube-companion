@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,4 +26,15 @@ public class AppConfig {
                 .orElseThrow(() -> new RuntimeException("Can't find server for id: " + serverId));
     }
 
+    public List<ServerDefinition> getServers() {
+        return servers != null ? servers : new ArrayList<>();
+    }
+
+    public GroupDefinition getRootGroup() {
+        return rootGroup;
+    }
+
+    public SchedulerConfig getScheduler() {
+        return scheduler != null ? scheduler : SchedulerConfig.getDefault();
+    }
 }

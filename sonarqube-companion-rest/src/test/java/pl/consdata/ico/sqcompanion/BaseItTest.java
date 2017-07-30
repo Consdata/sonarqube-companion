@@ -60,7 +60,7 @@ public abstract class BaseItTest {
 	}
 
 	protected void tickSynchronization() throws SynchronizationException {
-		synchronizationService.runSynchronization();
+		synchronizationService.acquireAndStartSynchronization();
 	}
 
 }

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class SynchronizationState {
+public class SynchronizationStateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

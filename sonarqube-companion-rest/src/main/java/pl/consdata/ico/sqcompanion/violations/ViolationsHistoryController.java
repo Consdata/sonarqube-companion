@@ -3,7 +3,7 @@ package pl.consdata.ico.sqcompanion.violations;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
-import pl.consdata.ico.sqcompanion.history.ProjectHistoryEntry;
+import pl.consdata.ico.sqcompanion.history.ProjectHistoryEntryEntity;
 import pl.consdata.ico.sqcompanion.history.ProjectHistoryRepository;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
@@ -100,7 +100,7 @@ public class ViolationsHistoryController {
 				.build();
 	}
 
-	private List<ProjectHistoryEntry> getProjectViolationsHistory(final Project project, final Optional<Integer> daysLimit) {
+	private List<ProjectHistoryEntryEntity> getProjectViolationsHistory(final Project project, final Optional<Integer> daysLimit) {
 		if (daysLimit.isPresent()) {
 			return projectHistoryRepository.findAllByProjectKeyAndDateGreaterThanEqual(
 					project.getKey(),

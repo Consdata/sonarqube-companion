@@ -8,12 +8,16 @@ import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeMeasure;
-import pl.consdata.ico.sqcompanion.sync.SynchronizationStateService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -24,17 +28,14 @@ public class ProjectHistoryService {
     private final RepositoryService repositoryService;
     private final SonarQubeFacade sonarQubeFacade;
     private final ProjectHistoryRepository projectHistoryRepository;
-    private final SynchronizationStateService synchronizationStateService;
 
     public ProjectHistoryService(
             final RepositoryService repositoryService,
             final SonarQubeFacade sonarQubeFacade,
-            final ProjectHistoryRepository projectHistoryRepository,
-            final SynchronizationStateService synchronizationStateService) {
+            final ProjectHistoryRepository projectHistoryRepository) {
         this.repositoryService = repositoryService;
         this.sonarQubeFacade = sonarQubeFacade;
         this.projectHistoryRepository = projectHistoryRepository;
-        this.synchronizationStateService = synchronizationStateService;
     }
 
     @Transactional
@@ -42,25 +43,24 @@ public class ProjectHistoryService {
         repositoryService
                 .getRootGroup()
                 .accept(
-                        gr -> gr.getProjects().stream().forEach(
-                                pr -> {
-                                    try {
-                                        synProjectHistory(pr);
-                                        synchronizationStateService.addFinishedTask();
-                                    } catch (final Exception ex) {
-                                        log.error("Project history synchronization failed [project={}]", pr, ex);
-                                        synchronizationStateService.addFailedTask();
-                                    }
-                                }
-                        )
+                        gr -> gr.getProjects()
+                                .forEach(this::synProjectHistoryAndCatch)
                 );
     }
 
+    private void synProjectHistoryAndCatch(final Project project) {
+        try {
+            synProjectHistory(project);
+        } catch (final Exception exception) {
+            log.error("Project history synchronization failed [project={}]", project, exception);
+        }
+    }
+
     private void synProjectHistory(final Project project) {
-        log.info("Syncing project [project={}]", project);
+        log.info("Syncing project history [project={}]", project);
 
         // get measures
-        final Optional<ProjectHistoryEntry> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
+        final Optional<ProjectHistoryEntryEntity> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
         final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
                 project.getServerId(),
                 project.getKey(),
@@ -73,7 +73,7 @@ public class ProjectHistoryService {
             final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
 
             // calculate historic entry for each past day, use previous available if non available for analyzed day
-            final List<ProjectHistoryEntry> history = new ArrayList<>();
+            final List<ProjectHistoryEntryEntity> history = new ArrayList<>();
             SonarQubeMeasure lastMeasure = getFirstAvailableMeasure(combined);
             for (LocalDate date = asLocalDate(lastMeasure.getDate()); !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
                 if (combined.containsKey(date)) {
@@ -124,10 +124,17 @@ public class ProjectHistoryService {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    private ProjectHistoryEntry mapMeasureToHistoryEntry(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
-        return ProjectHistoryEntry
+    private ProjectHistoryEntryEntity mapMeasureToHistoryEntry(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
+        final String combinedId = String.format(
+                "%s$%s$%s",
+                project.getServerId(),
+                project.getKey(),
+                date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        );
+        return ProjectHistoryEntryEntity
                 .builder()
-                .id(String.format("%s$%s", project.getKey(), date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                .id(combinedId)
+                .serverId(project.getServerId())
                 .projectKey(project.getKey())
                 .date(date)
                 .blockers(measure.getBlockers())
