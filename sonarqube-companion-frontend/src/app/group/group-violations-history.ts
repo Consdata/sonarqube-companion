@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 
 import {BaseComponent} from '../base-component';
 import {ProjectViolationsHistoryService} from '../violations/project-violations-history-service';
