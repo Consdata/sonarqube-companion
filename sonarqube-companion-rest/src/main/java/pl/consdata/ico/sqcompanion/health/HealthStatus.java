@@ -5,13 +5,13 @@ package pl.consdata.ico.sqcompanion.health;
  */
 public enum HealthStatus {
 
-	UNKNOWN,
-	HEALTHY,
-	WARNING,
-	UNHEALTHY;
+    UNKNOWN,
+    HEALTHY,
+    WARNING,
+    UNHEALTHY;
 
-	public int getPriority() {
-		return ordinal();
-	}
+    public int getPriority() {
+        return ordinal();
+    }
 
 }

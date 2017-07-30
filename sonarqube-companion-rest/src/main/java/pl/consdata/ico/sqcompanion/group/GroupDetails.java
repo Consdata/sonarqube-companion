@@ -16,12 +16,12 @@ import java.util.List;
 @Builder
 public class GroupDetails {
 
-	private String uuid;
-	private String name;
-	private HealthStatus healthStatus;
-	private Violations violations;
-	private List<GroupSummary> groups;
-	private List<ProjectSummary> projects;
-	private List<IssueSummary> issues;
+    private String uuid;
+    private String name;
+    private HealthStatus healthStatus;
+    private Violations violations;
+    private List<GroupSummary> groups;
+    private List<ProjectSummary> projects;
+    private List<IssueSummary> issues;
 
 }

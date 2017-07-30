@@ -10,6 +10,6 @@ import java.util.List;
 @FunctionalInterface
 public interface ProjectLinkResolver {
 
-	List<Project> resolveProjectLink(final ProjectLink projectLink);
+    List<Project> resolveProjectLink(final ProjectLink projectLink);
 
 }

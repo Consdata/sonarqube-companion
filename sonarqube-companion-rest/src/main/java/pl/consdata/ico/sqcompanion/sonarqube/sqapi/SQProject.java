@@ -10,9 +10,9 @@ import lombok.Data;
 @Builder
 public class SQProject {
 
-	private String key;
-	private String name;
-	private String creationDate;
-	private String visibility;
+    private String key;
+    private String name;
+    private String creationDate;
+    private String visibility;
 
 }

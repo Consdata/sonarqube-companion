@@ -18,7 +18,7 @@ public class SonarQubeMeasure {
     private Integer infos;
 
     public void putMetric(final String metricKey, final Integer value) {
-        switch(metricKey) {
+        switch (metricKey) {
             case "blocker_violations":
                 setBlockers(value);
                 break;

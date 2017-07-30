@@ -8,6 +8,6 @@ import pl.consdata.ico.sqcompanion.repository.Project;
 @FunctionalInterface
 public interface HealthVoter {
 
-	HealthStatus checkHealth(Project project);
-	
+    HealthStatus checkHealth(Project project);
+
 }

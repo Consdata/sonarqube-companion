@@ -13,12 +13,12 @@ import java.util.List;
 @Builder
 public class InMemoryProject {
 
-	private SonarQubeProject project;
+    private SonarQubeProject project;
 
-	@Singular
-	private List<SonarQubeIssue> issues;
+    @Singular
+    private List<SonarQubeIssue> issues;
 
-	@Singular
-	private List<SonarQubeMeasure> measures;
+    @Singular
+    private List<SonarQubeMeasure> measures;
 
 }

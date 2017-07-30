@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class ViolationsHistory {
 
-	@Singular
-	private List<ViolationHistoryEntry> violationHistoryEntries;
+    @Singular
+    private List<ViolationHistoryEntry> violationHistoryEntries;
 
 }

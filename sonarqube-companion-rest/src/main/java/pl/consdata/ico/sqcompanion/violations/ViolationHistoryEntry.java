@@ -11,22 +11,22 @@ import java.util.Objects;
 @Builder
 public class ViolationHistoryEntry {
 
-	private LocalDate date;
-	private Violations violations;
+    private LocalDate date;
+    private Violations violations;
 
-	public static ViolationHistoryEntry sumEntries(final ViolationHistoryEntry a, final ViolationHistoryEntry b) {
-		if (!Objects.equals(a.getDate(), b.getDate())) {
-			throw new SQCompanionException("Can't sum violation entries from different dates");
-		}
-		return ViolationHistoryEntry
-				.builder()
-				.date(a.getDate())
-				.violations(Violations.sumViolations(a.getViolations(), b.getViolations()))
-				.build();
-	}
+    public static ViolationHistoryEntry sumEntries(final ViolationHistoryEntry a, final ViolationHistoryEntry b) {
+        if (!Objects.equals(a.getDate(), b.getDate())) {
+            throw new SQCompanionException("Can't sum violation entries from different dates");
+        }
+        return ViolationHistoryEntry
+                .builder()
+                .date(a.getDate())
+                .violations(Violations.sumViolations(a.getViolations(), b.getViolations()))
+                .build();
+    }
 
-	public String getDateString() {
-		return date.toString();
-	}
+    public String getDateString() {
+        return date.toString();
+    }
 
 }

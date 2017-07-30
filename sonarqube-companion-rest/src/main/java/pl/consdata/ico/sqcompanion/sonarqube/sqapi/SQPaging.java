@@ -10,8 +10,8 @@ import lombok.Data;
 @Builder
 public class SQPaging {
 
-	private int total;
-	private int pageIndex;
-	private int pageSize;
+    private int total;
+    private int pageIndex;
+    private int pageSize;
 
 }

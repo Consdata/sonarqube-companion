@@ -10,7 +10,7 @@ import lombok.Data;
 @Builder
 public class SonarQubeProject {
 
-	private String key;
-	private String name;
+    private String key;
+    private String name;
 
 }
