@@ -28,7 +28,7 @@ public class SynchronizationController {
     @ApiOperation(
             value = "Returns state of current synchronization of projects history"
     )
-    public SynchronizationState getState() {
+    public SynchronizationStateEntity getState() {
         return synchronizationStateService.getCurrentState();
     }
 

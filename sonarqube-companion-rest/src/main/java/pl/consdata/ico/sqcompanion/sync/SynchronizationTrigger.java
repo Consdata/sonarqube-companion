@@ -30,24 +30,8 @@ public class SynchronizationTrigger {
         this.configuration = configuration;
     }
 
-    public void run() {
-        try {
-            synchronizationService.runSynchronization();
-        } catch (SynchronizationException e) {
-            log.warn("Cannot run synchronization: {}", e.getMessage(), e);
-        } finally {
-            scheduleNextTask();
-        }
-    }
-
     public void scheduleTaskImmediately() {
         lastTask = taskScheduler.schedule(this::run, new Date());
-    }
-
-    private void scheduleNextTask() {
-        TimeUnit timeUnit = configuration.getScheduler().getTimeUnit();
-        final long time = configuration.getScheduler().getInterval();
-        lastTask = taskScheduler.schedule(this::run, new Date(System.currentTimeMillis() + timeUnit.toMillis(time)));
     }
 
     @PreDestroy
@@ -55,6 +39,22 @@ public class SynchronizationTrigger {
         if (this.lastTask != null && !this.lastTask.isCancelled()) {
             this.lastTask.cancel(false);
         }
+    }
+
+    private void run() {
+        try {
+            synchronizationService.acquireAndStartSynchronization();
+        } catch (SynchronizationException e) {
+            log.warn("Cannot run synchronization: {}", e.getMessage(), e);
+        } finally {
+            scheduleNextTask();
+        }
+    }
+
+    private void scheduleNextTask() {
+        TimeUnit timeUnit = configuration.getScheduler().getTimeUnit();
+        final long time = configuration.getScheduler().getInterval();
+        lastTask = taskScheduler.schedule(this::run, new Date(System.currentTimeMillis() + timeUnit.toMillis(time)));
     }
 
 }
