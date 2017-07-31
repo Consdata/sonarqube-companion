@@ -51,6 +51,11 @@
                 <artifactId>springfox-swagger2</artifactId>
                 <version>${springfox-swagger2.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>findbugs</artifactId>
+                <version>3.0.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
