@@ -1,3 +1,10 @@
 language: java
+addons:
+  sonarcloud:
+    organization: "consdata-github"
+    token:
+      secure: "JLo7O262C6g7tBc+6V7ex/tYtqqCyWwBrwU+hnZIHpy5AxepOCbb0FifSMwlNUaD2dsfGhg4lZMrm83bTvTT1w5KUH4YS9RQpDQI2Up3HfsOkBB6R0F8O5fESAJ8ldt2i3hFyK2nyV8b7RcLq8ZDoJys5bxncozFWArYc3f7Y8wjQzV2dFHe+QfQmYD9HsQ44fTC9DOhfA1dBV5jKkqWHavIQcRWU3oURGiR5xVOfeI5fgaXelPOgNcLCAU/JntGke6q/cRYleWwTygm3X+5HcJ1J0GFt8E26K8BQbGnMTUVHZD+zXlktkq9TDFN9BudNNAOgSvMek41JF422+nzSQkdT5aItULlAG6DeXhLJNhazUiVxUe86lxdnmVpbsYVtgziEGgs4MR7Q3gb1r+rJRRj4R8jieYnwpwsYvZGQEyWi4MCXafJk3//dd3UpZiTs/T2xtNxqhiGQxQVZn4ZUmKLwfRpYiJ82OlqYaRF57AiHo6T7OH1OsLaHa5ILW6VK+B6+DA91DdZL34pRh1bvUnlyQ1SwcobzBrLGQeqOcZuKblXr3DoM3d4blMxcZ9pxxeykuLAXAInBNCEnZlRglSveJUw06yHNC06gZyrslR7mpDZtawoD8iH2I0jBOxVgrrbCxN7QYvT1lGuS5aw1oNxPNViRWAe7e9W0naM+28="
 jdk:
   - oraclejdk8
+script:
+  - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
