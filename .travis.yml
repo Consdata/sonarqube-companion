@@ -1,20 +1,16 @@
 language: java
 sudo: false
 install: true
-
 addons:
   sonarcloud:
-    organization: "consdata"
+    organization: consdata
     token:
-      secure: "Q+YhEYQU1Snt/sz4jeGFSeCsClz6Zwh9K3lPPCcQLMyA2SqWGYQ06P4hXEuJI3PVhBjd4FGsMoiB0s2PVAsIDEB5jCx7TGwyyLlieuzJ/OcmcprNQHZTyRtw3kn61K6xGUSDClFj1Wk4A1/+G688dl5Ggw8r77jthctUizlhZpW0vxZkES1yKfZl4mnMV4XcwG9gzEdbAi7AcWiIzqKVnmvZZAhJqwYP4WRus18IQ6HSaeNvHSbBcAyRrfjv87vLAsICtp/fHbs0KyytUS0h+qmKtNXafCXVwZZlp5MHCT+0O1fm+Zc6hr/UzSqRdqllfFC6k/2UE8uNYz6lcy8qYWtD06ZCg0UBOgVSWWTtumrmUEiDEjnkwyiYAR5kMfm5vPKPgAuf/LWYcQiTt3eCiJCjUOgNXLkbR026fpUOjhKmXC3LOU1AxSdbx1WkhkHfZyVDHw6sQjnS/G61lpu+gCWG2vJb/smDuAtqBFPhgfSp1z+t97R3dU/qDKeCWRyqfYwDpV9x+YBGjsqd5e4Zn+IJpj1O8hg9nvZ/VfWeEGaMQgnFDqNUBSvG8PCkJRBltZZjDFrs+Lr0j2/vfmPKpGcwyOjhrs6V9CSUAGr+/2BGa6NcQcBnPpYYisikNT+uVI3y73e3fvGBISAkuE9bi86T1+iEcv0xoBspU2u6zFo="
-
+      secure: Q+YhEYQU1Snt/sz4jeGFSeCsClz6Zwh9K3lPPCcQLMyA2SqWGYQ06P4hXEuJI3PVhBjd4FGsMoiB0s2PVAsIDEB5jCx7TGwyyLlieuzJ/OcmcprNQHZTyRtw3kn61K6xGUSDClFj1Wk4A1/+G688dl5Ggw8r77jthctUizlhZpW0vxZkES1yKfZl4mnMV4XcwG9gzEdbAi7AcWiIzqKVnmvZZAhJqwYP4WRus18IQ6HSaeNvHSbBcAyRrfjv87vLAsICtp/fHbs0KyytUS0h+qmKtNXafCXVwZZlp5MHCT+0O1fm+Zc6hr/UzSqRdqllfFC6k/2UE8uNYz6lcy8qYWtD06ZCg0UBOgVSWWTtumrmUEiDEjnkwyiYAR5kMfm5vPKPgAuf/LWYcQiTt3eCiJCjUOgNXLkbR026fpUOjhKmXC3LOU1AxSdbx1WkhkHfZyVDHw6sQjnS/G61lpu+gCWG2vJb/smDuAtqBFPhgfSp1z+t97R3dU/qDKeCWRyqfYwDpV9x+YBGjsqd5e4Zn+IJpj1O8hg9nvZ/VfWeEGaMQgnFDqNUBSvG8PCkJRBltZZjDFrs+Lr0j2/vfmPKpGcwyOjhrs6V9CSUAGr+/2BGa6NcQcBnPpYYisikNT+uVI3y73e3fvGBISAkuE9bi86T1+iEcv0xoBspU2u6zFo=
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
-
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar/cache"
