@@ -77,7 +77,7 @@ public class SonarQubeConnector {
             ).getBody();
 
             result.addAll(dataExtractor.apply(lastResponse));
-        } while (lastResponse.hasMorePages());
+        } while (lastResponse != null && lastResponse.hasMorePages());
 
         return result.stream();
     }
