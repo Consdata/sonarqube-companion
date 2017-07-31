@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
+import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.ServerAuthentication;
 import pl.consdata.ico.sqcompanion.config.ServerDefinition;
@@ -83,7 +84,7 @@ public class SonarQubeConnector {
     }
 
     private void addAuthentication(final ServerAuthentication authentication, final HttpHeaders headers) {
-        if (authentication.getType().equals("token")) {
+        if ("token".equals(authentication.getType())) {
             headers.add(
                     "Authorization",
                     basicAuthorization(
@@ -91,7 +92,7 @@ public class SonarQubeConnector {
                             ""
                     )
             );
-        } else if (authentication.getType().equals("basic")) {
+        } else if ("basic".equals(authentication.getType())) {
             headers.add(
                     "Authorization",
                     basicAuthorization(
@@ -100,7 +101,7 @@ public class SonarQubeConnector {
                     )
             );
         } else {
-            throw new RuntimeException("Unknown server authentication type: " + authentication);
+            throw new SQCompanionException("Unknown server authentication type: " + authentication);
         }
     }
 

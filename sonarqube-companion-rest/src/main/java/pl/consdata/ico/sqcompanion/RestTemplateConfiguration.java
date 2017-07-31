@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import sun.net.www.protocol.https.DefaultHostnameVerifier;
 
 import javax.net.ssl.SSLContext;
 

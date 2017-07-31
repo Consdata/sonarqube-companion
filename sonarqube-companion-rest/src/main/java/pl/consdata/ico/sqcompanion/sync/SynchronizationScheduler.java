@@ -11,10 +11,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @Configuration
 public class SynchronizationScheduler {
 
+    public static final int POOL_SIZE = 2;
+
     @Bean
     public TaskScheduler synchronizationTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize(2);
+        threadPoolTaskScheduler.setPoolSize(POOL_SIZE);
         return threadPoolTaskScheduler;
     }
 

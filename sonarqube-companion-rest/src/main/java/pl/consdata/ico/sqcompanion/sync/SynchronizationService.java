@@ -69,7 +69,7 @@ public class SynchronizationService {
         projectHistoryService.syncProjectsHistory();
         synchronizationStateService.finishSynchronization();
 
-        Caches.CACHES
+        Caches.LIST
                 .stream()
                 .map(cacheManager::getCache)
                 .forEach(cache -> cache.clear());

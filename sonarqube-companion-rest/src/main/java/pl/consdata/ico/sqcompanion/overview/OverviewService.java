@@ -18,14 +18,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OverviewService {
 
-    private final RepositoryService repositoryService;
     private final ProjectSummaryService projectSummaryService;
     private final HealthCheckService healthCheckService;
 
-    public OverviewService(final RepositoryService repositoryService,
-                           final ProjectSummaryService projectSummaryService,
+    public OverviewService(final ProjectSummaryService projectSummaryService,
                            final HealthCheckService healthCheckService) {
-        this.repositoryService = repositoryService;
         this.projectSummaryService = projectSummaryService;
         this.healthCheckService = healthCheckService;
     }
