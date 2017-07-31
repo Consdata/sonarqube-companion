@@ -9,7 +9,6 @@ import pl.consdata.ico.sqcompanion.health.HealthStatus;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
-import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.util.List;
 import java.util.stream.Collectors;
