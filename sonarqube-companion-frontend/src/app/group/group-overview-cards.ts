@@ -6,7 +6,7 @@ import {GroupDetails} from 'app/group/group-details';
   template: `
     <sq-group-overview-card
       [class]="group.healthStatusString"
-      [icon]="'fa fa-thumbs-o-up'"
+      [icon]="'fa ' + (group.healthy ? 'fa-thumbs-o-up' : 'fa-thumbs-down')"
       [value]="group.healthStatusString"
       [metric]="'overall score'">
     </sq-group-overview-card>

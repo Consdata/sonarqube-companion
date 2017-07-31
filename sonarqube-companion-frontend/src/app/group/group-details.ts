@@ -26,6 +26,10 @@ export class GroupDetails {
     this.projects = this.projects.sort(SortByViolationsDesc);
   }
 
+  get healthy(): boolean {
+    return HealthStatus.HEALTHY === this.healthStatus;
+  }
+
   get healthStatusString(): string {
     return HealthStatus[this.healthStatus].toLowerCase();
   }
