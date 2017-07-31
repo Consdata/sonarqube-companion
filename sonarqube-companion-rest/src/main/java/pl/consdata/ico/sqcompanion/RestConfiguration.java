@@ -16,11 +16,6 @@ import java.util.Collections;
 public class RestConfiguration {
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
     public ErrorViewResolver customErrorViewResolver() {
         final ModelAndView redirectToIndexHtml = new ModelAndView("forward:/index.html", Collections.emptyMap(), HttpStatus.OK);
         return (request, status, model) -> status == HttpStatus.NOT_FOUND ? redirectToIndexHtml : null;
