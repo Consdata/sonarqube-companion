@@ -1,6 +1,6 @@
 # SonarQube Companion
 
-SonarQube companion application for Scrum teams.
+SonarQube Companion application for Scrum teams.
 
 [![Build Status](https://travis-ci.org/Consdata/sonarqube-companion.svg?branch=master)](https://travis-ci.org/Consdata/sonarqube-companion)
 
@@ -54,6 +54,10 @@ By default application will look for _./sq-companion-config.json_ configuration 
       "url": "https://sonarcloud.io/"
     }
   ],
+  "scheduler": {
+    "interval": 30,
+    "timeUnit": "MINUTES"
+  },
   "rootGroup": {
     "uuid": "0df404f7-3bcb-433d-9f2c-95e0e000adb5",
     "name": "All groups",
@@ -96,7 +100,7 @@ By default application will look for _./sq-companion-config.json_ configuration 
 
 ### Database file configuration
 
-By default application will create file based H2 database in _./sonarqube-companion_.
+By default application will create file based H2 database in _./sonarqube-companion.(mv.db)_.
 
 ## Working with project - local development
 
@@ -140,6 +144,55 @@ chunk {styles} styles.bundle.js, styles.bundle.js.map (styles) 68.4 kB {inline} 
 chunk {vendor} vendor.bundle.js, vendor.bundle.js.map (vendor) 2.7 MB [initial] [rendered]
 
 webpack: Compiled successfully.
+```
+
+## REST Api documentation
+
+Whole REST api is exposed as runnable configuration via Swagger at _http://$APP/swagger/index.html_ endpoint.
+
+## H2 Web Console
+
+You can use H2 web console for local development (binded only to local net interface) at _http://$APP/h2-console/_ endpoint.
+
+## Running for production
+
+### Simpliest run
+
+```bash
+$ docker run -p 8000:8080 consdata/sonarqube-companion:latest
+```
+
+### Exposing local dir as repository config
+
+```bash
+$ docker run -p 8000:8080 -v `pwd`:/opt/sonarqube-companion/repository consdata/sonarqube-companion:latest
+```
+
+### Sample docker-compose service configuration
+
+For local folder structure:
+
+- repository/
+  - sq-companion-config.json
+- docker-compose.yml
+
+You can use _docker-compose.yml_:
+
+```yml
+version: '3'
+services:
+  sonarqube-companion:
+    image: consdata/sonarqube-companion:latest
+    container_name: sonarqube-companion
+    ports:
+      - "8000:8080"
+    restart: unless-stopped
+    volumes:
+      - data:/opt/sonarqube-companion/data
+      - ./repository:/opt/sonarqube-companion/repository
+    network_mode: "bridge"
+volumes:
+  data:
 ```
 
 ## Contribution guide
