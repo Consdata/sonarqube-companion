@@ -95,7 +95,6 @@ public class ViolationsHistoryService {
     private void synProjectHistory(final Project project) {
         log.info("Syncing project history [project={}]", project);
 
-        // get measures
         final Optional<ProjectHistoryEntryEntity> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
         final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
                 project.getServerId(),
@@ -105,10 +104,10 @@ public class ViolationsHistoryService {
 
         if (!historicAnalyses.isEmpty() || lastStoredMeasure.isPresent()) {
             final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
-            LocalDate startDate = !historicAnalyses.isEmpty() ? LocalDateUtil.asLocalDate(historicAnalyses.get(0).getDate()) : lastStoredMeasure.get().getDate();
-            SonarQubeMeasure lastMeasure = !historicAnalyses.isEmpty() ? historicAnalyses.get(0) : asSonarQubeMeasure(lastStoredMeasure.get());
+            final LocalDate startDate = !historicAnalyses.isEmpty() ? LocalDateUtil.asLocalDate(historicAnalyses.get(0).getDate()) : lastStoredMeasure.get().getDate();
 
             final List<ProjectHistoryEntryEntity> history = new ArrayList<>();
+            SonarQubeMeasure lastMeasure = !historicAnalyses.isEmpty() ? historicAnalyses.get(0) : asSonarQubeMeasure(lastStoredMeasure.get());
             for (LocalDate date = startDate; !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
                 if (combined.containsKey(date)) {
                     lastMeasure = combined.get(date);
@@ -116,7 +115,6 @@ public class ViolationsHistoryService {
                 history.add(asProjectHistoryEntryEntity(date, project, lastMeasure));
             }
 
-            // store
             projectHistoryRepository.saveAll(history);
         } else {
             log.info("Project has neither history nor analyses, skipping [projectId={}]", project.getId());

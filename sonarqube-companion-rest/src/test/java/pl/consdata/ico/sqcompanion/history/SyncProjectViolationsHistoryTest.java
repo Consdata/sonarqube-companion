@@ -16,20 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SyncProjectViolationsHistoryTest extends BaseItTest {
 
+    public static final String SERVER_ID = TestAppConfig.Servers.Server1.ID;
+    public static final String PROJECT_KEY = TestAppConfig.RootGroup.Project1.KEY;
+
     @Test
     public void shouldNotSyncWhenNoHistoryAndNoAnalyses() throws SynchronizationException {
         // when
         tickSynchronization();
 
         // then
-        final List<ProjectHistoryEntryEntity> projectViolations = violationsHistoryService.getProjectViolationsHistory(
-                Project
-                        .builder()
-                        .serverId(TestAppConfig.Servers.Server1.ID)
-                        .key(TestAppConfig.RootGroup.Project1.KEY)
-                        .build(),
-                Optional.empty()
-        );
+        final List<ProjectHistoryEntryEntity> projectViolations = getProjectViolationsHistory();
         assertThat(projectViolations).isEmpty();
     }
 
@@ -37,37 +33,14 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     public void shouldSyncProjectViolationHistory() throws SynchronizationException {
         // given
         int latestAnalyseBlockers = 2;
-        final List<SonarQubeMeasure> projectMeasures = inMemorySonarQubeFacade.getInMemoryRepository()
-                .getProjects()
-                .get(Project.getProjectUniqueId(TestAppConfig.Servers.Server1.ID, TestAppConfig.RootGroup.Project1.KEY))
-                .getMeasures();
-        projectMeasures.add(
-                SonarQubeMeasure
-                        .builder()
-                        .blockers(1)
-                        .date(LocalDateUtil.asDate(LocalDate.now().minusDays(2)))
-                        .build()
-        );
-        projectMeasures.add(
-                SonarQubeMeasure
-                        .builder()
-                        .blockers(latestAnalyseBlockers)
-                        .date(LocalDateUtil.asDate(LocalDate.now().minusDays(1)))
-                        .build()
-        );
+        addAnalysedMeasure(LocalDate.now().minusDays(2), 1);
+        addAnalysedMeasure(LocalDate.now().minusDays(1), latestAnalyseBlockers);
 
         // when
         tickSynchronization();
 
         // then
-        final List<ProjectHistoryEntryEntity> projectViolations = violationsHistoryService.getProjectViolationsHistory(
-                Project
-                        .builder()
-                        .serverId(TestAppConfig.Servers.Server1.ID)
-                        .key(TestAppConfig.RootGroup.Project1.KEY)
-                        .build(),
-                Optional.empty()
-        );
+        final List<ProjectHistoryEntryEntity> projectViolations = getProjectViolationsHistory();
         assertThat(projectViolations).hasSize(3);
         assertThat(projectViolations.get(2).getBlockers()).isEqualTo(latestAnalyseBlockers);
     }
@@ -76,36 +49,53 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     public void shouldEstimateWhenHistoryExistButNoAnalyses() throws SynchronizationException {
         // when
         int latestAvailableHistoryBlockers = 2;
-        projectHistoryRepository.save(
-                ProjectHistoryEntryEntity
-                        .builder()
-                        .id(
-                                ProjectHistoryEntryEntity.combineId(
-                                        TestAppConfig.Servers.Server1.ID,
-                                        TestAppConfig.RootGroup.Project1.KEY,
-                                        LocalDate.now().minusDays(2))
-                        )
-                        .projectKey(TestAppConfig.RootGroup.Project1.KEY)
-                        .serverId(TestAppConfig.Servers.Server1.ID)
-                        .blockers(latestAvailableHistoryBlockers)
-                        .date(LocalDate.now().minusDays(2))
-                        .build()
-        );
+        addHistoricEntry(LocalDate.now().minusDays(2), latestAvailableHistoryBlockers);
 
         // when
         tickSynchronization();
 
         // then
-        final List<ProjectHistoryEntryEntity> projectViolations = violationsHistoryService.getProjectViolationsHistory(
+        final List<ProjectHistoryEntryEntity> projectViolations = getProjectViolationsHistory();
+        assertThat(projectViolations).hasSize(3);
+        assertThat(projectViolations.get(2).getBlockers()).isEqualTo(latestAvailableHistoryBlockers);
+    }
+
+    private List<ProjectHistoryEntryEntity> getProjectViolationsHistory() {
+        return violationsHistoryService.getProjectViolationsHistory(
                 Project
                         .builder()
-                        .serverId(TestAppConfig.Servers.Server1.ID)
-                        .key(TestAppConfig.RootGroup.Project1.KEY)
+                        .serverId(SERVER_ID)
+                        .key(PROJECT_KEY)
                         .build(),
                 Optional.empty()
         );
-        assertThat(projectViolations).hasSize(3);
-        assertThat(projectViolations.get(2).getBlockers()).isEqualTo(latestAvailableHistoryBlockers);
+    }
+
+    private void addAnalysedMeasure(final LocalDate localDate, final int blockers) {
+        inMemorySonarQubeFacade.getInMemoryRepository()
+                .getProjects()
+                .get(Project.getProjectUniqueId(SERVER_ID, PROJECT_KEY))
+                .getMeasures()
+                .add(
+                        SonarQubeMeasure
+                                .builder()
+                                .blockers(blockers)
+                                .date(LocalDateUtil.asDate(localDate))
+                                .build()
+                );
+    }
+
+    private void addHistoricEntry(LocalDate date, final int blockers) {
+        projectHistoryRepository.save(
+                ProjectHistoryEntryEntity
+                        .builder()
+                        .id(ProjectHistoryEntryEntity.combineId(SERVER_ID, PROJECT_KEY, date))
+                        .serverId(SERVER_ID)
+                        .projectKey(PROJECT_KEY)
+                        .blockers(blockers)
+                        .date(date)
+                        .build()
+        );
     }
 
 }
