@@ -1,11 +1,6 @@
 package pl.consdata.ico.sqcompanion;
 
-import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.repository.RepositoryService;
-import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
-import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
-import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
-import pl.consdata.ico.sqcompanion.sync.SynchronizationService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +11,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.consdata.ico.sqcompanion.config.AppConfig;
+import pl.consdata.ico.sqcompanion.history.ProjectHistoryService;
+import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
+import pl.consdata.ico.sqcompanion.sync.SynchronizationService;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,6 +59,17 @@ public abstract class BaseItTest {
 
 	@Autowired
 	protected SynchronizationService synchronizationService;
+
+	@Autowired
+	protected ProjectHistoryService projectHistoryService;
+
+	@Autowired
+	protected InMemorySonarQubeFacade inMemorySonarQubeFacade;
+
+	@Before
+	public void setUpBaseItTest() {
+		inMemorySonarQubeFacade.resetFacade();
+	}
 
 	@Test
 	public void contextLoads() {

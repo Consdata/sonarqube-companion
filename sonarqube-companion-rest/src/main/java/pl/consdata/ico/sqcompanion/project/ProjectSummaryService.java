@@ -8,7 +8,7 @@ import pl.consdata.ico.sqcompanion.health.HealthCheckService;
 import pl.consdata.ico.sqcompanion.history.ProjectHistoryEntryEntity;
 import pl.consdata.ico.sqcompanion.history.ProjectHistoryRepository;
 import pl.consdata.ico.sqcompanion.repository.Project;
-import pl.consdata.ico.sqcompanion.violations.Violations;
+import pl.consdata.ico.sqcompanion.history.Violations;
 
 import java.util.List;
 import java.util.stream.Collectors;

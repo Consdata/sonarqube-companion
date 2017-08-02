@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.violations;
+package pl.consdata.ico.sqcompanion.history;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -17,13 +17,13 @@ import java.util.Optional;
 @RequestMapping("/api/v1/violations/history")
 public class ViolationsHistoryController {
 
-    private final ViolationsHistoryService violationsHistoryService;
+    private final ProjectHistoryService projectHistoryService;
     private final RepositoryService repositoryService;
 
     public ViolationsHistoryController(
-            final ViolationsHistoryService violationsHistoryService,
+            final ProjectHistoryService projectHistoryService,
             final RepositoryService repositoryService) {
-        this.violationsHistoryService = violationsHistoryService;
+        this.projectHistoryService = projectHistoryService;
         this.repositoryService = repositoryService;
     }
 
@@ -36,7 +36,7 @@ public class ViolationsHistoryController {
             value = "Returns group violations history"
     )
     public ViolationsHistory getRootGroupViolationsHistory(@RequestParam Optional<Integer> daysLimit) {
-        return violationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
+        return projectHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
     }
 
     @RequestMapping(
@@ -50,7 +50,7 @@ public class ViolationsHistoryController {
     public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid, @RequestParam Optional<Integer> daysLimit) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return violationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
+            return projectHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }

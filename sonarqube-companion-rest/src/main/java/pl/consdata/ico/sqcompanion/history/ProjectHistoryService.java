@@ -1,9 +1,12 @@
 package pl.consdata.ico.sqcompanion.history;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.cache.Caches;
+import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
@@ -46,6 +49,60 @@ public class ProjectHistoryService {
                         gr -> gr.getProjects()
                                 .forEach(this::synProjectHistoryAndCatch)
                 );
+    }
+
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #daysLimit")
+    public ViolationsHistory getGroupViolationsHistory(final Group group, Optional<Integer> daysLimit) {
+        final List<ViolationHistoryEntry> history = group
+                .getAllProjects()
+                .stream()
+                .flatMap(project -> getProjectViolationsHistory(project, daysLimit).stream())
+                .map(
+                        entry -> ViolationHistoryEntry
+                                .builder()
+                                .date(entry.getDate())
+                                .violations(
+                                        Violations
+                                                .builder()
+                                                .blockers(entry.getBlockers())
+                                                .criticals(entry.getCriticals())
+                                                .majors(entry.getMajors())
+                                                .minors(entry.getMinors())
+                                                .infos(entry.getInfos())
+                                                .build()
+                                )
+                                .build()
+                )
+                .collect(
+                        Collectors.groupingBy(
+                                ViolationHistoryEntry::getDate,
+                                Collectors.reducing(ViolationHistoryEntry::sumEntries)
+                        )
+                )
+                .values()
+                .stream()
+                .filter(entry -> entry.isPresent())
+                .map(entry -> entry.get())
+                .collect(Collectors.toList())
+                .stream()
+                .sorted(Comparator.comparing(ViolationHistoryEntry::getDate))
+                .collect(Collectors.toList());
+        return ViolationsHistory
+                .builder()
+                .violationHistoryEntries(history)
+                .build();
+    }
+
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#project.getId() + #daysLimit")
+    public List<ProjectHistoryEntryEntity> getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit) {
+        if (daysLimit.isPresent()) {
+            return projectHistoryRepository.findAllByProjectKeyAndDateGreaterThanEqual(
+                    project.getKey(),
+                    LocalDate.now().minusDays(daysLimit.get())
+            );
+        } else {
+            return projectHistoryRepository.findAllByProjectKey(project.getKey());
+        }
     }
 
     private void synProjectHistoryAndCatch(final Project project) {
