@@ -115,6 +115,7 @@ public class ViolationsHistoryService {
                 history.add(asProjectHistoryEntryEntity(date, project, lastMeasure));
             }
 
+            log.info("Storing project historic analyses [analysesToStore={}, project={}]", history.size(), project);
             projectHistoryRepository.saveAll(history);
         } else {
             log.info("Project has neither history nor analyses, skipping [projectId={}]", project.getId());

@@ -45,6 +45,7 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
         assertThat(projectViolations.get(2).getBlockers()).isEqualTo(latestAnalyseBlockers);
     }
 
+    /** Fixes: https://github.com/Consdata/sonarqube-companion/issues/34 */
     @Test
     public void shouldEstimateWhenHistoryExistButNoAnalyses() throws SynchronizationException {
         // when
