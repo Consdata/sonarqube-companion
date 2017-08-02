@@ -17,13 +17,13 @@ import java.util.Optional;
 @RequestMapping("/api/v1/violations/history")
 public class ViolationsHistoryController {
 
-    private final ProjectHistoryService projectHistoryService;
+    private final ViolationsHistoryService violationsHistoryService;
     private final RepositoryService repositoryService;
 
     public ViolationsHistoryController(
-            final ProjectHistoryService projectHistoryService,
+            final ViolationsHistoryService violationsHistoryService,
             final RepositoryService repositoryService) {
-        this.projectHistoryService = projectHistoryService;
+        this.violationsHistoryService = violationsHistoryService;
         this.repositoryService = repositoryService;
     }
 
@@ -36,7 +36,7 @@ public class ViolationsHistoryController {
             value = "Returns group violations history"
     )
     public ViolationsHistory getRootGroupViolationsHistory(@RequestParam Optional<Integer> daysLimit) {
-        return projectHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
+        return violationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
     }
 
     @RequestMapping(
@@ -50,7 +50,7 @@ public class ViolationsHistoryController {
     public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid, @RequestParam Optional<Integer> daysLimit) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return projectHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
+            return violationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }

@@ -4,20 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeMeasure;
+import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,13 +23,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class ProjectHistoryService {
+public class ViolationsHistoryService {
 
     private final RepositoryService repositoryService;
     private final SonarQubeFacade sonarQubeFacade;
     private final ProjectHistoryRepository projectHistoryRepository;
 
-    public ProjectHistoryService(
+    public ViolationsHistoryService(
             final RepositoryService repositoryService,
             final SonarQubeFacade sonarQubeFacade,
             final ProjectHistoryRepository projectHistoryRepository) {
@@ -46,8 +43,7 @@ public class ProjectHistoryService {
         repositoryService
                 .getRootGroup()
                 .accept(
-                        gr -> gr.getProjects()
-                                .forEach(this::synProjectHistoryAndCatch)
+                        gr -> gr.getProjects().forEach(this::synProjectHistoryAndCatch)
                 );
     }
 
@@ -124,15 +120,13 @@ public class ProjectHistoryService {
                 lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate() : null
         );
 
-        log.info("Project analyses to store [project={}, analyses={}]", project, historicAnalyses.size());
-        if (!historicAnalyses.isEmpty()) {
-            // combine measures by dates and use latest for each day
+        if (!historicAnalyses.isEmpty() || lastStoredMeasure.isPresent()) {
             final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
+            LocalDate startDate = !historicAnalyses.isEmpty() ? LocalDateUtil.asLocalDate(historicAnalyses.get(0).getDate()) : lastStoredMeasure.get().getDate();
+            SonarQubeMeasure lastMeasure = !historicAnalyses.isEmpty() ? historicAnalyses.get(0) : mapHistoryEntryToMeasure(lastStoredMeasure.get());
 
-            // calculate historic entry for each past day, use previous available if non available for analyzed day
             final List<ProjectHistoryEntryEntity> history = new ArrayList<>();
-            SonarQubeMeasure lastMeasure = getFirstAvailableMeasure(combined);
-            for (LocalDate date = asLocalDate(lastMeasure.getDate()); !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
+            for (LocalDate date = startDate; !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
                 if (combined.containsKey(date)) {
                     lastMeasure = combined.get(date);
                 }
@@ -141,16 +135,9 @@ public class ProjectHistoryService {
 
             // store
             projectHistoryRepository.saveAll(history);
+        } else {
+            log.info("Project has no history nor analyses, skipping [projectId={}]", project.getId());
         }
-    }
-
-    private SonarQubeMeasure getFirstAvailableMeasure(final Map<LocalDate, SonarQubeMeasure> combined) {
-        return combined
-                .values()
-                .stream()
-                .sorted(Comparator.comparing(SonarQubeMeasure::getDate))
-                .findFirst()
-                .orElseThrow(() -> new SQCompanionException("Can't find any measure"));
     }
 
     private Map<LocalDate, SonarQubeMeasure> combineToSingleMeasurePerDay(final List<SonarQubeMeasure> historicAnalyses) {
@@ -174,23 +161,13 @@ public class ProjectHistoryService {
     }
 
     private LocalDate getLocalDate(final SonarQubeMeasure measure) {
-        return asLocalDate(measure.getDate());
-    }
-
-    private LocalDate asLocalDate(final Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return LocalDateUtil.asLocalDate(measure.getDate());
     }
 
     private ProjectHistoryEntryEntity mapMeasureToHistoryEntry(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
-        final String combinedId = String.format(
-                "%s$%s$%s",
-                project.getServerId(),
-                project.getKey(),
-                date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        );
         return ProjectHistoryEntryEntity
                 .builder()
-                .id(combinedId)
+                .id(ProjectHistoryEntryEntity.combineId(project.getServerId(), project.getKey(), date))
                 .serverId(project.getServerId())
                 .projectKey(project.getKey())
                 .date(date)
@@ -199,6 +176,18 @@ public class ProjectHistoryService {
                 .majors(measure.getMajors())
                 .minors(measure.getMinors())
                 .infos(measure.getInfos())
+                .build();
+    }
+
+    private SonarQubeMeasure mapHistoryEntryToMeasure(final ProjectHistoryEntryEntity entryEntity) {
+        return SonarQubeMeasure
+                .builder()
+                .date(LocalDateUtil.asDate(entryEntity.getDate()))
+                .blockers(entryEntity.getBlockers())
+                .criticals(entryEntity.getCriticals())
+                .majors(entryEntity.getMajors())
+                .minors(entryEntity.getMinors())
+                .infos(entryEntity.getInfos())
                 .build();
     }
 
