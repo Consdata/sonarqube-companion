@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SyncProjectViolationsHistoryTest extends BaseItTest {
 
     @Test
-    public void shuldNotSyncWhenNoHistoryAndNoAnalyses() throws SynchronizationException {
+    public void shouldNotSyncWhenNoHistoryAndNoAnalyses() throws SynchronizationException {
         // when
         tickSynchronization();
 

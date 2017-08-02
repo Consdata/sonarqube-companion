@@ -53,22 +53,7 @@ public class ViolationsHistoryService {
                 .getAllProjects()
                 .stream()
                 .flatMap(project -> getProjectViolationsHistory(project, daysLimit).stream())
-                .map(
-                        entry -> ViolationHistoryEntry
-                                .builder()
-                                .date(entry.getDate())
-                                .violations(
-                                        Violations
-                                                .builder()
-                                                .blockers(entry.getBlockers())
-                                                .criticals(entry.getCriticals())
-                                                .majors(entry.getMajors())
-                                                .minors(entry.getMinors())
-                                                .infos(entry.getInfos())
-                                                .build()
-                                )
-                                .build()
-                )
+                .map(this::asViolationHistoryEntry)
                 .collect(
                         Collectors.groupingBy(
                                 ViolationHistoryEntry::getDate,
@@ -79,8 +64,6 @@ public class ViolationsHistoryService {
                 .stream()
                 .filter(entry -> entry.isPresent())
                 .map(entry -> entry.get())
-                .collect(Collectors.toList())
-                .stream()
                 .sorted(Comparator.comparing(ViolationHistoryEntry::getDate))
                 .collect(Collectors.toList());
         return ViolationsHistory
@@ -123,20 +106,20 @@ public class ViolationsHistoryService {
         if (!historicAnalyses.isEmpty() || lastStoredMeasure.isPresent()) {
             final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
             LocalDate startDate = !historicAnalyses.isEmpty() ? LocalDateUtil.asLocalDate(historicAnalyses.get(0).getDate()) : lastStoredMeasure.get().getDate();
-            SonarQubeMeasure lastMeasure = !historicAnalyses.isEmpty() ? historicAnalyses.get(0) : mapHistoryEntryToMeasure(lastStoredMeasure.get());
+            SonarQubeMeasure lastMeasure = !historicAnalyses.isEmpty() ? historicAnalyses.get(0) : asSonarQubeMeasure(lastStoredMeasure.get());
 
             final List<ProjectHistoryEntryEntity> history = new ArrayList<>();
             for (LocalDate date = startDate; !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
                 if (combined.containsKey(date)) {
                     lastMeasure = combined.get(date);
                 }
-                history.add(mapMeasureToHistoryEntry(date, project, lastMeasure));
+                history.add(asProjectHistoryEntryEntity(date, project, lastMeasure));
             }
 
             // store
             projectHistoryRepository.saveAll(history);
         } else {
-            log.info("Project has no history nor analyses, skipping [projectId={}]", project.getId());
+            log.info("Project has neither history nor analyses, skipping [projectId={}]", project.getId());
         }
     }
 
@@ -164,7 +147,7 @@ public class ViolationsHistoryService {
         return LocalDateUtil.asLocalDate(measure.getDate());
     }
 
-    private ProjectHistoryEntryEntity mapMeasureToHistoryEntry(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
+    private ProjectHistoryEntryEntity asProjectHistoryEntryEntity(final LocalDate date, final Project project, final SonarQubeMeasure measure) {
         return ProjectHistoryEntryEntity
                 .builder()
                 .id(ProjectHistoryEntryEntity.combineId(project.getServerId(), project.getKey(), date))
@@ -179,7 +162,7 @@ public class ViolationsHistoryService {
                 .build();
     }
 
-    private SonarQubeMeasure mapHistoryEntryToMeasure(final ProjectHistoryEntryEntity entryEntity) {
+    private SonarQubeMeasure asSonarQubeMeasure(final ProjectHistoryEntryEntity entryEntity) {
         return SonarQubeMeasure
                 .builder()
                 .date(LocalDateUtil.asDate(entryEntity.getDate()))
@@ -188,6 +171,23 @@ public class ViolationsHistoryService {
                 .majors(entryEntity.getMajors())
                 .minors(entryEntity.getMinors())
                 .infos(entryEntity.getInfos())
+                .build();
+    }
+
+    private ViolationHistoryEntry asViolationHistoryEntry(final ProjectHistoryEntryEntity entry) {
+        return ViolationHistoryEntry
+                .builder()
+                .date(entry.getDate())
+                .violations(
+                        Violations
+                                .builder()
+                                .blockers(entry.getBlockers())
+                                .criticals(entry.getCriticals())
+                                .majors(entry.getMajors())
+                                .minors(entry.getMinors())
+                                .infos(entry.getInfos())
+                                .build()
+                )
                 .build();
     }
 
