@@ -16,5 +16,5 @@ consdata-ca.crt
 .classpath
 .idea/
 *.iml
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+.DS_Store
 hs_err_pid*
