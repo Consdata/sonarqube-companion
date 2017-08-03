@@ -23,16 +23,16 @@ public class AppConfigConfiguration {
     private String appConfigFile;
 
     @Bean
-    public AppConfig appConfig() throws IOException {
+    public AppConfig appConfig(final ObjectMapper objectMapper) throws IOException {
         final Path appConfigPath = Paths.get(appConfigFile);
         log.info("Reading app configuration from path: {}", appConfigPath);
 
         if (!appConfigPath.toFile().exists()) {
             log.info("App configuration not exist, creating default [path={}]", appConfigPath);
-            new ObjectMapper().writeValue(appConfigPath.toFile(), getDefaultAppConfig());
+            objectMapper.writeValue(appConfigPath.toFile(), getDefaultAppConfig());
         }
 
-        final AppConfig appConfig = new ObjectMapper().readValue(appConfigPath.toFile(), AppConfig.class);
+        final AppConfig appConfig = objectMapper.readValue(appConfigPath.toFile(), AppConfig.class);
         log.info("App config loaded [appConfig={}]", appConfig);
         return appConfig;
     }
