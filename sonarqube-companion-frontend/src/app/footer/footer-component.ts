@@ -1,6 +1,4 @@
 import {AfterViewInit, Component, OnDestroy} from '@angular/core';
-
-import {BaseComponent} from '../base-component';
 import {BaseHrefHelper} from '../util/base-href-helper';
 import {VersionService} from '../version/version-service';
 import {ApplicationVersion} from '../version/application-version';
@@ -16,7 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
         {{appName}} - {{version}} - {{buildTimestamp}}
       </div>
       <div>
-        (<a [href]="href + '/tree/' + gitbranch">{{gitbranch}}</a>)
+        (<a [href]="href + '/tree/' + encode(gitbranch)">{{gitbranch}}</a>)
         (<a [href]="href + '/commit/' + gitsha">{{gitsha}}</a>)
         (<a [href]="baseHref + 'swagger/index.html'">rest api</a>)
       </div>
@@ -47,7 +45,7 @@ export class FooterComponent implements AfterViewInit, OnDestroy {
       this.gitbranch = applicationVersion.branch;
       this.buildTimestamp = applicationVersion.buildTimestamp;
       this.gitsha = applicationVersion.commitId;
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -55,4 +53,9 @@ export class FooterComponent implements AfterViewInit, OnDestroy {
       this.versionSubscription.unsubscribe();
     }
   }
+
+  encode(input: string): string {
+    return encodeURIComponent(input);
+  }
+
 }
