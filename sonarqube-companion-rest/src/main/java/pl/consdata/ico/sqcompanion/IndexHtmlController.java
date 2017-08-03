@@ -22,12 +22,15 @@ public class IndexHtmlController {
 
     private final ResourceLoader resourceLoader;
     private final String indexTemplatePath;
+    private final ObjectMapper objectMapper;
 
     public IndexHtmlController(
             final ResourceLoader resourceLoader,
-            final @Value("${app.indexTemplatePath:classpath:/resources/index.html}") String indexTemplatePath) {
+            final @Value("${app.indexTemplatePath:classpath:/resources/index.html}") String indexTemplatePath,
+            final ObjectMapper objectMapper) {
         this.resourceLoader = resourceLoader;
         this.indexTemplatePath = indexTemplatePath;
+        this.objectMapper = objectMapper;
     }
 
     @RequestMapping({"/", "/index.html"})
@@ -53,7 +56,7 @@ public class IndexHtmlController {
                                 .append("<script type=\"text/javascript\">")
                                 .append("window.serverAppConfig = window.serverAppConfig || {};")
                                 .append("Object.assign(window.serverAppConfig, ")
-                                .append(new ObjectMapper().writeValueAsString(config))
+                                .append(objectMapper.writeValueAsString(config))
                                 .append(");")
                                 .append("</script>")
                                 .toString()
