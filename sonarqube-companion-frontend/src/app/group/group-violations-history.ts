@@ -52,6 +52,7 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
+    this.chart = null;
     this.service
       .getHistory(90, this.uuid)
       .subscribe((violationsHistory: ProjectViolationsHistory) => {
