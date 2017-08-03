@@ -3,7 +3,7 @@ package pl.consdata.ico.sqcompanion.project;
 import lombok.Builder;
 import lombok.Data;
 import pl.consdata.ico.sqcompanion.health.HealthStatus;
-import pl.consdata.ico.sqcompanion.violations.Violations;
+import pl.consdata.ico.sqcompanion.history.Violations;
 
 import java.util.List;
 import java.util.Objects;

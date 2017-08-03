@@ -11,9 +11,13 @@ public class Caches {
     public static final String GROUP_OVERVIEW_CACHE = "cache_group_overview";
     public static final String GROUP_DETAILS_CACHE = "cache_group_details";
     public static final String GROUP_VIOLATIONS_HISTORY_CACHE = "cache_group_violations_history";
+    public static final String PROJECT_VIOLATIONS_HISTORY_CACHE = "cache_project_violations_history";
 
     public static final List<String> LIST = Arrays.asList(
-            GROUP_OVERVIEW_CACHE, GROUP_DETAILS_CACHE, GROUP_VIOLATIONS_HISTORY_CACHE
+            GROUP_OVERVIEW_CACHE,
+            GROUP_DETAILS_CACHE,
+            GROUP_VIOLATIONS_HISTORY_CACHE,
+            PROJECT_VIOLATIONS_HISTORY_CACHE
     );
 
 }

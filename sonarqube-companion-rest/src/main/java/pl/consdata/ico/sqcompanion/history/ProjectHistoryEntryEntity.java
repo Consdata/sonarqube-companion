@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity(name = "project_history_entries")
 @Table(
@@ -23,6 +24,15 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class ProjectHistoryEntryEntity {
+
+    public static String combineId(final String serverId, final String projectKey, final LocalDate date) {
+        return String.format(
+                "%s$%s$%s",
+                serverId,
+                projectKey,
+                date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        );
+    }
 
     @Id
     private String id;

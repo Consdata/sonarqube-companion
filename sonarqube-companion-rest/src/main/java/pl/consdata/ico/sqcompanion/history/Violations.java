@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.violations;
+package pl.consdata.ico.sqcompanion.history;
 
 import lombok.Builder;
 import lombok.Data;

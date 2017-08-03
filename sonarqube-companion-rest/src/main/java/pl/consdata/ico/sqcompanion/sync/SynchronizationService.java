@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
-import pl.consdata.ico.sqcompanion.history.ProjectHistoryService;
+import pl.consdata.ico.sqcompanion.history.ViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class SynchronizationService {
 
     private final ProjectService projectService;
-    private final ProjectHistoryService projectHistoryService;
+    private final ViolationsHistoryService violationsHistoryService;
     private final RepositoryService repositoryService;
     private final SynchronizationStateService synchronizationStateService;
     private final CacheManager cacheManager;
@@ -27,12 +27,12 @@ public class SynchronizationService {
 
     public SynchronizationService(
             final ProjectService projectService,
-            final ProjectHistoryService projectHistoryService,
+            final ViolationsHistoryService violationsHistoryService,
             final RepositoryService repositoryService,
             final SynchronizationStateService synchronizationStateService,
             final CacheManager cacheManager) {
         this.projectService = projectService;
-        this.projectHistoryService = projectHistoryService;
+        this.violationsHistoryService = violationsHistoryService;
         this.repositoryService = repositoryService;
         this.synchronizationStateService = synchronizationStateService;
         this.cacheManager = cacheManager;
@@ -66,7 +66,7 @@ public class SynchronizationService {
         synchronizationStateService.initSynchronization(0);
         projectService.syncProjects();
         repositoryService.syncGroups();
-        projectHistoryService.syncProjectsHistory();
+        violationsHistoryService.syncProjectsHistory();
         synchronizationStateService.finishSynchronization();
 
         Caches.LIST

@@ -9,6 +9,10 @@ import java.util.Objects;
 @Builder
 public class Project {
 
+    public static String getProjectUniqueId(final String serverId, final String projectKey) {
+        return String.format("%s$%s", serverId, projectKey);
+    }
+
     private String serverId;
     private String key;
     private String name;
@@ -22,6 +26,10 @@ public class Project {
                 .name(name)
                 .url(url)
                 .build();
+    }
+
+    public String getId() {
+        return getProjectUniqueId(serverId, key);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.violations;
+package pl.consdata.ico.sqcompanion.history;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
