@@ -23,6 +23,9 @@ import {SynchronizationComponent} from './synchronization/synchronization-compon
 import {GroupViolationsHistoryComponent} from './group/group-violations-history';
 import {GroupOverviewCardComponent} from './group/group-overview-card';
 import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
+import {AppStateService} from 'app/app-state-service';
+import {AppState} from 'app/app-state';
+import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,8 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
     GroupViolationsHistoryComponent,
     GroupOverviewCardComponent,
     GroupOverviewCardsComponent,
-    SynchronizationComponent
+    SynchronizationComponent,
+    SettingsMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,9 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
     GroupService,
     VersionService,
     ProjectViolationsHistoryService,
-    SynchronizationService
+    SynchronizationService,
+    AppState,
+    AppStateService
   ],
   bootstrap: [
     SonarQubeCompanionComponent
