@@ -34,6 +34,17 @@ public class ProjectHistoryEntryEntity {
         );
     }
 
+    public static ProjectHistoryEntryEntity empty() {
+        return ProjectHistoryEntryEntity
+                .builder()
+                .blockers(0)
+                .criticals(0)
+                .majors(0)
+                .minors(0)
+                .infos(0)
+                .build();
+    }
+
     @Id
     private String id;
     private String serverId;

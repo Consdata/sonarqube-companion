@@ -16,7 +16,7 @@ import {SpinnerComponent} from './spinner/spinner-component';
 import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-item-component';
 import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
-import {ProjectViolationsHistoryService} from './violations/project-violations-history-service';
+import {ViolationsHistoryService} from './violations/violations-history-service';
 import {VersionService} from './version/version-service';
 import {SynchronizationService} from 'app/synchronization/synchronization-service';
 import {SynchronizationComponent} from './synchronization/synchronization-component';
@@ -26,6 +26,8 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
 import {AppStateService} from 'app/app-state-service';
 import {AppState} from 'app/app-state';
 import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
+import {GroupProjectsComponent} from './group/group-projects-component';
+import {ProjectViolationsComponent} from './group/project-violations-component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
     GroupOverviewCardComponent,
     GroupOverviewCardsComponent,
     SynchronizationComponent,
-    SettingsMenuComponent
+    SettingsMenuComponent,
+    GroupProjectsComponent,
+    ProjectViolationsComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,7 @@ import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
     OverviewService,
     GroupService,
     VersionService,
-    ProjectViolationsHistoryService,
+    ViolationsHistoryService,
     SynchronizationService,
     AppState,
     AppStateService
