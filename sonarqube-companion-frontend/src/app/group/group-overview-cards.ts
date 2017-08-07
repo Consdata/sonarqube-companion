@@ -1,51 +1,91 @@
 import {Component, Input} from '@angular/core';
 import {GroupDetails} from 'app/group/group-details';
+import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
+import {Violations} from '../violations/violations';
 
 @Component({
   selector: 'sq-group-overview-cards',
   template: `
     <sq-group-overview-card
       [class]="group.healthStatusString"
-      [icon]="'fa ' + (group.healthy ? 'fa-thumbs-o-up' : 'fa-thumbs-down')"
-      [value]="group.healthStatusString"
-      [metric]="'overall score'">
+      [icon]="'fa ' + (group.healthy ? 'fa-thumbs-o-up' : 'fa-thumbs-down')">
+      <div text>
+        {{group.healthStatusString}}
+      </div>
+      <div description>
+        overall score
+      </div>
     </sq-group-overview-card>
     <sq-group-overview-card
       [class.success]="group.violations.blockers === 0"
       [class.danger]="group.violations.blockers > 0"
-      [icon]="'fa fa-ban'"
-      [value]="group.violations.blockers"
-      [metric]="'blockers'">
+      [icon]="'fa fa-ban'">
+      <div text>
+        <sq-project-violations
+          [violations]="violations"
+          [violationsDiff]="violationsHistoryDiff"
+          [type]="'nonRelevant'">
+        </sq-project-violations>
+      </div>
+      <div description>
+        blockers
+      </div>
     </sq-group-overview-card>
     <sq-group-overview-card
       [class.success]="group.violations.criticals === 0"
       [class.warning]="group.violations.criticals > 0"
-      [icon]="'fa fa-exclamation-circle'"
-      [value]="group.violations.criticals"
-      [metric]="'criticals'">
+      [icon]="'fa fa-exclamation-circle'">
+      <div text>
+        <sq-project-violations
+          [violations]="violations"
+          [violationsDiff]="violationsHistoryDiff"
+          [type]="'criticals'">
+        </sq-project-violations>
+      </div>
+      <div description>
+        criticals
+      </div>
     </sq-group-overview-card>
     <sq-group-overview-card
       class="gray"
-      [icon]="'fa fa-info-circle'"
-      [value]="group.violations.nonRelevant"
-      [metric]="'other issues'">
+      [icon]="'fa fa-info-circle'">
+      <div text>
+        <sq-project-violations
+          [violations]="violations"
+          [violationsDiff]="violationsHistoryDiff"
+          [type]="'nonRelevant'">
+        </sq-project-violations>
+      </div>
+      <div description>
+        other issues
+      </div>
     </sq-group-overview-card>
     <sq-group-overview-card
       class="gray"
-      [icon]="'fa fa-briefcase'"
-      [value]="group.projects.length"
-      [metric]="'projects'">
+      [icon]="'fa fa-briefcase'">
+      <div text>
+        {{group.projects.length}}
+      </div>
+      <div description>
+        projects
+      </div>
     </sq-group-overview-card>
     <sq-group-overview-card
       class="gray"
-      [icon]="'fa fa-folder-open-o'"
-      [value]="group.groups.length"
-      [metric]="'groups'">
+      [icon]="'fa fa-folder-open-o'">
+      <div text>
+        {{group.groups.length}}
+      </div>
+      <div description>
+        groups
+      </div>
     </sq-group-overview-card>
   `
 })
 export class GroupOverviewCardsComponent {
 
   @Input() group: GroupDetails;
+  @Input() violations: Violations;
+  @Input() violationsHistoryDiff: Violations;
 
 }

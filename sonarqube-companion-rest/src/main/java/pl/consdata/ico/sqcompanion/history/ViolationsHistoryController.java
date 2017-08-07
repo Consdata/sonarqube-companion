@@ -1,6 +1,7 @@
 package pl.consdata.ico.sqcompanion.history;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -51,6 +53,26 @@ public class ViolationsHistoryController {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
             return violationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
+    @RequestMapping(
+            value = "/group/{uuid}/{fromDate}/{toDate}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group violations history change in time"
+    )
+    public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(
+            @PathVariable final String uuid,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return violationsHistoryService.getGroupViolationsHistoryDiff(group.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }

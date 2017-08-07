@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
@@ -18,6 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -69,6 +71,26 @@ public class ViolationsHistoryService {
         return ViolationsHistory
                 .builder()
                 .violationHistoryEntries(history)
+                .build();
+    }
+
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
+    public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
+        final List<ProjectViolationsHistoryDiff> projectDiffs = group
+                .getAllProjects()
+                .stream()
+                .filter(project -> projectHistoryRepository.existsByProjectKey(project.getKey()))
+                .map(getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate))
+                .collect(Collectors.toList());
+        final Violations groupDiff = projectDiffs
+                .stream()
+                .map(ProjectViolationsHistoryDiff::getViolationsDiff)
+                .collect(Collectors.reducing(Violations::sumViolations))
+                .get();
+        return GroupViolationsHistoryDiff
+                .builder()
+                .groupDiff(groupDiff)
+                .projectDiffs(projectDiffs)
                 .build();
     }
 
@@ -132,6 +154,44 @@ public class ViolationsHistoryService {
                 .entrySet()
                 .stream()
                 .collect(mapOptionalValuesToValues());
+    }
+
+    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(LocalDate fromDate, LocalDate toDate) {
+        return project -> {
+            final Optional<ProjectHistoryEntryEntity> fromDateEntryOptional =
+                    projectHistoryRepository
+                            .findByProjectKeyAndDateEquals(project.getKey(), fromDate);
+            final Optional<ProjectHistoryEntryEntity> toDateEntryOptional = projectHistoryRepository
+                    .findByProjectKeyAndDateEquals(project.getKey(), toDate);
+
+            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
+                throw new SQCompanionException(
+                        String.format(
+                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
+                                project.getKey()
+                        )
+                );
+            }
+            final ProjectHistoryEntryEntity fromDateEntry = fromDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
+            final ProjectHistoryEntryEntity toDateEntry = toDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
+
+            final Violations violationsDiff = Violations
+                    .builder()
+                    .blockers(toDateEntry.getBlockers() - fromDateEntry.getBlockers())
+                    .criticals(toDateEntry.getCriticals() - fromDateEntry.getCriticals())
+                    .majors(toDateEntry.getMajors() - fromDateEntry.getMajors())
+                    .minors(toDateEntry.getMinors() - fromDateEntry.getMinors())
+                    .infos(toDateEntry.getInfos() - fromDateEntry.getInfos())
+                    .build();
+            return ProjectViolationsHistoryDiff
+                    .builder()
+                    .projectId(project.getId())
+                    .fromDate(fromDate)
+                    .toDate(toDate)
+                    .projectKey(project.getKey())
+                    .violationsDiff(violationsDiff)
+                    .build();
+        };
     }
 
     private Collector<Map.Entry<LocalDate, Optional<SonarQubeMeasure>>, ?, Map<LocalDate, SonarQubeMeasure>> mapOptionalValuesToValues() {
