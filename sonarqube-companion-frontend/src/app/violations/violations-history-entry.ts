@@ -1,6 +1,6 @@
 import {Violations} from './violations';
 
-export class ProjectViolationsHistoryEntry {
+export class ViolationsHistoryEntry {
 
   date: any;
   violations: Violations;

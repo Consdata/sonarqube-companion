@@ -1,0 +1,16 @@
+sq-settings-menu {
+  position: absolute;
+  right: 0;
+  top: 50px;
+
+  display: block;
+  width: 300px;
+
+  background-color: $color-default;
+  padding: 10px;
+
+  .menu-item {
+    display: block;
+  }
+
+}

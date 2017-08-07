@@ -1,5 +1,4 @@
 import {Component, HostBinding, Input} from '@angular/core';
-import {BaseComponent} from '../base-component';
 import {GroupOverview} from './group-overview';
 
 @Component({
@@ -23,10 +22,7 @@ import {GroupOverview} from './group-overview';
     <div class="subgroups">
       <sq-overview-tree-item [group]="subGroup" *ngFor="let subGroup of group.groups"></sq-overview-tree-item>
     </div>
-  `,
-  styles: [
-    BaseComponent.DISPLAY_BLOCK
-  ]
+  `
 })
 export class GroupOverviewTreeItemComponent {
 

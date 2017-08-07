@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {BaseComponent} from '../base-component';
 import {OverviewService} from './overview-service';
 import {GroupOverview} from './group-overview';
 
@@ -11,10 +10,7 @@ import {GroupOverview} from './group-overview';
     <div *ngIf="group">
       <sq-overview-tree-item [group]="group"></sq-overview-tree-item>
     </div>
-  `,
-  styles: [
-    BaseComponent.DISPLAY_BLOCK
-  ]
+  `
 })
 export class OverviewComponent implements OnInit {
 

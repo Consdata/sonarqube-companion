@@ -1,9 +1,10 @@
-import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
+import {Component, EventEmitter, Input, NgZone, OnChanges, OnDestroy, Output} from '@angular/core';
 
-import {BaseComponent} from '../base-component';
-import {ProjectViolationsHistoryService} from '../violations/project-violations-history-service';
-import {ProjectViolationsHistory} from '../violations/project-violations-history';
+import {ViolationsHistoryService} from '../violations/violations-history-service';
+import {ViolationsHistory} from '../violations/violations-history';
 import {AmChartsService} from '@amcharts/amcharts3-angular';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'sq-group-violations-history',
@@ -32,10 +33,7 @@ import {AmChartsService} from '@amcharts/amcharts3-angular';
       </div>
       <div id="violations-history-chart"></div>
     </div>
-  `,
-  styles: [
-    BaseComponent.DISPLAY_BLOCK
-  ]
+  `
 })
 export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
 
@@ -45,17 +43,21 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
   ];
 
   @Input() uuid: string;
+  @Output() zoomed = new EventEmitter();
   chart: any;
   currentGraph: string;
 
-  constructor(private service: ProjectViolationsHistoryService, private amCharts: AmChartsService) {
+  constructor(
+    private service: ViolationsHistoryService,
+    private amCharts: AmChartsService,
+    private ngZone: NgZone) {
   }
 
   ngOnChanges(): void {
     this.chart = null;
     this.service
       .getHistory(90, this.uuid)
-      .subscribe((violationsHistory: ProjectViolationsHistory) => {
+      .subscribe((violationsHistory: ViolationsHistory) => {
         this.initializeChart(violationsHistory);
       });
   }
@@ -81,7 +83,7 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     });
   }
 
-  private initializeChart(violationsHistory: ProjectViolationsHistory) {
+  private initializeChart(violationsHistory: ViolationsHistory) {
     if (this.chart) {
       this.amCharts.destroyChart(this.chart);
     }
@@ -95,6 +97,18 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     GroupViolationsHistoryComponent.SERIES
       .filter(serie => serie !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
       .forEach(serie => this.chart.hideGraph(this.chart.getGraphById(serie)));
+
+    const zoomedSubject = new Subject<any>();
+    this.chart.addListener('zoomed', (ev) => {
+      zoomedSubject.next({
+        fromDate: ev.startDate,
+        toDate: ev.endDate
+      });
+    });
+    zoomedSubject
+      .asObservable()
+      .debounce(() => Observable.timer(500))
+      .subscribe(ev => this.ngZone.run(() => this.zoomed.emit(ev)));
 
     this.chart.addListener('dataUpdated', (ev) => {
       const historyLength = ev.chart.dataProvider.length;

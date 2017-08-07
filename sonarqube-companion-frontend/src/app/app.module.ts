@@ -16,13 +16,18 @@ import {SpinnerComponent} from './spinner/spinner-component';
 import {GroupOverviewTreeItemComponent} from './overview/group-overview-tree-item-component';
 import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
-import {ProjectViolationsHistoryService} from './violations/project-violations-history-service';
+import {ViolationsHistoryService} from './violations/violations-history-service';
 import {VersionService} from './version/version-service';
 import {SynchronizationService} from 'app/synchronization/synchronization-service';
 import {SynchronizationComponent} from './synchronization/synchronization-component';
 import {GroupViolationsHistoryComponent} from './group/group-violations-history';
 import {GroupOverviewCardComponent} from './group/group-overview-card';
 import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
+import {AppStateService} from 'app/app-state-service';
+import {AppState} from 'app/app-state';
+import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
+import {GroupProjectsComponent} from './group/group-projects-component';
+import {ProjectViolationsComponent} from './group/project-violations-component';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,10 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
     GroupViolationsHistoryComponent,
     GroupOverviewCardComponent,
     GroupOverviewCardsComponent,
-    SynchronizationComponent
+    SynchronizationComponent,
+    SettingsMenuComponent,
+    GroupProjectsComponent,
+    ProjectViolationsComponent
   ],
   imports: [
     BrowserModule,
@@ -51,8 +59,10 @@ import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
     OverviewService,
     GroupService,
     VersionService,
-    ProjectViolationsHistoryService,
-    SynchronizationService
+    ViolationsHistoryService,
+    SynchronizationService,
+    AppState,
+    AppStateService
   ],
   bootstrap: [
     SonarQubeCompanionComponent

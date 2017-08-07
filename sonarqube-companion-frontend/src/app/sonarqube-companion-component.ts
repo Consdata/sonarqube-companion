@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, HostBinding} from '@angular/core';
+import {AppStateService} from 'app/app-state-service';
 
 @Component({
   selector: 'sq-sonarqube-companion',
@@ -19,4 +20,14 @@ import {Component} from '@angular/core';
   styles: []
 })
 export class SonarQubeCompanionComponent {
+
+  constructor(private appState: AppStateService) {
+  }
+
+  // noinspection JSUnusedGlobalSymbols - used by @HostBinding
+  @HostBinding('attr.theme')
+  get attrThemeBinding(): string {
+    return this.appState.theme;
+  }
+
 }

@@ -1,15 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {BaseComponent} from '../base-component';
-
 @Component({
   selector: 'sq-spinner',
   template: `
     <div *ngIf="show" class="sk-rotating-plane"></div>
-  `,
-  styles: [
-    BaseComponent.DISPLAY_BLOCK
-  ]
+  `
 })
 export class SpinnerComponent implements OnInit, OnDestroy {
 

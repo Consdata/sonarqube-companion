@@ -9,8 +9,12 @@ import {Component, Input} from '@angular/core';
             <i [class]="icon"></i>
         </div>
         <div class="details">
-            <div class="value">{{value}}</div>
-            <div class="metric">{{metric}}</div>
+            <div class="text">
+              <ng-content select="[text]"></ng-content>
+            </div>
+            <div class="description">
+              <ng-content select="[description]"></ng-content>
+            </div>
         </div>
       </div>
     </div>
@@ -19,7 +23,5 @@ import {Component, Input} from '@angular/core';
 export class GroupOverviewCardComponent {
 
   @Input() icon: string;
-  @Input() metric: string;
-  @Input() value: string;
 
 }

@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
 
-import {BaseComponent} from '../base-component';
-
 @Component({
   selector: 'sq-not-found',
   template: `
@@ -11,10 +9,7 @@ import {BaseComponent} from '../base-component';
     <div class="message">
       Page not found
     </div>
-  `,
-  styles: [
-    BaseComponent.DISPLAY_BLOCK
-  ]
+  `
 })
 export class NotFoundComponent {
 }
