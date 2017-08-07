@@ -24,7 +24,7 @@ import {Violations} from '../violations/violations';
         <sq-project-violations
           [violations]="violations"
           [violationsDiff]="violationsHistoryDiff"
-          [type]="'nonRelevant'">
+          [type]="'blockers'">
         </sq-project-violations>
       </div>
       <div description>
