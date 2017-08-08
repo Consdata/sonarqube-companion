@@ -62,7 +62,10 @@ export class GroupProjectsComponent {
 
   private hasAnyAddedViolations(projectKey: string): boolean {
     const projectDiff = this.violationsHistoryDiff.projects[projectKey];
-    return !!projectDiff && projectDiff.hasAnyAdded();
+    if (!projectDiff) {
+      return false;
+    }
+    return projectDiff.blockers > 0 || projectDiff.criticals > 0 || projectDiff.nonRelevant > 0;
   }
 
 }
