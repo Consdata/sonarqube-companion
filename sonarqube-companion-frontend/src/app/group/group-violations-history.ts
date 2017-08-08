@@ -113,10 +113,14 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
       .debounce(() => Observable.timer(500))
       .subscribe(ev => this.ngZone.run(() => this.zoomed.emit(ev)));
 
-    this.chart.addListener('dataUpdated', (ev) => {
-      const historyLength = ev.chart.dataProvider.length;
-      this.chart.zoomToIndexes(historyLength - 8, historyLength - 1);
-      this.chart.zoomOutValueAxes();
+    let zoomInitialized = false;
+    this.chart.addListener('dataUpdated', ev => {
+      if (!zoomInitialized) {
+        zoomInitialized = true;
+        const historyLength = ev.chart.dataProvider.length;
+        this.chart.zoomToIndexes(historyLength - 8, historyLength - 1);
+        this.chart.zoomOutValueAxes();
+      }
     });
 
     this.chart.validateData();
