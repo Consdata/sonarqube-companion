@@ -22,7 +22,7 @@ import {Violations} from '../violations/violations';
     </span>
   `
 })
-export class ProjectViolationsComponent implements OnInit {
+export class ProjectViolationsComponent {
 
   @Input() type: string;
   @Input() violations: Violations;
@@ -37,9 +37,6 @@ export class ProjectViolationsComponent implements OnInit {
     } else {
       return !!this.violations && !!this.violationsDiff;
     }
-  }
-
-  ngOnInit(): void {
   }
 
 }
