@@ -95,8 +95,8 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     });
 
     GroupViolationsHistoryComponent.SERIES
-      .filter(serie => serie !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
-      .forEach(serie => this.chart.hideGraph(this.chart.getGraphById(serie)));
+      .filter(series => series !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
+      .forEach(series => this.chart.hideGraph(this.chart.getGraphById(series)));
 
     const zoomedSubject = new Subject<any>();
     this.chart.addListener('zoomed', (ev) => {
