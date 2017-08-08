@@ -57,10 +57,12 @@ export class GroupProjectsComponent {
   isVisibleViaFilter(project: ProjectSummary): boolean {
     return !this.violationsHistoryDiff
       || this.filter === 'all'
-      || (
-        this.violationsHistoryDiff.projects[project.key]
-        && this.violationsHistoryDiff.projects[project.key].hasAnyAdded()
-      );
+      || this.hasAnyAddedViolations(project.key);
+  }
+
+  private hasAnyAddedViolations(projectKey: string): boolean {
+    const projectDiff = this.violationsHistoryDiff.projects[projectKey];
+    return !!projectDiff && projectDiff.hasAnyAdded();
   }
 
 }
