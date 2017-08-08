@@ -102,10 +102,12 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     this.chart.addListener('zoomed', (ev) => {
       // use fully visible day as start date
       const fromDate = this.asLocalDateString(
-        ev.startDate.getHours() > 12 ? this.getNextDayDate(ev.startDate) : ev.startDate
+        ev.startDate.getHours() > 12 ? this.addDays(ev.startDate, 1) : ev.startDate
       );
       // use end day as end date
-      const toDate = this.asLocalDateString(ev.endDate);
+      const toDate = this.asLocalDateString(
+        ev.endDate.getHours() < 12 ? this.addDays(ev.endDate, -1) : ev.endDate
+      );
       zoomedSubject.next({fromDate, toDate});
     });
     zoomedSubject
@@ -188,9 +190,9 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     };
   }
 
-  private getNextDayDate(date: Date) {
+  private addDays(date: Date, days: number) {
     const plusDate = new Date(date);
-    plusDate.setDate(plusDate.getDate() + 1);
+    plusDate.setDate(plusDate.getDate() + days);
     return plusDate;
   }
 
