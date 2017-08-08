@@ -16,14 +16,10 @@ export class ViolationsHistoryService {
       .map(response => new ViolationsHistory(response.json()));
   }
 
-  getHistoryDiff(uuid: string, fromDate: Date, toDate: Date): Observable<GroupViolationsHistoryDiff> {
+  getHistoryDiff(uuid: string, fromDate: string, toDate: string): Observable<GroupViolationsHistoryDiff> {
     return this.http
-      .get(`api/v1/violations/history/group/${uuid}/${this.asLocalDateString(fromDate)}/${this.asLocalDateString(toDate)}`)
+      .get(`api/v1/violations/history/group/${uuid}/${fromDate}/${toDate}`)
       .map(response => new GroupViolationsHistoryDiff(response.json()));
-  }
-
-  private asLocalDateString(date: Date): string {
-    return date.toISOString().slice(0, 10);
   }
 
 }

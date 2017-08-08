@@ -31,7 +31,7 @@ import {Observable} from 'rxjs/Observable';
         |
         <span (click)="changeChartIssue('infos')" [class.active]="'infos' === currentGraph">infos</span>
       </div>
-      <hr />
+      <hr/>
       <div id="violations-history-chart"></div>
     </div>
   `
@@ -48,10 +48,9 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
   chart: any;
   currentGraph: string;
 
-  constructor(
-    private service: ViolationsHistoryService,
-    private amCharts: AmChartsService,
-    private ngZone: NgZone) {
+  constructor(private service: ViolationsHistoryService,
+              private amCharts: AmChartsService,
+              private ngZone: NgZone) {
   }
 
   ngOnChanges(): void {
@@ -101,10 +100,13 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
 
     const zoomedSubject = new Subject<any>();
     this.chart.addListener('zoomed', (ev) => {
-      zoomedSubject.next({
-        fromDate: ev.startDate,
-        toDate: ev.endDate
-      });
+      // use fully visible day as start date
+      const fromDate = this.asLocalDateString(
+        ev.startDate.getHours() > 12 ? this.getNextDayDate(ev.startDate) : ev.startDate
+      );
+      // use end day as end date
+      const toDate = this.asLocalDateString(ev.endDate);
+      zoomedSubject.next({fromDate, toDate});
     });
     zoomedSubject
       .asObservable()
@@ -180,6 +182,16 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
         minorGridEnabled: true
       }
     };
+  }
+
+  private getNextDayDate(date: Date) {
+    const plusDate = new Date(date);
+    plusDate.setDate(plusDate.getDate() + 1);
+    return plusDate;
+  }
+
+  private asLocalDateString(date: Date): string {
+    return date.toISOString().slice(0, 10);
   }
 
 }
