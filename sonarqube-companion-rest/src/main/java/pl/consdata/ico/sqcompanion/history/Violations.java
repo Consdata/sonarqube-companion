@@ -27,4 +27,24 @@ public class Violations {
                 .build();
     }
 
+    public void addBlockers(int blockers) {
+        this.blockers += blockers;
+    }
+
+    public void addCriticals(int criticals) {
+        this.criticals += criticals;
+    }
+
+    public void addMajors(int majors) {
+        this.majors += majors;
+    }
+
+    public void addMinors(int minors) {
+        this.minors += minors;
+    }
+
+    public void addInfos(int infos) {
+        this.infos += infos;
+    }
+
 }

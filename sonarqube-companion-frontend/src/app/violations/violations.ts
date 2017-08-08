@@ -15,6 +15,10 @@ export class Violations {
   }
 
   hasAny(): boolean {
+    return this.blockers !== 0 || this.criticals !== 0 || this.majors !== 0 || this.minors !== 0 || this.infos !== 0;
+  }
+
+  hasAnyAdded(): boolean {
     return this.blockers > 0 || this.criticals > 0 || this.majors > 0 || this.minors > 0 || this.infos > 0;
   }
 

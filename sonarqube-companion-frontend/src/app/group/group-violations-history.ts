@@ -31,6 +31,7 @@ import {Observable} from 'rxjs/Observable';
         |
         <span (click)="changeChartIssue('infos')" [class.active]="'infos' === currentGraph">infos</span>
       </div>
+      <hr />
       <div id="violations-history-chart"></div>
     </div>
   `

@@ -10,6 +10,8 @@ import java.util.List;
 public class GroupViolationsHistoryDiff {
 
     private final Violations groupDiff;
+    private final Violations addedViolations;
+    private final Violations removedViolations;
     private final List<ProjectViolationsHistoryDiff> projectDiffs;
 
 }

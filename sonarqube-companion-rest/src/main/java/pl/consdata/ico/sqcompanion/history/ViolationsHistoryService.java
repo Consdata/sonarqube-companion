@@ -82,14 +82,18 @@ public class ViolationsHistoryService {
                 .filter(project -> projectHistoryRepository.existsByProjectKey(project.getKey()))
                 .map(getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate))
                 .collect(Collectors.toList());
-        final Violations groupDiff = projectDiffs
+
+        final Violations addedViolations = Violations.builder().build();
+        final Violations removedViolations = Violations.builder().build();
+        projectDiffs
                 .stream()
                 .map(ProjectViolationsHistoryDiff::getViolationsDiff)
-                .collect(Collectors.reducing(Violations::sumViolations))
-                .get();
+                .forEach(violations -> mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violations));
         return GroupViolationsHistoryDiff
                 .builder()
-                .groupDiff(groupDiff)
+                .groupDiff(Violations.sumViolations(addedViolations, removedViolations))
+                .addedViolations(addedViolations)
+                .removedViolations(removedViolations)
                 .projectDiffs(projectDiffs)
                 .build();
     }
@@ -248,6 +252,37 @@ public class ViolationsHistoryService {
                                 .build()
                 )
                 .build();
+    }
+
+    private void mergeProjectViolationsToAddedOrRemovedGroupViolations(
+            final Violations addedViolations,
+            final Violations removedViolations,
+            final Violations violations) {
+        if (violations.getBlockers() >= 0) {
+            addedViolations.addBlockers(violations.getBlockers());
+        } else {
+            removedViolations.addBlockers(Math.abs(violations.getBlockers()));
+        }
+        if (violations.getCriticals() >= 0) {
+            addedViolations.addCriticals(violations.getCriticals());
+        } else {
+            removedViolations.addCriticals(Math.abs(violations.getCriticals()));
+        }
+        if (violations.getMajors() >= 0) {
+            addedViolations.addMajors(violations.getMajors());
+        } else {
+            removedViolations.addMajors(Math.abs(violations.getMajors()));
+        }
+        if (violations.getMinors() >= 0) {
+            addedViolations.addMinors(violations.getMinors());
+        } else {
+            removedViolations.addMinors(Math.abs(violations.getMinors()));
+        }
+        if (violations.getInfos() >= 0) {
+            addedViolations.addInfos(violations.getInfos());
+        } else {
+            removedViolations.addInfos(Math.abs(violations.getInfos()));
+        }
     }
 
 }
