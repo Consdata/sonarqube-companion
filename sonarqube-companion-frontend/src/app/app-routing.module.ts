@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {OverviewComponent} from './overview/overview-component';
 import {NotFoundComponent} from './not-found/not-found-component';
 import {GroupComponent} from './group/group-component';

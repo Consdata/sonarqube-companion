@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {GroupDetails} from 'app/group/group-details';
-import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
 import {Violations} from '../violations/violations';
 
 @Component({
