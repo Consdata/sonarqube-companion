@@ -1,0 +1,63 @@
+{
+  "servers": [
+    {
+      "id": "sonarcloud.io",
+      "url": "https://sonarcloud.io/"
+    }
+  ],
+  "rootGroup": {
+    "uuid": "0df404f7-3bcb-433d-9f2c-95e0e000adb5",
+    "name": "All groups",
+    "groups": [
+      {
+        "uuid": "0df404f7-3bcb-433d-9f2c-95e0e000adb6",
+        "name": "Big Projects",
+        "projectLinks": [
+          {
+            "serverId": "sonarcloud.io",
+            "type": "REGEX",
+            "config": {
+              "include": [
+                "net.java.openjdk.*",
+                "mysql.*",
+                "postgresql.*",
+                "openjdk.*"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "uuid": "0c20a10d-d643-42c0-a8a2-484ec47d8750",
+        "name": "JDK",
+        "projectLinks": [
+          {
+            "serverId": "sonarcloud.io",
+            "type": "REGEX",
+            "config": {
+              "include": [
+                "net.java.openjdk.*",
+                "openjdk.*"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "uuid": "5357609b-7705-4d23-a021-a8289747c58f",
+        "name": "Apache",
+        "projectLinks": [
+          {
+            "serverId": "sonarcloud.io",
+            "type": "REGEX",
+            "config": {
+              "include": [
+                "org.apache.*"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
