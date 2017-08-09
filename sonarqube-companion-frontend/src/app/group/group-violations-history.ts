@@ -48,7 +48,7 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     {fill: 'rgba(231, 76, 60, .5)', line: 'rgba(192, 57, 43, 1.0)'},
     {fill: 'rgba(52, 73, 94, .5)', line: 'rgba(44, 62, 80, 1.0)'},
     {fill: 'rgba(46, 204, 113, .5)', line: 'rgba(39, 174, 96, 1.0)'},
-    {fill: 'rgba(149, 165, 166, .5)', line: 'rgba(127, 140, 141, 1.0)'},
+    {fill: 'rgba(241, 196, 15, .5)', line: 'rgba(243, 156, 18, 1.0)'},
     {fill: 'rgba(155, 89, 182, .5)', line: 'rgba(142, 68, 173, 1.0)'},
   ];
 
