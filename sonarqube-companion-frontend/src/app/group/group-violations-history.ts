@@ -31,6 +31,7 @@ import {Observable} from 'rxjs/Observable';
         |
         <span (click)="changeChartIssue('infos')" [class.active]="'infos' === currentGraph">infos</span>
       </div>
+      <hr/>
       <div id="violations-history-chart"></div>
     </div>
   `
@@ -47,10 +48,9 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
   chart: any;
   currentGraph: string;
 
-  constructor(
-    private service: ViolationsHistoryService,
-    private amCharts: AmChartsService,
-    private ngZone: NgZone) {
+  constructor(private service: ViolationsHistoryService,
+              private amCharts: AmChartsService,
+              private ngZone: NgZone) {
   }
 
   ngOnChanges(): void {
@@ -95,25 +95,34 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     });
 
     GroupViolationsHistoryComponent.SERIES
-      .filter(serie => serie !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
-      .forEach(serie => this.chart.hideGraph(this.chart.getGraphById(serie)));
+      .filter(series => series !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
+      .forEach(series => this.chart.hideGraph(this.chart.getGraphById(series)));
 
     const zoomedSubject = new Subject<any>();
     this.chart.addListener('zoomed', (ev) => {
-      zoomedSubject.next({
-        fromDate: ev.startDate,
-        toDate: ev.endDate
-      });
+      // use fully visible day as start date
+      const fromDate = this.asLocalDateString(
+        ev.startDate.getHours() > 12 ? this.addDays(ev.startDate, 1) : ev.startDate
+      );
+      // use end day as end date
+      const toDate = this.asLocalDateString(
+        ev.endDate.getHours() < 12 ? this.addDays(ev.endDate, -1) : ev.endDate
+      );
+      zoomedSubject.next({fromDate, toDate});
     });
     zoomedSubject
       .asObservable()
       .debounce(() => Observable.timer(500))
       .subscribe(ev => this.ngZone.run(() => this.zoomed.emit(ev)));
 
-    this.chart.addListener('dataUpdated', (ev) => {
-      const historyLength = ev.chart.dataProvider.length;
-      this.chart.zoomToIndexes(historyLength - 8, historyLength - 1);
-      this.chart.zoomOutValueAxes();
+    let zoomInitialized = false;
+    this.chart.addListener('dataUpdated', ev => {
+      if (!zoomInitialized) {
+        zoomInitialized = true;
+        const historyLength = ev.chart.dataProvider.length;
+        this.chart.zoomToIndexes(historyLength - 8, historyLength - 1);
+        this.chart.zoomOutValueAxes();
+      }
     });
 
     this.chart.validateData();
@@ -179,6 +188,16 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
         minorGridEnabled: true
       }
     };
+  }
+
+  private addDays(date: Date, days: number) {
+    const plusDate = new Date(date);
+    plusDate.setDate(plusDate.getDate() + days);
+    return plusDate;
+  }
+
+  private asLocalDateString(date: Date): string {
+    return date.toISOString().slice(0, 10);
   }
 
 }

@@ -14,33 +14,37 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
         <td>Other</td>
         <td>SonarQube</td>
       </tr>
-      <tr *ngFor="let project of projects" [attr.health-status]="project.healthStatusString"
+      <ng-container *ngFor="let project of projects">
+        <tr
+          *ngIf="isVisibleViaFilter(project)"
+          [attr.health-status]="project.healthStatusString"
           class="project-row">
-        <td>{{project.name}}</td>
-        <td>{{project.key}}</td>
-        <td>
-          <sq-project-violations
-            [violations]="project.violations"
-            [violationsDiff]="violationsHistoryDiff?.projects[project.key]"
-            [type]="'blockers'">
-          </sq-project-violations>
-        </td>
-        <td>
-          <sq-project-violations
-            [violations]="project.violations"
-            [violationsDiff]="violationsHistoryDiff?.projects[project.key]"
-            [type]="'criticals'">
-          </sq-project-violations>
-        </td>
-        <td>
-          <sq-project-violations
-            [violations]="project.violations"
-            [violationsDiff]="violationsHistoryDiff?.projects[project.key]"
-            [type]="'nonRelevant'">
-          </sq-project-violations>
-        </td>
-        <td><a [href]="project.url">{{project.serverId}}</a></td>
-      </tr>
+          <td>{{project.name}}</td>
+          <td>{{project.key}}</td>
+          <td>
+            <sq-project-violations
+              [violations]="project.violations"
+              [violationsDiff]="violationsHistoryDiff?.projects[project.key]"
+              [type]="'blockers'">
+            </sq-project-violations>
+          </td>
+          <td>
+            <sq-project-violations
+              [violations]="project.violations"
+              [violationsDiff]="violationsHistoryDiff?.projects[project.key]"
+              [type]="'criticals'">
+            </sq-project-violations>
+          </td>
+          <td>
+            <sq-project-violations
+              [violations]="project.violations"
+              [violationsDiff]="violationsHistoryDiff?.projects[project.key]"
+              [type]="'nonRelevant'">
+            </sq-project-violations>
+          </td>
+          <td><a [href]="project.url">{{project.serverId}}</a></td>
+        </tr>
+      </ng-container>
     </table>
   `
 })
@@ -48,5 +52,20 @@ export class GroupProjectsComponent {
 
   @Input() projects: ProjectSummary[];
   @Input() violationsHistoryDiff: GroupViolationsHistoryDiff;
+  @Input() filter = 'all';
+
+  isVisibleViaFilter(project: ProjectSummary): boolean {
+    return !this.violationsHistoryDiff
+      || this.filter === 'all'
+      || this.hasAnyAddedViolations(project.key);
+  }
+
+  private hasAnyAddedViolations(projectKey: string): boolean {
+    const projectDiff = this.violationsHistoryDiff.projects[projectKey];
+    if (!projectDiff) {
+      return false;
+    }
+    return projectDiff.blockers > 0 || projectDiff.criticals > 0 || projectDiff.nonRelevant > 0;
+  }
 
 }

@@ -17,7 +17,9 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
         <sq-group-overview-cards
           [group]="group"
           [violations]="group.violations"
-          [violationsHistoryDiff]="violationsHistoryDiff?.groupDiff">
+          [violationsDiff]="violationsHistoryDiff?.groupDiff"
+          [addedViolations]="violationsHistoryDiff?.addedViolations"
+          [removedViolations]="violationsHistoryDiff?.removedViolations">
         </sq-group-overview-cards>
       </div>
       <div>
@@ -35,8 +37,14 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
       </div>
       <div>
         <h2>Projects</h2>
+        <div class="group-projects-filter">
+            <span class="project-filter-item" [class.active]="'all' === filter" (click)="filter = 'all'">all</span>
+          | <span class="project-filter-item" [class.active]="'regression' === filter" (click)="filter = 'regression'">regression</span>
+        </div>
+        <hr />
         <sq-group-projects
           [projects]="group.projects"
+          [filter]="filter"
           [violationsHistoryDiff]="violationsHistoryDiff">
         </sq-group-projects>
       </div>
@@ -47,6 +55,7 @@ export class GroupComponent {
 
   group: GroupDetails;
   violationsHistoryDiff: GroupViolationsHistoryDiff;
+  filter = 'all';
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,

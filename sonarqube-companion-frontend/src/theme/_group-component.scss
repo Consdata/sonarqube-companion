@@ -4,6 +4,16 @@ sq-group {
     margin-bottom: 25px;
   }
 
+  // projects filter
+  .group-projects-filter {
+    .project-filter-item {
+      cursor: pointer;
+    }
+    .project-filter-item.active {
+      color: $color-success;
+    }
+  }
+
   // projects table
   .projects-table {
     width: 100%;

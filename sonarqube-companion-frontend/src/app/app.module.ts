@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpModule} from '@angular/http';
 
-import { AmChartsModule } from '@amcharts/amcharts3-angular';
+import {AmChartsModule} from '@amcharts/amcharts3-angular';
 
 import {AppRoutingModule} from './app-routing.module';
 import {SonarQubeCompanionComponent} from './sonarqube-companion-component';

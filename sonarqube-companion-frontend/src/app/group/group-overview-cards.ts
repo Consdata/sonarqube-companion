@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {GroupDetails} from 'app/group/group-details';
-import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
 import {Violations} from '../violations/violations';
 
 @Component({
@@ -23,7 +22,10 @@ import {Violations} from '../violations/violations';
       <div text>
         <sq-project-violations
           [violations]="violations"
-          [violationsDiff]="violationsHistoryDiff"
+          [addedViolations]="addedViolations"
+          [removedViolations]="removedViolations"
+          [violationsDiff]="violationsDiff"
+          [detailedDiff]="true"
           [type]="'blockers'">
         </sq-project-violations>
       </div>
@@ -38,7 +40,10 @@ import {Violations} from '../violations/violations';
       <div text>
         <sq-project-violations
           [violations]="violations"
-          [violationsDiff]="violationsHistoryDiff"
+          [addedViolations]="addedViolations"
+          [removedViolations]="removedViolations"
+          [violationsDiff]="violationsDiff"
+          [detailedDiff]="true"
           [type]="'criticals'">
         </sq-project-violations>
       </div>
@@ -52,7 +57,10 @@ import {Violations} from '../violations/violations';
       <div text>
         <sq-project-violations
           [violations]="violations"
-          [violationsDiff]="violationsHistoryDiff"
+          [addedViolations]="addedViolations"
+          [removedViolations]="removedViolations"
+          [violationsDiff]="violationsDiff"
+          [detailedDiff]="true"
           [type]="'nonRelevant'">
         </sq-project-violations>
       </div>
@@ -86,6 +94,8 @@ export class GroupOverviewCardsComponent {
 
   @Input() group: GroupDetails;
   @Input() violations: Violations;
-  @Input() violationsHistoryDiff: Violations;
+  @Input() violationsDiff: Violations;
+  @Input() addedViolations: Violations;
+  @Input() removedViolations: Violations;
 
 }
