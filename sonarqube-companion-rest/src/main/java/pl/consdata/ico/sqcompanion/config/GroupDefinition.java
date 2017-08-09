@@ -18,6 +18,8 @@ public class GroupDefinition {
     private List<GroupDefinition> groups;
     @Singular
     private List<ProjectLink> projectLinks;
+    @Singular
+    private List<GroupEvent> events;
 
     public List<GroupDefinition> getGroups() {
         return groups != null ? groups : new ArrayList<>();

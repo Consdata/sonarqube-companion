@@ -39,6 +39,7 @@ public class GroupService {
                 .projects(projectSummaries)
                 .healthStatus(healthStatus)
                 .violations(ProjectSummary.summarizedViolations(projectSummaries))
+                .events(group.getEvents())
                 .build();
     }
 

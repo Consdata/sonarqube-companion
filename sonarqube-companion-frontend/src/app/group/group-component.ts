@@ -23,7 +23,7 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
       <div>
         <h2>Violations</h2>
         <sq-group-violations-history
-          [uuid]="group.uuid"
+          [group]="group"
           (zoomed)="onChartZoomed($event)">
         </sq-group-violations-history>
       </div>

@@ -70,6 +70,7 @@ public class RepositoryService {
                     .name(group.getName())
                     .groups(subGroups)
                     .projects(projects)
+                    .events(group.getEvents())
                     .build();
         } catch (final Exception exception) {
             log.error("Can't sync group details [group={}]", group, exception);
