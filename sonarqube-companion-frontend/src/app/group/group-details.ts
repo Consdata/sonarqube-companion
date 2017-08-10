@@ -3,6 +3,7 @@ import {Violations} from '../violations/violations';
 import {GroupSummary} from './group-summary';
 import {ProjectSummary} from '../project/project-summary';
 import {SortByViolationsDesc} from '../violations/sort-by-violations';
+import {GroupEvent} from './group-event';
 
 export class GroupDetails {
 
@@ -12,6 +13,7 @@ export class GroupDetails {
   violations: Violations;
   groups: GroupSummary[];
   projects: ProjectSummary[];
+  events: GroupEvent[];
   issues: any[];
 
   constructor(data: any) {
@@ -21,6 +23,7 @@ export class GroupDetails {
     this.violations = new Violations(data.violations || {});
     this.groups = data.groups ? data.groups.map(groupData => new GroupSummary(groupData)) : [];
     this.projects = data.projects ? data.projects.map(projectData => new ProjectSummary(projectData)) : [];
+    this.events = data.events ? data.events.map(eventData => new GroupEvent(eventData)) : [];
     this.issues = [];
 
     this.projects = this.projects.sort(SortByViolationsDesc);
