@@ -9,8 +9,10 @@ export class SynchronizationService {
 
   }
 
-  startSynchronization(): Observable<any> {
-    return this.http.post('api/v1/sync/start', {});
+  startSynchronization(): Observable<SynchronizationState> {
+    return this.http
+      .post('api/v1/sync/start', {})
+      .map(response => response.json());
   }
 
   synchronizationState(): Observable<SynchronizationState> {

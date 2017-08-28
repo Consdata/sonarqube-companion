@@ -25,12 +25,11 @@ public class SynchronizationStateService {
     }
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
-    public void initSynchronization(long tasks) {
+    public void initSynchronization() {
         this.synchronizationStateRepository.saveAndFlush(
                 SynchronizationStateEntity
                         .builder()
                         .startTimestamp(System.currentTimeMillis())
-                        .allTasks(tasks)
                         .build()
         );
     }
@@ -70,7 +69,24 @@ public class SynchronizationStateService {
             return;
         }
         currentState.setFinishTimestamp(System.currentTimeMillis());
+        currentState.setDuration(currentState.getFinishTimestamp() - currentState.getStartTimestamp());
+        if (currentState.getFailedTasks() == null) {
+            currentState.setFailedTasks(0L);
+        }
+        if (currentState.getFinishedTasks() == null) {
+            currentState.setFinishedTasks(0L);
+        }
+        currentState.setAllTasks(currentState.getFailedTasks() + currentState.getFinishedTasks());
         this.synchronizationStateRepository.saveAndFlush(currentState);
+    }
+
+    @Transactional
+    public double estimatedSynchronizationTime() {
+        Double result = this.synchronizationStateRepository.findAverageDurationOfLastSynchronizations();
+        if(result == null) {
+            result = 1000.0;
+        }
+        return result;
     }
 
 }

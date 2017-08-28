@@ -28,16 +28,37 @@ public class SynchronizationController {
     @ApiOperation(
             value = "Returns state of current synchronization of projects history"
     )
-    public SynchronizationStateEntity getState() {
-        return synchronizationStateService.getCurrentState();
+    public SynchronizationState getState() {
+        SynchronizationStateEntity currentState = synchronizationStateService.getCurrentState();
+
+        return SynchronizationState
+                .builder()
+                .estimatedDuration(synchronizationStateService.estimatedSynchronizationTime())
+                .allTasks(currentState.getAllTasks())
+                .duration(currentState.getDuration())
+                .finishedTasks(currentState.getFinishedTasks())
+                .allTasks(currentState.getAllTasks())
+                .failedTasks(currentState.getFailedTasks())
+                .startTimestamp(currentState.getStartTimestamp())
+                .finishTimestamp(currentState.getFinishTimestamp())
+                .finished(currentState.getFinishTimestamp() != null)
+                .currentServerTimestamp(System.currentTimeMillis())
+                .build();
     }
 
     @RequestMapping(value = "/start", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(
             value = "Starting new synchronization of projects history"
     )
-    public void startSynchronization() {
+    public SynchronizationState startSynchronization() {
         synchronizationTrigger.scheduleTaskImmediately();
+        return SynchronizationState
+                .builder()
+                .estimatedDuration(synchronizationStateService.estimatedSynchronizationTime())
+                .finished(false)
+                .startTimestamp(System.currentTimeMillis())
+                .currentServerTimestamp(System.currentTimeMillis())
+                .build();
     }
 
 }
