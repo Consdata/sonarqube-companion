@@ -38,7 +38,7 @@ public class SynchronizationService {
         this.cacheManager = cacheManager;
     }
 
-    public synchronized void acquireAndStartSynchronization() throws SynchronizationException {
+    public void acquireAndStartSynchronization() throws SynchronizationException {
         boolean permit;
         try {
             permit = semaphore.tryAcquire(1, TimeUnit.SECONDS);
@@ -63,7 +63,7 @@ public class SynchronizationService {
         log.info("Starting synchronization... This may take a while.");
         long startTime = System.currentTimeMillis();
 
-        synchronizationStateService.initSynchronization(0);
+        synchronizationStateService.initSynchronization();
         projectService.syncProjects();
         repositoryService.syncGroups();
         violationsHistoryService.syncProjectsHistory();

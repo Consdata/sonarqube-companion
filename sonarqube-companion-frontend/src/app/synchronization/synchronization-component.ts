@@ -65,15 +65,20 @@ export class SynchronizationComponent implements AfterViewInit, OnDestroy {
   }
 
   private processSynchronizationState(state: SynchronizationState) {
-    if (state.finishTimestamp) {
+    if (state.finished) {
       this.synchronizationInProgress = false;
       this.progress = 0;
       this.pollScheduleInterval = this.SYNCHRONIZED_INTERVAL;
-      this.lastSynchronizationTime = state.finishTimestamp - state.startTimestamp;
+      this.lastSynchronizationTime = state.duration;
     } else {
       this.synchronizationInProgress = true;
       this.pollScheduleInterval = this.SYNCHRONIZATION_IN_PROGRESS_INTERVAL;
-      this.progress = ((state.finishedTasks ? state.finishedTasks : 0) / state.allTasks) * 100;
+      const estimatedProgress = ((state.currentServerTimestamp - state.startTimestamp) / state.estimatedDuration) * 100.0;
+      if (estimatedProgress > 99.0) {
+        this.progress = 99.0;
+      } else {
+        this.progress = estimatedProgress;
+      }
     }
     this.scheduleNextPool();
   }

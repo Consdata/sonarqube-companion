@@ -4,6 +4,8 @@ package pl.consdata.ico.sqcompanion.sync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
@@ -25,12 +27,11 @@ public class SynchronizationStateService {
     }
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
-    public void initSynchronization(long tasks) {
+    public void initSynchronization() {
         this.synchronizationStateRepository.saveAndFlush(
                 SynchronizationStateEntity
                         .builder()
                         .startTimestamp(System.currentTimeMillis())
-                        .allTasks(tasks)
                         .build()
         );
     }
@@ -70,7 +71,20 @@ public class SynchronizationStateService {
             return;
         }
         currentState.setFinishTimestamp(System.currentTimeMillis());
+        currentState.setDuration(currentState.getFinishTimestamp() - currentState.getStartTimestamp());
+        if (currentState.getFailedTasks() == null) {
+            currentState.setFailedTasks(0L);
+        }
+        if (currentState.getFinishedTasks() == null) {
+            currentState.setFinishedTasks(0L);
+        }
+        currentState.setAllTasks(currentState.getFailedTasks() + currentState.getFinishedTasks());
         this.synchronizationStateRepository.saveAndFlush(currentState);
+    }
+
+    @Transactional
+    public double estimatedSynchronizationTime() {
+        return Optional.ofNullable(this.synchronizationStateRepository.findAverageDurationOfLastSynchronizations()).orElse(1000.0);
     }
 
 }
