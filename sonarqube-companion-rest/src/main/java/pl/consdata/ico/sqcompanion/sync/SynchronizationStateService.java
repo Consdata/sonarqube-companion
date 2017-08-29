@@ -4,6 +4,8 @@ package pl.consdata.ico.sqcompanion.sync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
@@ -82,11 +84,7 @@ public class SynchronizationStateService {
 
     @Transactional
     public double estimatedSynchronizationTime() {
-        Double result = this.synchronizationStateRepository.findAverageDurationOfLastSynchronizations();
-        if(result == null) {
-            result = 1000.0;
-        }
-        return result;
+        return Optional.ofNullable(this.synchronizationStateRepository.findAverageDurationOfLastSynchronizations()).orElse(1000.0);
     }
 
 }
