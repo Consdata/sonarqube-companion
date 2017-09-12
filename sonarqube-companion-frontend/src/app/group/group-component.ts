@@ -38,8 +38,10 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
       <div>
         <h2>Projects</h2>
         <div class="group-projects-filter">
-            <span class="project-filter-item" [class.active]="'all' === filter" (click)="filter = 'all'">all</span>
+          <span class="project-filter-item" [class.active]="'changed' === filter" (click)="filter = 'changed'">changed</span>
           | <span class="project-filter-item" [class.active]="'regression' === filter" (click)="filter = 'regression'">regression</span>
+          | <span class="project-filter-item" [class.active]="'improvement' === filter" (click)="filter = 'improvement'">improvement</span>
+          | <span class="project-filter-item" [class.active]="'all' === filter" (click)="filter = 'all'">all</span>
         </div>
         <hr />
         <sq-group-projects
@@ -55,7 +57,7 @@ export class GroupComponent {
 
   group: GroupDetails;
   violationsHistoryDiff: GroupViolationsHistoryDiff;
-  filter = 'all';
+  filter = 'changed';
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
