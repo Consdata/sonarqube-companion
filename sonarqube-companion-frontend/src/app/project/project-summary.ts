@@ -8,7 +8,6 @@ export class ProjectSummary {
   serverId: string;
   healthStatus: HealthStatus;
   violations: Violations;
-  url: string = 'deprecated, use server url bitch!';
   serverUrl: string;
 
   constructor(data) {
