@@ -16,15 +16,15 @@ public class Project {
     private String serverId;
     private String key;
     private String name;
-    private String url;
+    private String serverUrl;
 
-    public Project withUrl(final String url) {
+    public Project withServerUrl(final String serverUrl) {
         return Project
                 .builder()
                 .serverId(serverId)
                 .key(key)
                 .name(name)
-                .url(url)
+                .serverUrl(serverUrl)
                 .build();
     }
 

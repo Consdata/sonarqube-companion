@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Violations} from '../violations/violations';
 
 @Component({
@@ -11,8 +11,8 @@ import {Violations} from '../violations/violations';
           *ngIf="isLoaded()"
           [class.violations-down]="violationsDiff[type] <= 0"
           [class.violations-up]="violationsDiff[type] > 0">
-          <ng-container *ngIf="!detailedDiff">{{violationsDiff[type]}}</ng-container>
-          <ng-container *ngIf="detailedDiff">+{{addedViolations[type]}} -{{removedViolations[type]}}</ng-container>
+            <ng-container *ngIf="!detailedDiff">{{violationsDiff[type]}}</ng-container>
+            <ng-container *ngIf="detailedDiff">+{{addedViolations[type]}} -{{removedViolations[type]}}</ng-container>
         </span>
         <span
           *ngIf="!isLoaded()">

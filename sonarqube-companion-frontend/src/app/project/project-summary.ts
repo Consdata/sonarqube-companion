@@ -8,7 +8,8 @@ export class ProjectSummary {
   serverId: string;
   healthStatus: HealthStatus;
   violations: Violations;
-  url: string;
+  url: string = 'deprecated, use server url bitch!';
+  serverUrl: string;
 
   constructor(data) {
     this.name = data.name;
@@ -16,7 +17,7 @@ export class ProjectSummary {
     this.serverId = data.serverId;
     this.healthStatus = HealthStatus[data.healthStatus] as HealthStatus;
     this.violations = new Violations(data.violations || {});
-    this.url = data.url;
+    this.serverUrl = data.serverUrl;
   }
 
   get healthStatusString() {
