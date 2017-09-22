@@ -84,24 +84,15 @@ public class RepositoryService {
                     .getResolver(projectLink.getType())
                     .resolveProjectLink(projectLink)
                     .stream()
-                    .map(project -> project.withUrl(getProjectUrl(project.getKey(), project.getServerId())));
+                    .map(project -> project.withServerUrl(getServerUrl(project.getServerId())));
         } catch (final Exception exception) {
             log.error("Can't resolve project link [projectLink={}]", projectLink, exception);
             return Stream.empty();
         }
     }
 
-    private String getProjectUrl(final String projectKey, final String serverId) {
-        final ServerDefinition server = getServerDefinition(serverId);
-        return String.format("%sdashboard?id=%s", server.getUrl(), encodeUrl(projectKey));
-    }
-
-    private String encodeUrl(String projectKey) {
-        try {
-            return URLEncoder.encode(projectKey, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new SQCompanionException(e.getMessage(), e);
-        }
+    private String getServerUrl(final String serverId) {
+        return getServerDefinition(serverId).getUrl();
     }
 
     private ServerDefinition getServerDefinition(final String serverId) {

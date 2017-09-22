@@ -53,7 +53,7 @@ public class ProjectSummaryService {
                 .name(p.getName())
                 .key(p.getKey())
                 .serverId(p.getServerId())
-                .url(p.getUrl())
+                .serverUrl(p.getServerUrl())
                 .healthStatus(healthCheckService.checkHealth(p));
         if (historyEntry != null) {
             builder.violations(
