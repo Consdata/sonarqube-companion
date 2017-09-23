@@ -3,13 +3,10 @@ package pl.consdata.ico.sqcompanion.history;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.repository.Group;
+import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.time.LocalDate;
@@ -75,6 +72,47 @@ public class ViolationsHistoryController {
             return violationsHistoryService.getGroupViolationsHistoryDiff(group.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
+    @RequestMapping(
+            value = "/project/{uuid}/{projectKey:.+}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns project violations history"
+    )
+    public ViolationsHistory getProjectViolationsHistory(
+            @PathVariable final String uuid,
+            @PathVariable final String projectKey,
+            @RequestParam Optional<Integer> daysLimit) {
+        final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
+        if (project.isPresent()) {
+            return violationsHistoryService.getProjectViolationsHistory(project.get(), daysLimit);
+        } else {
+            throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
+        }
+    }
+
+    @RequestMapping(
+            value = "/project/{uuid}/{projectKey:.+}/{fromDate}/{toDate}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns project violations history change in time"
+    )
+    public ProjectViolationsHistoryDiff geProjectViolationsHistoryDiff(
+            @PathVariable final String uuid,
+            @PathVariable final String projectKey,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
+        final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
+        if (project.isPresent()) {
+            return violationsHistoryService.getProjectViolationsHistoryDiff(project.get(), fromDate, toDate);
+        } else {
+            throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
     }
 

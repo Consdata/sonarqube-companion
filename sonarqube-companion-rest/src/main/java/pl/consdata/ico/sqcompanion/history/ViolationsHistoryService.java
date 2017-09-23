@@ -23,6 +23,8 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+
 @Slf4j
 @Service
 public class ViolationsHistoryService {
@@ -54,8 +56,7 @@ public class ViolationsHistoryService {
         final List<ViolationHistoryEntry> history = group
                 .getAllProjects()
                 .stream()
-                .flatMap(project -> getProjectViolationsHistory(project, daysLimit).stream())
-                .map(this::asViolationHistoryEntry)
+                .flatMap(project -> getProjectViolationsHistory(project, daysLimit).getViolationHistoryEntries().stream())
                 .collect(
                         Collectors.groupingBy(
                                 ViolationHistoryEntry::getDate,
@@ -98,16 +99,27 @@ public class ViolationsHistoryService {
                 .build();
     }
 
-    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#project.getId() + #daysLimit")
-    public List<ProjectHistoryEntryEntity> getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit) {
+    @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#project.getId() + #daysLimit")
+    public ViolationsHistory getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit) {
+        List<ProjectHistoryEntryEntity> history;
         if (daysLimit.isPresent()) {
-            return projectHistoryRepository.findAllByProjectKeyAndDateGreaterThanEqual(
+            history = projectHistoryRepository.findAllByProjectKeyAndDateGreaterThanEqual(
                     project.getKey(),
-                    LocalDate.now().minusDays(daysLimit.get())
-            );
+                    LocalDate.now().minusDays(daysLimit.get()));
         } else {
-            return projectHistoryRepository.findAllByProjectKey(project.getKey());
+            history = projectHistoryRepository.findAllByProjectKey(project.getKey());
         }
+        return ViolationsHistory
+                .builder()
+                .violationHistoryEntries(
+                        history.stream()
+                                .map(this::asViolationHistoryEntry)
+                                .collect(Collectors.toList())).build();
+    }
+
+    @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#project.getId() + #fromDate + #toDate")
+    public ProjectViolationsHistoryDiff getProjectViolationsHistoryDiff(final Project project, final LocalDate fromDate, final LocalDate toDate) {
+        return getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate).apply(project);
     }
 
     private void synProjectHistoryAndCatch(final Project project) {
@@ -244,11 +256,11 @@ public class ViolationsHistoryService {
                 .violations(
                         Violations
                                 .builder()
-                                .blockers(entry.getBlockers())
-                                .criticals(entry.getCriticals())
-                                .majors(entry.getMajors())
-                                .minors(entry.getMinors())
-                                .infos(entry.getInfos())
+                                .blockers(ofNullable(entry.getBlockers()).orElse(0))
+                                .criticals(ofNullable(entry.getCriticals()).orElse(0))
+                                .majors(ofNullable(entry.getMajors()).orElse(0))
+                                .minors(ofNullable(entry.getMinors()).orElse(0))
+                                .infos(ofNullable(entry.getInfos()).orElse(0))
                                 .build()
                 )
                 .build();

@@ -2,14 +2,11 @@ package pl.consdata.ico.sqcompanion.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.ServerDefinition;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,6 +53,15 @@ public class RepositoryService {
                 .stream()
                 .filter(g -> g.getUuid().equals(uuid))
                 .findFirst();
+    }
+
+    public Optional<Project> getProject(final String uuid, final String projectKey) {
+        final Optional<Group> group = getGroup(uuid);
+        if (group.isPresent()) {
+            return group.get().getProject(projectKey);
+        } else {
+            return Optional.empty();
+        }
     }
 
     private Group buildGroup(final GroupDefinition group) {

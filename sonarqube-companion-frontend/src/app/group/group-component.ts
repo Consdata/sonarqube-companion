@@ -24,10 +24,11 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
       </div>
       <div>
         <h2>Violations</h2>
-        <sq-group-violations-history
+        <sq-violations-history
           [group]="group"
+          [violationsHistoryProvider]="violationsHistoryProvider"
           (zoomed)="onChartZoomed($event)">
-        </sq-group-violations-history>
+        </sq-violations-history>
       </div>
       <div>
         <h2>Groups</h2>
@@ -38,16 +39,19 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
       <div>
         <h2>Projects</h2>
         <div class="group-projects-filter">
-          <span class="project-filter-item" [class.active]="'changed' === filter" (click)="filter = 'changed'">changed</span>
+          <span class="project-filter-item" [class.active]="'changed' === filter"
+                (click)="filter = 'changed'">changed</span>
           | <span class="project-filter-item" [class.active]="'regression' === filter" (click)="filter = 'regression'">regression</span>
-          | <span class="project-filter-item" [class.active]="'improvement' === filter" (click)="filter = 'improvement'">improvement</span>
+          | <span class="project-filter-item" [class.active]="'improvement' === filter"
+                  (click)="filter = 'improvement'">improvement</span>
           | <span class="project-filter-item" [class.active]="'all' === filter" (click)="filter = 'all'">all</span>
         </div>
-        <hr />
+        <hr/>
         <sq-group-projects
           [projects]="group.projects"
           [filter]="filter"
-          [violationsHistoryDiff]="violationsHistoryDiff">
+          [violationsHistoryDiff]="violationsHistoryDiff"
+          [uuid]="group.uuid">
         </sq-group-projects>
       </div>
     </div>
@@ -58,6 +62,7 @@ export class GroupComponent {
   group: GroupDetails;
   violationsHistoryDiff: GroupViolationsHistoryDiff;
   filter = 'changed';
+  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getGroupHistory(daysLimit, this.group.uuid);
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -71,7 +76,7 @@ export class GroupComponent {
   onChartZoomed(zoomedEvent: any) {
     this.violationsHistoryDiff = undefined;
     this.violationsHistoryService
-      .getHistoryDiff(this.group.uuid, zoomedEvent.fromDate, zoomedEvent.toDate)
+      .getGroupHistoryDiff(this.group.uuid, zoomedEvent.fromDate, zoomedEvent.toDate)
       .subscribe(result => this.violationsHistoryDiff = result);
   }
 

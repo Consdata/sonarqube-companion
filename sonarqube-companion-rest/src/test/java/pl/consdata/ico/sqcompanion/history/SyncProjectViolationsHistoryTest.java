@@ -9,7 +9,6 @@ import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +24,9 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
         tickSynchronization();
 
         // then
-        final List<ProjectHistoryEntryEntity> projectViolations = getProjectViolationsHistory();
-        assertThat(projectViolations).isEmpty();
+        final ViolationsHistory projectViolations = getProjectViolationsHistory();
+        assertThat(projectViolations).isNotNull();
+        assertThat(projectViolations.getViolationHistoryEntries()).isEmpty();
     }
 
     @Test
@@ -40,12 +40,15 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
         tickSynchronization();
 
         // then
-        final List<ProjectHistoryEntryEntity> projectViolations = getProjectViolationsHistory();
-        assertThat(projectViolations).hasSize(3);
-        assertThat(projectViolations.get(2).getBlockers()).isEqualTo(latestAnalyseBlockers);
+        final ViolationsHistory projectViolations = getProjectViolationsHistory();
+        assertThat(projectViolations).isNotNull();
+        assertThat(projectViolations.getViolationHistoryEntries()).hasSize(3);
+        assertThat(projectViolations.getViolationHistoryEntries().get(2).getViolations().getBlockers()).isEqualTo(latestAnalyseBlockers);
     }
 
-    /** Fixes: https://github.com/Consdata/sonarqube-companion/issues/34 */
+    /**
+     * Fixes: https://github.com/Consdata/sonarqube-companion/issues/34
+     */
     @Test
     public void shouldEstimateWhenHistoryExistButNoAnalyses() throws SynchronizationException {
         // when
@@ -56,12 +59,13 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
         tickSynchronization();
 
         // then
-        final List<ProjectHistoryEntryEntity> projectViolations = getProjectViolationsHistory();
-        assertThat(projectViolations).hasSize(3);
-        assertThat(projectViolations.get(2).getBlockers()).isEqualTo(latestAvailableHistoryBlockers);
+        final ViolationsHistory projectViolations = getProjectViolationsHistory();
+        assertThat(projectViolations).isNotNull();
+        assertThat(projectViolations.getViolationHistoryEntries()).hasSize(3);
+        assertThat(projectViolations.getViolationHistoryEntries().get(2).getViolations().getBlockers()).isEqualTo(latestAvailableHistoryBlockers);
     }
 
-    private List<ProjectHistoryEntryEntity> getProjectViolationsHistory() {
+    private ViolationsHistory getProjectViolationsHistory() {
         return violationsHistoryService.getProjectViolationsHistory(
                 Project
                         .builder()

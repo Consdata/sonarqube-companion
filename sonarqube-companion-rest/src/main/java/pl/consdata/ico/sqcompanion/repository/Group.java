@@ -4,10 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import pl.consdata.ico.sqcompanion.config.GroupEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Builder
@@ -34,6 +31,10 @@ public class Group {
         final List<Group> result = new ArrayList<>();
         accept(result::add);
         return result;
+    }
+
+    public Optional<Project> getProject(final String projectKey) {
+        return getAllProjects().stream().filter(project -> Objects.equals(project.getKey(), projectKey)).findFirst();
     }
 
     public List<Group> getGroups() {
