@@ -32,7 +32,7 @@ import {Violations} from '../violations/violations';
           </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
-              <a [href]="getViolationsDiffUrl(project, 'blockers')" target="_blank">
+              <a [href]="getViolationsDiffUrl(project, 'blockers')">
                 <sq-project-violations
                   [violations]="project.violations"
                   [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
@@ -43,7 +43,7 @@ import {Violations} from '../violations/violations';
           </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
-              <a [href]="getViolationsDiffUrl(project, 'criticals')" target="_blank">
+              <a [href]="getViolationsDiffUrl(project, 'criticals')">
                 <sq-project-violations
                   [violations]="project.violations"
                   [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
@@ -54,7 +54,7 @@ import {Violations} from '../violations/violations';
           </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
-              <a [href]="getViolationsDiffUrl(project, 'nonRelevant')" target="_blank">
+              <a [href]="getViolationsDiffUrl(project, 'nonRelevant')">
                 <sq-project-violations
                   [violations]="project.violations"
                   [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
