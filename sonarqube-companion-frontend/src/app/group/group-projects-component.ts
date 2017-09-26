@@ -20,8 +20,16 @@ import {Violations} from '../violations/violations';
           *ngIf="isVisibleViaFilter(project)"
           [attr.health-status]="project.healthStatusString"
           class="project-row">
-          <td>{{project.name}}</td>
-          <td>{{project.key}}</td>
+          <td>
+            <a [routerLink]="['/project', uuid, project.key]">
+              {{project.name}}
+            </a>
+          </td>
+          <td>
+            <a [routerLink]="['/project', uuid, project.key]">
+              {{project.key}}
+            </a>
+          </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
               <a [href]="getViolationsDiffUrl(project, 'blockers')">
@@ -63,6 +71,7 @@ import {Violations} from '../violations/violations';
 })
 export class GroupProjectsComponent {
 
+  @Input() uuid: string;
   @Input() projects: ProjectSummary[];
   @Input() violationsHistoryDiff: GroupViolationsHistoryDiff;
   @Input() filter;
@@ -75,6 +84,12 @@ export class GroupProjectsComponent {
     return `${project.serverUrl}dashboard?id=${encodeURI(project.key)}`;
   }
 
+  getViolationsDiffUrl(project: ProjectSummary, type: string) {
+    const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
+    const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
+    return `${project.serverUrl}project/issues?id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
+  }
+
   private getFilter(): (ProjectSummary) => boolean {
     if (this.filter === 'regression') {
       return (project: ProjectSummary) => this.getProjectDiff(project.key) && this.hasAnyAddedViolations(this.getProjectDiff(project.key));
@@ -85,12 +100,6 @@ export class GroupProjectsComponent {
     } else {
       return () => true;
     }
-  }
-
-  getViolationsDiffUrl(project: ProjectSummary, type: string) {
-    const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
-    const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
   }
 
   private getProjectDiff(projectKey: string): Violations {

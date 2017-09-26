@@ -19,6 +19,10 @@ export class ProjectSummary {
     this.serverUrl = data.serverUrl;
   }
 
+  get healthy(): boolean {
+    return HealthStatus.HEALTHY === this.healthStatus;
+  }
+
   get healthStatusString() {
     return this.healthStatus ? HealthStatus[this.healthStatus].toLowerCase() : '';
   }

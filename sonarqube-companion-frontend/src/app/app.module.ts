@@ -20,14 +20,17 @@ import {ViolationsHistoryService} from './violations/violations-history-service'
 import {VersionService} from './version/version-service';
 import {SynchronizationService} from 'app/synchronization/synchronization-service';
 import {SynchronizationComponent} from './synchronization/synchronization-component';
-import {GroupViolationsHistoryComponent} from './group/group-violations-history';
-import {GroupOverviewCardComponent} from './group/group-overview-card';
+import {ViolationsHistoryComponent} from './history/violations-history-component';
+import {GroupOverviewCardComponent} from './overview/overview-card';
 import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
 import {AppStateService} from 'app/app-state-service';
 import {AppState} from 'app/app-state';
 import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
 import {GroupProjectsComponent} from './group/group-projects-component';
 import {ProjectViolationsComponent} from './group/project-violations-component';
+import {ProjectComponent} from './project/project-component';
+import {ProjectService} from 'app/project/project-service';
+import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
 
 @NgModule({
   declarations: [
@@ -41,13 +44,15 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
     GroupComponent,
     GroupComponent,
     GroupOverviewTreeItemComponent,
-    GroupViolationsHistoryComponent,
+    ViolationsHistoryComponent,
     GroupOverviewCardComponent,
     GroupOverviewCardsComponent,
     SynchronizationComponent,
     SettingsMenuComponent,
     GroupProjectsComponent,
-    ProjectViolationsComponent
+    ProjectViolationsComponent,
+    ProjectComponent,
+    ProjectOverviewCardsComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,8 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
     ViolationsHistoryService,
     SynchronizationService,
     AppState,
-    AppStateService
+    AppStateService,
+    ProjectService
   ],
   bootstrap: [
     SonarQubeCompanionComponent

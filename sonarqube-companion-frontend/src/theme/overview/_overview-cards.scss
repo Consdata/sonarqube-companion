@@ -1,15 +1,10 @@
+sq-project-overview-cards,
 sq-group-overview-cards {
 
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
 
-  sq-group-overview-card {
-    color: #fff;
-    margin: 10px;
-    padding: 15px;
-    width: 250px;
-  }
   .unknown, .gray {
     background-color: $color-gray;
   }

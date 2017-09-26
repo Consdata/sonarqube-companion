@@ -1,31 +1,30 @@
 import {Component, Input} from '@angular/core';
 import {GroupDetails} from 'app/group/group-details';
 import {Violations} from '../violations/violations';
+import {ProjectSummary} from './project-summary';
 
 @Component({
-  selector: 'sq-group-overview-cards',
+  selector: 'sq-project-overview-cards',
   template: `
     <sq-overview-card
-      [class]="group.healthStatusString"
-      [icon]="'fa ' + (group.healthy ? 'fa-thumbs-o-up' : 'fa-thumbs-down')">
+      [class]="project.healthStatusString"
+      [icon]="'fa ' + (project.healthy ? 'fa-thumbs-o-up' : 'fa-thumbs-down')">
       <div text>
-        {{group.healthStatusString}}
+        {{project.healthStatusString}}
       </div>
       <div description>
         overall score
       </div>
     </sq-overview-card>
     <sq-overview-card
-      [class.success]="group.violations.blockers === 0"
-      [class.danger]="group.violations.blockers > 0"
+      [class.success]="project.violations.blockers === 0"
+      [class.danger]="project.violations.blockers > 0"
       [icon]="'fa fa-ban'">
       <div text>
         <sq-project-violations
           [violations]="violations"
-          [addedViolations]="addedViolations"
-          [removedViolations]="removedViolations"
           [violationsDiff]="violationsDiff"
-          [detailedDiff]="true"
+          [detailedDiff]="false"
           [type]="'blockers'">
         </sq-project-violations>
       </div>
@@ -34,16 +33,14 @@ import {Violations} from '../violations/violations';
       </div>
     </sq-overview-card>
     <sq-overview-card
-      [class.success]="group.violations.criticals === 0"
-      [class.warning]="group.violations.criticals > 0"
+      [class.success]="project.violations.criticals === 0"
+      [class.warning]="project.violations.criticals > 0"
       [icon]="'fa fa-exclamation-circle'">
       <div text>
         <sq-project-violations
           [violations]="violations"
-          [addedViolations]="addedViolations"
-          [removedViolations]="removedViolations"
           [violationsDiff]="violationsDiff"
-          [detailedDiff]="true"
+          [detailedDiff]="false"
           [type]="'criticals'">
         </sq-project-violations>
       </div>
@@ -57,10 +54,8 @@ import {Violations} from '../violations/violations';
       <div text>
         <sq-project-violations
           [violations]="violations"
-          [addedViolations]="addedViolations"
-          [removedViolations]="removedViolations"
           [violationsDiff]="violationsDiff"
-          [detailedDiff]="true"
+          [detailedDiff]="false"
           [type]="'nonRelevant'">
         </sq-project-violations>
       </div>
@@ -68,34 +63,12 @@ import {Violations} from '../violations/violations';
         other issues
       </div>
     </sq-overview-card>
-    <sq-overview-card
-      class="gray"
-      [icon]="'fa fa-briefcase'">
-      <div text>
-        {{group.projects.length}}
-      </div>
-      <div description>
-        projects
-      </div>
-    </sq-overview-card>
-    <sq-overview-card
-      class="gray"
-      [icon]="'fa fa-folder-open-o'">
-      <div text>
-        {{group.groups.length}}
-      </div>
-      <div description>
-        groups
-      </div>
-    </sq-overview-card>
   `
 })
-export class GroupOverviewCardsComponent {
+export class ProjectOverviewCardsComponent {
 
-  @Input() group: GroupDetails;
+  @Input() project: ProjectSummary;
   @Input() violations: Violations;
   @Input() violationsDiff: Violations;
-  @Input() addedViolations: Violations;
-  @Input() removedViolations: Violations;
 
 }

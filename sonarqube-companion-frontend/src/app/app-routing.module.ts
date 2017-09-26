@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {OverviewComponent} from './overview/overview-component';
 import {NotFoundComponent} from './not-found/not-found-component';
 import {GroupComponent} from './group/group-component';
+import {ProjectComponent} from './project/project-component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'groups/:uuid',
     component: GroupComponent
+  },
+  {
+    path: 'project/:uuid/:projectKey',
+    component: ProjectComponent
   },
   {
     path: '404',

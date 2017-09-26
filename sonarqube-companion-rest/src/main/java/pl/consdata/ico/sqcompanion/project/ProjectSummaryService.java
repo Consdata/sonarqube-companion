@@ -3,7 +3,9 @@ package pl.consdata.ico.sqcompanion.project;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.boot.actuate.metrics.GaugeService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.health.HealthCheckService;
 import pl.consdata.ico.sqcompanion.history.ProjectHistoryEntryEntity;
 import pl.consdata.ico.sqcompanion.history.ProjectHistoryRepository;
@@ -34,6 +36,11 @@ public class ProjectSummaryService {
         this.healthCheckService = healthCheckService;
         this.counterService = counterService;
         this.gaugeService = gaugeService;
+    }
+
+    @Cacheable(value = Caches.PROJECT_SUMMARY_CACHE, sync = true, key = "#project.key")
+    public ProjectSummary getProjectSummary(final Project project) {
+        return asProjectSummary(project);
     }
 
     public List<ProjectSummary> getProjectSummaries(final List<Project> allProjects) {

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'sq-group-overview-card',
+  selector: 'sq-overview-card',
   template: `
     <div>
       <div class="overview-card">

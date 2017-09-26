@@ -5,11 +5,11 @@ import {ViolationsHistory} from '../violations/violations-history';
 import {AmChartsService} from '@amcharts/amcharts3-angular';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
-import {GroupDetails} from './group-details';
-import {GroupEvent} from './group-event';
+import {GroupDetails} from '../group/group-details';
+import {GroupEvent} from '../group/group-event';
 
 @Component({
-  selector: 'sq-group-violations-history',
+  selector: 'sq-violations-history',
   template: `
     <div *ngIf="!chart">
       <sq-spinner></sq-spinner>
@@ -38,7 +38,7 @@ import {GroupEvent} from './group-event';
     </div>
   `
 })
-export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
+export class ViolationsHistoryComponent implements OnChanges, OnDestroy {
 
   static readonly DEFAULT_GRAPH = 'all';
   static readonly SERIES = [
@@ -54,20 +54,19 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
   ];
 
   @Input() group: GroupDetails;
+  @Input() violationsHistoryProvider: (daysLimit: number) => Observable<ViolationsHistory>;
   @Output() zoomed = new EventEmitter();
   chart: any;
   currentGraph: string;
   colorCounter = 0;
 
-  constructor(private service: ViolationsHistoryService,
-              private amCharts: AmChartsService,
+  constructor(private amCharts: AmChartsService,
               private ngZone: NgZone) {
   }
 
   ngOnChanges(): void {
     this.chart = null;
-    this.service
-      .getHistory(90, this.group.uuid)
+    this.violationsHistoryProvider(90)
       .subscribe((violationsHistory: ViolationsHistory) => {
         this.initializeChart(violationsHistory);
       });
@@ -98,11 +97,11 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
     if (this.chart) {
       this.amCharts.destroyChart(this.chart);
     }
-    this.currentGraph = GroupViolationsHistoryComponent.DEFAULT_GRAPH;
+    this.currentGraph = ViolationsHistoryComponent.DEFAULT_GRAPH;
     this.chart = this.amCharts.makeChart('violations-history-chart', {
       ...this.standardLinearChart(this.currentGraph),
       dataProvider: violationsHistory.history,
-      graphs: GroupViolationsHistoryComponent.SERIES.map(this.graphDefinition.bind(this)),
+      graphs: ViolationsHistoryComponent.SERIES.map(this.graphDefinition.bind(this)),
       ...{
         categoryAxis: {
           parseDates: true,
@@ -113,8 +112,8 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
       }
     });
 
-    GroupViolationsHistoryComponent.SERIES
-      .filter(series => series !== GroupViolationsHistoryComponent.DEFAULT_GRAPH)
+    ViolationsHistoryComponent.SERIES
+      .filter(series => series !== ViolationsHistoryComponent.DEFAULT_GRAPH)
       .forEach(series => this.chart.hideGraph(this.chart.getGraphById(series)));
 
     const zoomedSubject = new Subject<any>();
@@ -205,16 +204,16 @@ export class GroupViolationsHistoryComponent implements OnChanges, OnDestroy {
   }
 
   private mapEventToGuide(event: GroupEvent) {
-    this.colorCounter = (this.colorCounter + 1) % GroupViolationsHistoryComponent.PALETTE.length;
+    this.colorCounter = (this.colorCounter + 1) % ViolationsHistoryComponent.PALETTE.length;
     return {
       date: event.type === 'period' ? event.data.startDate : event.data.date,
       toDate: event.type === 'period' ? event.data.endDate : undefined,
-      lineColor: GroupViolationsHistoryComponent.PALETTE[this.colorCounter].line,
+      lineColor: ViolationsHistoryComponent.PALETTE[this.colorCounter].line,
       lineThickness: 1.2,
       lineAlpha: 1,
       boldLabel: event.type === 'period',
       fillAlpha: 0.2,
-      fillColor: GroupViolationsHistoryComponent.PALETTE[this.colorCounter].fill,
+      fillColor: ViolationsHistoryComponent.PALETTE[this.colorCounter].fill,
       dashLength: 5,
       inside: true,
       labelRotation: event.type === 'period' ? 360 : 90,
