@@ -1,8 +1,7 @@
 package pl.consdata.ico.sqcompanion.project;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.actuate.metrics.CounterService;
-import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
@@ -24,18 +23,15 @@ public class ProjectSummaryService {
 
     private final ProjectHistoryRepository projectHistoryRepository;
     private final HealthCheckService healthCheckService;
-    private final CounterService counterService;
-    private final GaugeService gaugeService;
+    private final MeterRegistry meterRegistry;
 
     public ProjectSummaryService(
             final ProjectHistoryRepository projectHistoryRepository,
             final HealthCheckService healthCheckService,
-            final CounterService counterService,
-            final GaugeService gaugeService) {
+            final MeterRegistry meterRegistry) {
         this.projectHistoryRepository = projectHistoryRepository;
         this.healthCheckService = healthCheckService;
-        this.counterService = counterService;
-        this.gaugeService = gaugeService;
+        this.meterRegistry = meterRegistry;
     }
 
     @Cacheable(value = Caches.PROJECT_SUMMARY_CACHE, sync = true, key = "#project.key")
@@ -51,7 +47,7 @@ public class ProjectSummaryService {
     }
 
     private ProjectSummary asProjectSummary(final Project p) {
-        counterService.increment("services.ProjectSummaryService.asProjectSummary");
+        meterRegistry.counter("services.ProjectSummaryService.asProjectSummary").increment();
         long startTime = System.currentTimeMillis();
 
         final ProjectHistoryEntryEntity historyEntry = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(p.getKey()).orElse(null);
@@ -75,7 +71,7 @@ public class ProjectSummaryService {
             );
         }
 
-        gaugeService.submit("services.ProjectSummaryService.asProjectSummary", System.currentTimeMillis() - startTime);
+        meterRegistry.gauge("services.ProjectSummaryService.asProjectSummary", System.currentTimeMillis() - startTime);
         return builder.build();
     }
 

@@ -2,10 +2,10 @@ package pl.consdata.ico.sqcompanion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,22 +24,22 @@ public class IndexHtmlController {
     private final ResourceLoader resourceLoader;
     private final String indexTemplatePath;
     private final ObjectMapper objectMapper;
-    private final CounterService counterService;
+    private final MeterRegistry meterRegistry;
 
     public IndexHtmlController(
             final ResourceLoader resourceLoader,
             final @Value("${app.indexTemplatePath:classpath:/resources/index.html}") String indexTemplatePath,
             final ObjectMapper objectMapper,
-            final CounterService counterService) {
+            final MeterRegistry meterRegistry) {
         this.resourceLoader = resourceLoader;
         this.indexTemplatePath = indexTemplatePath;
         this.objectMapper = objectMapper;
-        this.counterService = counterService;
+        this.meterRegistry = meterRegistry;
     }
 
     @RequestMapping({"/", "/index.html"})
     public String indexHtml(@RequestParam("baseHref") Optional<String> baseHrefParam) {
-        counterService.increment("counter.service.IndexHtmlController.indexHtml");
+        meterRegistry.counter("counter.service.IndexHtmlController.indexHtml").increment();
         try (final InputStream indexInputStream = getIndexResource(indexTemplatePath).getInputStream()) {
             final Document template = Jsoup.parse(indexInputStream, "UTF-8", "");
 
