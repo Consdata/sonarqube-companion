@@ -47,7 +47,7 @@ public class ProjectSummaryService {
     }
 
     private ProjectSummary asProjectSummary(final Project p) {
-        meterRegistry.counter("services.ProjectSummaryService.asProjectSummary").increment();
+        meterRegistry.counter("services.ProjectSummaryService.asProjectSummary.count").increment();
         long startTime = System.currentTimeMillis();
 
         final ProjectHistoryEntryEntity historyEntry = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(p.getKey()).orElse(null);
@@ -71,7 +71,7 @@ public class ProjectSummaryService {
             );
         }
 
-        meterRegistry.gauge("services.ProjectSummaryService.asProjectSummary", System.currentTimeMillis() - startTime);
+        meterRegistry.gauge("services.ProjectSummaryService.asProjectSummary.time", System.currentTimeMillis() - startTime);
         return builder.build();
     }
 

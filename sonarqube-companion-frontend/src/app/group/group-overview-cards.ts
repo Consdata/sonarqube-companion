@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {GroupDetails} from 'app/group/group-details';
 import {Violations} from '../violations/violations';
+import {GroupDetails} from "./group-details";
 
 @Component({
   selector: 'sq-group-overview-cards',

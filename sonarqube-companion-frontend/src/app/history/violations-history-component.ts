@@ -1,4 +1,7 @@
-import {Component, EventEmitter, Input, NgZone, OnChanges, OnDestroy, Output} from '@angular/core';
+import {
+  Component, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output,
+  SimpleChanges
+} from '@angular/core';
 
 import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {ViolationsHistory} from '../violations/violations-history';
@@ -15,30 +18,11 @@ import {GroupEvent} from '../group/group-event';
       <sq-spinner></sq-spinner>
     </div>
     <div [class.hidden]="!chart">
-      <div class="violations-history-chart-issues-menu">
-        <span (click)="changeChartIssue('all')" [class.active]="'all' === currentGraph">all</span>
-        |
-        <span (click)="changeChartIssue('relevant')" [class.active]="'relevant' === currentGraph">relevant</span>
-        |
-        <span (click)="changeChartIssue('nonrelevant')"
-              [class.active]="'nonrelevant' === currentGraph">non relevant</span>
-        |
-        <span (click)="changeChartIssue('blockers')" [class.active]="'blockers' === currentGraph">blockers</span>
-        |
-        <span (click)="changeChartIssue('criticals')" [class.active]="'criticals' === currentGraph">criticals</span>
-        |
-        <span (click)="changeChartIssue('majors')" [class.active]="'majors' === currentGraph">majors</span>
-        |
-        <span (click)="changeChartIssue('minors')" [class.active]="'minors' === currentGraph">minors</span>
-        |
-        <span (click)="changeChartIssue('infos')" [class.active]="'infos' === currentGraph">infos</span>
-      </div>
-      <hr/>
       <div id="violations-history-chart"></div>
     </div>
   `
 })
-export class ViolationsHistoryComponent implements OnChanges, OnDestroy {
+export class ViolationsHistoryComponent implements OnChanges, OnDestroy, OnInit {
 
   static readonly DEFAULT_GRAPH = 'all';
   static readonly SERIES = [
@@ -53,23 +37,34 @@ export class ViolationsHistoryComponent implements OnChanges, OnDestroy {
     {fill: 'rgba(155, 89, 182, .5)', line: 'rgba(142, 68, 173, 1.0)'},
   ];
 
+  @Input() violationsFilter: string;
   @Input() group: GroupDetails;
   @Input() violationsHistoryProvider: (daysLimit: number) => Observable<ViolationsHistory>;
   @Output() zoomed = new EventEmitter();
   chart: any;
   currentGraph: string;
   colorCounter = 0;
+  private changesSubject = new Subject<SimpleChanges>();
 
   constructor(private amCharts: AmChartsService,
               private ngZone: NgZone) {
   }
 
-  ngOnChanges(): void {
+  ngOnInit() {
     this.chart = null;
     this.violationsHistoryProvider(90)
       .subscribe((violationsHistory: ViolationsHistory) => {
-        this.initializeChart(violationsHistory);
+        this.initializeChart(violationsHistory, this.violationsFilter);
       });
+    this.changesSubject
+      .asObservable()
+      .filter(changes => changes.violationsFilter !== undefined)
+      .map(changes => changes.violationsFilter.currentValue)
+      .subscribe(filter => this.changeChartIssue(filter));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.changesSubject.next(changes);
   }
 
   ngOnDestroy(): void {
@@ -93,11 +88,11 @@ export class ViolationsHistoryComponent implements OnChanges, OnDestroy {
     });
   }
 
-  private initializeChart(violationsHistory: ViolationsHistory) {
+  private initializeChart(violationsHistory: ViolationsHistory, graph = ViolationsHistoryComponent.DEFAULT_GRAPH) {
     if (this.chart) {
       this.amCharts.destroyChart(this.chart);
     }
-    this.currentGraph = ViolationsHistoryComponent.DEFAULT_GRAPH;
+    this.currentGraph = graph;
     this.chart = this.amCharts.makeChart('violations-history-chart', {
       ...this.standardLinearChart(this.currentGraph),
       dataProvider: violationsHistory.history,
@@ -113,7 +108,7 @@ export class ViolationsHistoryComponent implements OnChanges, OnDestroy {
     });
 
     ViolationsHistoryComponent.SERIES
-      .filter(series => series !== ViolationsHistoryComponent.DEFAULT_GRAPH)
+      .filter(series => series !== graph)
       .forEach(series => this.chart.hideGraph(this.chart.getGraphById(series)));
 
     const zoomedSubject = new Subject<any>();
