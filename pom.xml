@@ -30,6 +30,7 @@
         <java.version>1.8</java.version>
         <jacoco.version>0.7.9</jacoco.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
+        <lombok.version>1.16.18</lombok.version>
     </properties>
 
     <dependencyManagement>
