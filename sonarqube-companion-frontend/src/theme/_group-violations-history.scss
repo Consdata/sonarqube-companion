@@ -3,12 +3,4 @@ sq-violations-history {
     width: 100%;
     height: 300px;
   }
-  .violations-history-chart-issues-menu {
-    & > span {
-      cursor: pointer;
-    }
-    .active {
-      color: $color-success;
-    }
-  }
 }

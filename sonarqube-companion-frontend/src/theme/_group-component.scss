@@ -4,7 +4,17 @@ sq-group {
     margin-bottom: 25px;
   }
 
-  // projects filter
+  // gorup history chart
+  .violations-history-chart-issues-menu {
+    & > span {
+      cursor: pointer;
+    }
+    .active {
+      color: $color-success;
+    }
+  }
+
+  // projects ilter
   .group-projects-filter {
     .project-filter-item {
       cursor: pointer;
