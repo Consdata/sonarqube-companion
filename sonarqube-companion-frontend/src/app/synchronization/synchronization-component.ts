@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs/Subscription';
 @Component({
   selector: 'sq-synchronization',
   template: `
-    <span *ngIf="!synchronizationInProgress">
+    <span *ngIf="!synchronizationInProgress && lastSynchronizationExists">
       Last synchronization took: {{lastSynchronizationTime}} ms
     </span>
     <div class="sq-synchronization-progress-bar" *ngIf="synchronizationInProgress">
@@ -21,6 +21,7 @@ import {Subscription} from 'rxjs/Subscription';
   `
 })
 export class SynchronizationComponent implements AfterViewInit, OnDestroy {
+
   readonly SYNCHRONIZATION_IN_PROGRESS_INTERVAL = 1000;
   readonly SYNCHRONIZED_INTERVAL = 20000;
   lastSynchronizationTime: number;
@@ -30,9 +31,9 @@ export class SynchronizationComponent implements AfterViewInit, OnDestroy {
   pollSubscription: Subscription;
   startSynchronizationSubscription: Subscription;
   progress: number;
+  lastSynchronizationExists: boolean;
 
   constructor(private synchronizationService: SynchronizationService) {
-
   }
 
   ngOnDestroy(): void {
@@ -64,12 +65,13 @@ export class SynchronizationComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private processSynchronizationState(state: SynchronizationState) {
-    if (state.finished) {
+  private processSynchronizationState(state?: SynchronizationState) {
+    this.lastSynchronizationExists = !!state;
+    if (!state || state.finished) {
       this.synchronizationInProgress = false;
       this.progress = 0;
       this.pollScheduleInterval = this.SYNCHRONIZED_INTERVAL;
-      this.lastSynchronizationTime = state.duration;
+      this.lastSynchronizationTime = state ? state.duration : 0;
     } else {
       this.synchronizationInProgress = true;
       this.pollScheduleInterval = this.SYNCHRONIZATION_IN_PROGRESS_INTERVAL;
@@ -97,4 +99,5 @@ export class SynchronizationComponent implements AfterViewInit, OnDestroy {
       this.pollState();
     });
   }
+
 }

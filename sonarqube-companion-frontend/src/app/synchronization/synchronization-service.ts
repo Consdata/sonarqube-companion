@@ -5,8 +5,8 @@ import {SynchronizationState} from './synchronization-state';
 
 @Injectable()
 export class SynchronizationService {
-  constructor(private http: Http) {
 
+  constructor(private http: Http) {
   }
 
   startSynchronization(): Observable<SynchronizationState> {
@@ -18,7 +18,7 @@ export class SynchronizationService {
   synchronizationState(): Observable<SynchronizationState> {
     return this.http
       .get('api/v1/sync/state')
-      .map(response => response.json());
+      .map(response => response.text() && response.json());
   }
 
 }

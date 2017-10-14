@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {AppState} from 'app/app-state';
+import {AppState} from './app-state';
 
 @Injectable()
 export class AppStateService {

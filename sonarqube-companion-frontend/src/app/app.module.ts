@@ -18,19 +18,19 @@ import {GroupService} from './group/group-service';
 import {GroupComponent} from './group/group-component';
 import {ViolationsHistoryService} from './violations/violations-history-service';
 import {VersionService} from './version/version-service';
-import {SynchronizationService} from 'app/synchronization/synchronization-service';
 import {SynchronizationComponent} from './synchronization/synchronization-component';
 import {ViolationsHistoryComponent} from './history/violations-history-component';
 import {GroupOverviewCardComponent} from './overview/overview-card';
-import {GroupOverviewCardsComponent} from 'app/group/group-overview-cards';
-import {AppStateService} from 'app/app-state-service';
-import {AppState} from 'app/app-state';
-import {SettingsMenuComponent} from 'app/navbar/settings-menu-component';
 import {GroupProjectsComponent} from './group/group-projects-component';
 import {ProjectViolationsComponent} from './group/project-violations-component';
 import {ProjectComponent} from './project/project-component';
-import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
+import {GroupOverviewCardsComponent} from './group/group-overview-cards';
+import {SettingsMenuComponent} from './navbar/settings-menu-component';
+import {SynchronizationService} from './synchronization/synchronization-service';
+import {AppState} from './app-state';
+import {AppStateService} from './app-state-service';
+import {ProjectService} from './project/project-service';
 
 @NgModule({
   declarations: [

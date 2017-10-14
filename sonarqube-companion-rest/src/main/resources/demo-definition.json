@@ -1,0 +1,128 @@
+{
+  "servers": {
+    "sonarqube-server-1": {
+      "projects": [
+         {
+          "key": "net.lipecki.companion.demo.server1:fuzzy-potato",
+          "name": "fuzzy-potato",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 0, "criticals": 20, "majors": 10, "minors": 3, "infos": 5},
+            {"relativeDate": "-5d", "blockers": 0, "criticals": 20, "majors": 10, "minors": 3, "infos": 4},
+            {"relativeDate": "-4d", "blockers": 1, "criticals": 19, "majors": 10, "minors": 1, "infos": 5},
+            {"relativeDate": "-3d", "blockers": 1, "criticals": 13, "majors": 10, "minors": 3, "infos": 6},
+            {"relativeDate": "-2d", "blockers": 0, "criticals": 12, "majors": 10, "minors": 2, "infos": 3},
+            {"relativeDate": "-1d", "blockers": 0, "criticals": 4,  "majors": 15, "minors": 1, "infos": 0},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 6,  "majors": 16, "minors": 0, "infos": 0}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:psychic-lamp",
+          "name": "psychic-lamp",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 0, "criticals": 1, "majors": 4, "minors": 1, "infos": 0},
+            {"relativeDate": "-5d", "blockers": 1, "criticals": 1, "majors": 3, "minors": 0, "infos": 0},
+            {"relativeDate": "-4d", "blockers": 2, "criticals": 4, "majors": 4, "minors": 1, "infos": 4},
+            {"relativeDate": "-3d", "blockers": 0, "criticals": 6, "majors": 4, "minors": 3, "infos": 4},
+            {"relativeDate": "-2d", "blockers": 0, "criticals": 7, "majors": 7, "minors": 5, "infos": 5},
+            {"relativeDate": "-1d", "blockers": 1, "criticals": 8, "majors": 9, "minors": 8, "infos": 4},
+            {"relativeDate": "+0d", "blockers": 1, "criticals": 5, "majors": 9, "minors": 1, "infos": 4}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:animated-spork",
+          "name": "animated-spork",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 3, "criticals": 7, "majors": 5, "minors": 3, "infos": 10},
+            {"relativeDate": "-5d", "blockers": 4, "criticals": 5, "majors": 4, "minors": 3, "infos": 11},
+            {"relativeDate": "-4d", "blockers": 3, "criticals": 6, "majors": 3, "minors": 3, "infos": 11},
+            {"relativeDate": "-3d", "blockers": 1, "criticals": 6, "majors": 3, "minors": 4, "infos": 12},
+            {"relativeDate": "-2d", "blockers": 1, "criticals": 5, "majors": 2, "minors": 4, "infos": 6},
+            {"relativeDate": "-1d", "blockers": 0, "criticals": 4, "majors": 5, "minors": 3, "infos": 3},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 12}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:cautious-meme",
+          "name": "cautious-meme",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 1, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-5d", "blockers": 0, "criticals": 2, "majors": 0, "minors": 7, "infos": 5},
+            {"relativeDate": "-4d", "blockers": 0, "criticals": 2, "majors": 0, "minors": 7, "infos": 5},
+            {"relativeDate": "-3d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 6, "infos": 5},
+            {"relativeDate": "-2d", "blockers": 0, "criticals": 0, "majors": 12, "minors": 7, "infos": 5},
+            {"relativeDate": "-1d", "blockers": 0, "criticals": 0, "majors": 12, "minors": 7, "infos": 5},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 0, "majors": 12, "minors": 0, "infos": 4}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:turbo-giggle",
+          "name": "turbo-giggle",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-5d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-4d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-3d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-2d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-1d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:stunning-octo-umbrella",
+          "name": "stunning-octo-umbrella",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 0, "criticals": 10, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-5d", "blockers": 0, "criticals": 10, "majors": 1, "minors": 0, "infos": 0},
+            {"relativeDate": "-4d", "blockers": 0, "criticals": 12, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-3d", "blockers": 0, "criticals": 12, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-2d", "blockers": 0, "criticals": 14, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-1d", "blockers": 0, "criticals": 16, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 19, "majors": 0, "minors": 0, "infos": 0}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:jubilant-tribble",
+          "name": "jubilant-tribble",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 1, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-5d", "blockers": 2, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-4d", "blockers": 3, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-3d", "blockers": 6, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-2d", "blockers": 6, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "-1d", "blockers": 5, "criticals": 0, "majors": 0, "minors": 0, "infos": 0},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 0, "infos": 0}
+          ]
+        },
+        {
+          "key": "net.lipecki.companion.demo.server1:turbo-happiness",
+          "name": "turbo-happiness",
+          "issues": [
+          ],
+          "history": [
+            {"relativeDate": "-6d", "blockers": 0, "criticals": 0, "majors": 0, "minors": 10, "infos": 0},
+            {"relativeDate": "-5d", "blockers": 0, "criticals": 0, "majors": 8, "minors": 10, "infos": 0},
+            {"relativeDate": "-4d", "blockers": 0, "criticals": 0, "majors": 8, "minors": 10, "infos": 0},
+            {"relativeDate": "-3d", "blockers": 0, "criticals": 0, "majors": 9, "minors": 14, "infos": 0},
+            {"relativeDate": "-2d", "blockers": 0, "criticals": 0, "majors": 6, "minors": 14, "infos": 0},
+            {"relativeDate": "-1d", "blockers": 0, "criticals": 0, "majors": 6, "minors": 10, "infos": 0},
+            {"relativeDate": "+0d", "blockers": 0, "criticals": 0, "majors": 3, "minors": 8, "infos": 0}
+          ]
+        }
+      ]
+    }
+  }
+}

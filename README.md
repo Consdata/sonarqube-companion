@@ -196,6 +196,15 @@ volumes:
   data:
 ```
 
+## Demo mode
+
+When using with demo mode application will use in-memory SonarQube definition instead of real server.
+
+To start application in demo mode add program argument:
+```bash
+--spring.profiles.include=demo
+```
+
 ## Contribution guide
 
 ### Code formatting

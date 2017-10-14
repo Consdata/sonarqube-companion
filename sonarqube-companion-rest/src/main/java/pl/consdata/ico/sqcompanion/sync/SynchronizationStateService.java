@@ -3,6 +3,7 @@ package pl.consdata.ico.sqcompanion.sync;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.consdata.ico.sqcompanion.SQCompanionException;
 
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class SynchronizationStateService {
     }
 
     @Transactional(propagation = REQUIRES_NEW)
-    public SynchronizationStateEntity getCurrentState() {
+    public Optional<SynchronizationStateEntity> getCurrentState() {
         return this.synchronizationStateRepository.findFirstByOrderByIdDesc();
     }
 
@@ -38,7 +39,7 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void addFailedTask() {
-        SynchronizationStateEntity currentState = getCurrentState();
+        SynchronizationStateEntity currentState = getCurrentState().orElseThrow(this::raiseMissingCurrentStateException);
         if (currentState.getFinishTimestamp() != null) {
             return;
         }
@@ -52,7 +53,7 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void addFinishedTask() {
-        SynchronizationStateEntity currentState = getCurrentState();
+        SynchronizationStateEntity currentState = getCurrentState().orElseThrow(this::raiseMissingCurrentStateException);
         if (currentState.getFinishTimestamp() != null) {
             return;
         }
@@ -66,7 +67,7 @@ public class SynchronizationStateService {
 
     @Transactional(propagation = REQUIRES_NEW, isolation = SERIALIZABLE)
     public void finishSynchronization() {
-        SynchronizationStateEntity currentState = getCurrentState();
+        SynchronizationStateEntity currentState = getCurrentState().orElseThrow(this::raiseMissingCurrentStateException);
         if (currentState.getFinishTimestamp() != null) {
             return;
         }
@@ -85,6 +86,10 @@ public class SynchronizationStateService {
     @Transactional
     public double estimatedSynchronizationTime() {
         return Optional.ofNullable(this.synchronizationStateRepository.findAverageDurationOfLastSynchronizations()).orElse(1000.0);
+    }
+
+    private SQCompanionException raiseMissingCurrentStateException() {
+        throw new SQCompanionException("Inconsistent synchronization state, can't process synchronization");
     }
 
 }
