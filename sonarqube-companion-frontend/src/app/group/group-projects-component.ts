@@ -87,7 +87,7 @@ export class GroupProjectsComponent {
   getViolationsDiffUrl(project: ProjectSummary, type: string) {
     const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
   }
 
   private getFilter(): (ProjectSummary) => boolean {
