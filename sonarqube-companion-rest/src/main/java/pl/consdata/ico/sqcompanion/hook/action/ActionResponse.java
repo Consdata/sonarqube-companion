@@ -11,4 +11,5 @@ import java.util.Map;
 public class ActionResponse {
     private Map<String, String> group = new HashMap<>();
     private Map<String, Map<String, String>> projects = new HashMap<>();
+    private String actionResult;
 }

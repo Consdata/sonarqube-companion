@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class NoImprovementWebhookActionData implements WebhookActionData {
+public class NoImprovementWebhookActionData extends WebhookActionData {
 
     @JsonProperty("period")
     private Period period;
