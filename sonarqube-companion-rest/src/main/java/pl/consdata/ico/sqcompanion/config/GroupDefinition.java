@@ -20,6 +20,8 @@ public class GroupDefinition {
     private List<ProjectLink> projectLinks;
     @Singular
     private List<GroupEvent> events;
+    @Singular
+    private List<WebhookDefinition> webhooks;
 
     public List<GroupDefinition> getGroups() {
         return groups != null ? groups : new ArrayList<>();
@@ -27,6 +29,10 @@ public class GroupDefinition {
 
     public List<ProjectLink> getProjectLinks() {
         return projectLinks != null ? projectLinks : new ArrayList<>();
+    }
+
+    public List<WebhookDefinition> getWebhooks(){
+        return webhooks != null ? webhooks : new ArrayList<>();
     }
 
 }

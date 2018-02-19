@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 /**
  * Możliwości rozwoju:
  * - odświeżanie automatyczne przez cron
@@ -83,6 +84,7 @@ public class RepositoryService {
             return Group.builder().build();
         }
     }
+
 
     private Stream<Project> linkProjects(final ProjectLink projectLink) {
         try {
