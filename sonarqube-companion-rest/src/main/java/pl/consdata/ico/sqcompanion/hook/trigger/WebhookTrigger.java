@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CronWebhookTrigger.class, name = "CRON"),
-        @JsonSubTypes.Type(value = RestGetWebhookTrigger.class, name = "GET"),
 })
 public interface WebhookTrigger {
 }
