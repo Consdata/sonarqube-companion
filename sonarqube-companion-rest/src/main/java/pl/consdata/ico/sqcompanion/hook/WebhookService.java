@@ -5,28 +5,20 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.WebhookDefinition;
-import pl.consdata.ico.sqcompanion.hook.action.WebhookAction;
 import pl.consdata.ico.sqcompanion.hook.trigger.WebhookTrigger;
-import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class WebhookService {
     private AppConfig config;
-    private RepositoryService repositoryService;
     private List<Webhook> webhooks = new ArrayList<>();
-    private Map<String, WebhookAction> webhookActionMap = new HashMap<>();
 
-
-    public WebhookService(AppConfig config, RepositoryService repositoryService) {
+    public WebhookService(AppConfig config) {
         this.config = config;
-        this.repositoryService = repositoryService;
         syncWebhooks();
     }
 
