@@ -13,12 +13,6 @@ public class WebhookActionDispatcher {
     public WebhookActionDispatcher(NoImprovementWebhookAction noImprovementWebhookAction) {
         this.noImprovementWebhookAction = noImprovementWebhookAction;
     }
-/*
-    public void dispatch(Webhook webhook) {
-        if (webhook.getAction().getType().equals(NoImprovementWebhookAction.TYPE)) {
-            webhook.getCallbacks().forEach(callback -> callback.call(noImprovementWebhookAction.call(webhook.getGroupUuid(), (NoImprovementWebhookActionData) webhook.getAction())));
-        }
-    }*/
 
     public ActionResponse dispatch(Webhook webhook) {
         if (webhook.getAction().getType().equals(NoImprovementWebhookAction.TYPE)) {
