@@ -22,10 +22,7 @@ public class WebhookRestController {
     private List<Webhook> restWebhooks = new ArrayList<>();
     private WebhookActionDispatcher dispatcher;
 
-    private WebhookService service;
-
     public WebhookRestController(WebhookService service, WebhookActionDispatcher dispatcher) {
-        this.service = service;
         restWebhooks = service.getAllWebhooksWithTrigger(RestWebhookTrigger.class);
         this.dispatcher = dispatcher;
     }
