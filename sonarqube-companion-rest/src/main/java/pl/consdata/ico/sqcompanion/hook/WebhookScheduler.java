@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
 import pl.consdata.ico.sqcompanion.hook.trigger.SpringWebhookTrigger;
 
 import javax.annotation.PostConstruct;
@@ -28,11 +29,15 @@ public class WebhookScheduler {
         this.dispatcher = dispatcher;
     }
 
+    private void callCallbacks(ActionResponse response, Webhook webhook) {
+        webhook.getCallbacks().forEach(callback -> callback.call(response));
+    }
+
     @PostConstruct
     public void initScheduledWebhooksAfterAppInit() {
         List<Webhook> scheduledWebhooks = webhookService.getAllWebhooksWithTrigger(SpringWebhookTrigger.class);
         scheduledWebhooks.forEach(webhook -> {
-            ScheduledFuture<?> task = taskScheduler.schedule(() -> dispatcher.dispatch(webhook), getSpringTrigger(webhook));
+            ScheduledFuture<?> task = taskScheduler.schedule(() -> callCallbacks(dispatcher.dispatch(webhook), webhook), getSpringTrigger(webhook));
             tasks.add(task);
         });
     }

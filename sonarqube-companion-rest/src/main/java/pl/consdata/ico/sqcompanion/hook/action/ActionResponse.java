@@ -9,7 +9,6 @@ import java.util.Map;
 @Data
 @Builder
 public class ActionResponse {
-    private Map<String, String> group = new HashMap<>();
-    private Map<String, Map<String, String>> projects = new HashMap<>();
+    private Map<String, String> values = new HashMap<>();
     private String actionResult;
 }

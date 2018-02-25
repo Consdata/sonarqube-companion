@@ -10,7 +10,8 @@ import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
         property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = PostWebhookCallback.class, name = "POST"),
+        @JsonSubTypes.Type(value = JSONWebhookCallback.class, name = "JSON"),
 })
 public interface WebhookCallback {
-    void call(ActionResponse response);
+    CallbackResponse call(ActionResponse response);
 }

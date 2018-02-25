@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.WebhookDefinition;
+import pl.consdata.ico.sqcompanion.hook.callback.WebhookCallback;
 import pl.consdata.ico.sqcompanion.hook.trigger.WebhookTrigger;
 
 import java.util.ArrayList;
