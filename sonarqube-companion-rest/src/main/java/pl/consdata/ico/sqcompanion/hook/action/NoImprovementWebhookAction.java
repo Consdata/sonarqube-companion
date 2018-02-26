@@ -33,7 +33,7 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
     }
 
     private boolean isGroupClean(Group group, NoImprovementWebhookActionData actionData) {
-        GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.of(2018, 1, 20), LocalDate.of(2018, 1, 23));
+        GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now());
         return countDiff(violationsHistoryDiff, actionData) == 0;
     }
 
@@ -42,7 +42,7 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
             return createResponse("clean", null);
         }
 
-        GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.of(2018, 1, 20), LocalDate.of(2018, 1, 23));
+        GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(1), LocalDate.now());
         if (groupWasImproved(violationsHistoryDiff, actionData)) {
             return createResponse("improvement", countDiff(violationsHistoryDiff, actionData));
         } else {
