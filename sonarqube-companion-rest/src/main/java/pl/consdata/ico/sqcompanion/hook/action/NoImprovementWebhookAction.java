@@ -8,7 +8,7 @@ import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.Collections;
 
 @Slf4j
 @Service
@@ -25,7 +25,6 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
 
     @Override
     public ActionResponse call(String groupUUID, NoImprovementWebhookActionData actionData) {
-        log.info("call");
         Group group = repositoryService.getGroup(groupUUID).orElse(null);
         if (group != null) {
             return checkImprovement(group, actionData);
@@ -40,19 +39,23 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
 
     private ActionResponse checkImprovement(Group group, NoImprovementWebhookActionData actionData) {
         if (isGroupClean(group, actionData)) {
-            return createResponse("clean");
+            return createResponse("clean", null);
         }
 
         GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(1), LocalDate.now());
         if (groupWasImproved(violationsHistoryDiff, actionData)) {
-            return createResponse("improvement");
+            return createResponse("improvement", countDiff(violationsHistoryDiff, actionData));
         } else {
-            return createResponse("no_improvement");
+            return createResponse("no_improvement", countDiff(violationsHistoryDiff, actionData));
         }
     }
 
-    private ActionResponse createResponse(String result) {
-        return new ActionResponse(new HashMap<>(), new HashMap<>(), result);
+    private ActionResponse createResponse(String result, Integer diff) {
+        if (diff == null) {
+            return new ActionResponse(Collections.emptyMap(), result);
+        } else {
+            return new ActionResponse(Collections.singletonMap("diff", String.valueOf(diff)), result);
+        }
     }
 
     private int countDiff(GroupViolationsHistoryDiff violationsHistoryDiff, NoImprovementWebhookActionData actionData) {
@@ -77,7 +80,6 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
 
     private boolean groupWasImproved(GroupViolationsHistoryDiff violationsHistoryDiff, NoImprovementWebhookActionData actionData) {
         int diff = countDiff(violationsHistoryDiff, actionData);
-        log.info("diff: " + diff);
         return diff > 0;
     }
 
