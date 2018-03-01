@@ -8,7 +8,7 @@ import java.util.Map;
 import static pl.consdata.ico.sqcompanion.hook.util.ResolveVariables.resolveVariables;
 
 @Data
-public class JSONWebhookCallback implements WebhookCallback {
+public class JSONWebhookCallback extends WebhookCallback {
     private Map<String, String> body;
 
     @Override

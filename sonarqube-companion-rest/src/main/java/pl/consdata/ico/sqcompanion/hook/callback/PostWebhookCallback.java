@@ -14,7 +14,7 @@ import static pl.consdata.ico.sqcompanion.hook.util.ResolveVariables.resolveVari
 
 @Slf4j
 @Data
-public class PostWebhookCallback implements WebhookCallback {
+public class PostWebhookCallback extends WebhookCallback {
     private Map<String, String> body;
     private String url;
 
