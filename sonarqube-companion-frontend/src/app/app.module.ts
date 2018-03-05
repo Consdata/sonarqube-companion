@@ -31,6 +31,8 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
 import {ProjectComponent} from './project/project-component';
 import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
+import {ExtDispatcherComponent} from './ext/ext.dispatcher.component';
+import {RankingExtComponent} from "./ext/ranking/ranking.ext.component";
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
     GroupProjectsComponent,
     ProjectViolationsComponent,
     ProjectComponent,
-    ProjectOverviewCardsComponent
+    ProjectOverviewCardsComponent,
+    ExtDispatcherComponent,
+    RankingExtComponent
   ],
   imports: [
     BrowserModule,
