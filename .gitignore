@@ -18,3 +18,4 @@ consdata-ca.crt
 *.iml
 .DS_Store
 hs_err_pid*
+yarn-error.log
