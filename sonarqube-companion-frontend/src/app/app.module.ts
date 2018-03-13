@@ -33,6 +33,7 @@ import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
 import {ExtDispatcherComponent} from './ext/ext.dispatcher.component';
 import {RankingExtComponent} from "./ext/ranking/ranking.ext.component";
+import {ExtensionsComponent} from "./ext/extensions.component";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {RankingExtComponent} from "./ext/ranking/ranking.ext.component";
     ProjectComponent,
     ProjectOverviewCardsComponent,
     ExtDispatcherComponent,
-    RankingExtComponent
+    RankingExtComponent,
+    ExtensionsComponent
   ],
   imports: [
     BrowserModule,
