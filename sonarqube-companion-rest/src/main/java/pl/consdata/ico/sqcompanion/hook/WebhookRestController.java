@@ -3,10 +3,7 @@ package pl.consdata.ico.sqcompanion.hook;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
 import pl.consdata.ico.sqcompanion.hook.callback.CallbackResponse;
 import pl.consdata.ico.sqcompanion.hook.callback.WebhookCallback;
@@ -38,6 +35,7 @@ public class WebhookRestController {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/{endpoint}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Map<String, CallbackResponse> get(@PathVariable String endpoint) {
         Webhook endpointWebhook = restWebhooks.stream().filter(webhook -> ((RestWebhookTrigger) webhook.getTrigger()).getMethod().equals("GET")
