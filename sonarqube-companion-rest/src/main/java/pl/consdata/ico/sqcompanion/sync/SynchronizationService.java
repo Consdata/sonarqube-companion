@@ -7,6 +7,7 @@ import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.history.ViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.statistics.StatisticsService;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +24,7 @@ public class SynchronizationService {
     private final RepositoryService repositoryService;
     private final SynchronizationStateService synchronizationStateService;
     private final CacheManager cacheManager;
+    private final StatisticsService statisticsService;
     private final Semaphore semaphore = new Semaphore(1);
 
     public SynchronizationService(
@@ -30,12 +32,14 @@ public class SynchronizationService {
             final ViolationsHistoryService violationsHistoryService,
             final RepositoryService repositoryService,
             final SynchronizationStateService synchronizationStateService,
-            final CacheManager cacheManager) {
+            final CacheManager cacheManager,
+            final StatisticsService statisticsService) {
         this.projectService = projectService;
         this.violationsHistoryService = violationsHistoryService;
         this.repositoryService = repositoryService;
         this.synchronizationStateService = synchronizationStateService;
         this.cacheManager = cacheManager;
+        this.statisticsService = statisticsService;
     }
 
     public void acquireAndStartSynchronization() throws SynchronizationException {
@@ -68,6 +72,8 @@ public class SynchronizationService {
         repositoryService.syncGroups();
         violationsHistoryService.syncProjectsHistory();
         synchronizationStateService.finishSynchronization();
+        statisticsService.syncStatistics();
+
 
         Caches.LIST
                 .stream()
