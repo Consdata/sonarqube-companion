@@ -3,6 +3,7 @@ package pl.consdata.ico.sqcompanion.repository;
 import lombok.Builder;
 import lombok.Data;
 import pl.consdata.ico.sqcompanion.config.GroupEvent;
+import pl.consdata.ico.sqcompanion.statistics.Statistics;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ public class Group {
     private List<Group> groups;
     private List<Project> projects;
     private List<GroupEvent> events;
+    private List<Statistics> statistics;
 
     public void accept(final GroupVisitor visitor) {
         visitor.visit(this);

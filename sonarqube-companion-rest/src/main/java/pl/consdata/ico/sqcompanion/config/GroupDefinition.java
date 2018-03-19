@@ -24,9 +24,7 @@ public class GroupDefinition {
     private List<GroupEvent> events;
     @Singular
     private List<WebhookDefinition> webhooks;
-
-    private Statistics statistics;
-
+    @Singular
     private List<Extension> extensions;
 
     public List<GroupDefinition> getGroups() {
