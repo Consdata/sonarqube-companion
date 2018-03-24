@@ -1,59 +1,44 @@
 package pl.consdata.ico.sqcompanion.users.metrics;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
-@Entity(name = "user_statistics_entries")
-@Table(
-        indexes = {
-                @Index(name = "IDX_USER_STATISTICS_ENTRIES_USER", columnList = "user"),
-        }
-)
 @Data
 @Builder
-@RequiredArgsConstructor
-@AllArgsConstructor
 public class UserStatisticsEntry {
-    @Id
-    private String id;
+    private LocalDate from;
+    private LocalDate to;
     private String user;
     private String projectKey;
-    private Integer blockers;
-    private Integer criticals;
-    private Integer majors;
-    private Integer minors;
-    private Integer infos;
+    private Long blockers;
+    private Long criticals;
+    private Long majors;
+    private Long minors;
+    private Long info;
 
-    public static String combineId(final String serverId, final String projectKey, final String user, final LocalDate date) {
-        return String.format(
-                "%s$%s$%s$%s",
-                serverId,
-                projectKey,
-                user,
-                date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        );
+
+    public static UserStatisticsEntry fromEntity(UserStatisticsEntryEntity entity) {
+        return UserStatisticsEntry.builder()
+                .user(entity.getUser())
+                .from(entity.getBegin())
+                .to(entity.getEnd())
+                .projectKey(entity.getProjectKey())
+                .blockers(entity.getBlockers())
+                .criticals(entity.getCriticals())
+                .majors(entity.getMajors())
+                .minors(entity.getMinors())
+                .info(entity.getInfos()).build();
     }
 
-    public static UserStatisticsEntry empty(String user) {
-        return UserStatisticsEntry
-                .builder()
-                .user(user)
-                .blockers(0)
-                .criticals(0)
-                .majors(0)
-                .minors(0)
-                .infos(0)
-                .build();
+    public static UserStatisticsEntry empty() {
+        return UserStatisticsEntry.builder()
+                .blockers(0L)
+                .criticals(0L)
+                .majors(0L)
+                .minors(0L)
+                .info(0L).build();
     }
-
 }

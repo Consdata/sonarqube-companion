@@ -3,6 +3,7 @@ package pl.consdata.ico.sqcompanion.users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.sonarqube.RemoteSonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQUser;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class UserService {
         this.remoteSonarQubeFacade = remoteSonarQubeFacade;
     }
 
-    public List<String> getActiveUsersEmails(String serverId) {
+    public List<SQUser> getActiveUsersEmails(String serverId) {
         return remoteSonarQubeFacade.getUsers(serverId, false);
     }
 }

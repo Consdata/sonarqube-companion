@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import pl.consdata.ico.sqcompanion.ext.Extension;
-import pl.consdata.ico.sqcompanion.statistics.Statistics;
+import pl.consdata.ico.sqcompanion.statistics.StatisticConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,8 @@ public class GroupDefinition {
     private List<WebhookDefinition> webhooks;
     @Singular
     private List<Extension> extensions;
+    @Singular
+    private List<StatisticConfig> statistics;
 
     public List<GroupDefinition> getGroups() {
         return groups != null ? groups : new ArrayList<>();

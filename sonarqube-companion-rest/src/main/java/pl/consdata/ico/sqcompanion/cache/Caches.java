@@ -19,6 +19,7 @@ public class Caches {
     public static final String PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE = "cache_project_violations_history_diff";
     public static final String PROJECT_USER_STATISTICS_CACHE = "cache_project_user_statistics";
     public static final String PROJECT_USER_STATISTICS_DIFF_CACHE = "cache_project_user_statistics_diff";
+    public static final String USERS_CACHE = "cache_users";
 
 
     public static final List<String> LIST = Arrays.asList(
@@ -32,7 +33,8 @@ public class Caches {
             GROUP_USER_STATISTICS_CACHE,
             PROJECT_USER_STATISTICS_CACHE,
             PROJECT_USER_STATISTICS_DIFF_CACHE,
-            GROUP_USER_STATISTICS_DIFF_CACHE
+            GROUP_USER_STATISTICS_DIFF_CACHE,
+            USERS_CACHE
     );
 
 }
