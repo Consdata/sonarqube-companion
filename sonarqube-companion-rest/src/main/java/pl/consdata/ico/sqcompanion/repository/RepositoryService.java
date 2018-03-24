@@ -78,6 +78,7 @@ public class RepositoryService {
                     .groups(subGroups)
                     .projects(projects)
                     .events(group.getEvents())
+                    .statistics(group.getStatistics())
                     .build();
         } catch (final Exception exception) {
             log.error("Can't sync group details [group={}]", group, exception);
