@@ -5,7 +5,7 @@ import {ProjectSummary} from './project-summary';
 import {ProjectService} from './project-service';
 import {ProjectViolationsHistoryDiff} from '../violations/project-violations-history-diff';
 import {GroupService} from '../group/group-service';
-import {GroupDetails} from 'app/group/group-details';
+import {GroupDetails} from '../group/group-details';
 
 @Component({
   selector: 'sq-project',

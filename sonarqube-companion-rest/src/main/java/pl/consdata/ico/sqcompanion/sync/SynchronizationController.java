@@ -29,21 +29,10 @@ public class SynchronizationController {
             value = "Returns state of current synchronization of projects history"
     )
     public SynchronizationState getState() {
-        SynchronizationStateEntity currentState = synchronizationStateService.getCurrentState();
-
-        return SynchronizationState
-                .builder()
-                .estimatedDuration(synchronizationStateService.estimatedSynchronizationTime())
-                .allTasks(currentState.getAllTasks())
-                .duration(currentState.getDuration())
-                .finishedTasks(currentState.getFinishedTasks())
-                .allTasks(currentState.getAllTasks())
-                .failedTasks(currentState.getFailedTasks())
-                .startTimestamp(currentState.getStartTimestamp())
-                .finishTimestamp(currentState.getFinishTimestamp())
-                .finished(currentState.getFinishTimestamp() != null)
-                .currentServerTimestamp(System.currentTimeMillis())
-                .build();
+        return synchronizationStateService
+                .getCurrentState()
+                .map(this::mapStateEntityToStateDto)
+                .orElse(null);
     }
 
     @RequestMapping(value = "/start", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -57,6 +46,22 @@ public class SynchronizationController {
                 .estimatedDuration(synchronizationStateService.estimatedSynchronizationTime())
                 .finished(false)
                 .startTimestamp(System.currentTimeMillis())
+                .currentServerTimestamp(System.currentTimeMillis())
+                .build();
+    }
+
+    private SynchronizationState mapStateEntityToStateDto(final SynchronizationStateEntity entity) {
+        return SynchronizationState
+                .builder()
+                .estimatedDuration(synchronizationStateService.estimatedSynchronizationTime())
+                .allTasks(entity.getAllTasks())
+                .duration(entity.getDuration())
+                .finishedTasks(entity.getFinishedTasks())
+                .allTasks(entity.getAllTasks())
+                .failedTasks(entity.getFailedTasks())
+                .startTimestamp(entity.getStartTimestamp())
+                .finishTimestamp(entity.getFinishTimestamp())
+                .finished(entity.getFinishTimestamp() != null)
                 .currentServerTimestamp(System.currentTimeMillis())
                 .build();
     }

@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {GroupDetails} from 'app/group/group-details';
 import {Violations} from '../violations/violations';
 import {ProjectSummary} from './project-summary';
 

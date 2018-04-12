@@ -1,5 +1,5 @@
 import {Component, HostBinding} from '@angular/core';
-import {AppStateService} from 'app/app-state-service';
+import {AppStateService} from './app-state-service';
 
 @Component({
   selector: 'sq-sonarqube-companion',
