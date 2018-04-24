@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.users.metrics.UserStatisticsService;
@@ -57,7 +58,7 @@ public class StatisticsController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<UserStatisticsResponse> getAgregatedUsersStatistics(
+    public ResponseEntity<UserStatisticsResponse> getAgregatedUsersStatisticsByProject(
             @PathVariable final String uuid,
             @PathVariable final String projectKey,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
@@ -70,6 +71,26 @@ public class StatisticsController {
             return ResponseEntity.ok(resp);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
+        }
+    }
+
+    @RequestMapping(
+            value = "/users/agregate/{uuid}/{fromDate}/{toDate}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public ResponseEntity<UserStatisticsResponse> getAgregatedUsersStatisticsByGroup(
+            @PathVariable final String uuid,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate
+    ) {
+
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            UserStatisticsResponse resp = UserStatisticsResponse.agregateByUserOf(userStatisticsService.getGroupUserStatisticsDiff(group.get(), fromDate, toDate));
+            return ResponseEntity.ok(resp);
+        } else {
+            throw new SQCompanionException("Can't group: " + uuid);
         }
     }
 }

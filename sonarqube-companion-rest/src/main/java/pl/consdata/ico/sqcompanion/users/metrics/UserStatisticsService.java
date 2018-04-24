@@ -138,7 +138,8 @@ public class UserStatisticsService {
     }
 
     @Cacheable(value = Caches.GROUP_USER_STATISTICS_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
-    public void getGroupUserStatisticsDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
+    public List<UserStatisticsEntryEntity> getGroupUserStatisticsDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
+        return group.getAllProjects().stream().map(project -> getProjectUserStatisticsDiff(project, fromDate, toDate)).flatMap(List::stream).collect(Collectors.toList());
 
     }
 }

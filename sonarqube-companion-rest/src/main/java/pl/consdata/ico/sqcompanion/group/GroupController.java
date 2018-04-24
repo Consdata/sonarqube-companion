@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.widget.Widget;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -60,4 +62,18 @@ public class GroupController {
         }
     }
 
+    @RequestMapping(value = "/{uuid}/widgets", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(
+            value = "Returns group widgets config.",
+            notes = "<p>Returns current widgets config list for group.</p>"
+    )
+    public List<Widget> getGroupWidgetsConfig(@PathVariable String uuid) {
+        Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return group.get().getWidgets();
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
 }
+
