@@ -71,7 +71,7 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
           [uuid]="group.uuid">
         </sq-group-projects>
       </div>
-      <ext-list></ext-list>
+      <widgets [uuid]="group.uuid"></widgets>
     </div>
   `
 })

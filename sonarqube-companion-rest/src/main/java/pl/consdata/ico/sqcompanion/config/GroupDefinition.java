@@ -3,7 +3,7 @@ package pl.consdata.ico.sqcompanion.config;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
-import pl.consdata.ico.sqcompanion.ext.Extension;
+import pl.consdata.ico.sqcompanion.widget.Widget;
 import pl.consdata.ico.sqcompanion.statistics.StatisticConfig;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class GroupDefinition {
     @Singular
     private List<WebhookDefinition> webhooks;
     @Singular
-    private List<Extension> extensions;
+    private List<Widget> widgets;
     @Singular
     private List<StatisticConfig> statistics;
 

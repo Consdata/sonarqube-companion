@@ -4,7 +4,6 @@ import {OverviewComponent} from './overview/overview-component';
 import {NotFoundComponent} from './not-found/not-found-component';
 import {GroupComponent} from './group/group-component';
 import {ProjectComponent} from './project/project-component';
-import {ExtDispatcherComponent} from "./ext/ext.dispatcher.component";
 
 const routes: Routes = [
   {
@@ -35,12 +34,7 @@ const routes: Routes = [
   {
     path: '**',
     component: NotFoundComponent
-  },
-  {
-    path: 'ext/:id',
-    component: ExtDispatcherComponent
   }
-
 ];
 
 @NgModule({

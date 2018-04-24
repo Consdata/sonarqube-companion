@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = UserStatisticConfig.class, name = "USER"),
+        @JsonSubTypes.Type(value = UserStatisticConfig.class, name = "users"),
 })
 public interface StatisticConfig {
 }
