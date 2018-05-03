@@ -107,6 +107,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .status(SonarQubeIssueStatus.valueOf(sqIssue.getStatus()))
                 .severity(SonarQubeIssueSeverity.valueOf(sqIssue.getSeverity()))
                 .updateDate(sqIssue.getUpdateDate())
+                .project(sqIssue.getProject())
                 .build();
     }
 

@@ -2,7 +2,7 @@ import {Injectable, Type} from "@angular/core";
 import {RankingWidgetComponent} from "./ranking/ranking-widget-component";
 
 @Injectable()
-export class WidgetFactory {
+export class WidgetComponentFactory {
   getWidgetClass(type: string): Type<any> {
     if (type == "ranking") {
       return RankingWidgetComponent;

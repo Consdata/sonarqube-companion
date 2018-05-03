@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class UserStatisticConfig implements StatisticConfig {
+    public static final String TYPE = "users";
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate from;

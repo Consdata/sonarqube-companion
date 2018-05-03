@@ -22,23 +22,24 @@ public class UserStatisticsResponse {
         return response;
     }
 
-    public static UserStatisticsResponse agregateByUserOf(List<UserStatisticsEntryEntity> entities) {
+    public static UserStatisticsResponse aggregateByUserOf(List<UserStatisticsEntryEntity> entities) {
         List<UserStatisticsEntry> responseEntries = entities.stream().map(UserStatisticsEntry::fromEntity).collect(Collectors.toList());
-        Map<String, List<UserStatisticsEntry>> groups = responseEntries.stream().collect(Collectors.groupingBy(UserStatisticsEntry::getUser));
-        List<UserStatisticsEntry> output = groups.keySet().stream().map(user -> agregateEntries(groups.get(user))).collect(Collectors.toList());
+        Map<String, List<UserStatisticsEntry>> groups = responseEntries.stream().collect(Collectors.groupingBy(UserStatisticsEntry::getName));
+        List<UserStatisticsEntry> output = groups.keySet().stream().map(user -> aggregateEntries(groups.get(user))).collect(Collectors.toList());
         return UserStatisticsResponse.builder().entries(output).build();
     }
 
-    private static UserStatisticsEntry agregateEntries(List<UserStatisticsEntry> entries) {
+    private static UserStatisticsEntry aggregateEntries(List<UserStatisticsEntry> entries) {
         UserStatisticsEntry output = UserStatisticsEntry.empty();
         for (UserStatisticsEntry entry : entries) {
-            output.setUser(entry.getUser());
+            output.setName(entry.getName());
             output.setProjectKey(entry.getProjectKey());
             output.setBlockers(output.getBlockers() + entry.getBlockers());
             output.setCriticals(output.getCriticals() + entry.getCriticals());
             output.setMajors(output.getMajors() + entry.getMajors());
             output.setMinors(output.getMinors() + entry.getMinors());
-            output.setInfo(output.getInfo() + entry.getInfo());
+            output.setInfos(output.getInfos() + entry.getInfos());
+            output.setDate(entry.getDate());
         }
 
         return output;

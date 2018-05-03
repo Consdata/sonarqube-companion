@@ -3,34 +3,33 @@ package pl.consdata.ico.sqcompanion.users.metrics;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
 
 @Data
 @Builder
 public class UserStatisticsEntry {
-    private LocalDate from;
-    private LocalDate to;
-    private String user;
+    private LocalDate date;
+    private String name;
     private String projectKey;
     private Long blockers;
     private Long criticals;
     private Long majors;
     private Long minors;
-    private Long info;
+    private Long infos;
 
 
     public static UserStatisticsEntry fromEntity(UserStatisticsEntryEntity entity) {
         return UserStatisticsEntry.builder()
-                .user(entity.getUser())
-                .from(entity.getBegin())
-                .to(entity.getEnd())
+                .name(entity.getUser())
+                .date(entity.getDate())
                 .projectKey(entity.getProjectKey())
                 .blockers(entity.getBlockers())
                 .criticals(entity.getCriticals())
                 .majors(entity.getMajors())
                 .minors(entity.getMinors())
-                .info(entity.getInfos()).build();
+                .infos(entity.getInfos()).build();
     }
 
     public static UserStatisticsEntry empty() {
@@ -39,6 +38,6 @@ public class UserStatisticsEntry {
                 .criticals(0L)
                 .majors(0L)
                 .minors(0L)
-                .info(0L).build();
+                .infos(0L).build();
     }
 }

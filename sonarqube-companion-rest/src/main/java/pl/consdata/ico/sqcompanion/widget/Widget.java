@@ -14,5 +14,7 @@ import pl.consdata.ico.sqcompanion.widget.ranking.RankingWidget;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RankingWidget.class, name = "ranking"),
 })
-public interface Widget {
+@Data
+public abstract class Widget {
+    private String title;
 }

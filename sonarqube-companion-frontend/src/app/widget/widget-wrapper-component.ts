@@ -10,8 +10,8 @@ import {
   ViewChild,
   ViewContainerRef
 } from "@angular/core";
-import {WidgetModel} from "./ranking/ranking-model";
-import {WidgetFactory} from "./widget-factory";
+import {WidgetModel} from "./widget-model";
+import {WidgetComponentFactory} from "./widget-compoment-factory";
 import {Widget} from "./widget-service";
 
 @Component({
@@ -22,19 +22,19 @@ import {Widget} from "./widget-service";
 })
 export class WidgetWrapperComponent implements AfterViewInit, OnDestroy, OnInit {
 
-  @ViewChild('widget', {read: ViewContainerRef})
-  private widgetWrapperRef: ViewContainerRef;
-
   @Input()
   public model: WidgetModel;
-
+  @Input()
+  public uuid: string;
+  @ViewChild('widget', {read: ViewContainerRef})
+  private widgetWrapperRef: ViewContainerRef;
   private widgetFactory;
 
   private widgetRef: ComponentRef<Widget<WidgetModel>>;
 
   private widgetClass: Type<any>;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver, private widgetClassFactory: WidgetFactory) {
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private widgetClassFactory: WidgetComponentFactory) {
   }
 
   ngOnInit(): void {
@@ -46,16 +46,23 @@ export class WidgetWrapperComponent implements AfterViewInit, OnDestroy, OnInit 
       this.widgetFactory = this.componentFactoryResolver.resolveComponentFactory(this.widgetClass);
       this.widgetRef = this.widgetWrapperRef.createComponent(this.widgetFactory);
       this.updateWidgetModel();
+      this.widgetRef.changeDetectorRef.detectChanges();
     }
   }
 
   ngOnDestroy(): void {
     if (this.widgetRef) {
+      this.widgetRef.changeDetectorRef.detach();
       this.widgetRef.destroy();
     }
   }
 
+  onEvent(event: any) {
+    this.widgetRef.instance.onEvent(event);
+  }
+
   private updateWidgetModel() {
     this.widgetRef.instance.setModel(this.model);
+    this.widgetRef.instance.setGroupUUID(this.uuid);
   }
 }
