@@ -16,5 +16,6 @@ public class SonarQubeIssue {
     final Date creationDate;
     final Date updateDate;
     final String message;
+    final String project;
 
 }

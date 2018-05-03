@@ -10,9 +10,8 @@ export class UserStatisticsService {
 
   getUserStatistics(uuid: string, fromDate: string, toDate: string): Observable<any[]> {
     return this.http
-      .get(`api/v1/statistics/users/agregate/${uuid}/${fromDate}/${toDate}`)
-      .map(response => response.json()
-      );
+      .get(`api/v1/statistics/users/aggregate/${uuid}/${fromDate}/${toDate}`)
+      .map(response => response.json());
   }
 
 }

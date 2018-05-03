@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +59,9 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 
     @Override
     public List<SonarQubeIssue> getIssues(final String serverId, final IssueFilter issueFilter) {
-        return null;
+        List<String> projectKeys = issueFilter.getProjectKeys();
+        Map<String, InMemoryProject> projects = inMemoryRepository.getProjects();
+        return projects.values().stream().filter(project -> projectKeys.contains(project.getProject().getKey())).flatMap(project -> project.getIssues().stream()).collect(Collectors.toList());
     }
 
     @Override

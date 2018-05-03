@@ -47,15 +47,15 @@ public class StatisticsService {
         Map<String, StatisticConfig> output = new HashMap<>();
         for (StatisticConfig config : configs) {
             if (config instanceof UserStatisticConfig) {
-                output.putIfAbsent("USER", config);
+                output.putIfAbsent(UserStatisticConfig.TYPE, config);
             }
         }
         return output;
     }
 
     private void syncProjectStats(final Project project, Map<String, StatisticConfig> configMap) {
-        if (configMap.containsKey("USER")) {
-            userStatisticsService.syncUserStats(project, (UserStatisticConfig) configMap.get("USER"));
+        if (configMap.containsKey(UserStatisticConfig.TYPE)) {
+            userStatisticsService.syncUserStats(project, (UserStatisticConfig) configMap.get(UserStatisticConfig.TYPE));
         }
     }
 

@@ -3,8 +3,10 @@ import {RankingWidgetComponent} from "./ranking/ranking-widget-component";
 import {WidgetWrapperComponent} from "./widget-wrapper-component";
 import {WidgetService} from "./widget-service";
 import {WidgetModelFactory} from "./widget-model-factory-service";
-import {WidgetFactory} from "./widget-factory";
+import {WidgetComponentFactory} from "./widget-compoment-factory";
 import {UserStatisticsService} from "../statistics/user-statistics-service";
+import {BrowserModule} from "@angular/platform-browser";
+
 
 @NgModule({
   declarations: [
@@ -12,9 +14,14 @@ import {UserStatisticsService} from "../statistics/user-statistics-service";
     WidgetWrapperComponent
   ],
   entryComponents: [RankingWidgetComponent],
-  exports: [WidgetWrapperComponent],
+  imports: [
+    BrowserModule
+  ],
+  exports: [
+    WidgetWrapperComponent
+  ],
   providers: [
-    WidgetFactory,
+    WidgetComponentFactory,
     WidgetModelFactory,
     WidgetService,
     UserStatisticsService

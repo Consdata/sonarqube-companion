@@ -13,95 +13,71 @@ import pl.consdata.ico.sqcompanion.statistics.UserStatisticConfig;
 import pl.consdata.ico.sqcompanion.statistics.UserStatisticsRepository;
 import pl.consdata.ico.sqcompanion.users.UserService;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class UserStatisticsService {
-    private RepositoryService repositoryService;
     private RemoteSonarQubeFacade remoteSonarQubeFacade;
-    private UserService userService;
     private UserStatisticsRepository userStatisticsRepository;
 
-    public UserStatisticsService(RepositoryService repositoryService,
-                                 RemoteSonarQubeFacade remoteSonarQubeFacade,
-                                 UserService userService,
+    public UserStatisticsService(RemoteSonarQubeFacade remoteSonarQubeFacade,
                                  UserStatisticsRepository userStatisticsRepository) {
-        this.repositoryService = repositoryService;
         this.remoteSonarQubeFacade = remoteSonarQubeFacade;
-        this.userService = userService;
         this.userStatisticsRepository = userStatisticsRepository;
     }
+
 
     private List<SQUser> getUsersForProject(final Project project) {
         return remoteSonarQubeFacade.getUsers(project.getServerId(), false);
     }
 
-    private List<SonarQubeIssue> getIssuesForUsers(final List<SQUser> users, final Project project) {
+    private List<SonarQubeIssue> getIssuesForUsers(final List<SQUser> users, final Project project, final UserStatisticConfig config) {
         IssueFilter.IssueFilterBuilder builder = IssueFilter.builder();
         users.forEach(user -> builder.author(user.getEmail()));
-        return remoteSonarQubeFacade.getIssues(project.getServerId(), builder.projectKey(project.getKey()).status(SonarQubeIssueStatus.OPEN.name()).build());
+        builder.createdAfter(config.getFrom().format(DateTimeFormatter.ISO_DATE));
+        return remoteSonarQubeFacade.getIssues(project.getServerId(), builder.projectKey(project.getKey()).resolved(false).build());
 
     }
 
     private void syncUsersStatsPerProject(final Project project, List<SQUser> users, UserStatisticConfig config) {
-        List<SonarQubeIssue> issues = getIssuesForUsers(users, project);
+        List<SonarQubeIssue> issues = getIssuesForUsers(users, project, config);
         Map<String, List<SonarQubeIssue>> issueMap = mapIssuesToAuthorIssueMap(issues, users);
-        Set<UserStatisticsEntryEntity> entries = users.stream().map(user -> getUserStatisticsEntriesPerDay(project, user, issueMap.get(user.getEmail()), config.getFrom())).flatMap(Set::stream).collect(Collectors.toSet());
+        Set<UserStatisticsEntryEntity> entries = new HashSet<>();
+        users.forEach(user -> entries.addAll(groupByDate(user, issueMap.get(user.getEmail()), project)));
+        log.info("Storing users statistics for project [project={}]", project);
         userStatisticsRepository.saveAll(entries);
     }
 
-    private Set<UserStatisticsEntryEntity> getUserStatisticsEntriesPerDay(final Project project, final SQUser user, final List<SonarQubeIssue> issues, LocalDate from) {
-        LocalDate currentDate = from;
-        Set<UserStatisticsEntryEntity> entries = new HashSet<>();
-        while (currentDate.isBefore(LocalDate.now().plusDays(1))) {
-            List<SonarQubeIssue> dailyIssues = getIssuesBetween(issues, currentDate, currentDate.plusDays(1));
-            entries.add(createUserStatisticsEntry(project, user, dailyIssues, currentDate, currentDate.plusDays(1)));
-            currentDate = currentDate.plusDays(1);
-        }
 
-        return entries;
+    private Set<UserStatisticsEntryEntity> groupByDate(SQUser user, List<SonarQubeIssue> issues, Project project) {
+        Map<String, List<SonarQubeIssue>> issuesByDate = issues.stream().collect(Collectors.groupingBy(issue -> new SimpleDateFormat("yyyy-MM-dd").format(issue.getCreationDate())));
+        return issuesByDate.entrySet().stream().map(entry -> createUserStatisticsEntry(project, user, entry.getValue(), entry.getKey())).collect(Collectors.toSet());
+
     }
 
-    private List<SonarQubeIssue> getIssuesBetween(final List<SonarQubeIssue> issues, final LocalDate from, final LocalDate to) {
-        return issues.stream()
-                .filter(issue -> isAfterOrSame(issue.getCreationDate(), from))
-                .filter(issue -> asLocalDate(issue.getCreationDate()).isBefore(to)).collect(Collectors.toList());
-    }
-
-    private UserStatisticsEntryEntity createUserStatisticsEntry(final Project project, final SQUser user, final List<SonarQubeIssue> issues, LocalDate from, LocalDate to) {
-        String id = UserStatisticsEntryEntity.combineId(project.getServerId(), project.getKey(), user.getEmail(), from, to);
+    private UserStatisticsEntryEntity createUserStatisticsEntry(final Project project, final SQUser user, final List<SonarQubeIssue> issues, String date) {
+        String id = UserStatisticsEntryEntity.combineId(project.getServerId(), project.getKey(), user.getEmail(), date);
         return UserStatisticsEntryEntity.builder()
                 .id(id)
                 .user(user.getEmail())
                 .projectKey(project.getKey())
                 .serverId(project.getServerId())
-                .begin(from)
-                .end(to)
-                .blockers(countBySeverity(issues, SonarQubeIssueSeverity.BLOCKER, from, to))
-                .criticals(countBySeverity(issues, SonarQubeIssueSeverity.CRITICAL, from, to))
-                .majors(countBySeverity(issues, SonarQubeIssueSeverity.MAJOR, from, to))
-                .minors(countBySeverity(issues, SonarQubeIssueSeverity.MINOR, from, to))
-                .infos(countBySeverity(issues, SonarQubeIssueSeverity.INFO, from, to))
+                .date(LocalDate.parse(date, DateTimeFormatter.ISO_DATE))
+                .blockers(countBySeverity(issues, SonarQubeIssueSeverity.BLOCKER))
+                .criticals(countBySeverity(issues, SonarQubeIssueSeverity.CRITICAL))
+                .majors(countBySeverity(issues, SonarQubeIssueSeverity.MAJOR))
+                .minors(countBySeverity(issues, SonarQubeIssueSeverity.MINOR))
+                .infos(countBySeverity(issues, SonarQubeIssueSeverity.INFO))
                 .build();
     }
 
-    private long countBySeverity(List<SonarQubeIssue> issues, SonarQubeIssueSeverity severity, LocalDate from, LocalDate to) {
-        return issues.stream().filter(issue -> issue.getSeverity().equals(severity))
-                .filter(issue -> isAfterOrSame(issue.getCreationDate(), from))
-                .filter(issue -> asLocalDate(issue.getCreationDate()).isBefore(to)).count();
-    }
-
-    private LocalDate asLocalDate(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    private boolean isAfterOrSame(Date date, LocalDate limit) {
-        LocalDate localDate = asLocalDate(date);
-        return localDate.isAfter(limit) || localDate.isEqual(limit);
+    private long countBySeverity(List<SonarQubeIssue> issues, SonarQubeIssueSeverity severity) {
+        return issues.stream().filter(issue -> issue.getSeverity().equals(severity)).count();
     }
 
     private Map<String, List<SonarQubeIssue>> mapIssuesToAuthorIssueMap(List<SonarQubeIssue> issues, List<SQUser> users) {
@@ -122,24 +98,13 @@ public class UserStatisticsService {
         return getUsersForProject(project);
     }
 
-    @Cacheable(value = Caches.PROJECT_USER_STATISTICS_CACHE, sync = true, key = "#project.getId() + #daysLimit")
-    public void getProjectUserStatistics(final Project project, Optional<Integer> daysLimit) {
-
+    @Cacheable(value = Caches.PROJECT_USER_STATISTICS_CACHE, sync = true, key = "#project.getId() + #fromDate + #toDate")
+    public List<UserStatisticsEntryEntity> getProjectUserStatistics(final Project project, final LocalDate fromDate, final LocalDate toDate) {
+        return userStatisticsRepository.findAllByProjectKeyAndDateIsBetween(project.getKey(), fromDate, toDate);
     }
 
-    @Cacheable(value = Caches.PROJECT_USER_STATISTICS_DIFF_CACHE, sync = true, key = "#project.getId() + #fromDate + #toDate")
-    public List<UserStatisticsEntryEntity> getProjectUserStatisticsDiff(final Project project, final LocalDate fromDate, final LocalDate toDate) {
-        return userStatisticsRepository.findAllByProjectKeyAndBeginIsBetweenAndEndIsBetween(project.getKey(), fromDate, toDate, fromDate, toDate);
-    }
-
-    @Cacheable(value = Caches.GROUP_USER_STATISTICS_CACHE, sync = true, key = "#group.uuid + #daysLimit")
-    public void getGroupUserStatistics(final Group group, Optional<Integer> daysLimit) {
-
-    }
-
-    @Cacheable(value = Caches.GROUP_USER_STATISTICS_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
-    public List<UserStatisticsEntryEntity> getGroupUserStatisticsDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
-        return group.getAllProjects().stream().map(project -> getProjectUserStatisticsDiff(project, fromDate, toDate)).flatMap(List::stream).collect(Collectors.toList());
-
+    @Cacheable(value = Caches.GROUP_USER_STATISTICS_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
+    public List<UserStatisticsEntryEntity> getGroupUserStatistics(final Group group, final LocalDate fromDate, final LocalDate toDate) {
+        return group.getAllProjects().stream().map(project -> getProjectUserStatistics(project, fromDate, toDate)).flatMap(List::stream).collect(Collectors.toList());
     }
 }

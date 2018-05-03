@@ -14,11 +14,9 @@ public class Caches {
     public static final String GROUP_VIOLATIONS_HISTORY_CACHE = "cache_group_violations_history";
     public static final String GROUP_VIOLATIONS_HISTORY_DIFF_CACHE = "cache_group_violations_history_diff";
     public static final String GROUP_USER_STATISTICS_CACHE = "cache_group_user_statistics";
-    public static final String GROUP_USER_STATISTICS_DIFF_CACHE = "cache_group_user_statistics_diff";
     public static final String PROJECT_VIOLATIONS_HISTORY_CACHE = "cache_project_violations_history";
     public static final String PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE = "cache_project_violations_history_diff";
     public static final String PROJECT_USER_STATISTICS_CACHE = "cache_project_user_statistics";
-    public static final String PROJECT_USER_STATISTICS_DIFF_CACHE = "cache_project_user_statistics_diff";
     public static final String USERS_CACHE = "cache_users";
 
 
@@ -32,8 +30,6 @@ public class Caches {
             PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE,
             GROUP_USER_STATISTICS_CACHE,
             PROJECT_USER_STATISTICS_CACHE,
-            PROJECT_USER_STATISTICS_DIFF_CACHE,
-            GROUP_USER_STATISTICS_DIFF_CACHE,
             USERS_CACHE
     );
 

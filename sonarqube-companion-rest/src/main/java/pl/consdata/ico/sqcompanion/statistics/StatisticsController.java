@@ -45,7 +45,7 @@ public class StatisticsController {
 
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent()) {
-            UserStatisticsResponse resp = UserStatisticsResponse.of(userStatisticsService.getProjectUserStatisticsDiff(project.get(), fromDate, toDate));
+            UserStatisticsResponse resp = UserStatisticsResponse.of(userStatisticsService.getProjectUserStatistics(project.get(), fromDate, toDate));
             return ResponseEntity.ok(resp);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
@@ -54,11 +54,11 @@ public class StatisticsController {
 
 
     @RequestMapping(
-            value = "/users/agregate/{uuid}/{projectKey:.+}/{fromDate}/{toDate}",
+            value = "/users/aggregate/{uuid}/{projectKey:.+}/{fromDate}/{toDate}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<UserStatisticsResponse> getAgregatedUsersStatisticsByProject(
+    public ResponseEntity<UserStatisticsResponse> getAggregatedUsersStatisticsByProject(
             @PathVariable final String uuid,
             @PathVariable final String projectKey,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
@@ -67,7 +67,7 @@ public class StatisticsController {
 
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent()) {
-            UserStatisticsResponse resp = UserStatisticsResponse.agregateByUserOf(userStatisticsService.getProjectUserStatisticsDiff(project.get(), fromDate, toDate));
+            UserStatisticsResponse resp = UserStatisticsResponse.aggregateByUserOf(userStatisticsService.getProjectUserStatistics(project.get(), fromDate, toDate));
             return ResponseEntity.ok(resp);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
@@ -75,11 +75,11 @@ public class StatisticsController {
     }
 
     @RequestMapping(
-            value = "/users/agregate/{uuid}/{fromDate}/{toDate}",
+            value = "/users/aggregate/{uuid}/{fromDate}/{toDate}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<UserStatisticsResponse> getAgregatedUsersStatisticsByGroup(
+    public ResponseEntity<UserStatisticsResponse> getAggregatedUsersStatisticsByGroup(
             @PathVariable final String uuid,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate
@@ -87,10 +87,10 @@ public class StatisticsController {
 
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            UserStatisticsResponse resp = UserStatisticsResponse.agregateByUserOf(userStatisticsService.getGroupUserStatisticsDiff(group.get(), fromDate, toDate));
+            UserStatisticsResponse resp = UserStatisticsResponse.aggregateByUserOf(userStatisticsService.getGroupUserStatistics(group.get(), fromDate, toDate));
             return ResponseEntity.ok(resp);
         } else {
-            throw new SQCompanionException("Can't group: " + uuid);
+            throw new SQCompanionException("Can't find group: " + uuid);
         }
     }
 }

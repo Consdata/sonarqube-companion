@@ -14,33 +14,40 @@ import static org.apache.commons.lang.StringUtils.EMPTY;
 @Data
 @Builder
 public class IssueFilter {
+
+    private static final String AUTHORS = "authors";
+    private static final String RESOLVED = "resolved";
+    private static final String COMPONENT_KEYS = "componentKeys";
+    private static final String CREATED_AFTER = "createdAfter";
+
+
     @Singular
     private List<String> authors;
-    @Singular
-    private List<String> statuses;
+    private boolean resolved;
     @Singular
     private List<String> projectKeys;
     private String createdAfter;
 
     public String query() {
-        return "?"
-                + addCondition("authors", authors)
-                + addCondition("statuses", statuses)
-                + addCondition("projectKeys", projectKeys)
-                + addCondition("createdAfter", createdAfter);
+        return addCondition(AUTHORS, authors, true)
+                + addCondition(RESOLVED, String.valueOf(resolved), false)
+                + addCondition(COMPONENT_KEYS, projectKeys, false)
+                + addCondition(CREATED_AFTER, createdAfter, false);
     }
 
-    private String addCondition(String name, Collection<String> values) {
+    private String addCondition(String name, Collection<String> values, boolean first) {
+        String prefix = first ? "?" : "&";
         if (!values.isEmpty()) {
-            return "&" + name + "=" + String.join(",", values);
+            return prefix + name + "=" + String.join(",", values);
         } else {
             return EMPTY;
         }
     }
 
-    private String addCondition(String name, String value) {
+    private String addCondition(String name, String value, boolean first) {
+        String prefix = first ? "?" : "&";
         if (!StringUtils.isBlank(value)) {
-            return "&" + name + "=" + value;
+            return prefix + name + "=" + value;
         } else {
             return EMPTY;
         }
