@@ -17,7 +17,7 @@ import {WidgetWrapperComponent} from "./widget-wrapper-component";
 export class WidgetsComponent implements AfterViewInit {
 
   @Input()
-  private uuid: string;
+  uuid: string;
 
   @ViewChildren('widget')
   private widgets: QueryList<WidgetWrapperComponent>;

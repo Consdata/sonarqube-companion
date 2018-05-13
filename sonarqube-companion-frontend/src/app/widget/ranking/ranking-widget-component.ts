@@ -80,12 +80,14 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
   }
 
   sortEntries() {
-    let self = this;
-    this.entries.sort((a, b) => {
+    this.entries.sort(this.compareEntries.bind(this));
+  }
+
+  compareEntries = function(a, b){
       let result = 0;
-      self.model.sort.forEach((value, index, array) => {
+      this.model.sort.forEach((value, index, array) => {
         const asc = value.startsWith("+") ? -1 : 1;
-        const key = value.slice(1)
+        const key = value.slice(1);
         if (result == 0) {
           if (a[key] > b[key]) {
             result = -1 * asc;
@@ -95,8 +97,7 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
         }
       });
       return result;
-    });
-  }
+  };
 
   resolveVariables(base: string): string {
     return base.replace(/\${([^{]*)}/g,
