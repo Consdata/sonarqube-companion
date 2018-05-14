@@ -3,6 +3,7 @@ import {Widget} from "../widget-service";
 import {RankingEntry, RankingModel} from "./ranking-model";
 import {UserStatisticsService} from "../../statistics/user-statistics-service";
 import {Observable} from "rxjs/Observable";
+import {isNullOrUndefined} from "util";
 
 
 @Component({
@@ -46,6 +47,21 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
 
   entries: RankingEntry[];
   title: string;
+  compareEntries = function (a, b) {
+    let result = 0;
+    this.model.sort.forEach((value, index, array) => {
+      const asc = value.startsWith("+") ? -1 : 1;
+      const key = value.slice(1);
+      if (result == 0) {
+        if (a[key] > b[key]) {
+          result = -1 * asc;
+        } else if (a[key] < b[key]) {
+          result = 1 * asc;
+        }
+      }
+    });
+    return result;
+  };
 
   constructor(private userStatistics: UserStatisticsService) {
     super();
@@ -56,13 +72,14 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
   }
 
   getSonarLink(name: string): string {
-    return this.model.server +
-      '/issues?authors=' + name +
-      '&createdAfter=' + this.model.from +
-      '&createdBefore=' + this.model.to +
-      '&statuses=OPEN';
+    if (!isNullOrUndefined(this.model.server)) {
+      return this.model.server +
+        '/issues?authors=' + name +
+        '&createdAfter=' + this.model.from +
+        '&createdBefore=' + this.model.to +
+        '&statuses=OPEN';
+    }
   }
-
 
   toRankingEntries(data: any) {
     this.entries = [];
@@ -75,35 +92,23 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
   }
 
   shouldIncludeEntry(entry: any) {
-    return (!!this.model.include && this.model.include.length == 0) || this.model.include.includes(entry.name)
-      && (!!this.model.exclude && this.model.exclude.length == 0) || !this.model.exclude.includes(entry.name);
+    return (isNullOrUndefined(this.model.include) || this.model.include.length == 0 || this.model.include.includes(entry.name))
+      && (isNullOrUndefined(this.model.exclude) || this.model.exclude.length == 0 || !this.model.exclude.includes(entry.name));
   }
 
   sortEntries() {
     this.entries.sort(this.compareEntries.bind(this));
   }
 
-  compareEntries = function(a, b){
-      let result = 0;
-      this.model.sort.forEach((value, index, array) => {
-        const asc = value.startsWith("+") ? -1 : 1;
-        const key = value.slice(1);
-        if (result == 0) {
-          if (a[key] > b[key]) {
-            result = -1 * asc;
-          } else if (a[key] < b[key]) {
-            result = 1 * asc;
-          }
-        }
-      });
-      return result;
-  };
-
   resolveVariables(base: string): string {
-    return base.replace(/\${([^{]*)}/g,
-      (match: string, mapping: string): string => {
-        return this.model[mapping];
-      });
+    if (!isNullOrUndefined(base)) {
+      return base.replace(/\${([^{]*)}/g,
+        (match: string, mapping: string): string => {
+          return this.model[mapping];
+        });
+    } else {
+      return "";
+    }
   }
 
   onEvent(event: any) {
