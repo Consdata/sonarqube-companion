@@ -6,12 +6,13 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
-import pl.consdata.ico.sqcompanion.repository.RepositoryService;
-import pl.consdata.ico.sqcompanion.sonarqube.*;
+import pl.consdata.ico.sqcompanion.sonarqube.IssueFilter;
+import pl.consdata.ico.sqcompanion.sonarqube.RemoteSonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeIssue;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeIssueSeverity;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQUser;
 import pl.consdata.ico.sqcompanion.statistics.UserStatisticConfig;
 import pl.consdata.ico.sqcompanion.statistics.UserStatisticsRepository;
-import pl.consdata.ico.sqcompanion.users.UserService;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
