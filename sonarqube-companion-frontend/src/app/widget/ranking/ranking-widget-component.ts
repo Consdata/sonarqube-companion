@@ -48,10 +48,6 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
   entries: RankingEntry[];
   title: string;
 
-  constructor(private userStatistics: UserStatisticsService) {
-    super();
-  }
-
   compareEntries = function (a, b) {
     let result = 0;
     this.model.sort.forEach((value, index, array) => {
@@ -68,6 +64,10 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
     return result;
   };
 
+  constructor(private userStatistics: UserStatisticsService) {
+    super();
+  }
+
   getStats(from: string, to: string): Observable<any[]> {
     return this.userStatistics.getUserStatistics(this.model.uuid, from, to);
   }
@@ -78,8 +78,13 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
         '/issues?authors=' + name +
         '&createdAfter=' + this.model.from +
         '&createdBefore=' + this.model.to +
+        '&severities=' + this.getSeveritySqFilter(this.model.severity) +
         '&statuses=OPEN';
     }
+  }
+
+  getSeveritySqFilter(severities: string[]) {
+    return severities.join(',').toUpperCase().replace(/S/g, '');
   }
 
   toRankingEntries(data: any) {
