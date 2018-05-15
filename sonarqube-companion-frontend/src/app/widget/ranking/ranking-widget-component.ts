@@ -47,12 +47,17 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
 
   entries: RankingEntry[];
   title: string;
+
+  constructor(private userStatistics: UserStatisticsService) {
+    super();
+  }
+
   compareEntries = function (a, b) {
     let result = 0;
     this.model.sort.forEach((value, index, array) => {
       const asc = value.startsWith("+") ? -1 : 1;
       const key = value.slice(1);
-      if (result == 0) {
+      if (result === 0) {
         if (a[key] > b[key]) {
           result = -1 * asc;
         } else if (a[key] < b[key]) {
@@ -63,12 +68,8 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
     return result;
   };
 
-  constructor(private userStatistics: UserStatisticsService) {
-    super();
-  }
-
   getStats(from: string, to: string): Observable<any[]> {
-    return this.userStatistics.getUserStatistics(this.uuid, from, to);
+    return this.userStatistics.getUserStatistics(this.model.uuid, from, to);
   }
 
   getSonarLink(name: string): string {
@@ -92,8 +93,8 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
   }
 
   shouldIncludeEntry(entry: any) {
-    return (isNullOrUndefined(this.model.include) || this.model.include.length == 0 || this.model.include.includes(entry.name))
-      && (isNullOrUndefined(this.model.exclude) || this.model.exclude.length == 0 || !this.model.exclude.includes(entry.name));
+    return (isNullOrUndefined(this.model.include) || this.model.include.length === 0 || this.model.include.includes(entry.name))
+      && (isNullOrUndefined(this.model.exclude) || this.model.exclude.length === 0 || !this.model.exclude.includes(entry.name));
   }
 
   sortEntries() {

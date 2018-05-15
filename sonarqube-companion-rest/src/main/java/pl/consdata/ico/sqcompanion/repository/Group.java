@@ -9,8 +9,6 @@ import pl.consdata.ico.sqcompanion.widget.Widget;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-
 @Data
 @Builder
 public class Group {
@@ -66,11 +64,11 @@ public class Group {
     }
 
     private List<StatisticConfig> getStatistics(String type) {
-        return Optional.ofNullable(getStatistics()).orElse(emptyList()).stream().filter(config -> config.getType().equals(type)).collect(Collectors.toList());
+        return getStatistics().stream().filter(config -> config.getType().equals(type)).collect(Collectors.toList());
     }
 
     private List<Widget> getWidgets(Class<?> widgetClass) {
-        return Optional.ofNullable(getWidgets()).orElse(emptyList()).stream().filter(widgetClass::isInstance).collect(Collectors.toList());
+        return getWidgets().stream().filter(widgetClass::isInstance).collect(Collectors.toList());
     }
 
 

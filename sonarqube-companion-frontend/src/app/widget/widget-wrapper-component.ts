@@ -24,8 +24,6 @@ export class WidgetWrapperComponent implements AfterViewInit, OnDestroy, OnInit 
 
   @Input()
   public model: WidgetModel;
-  @Input()
-  public uuid: string;
   @ViewChild('widget', {read: ViewContainerRef})
   private widgetWrapperRef: ViewContainerRef;
   private widgetFactory;
@@ -63,6 +61,5 @@ export class WidgetWrapperComponent implements AfterViewInit, OnDestroy, OnInit 
 
   private updateWidgetModel() {
     this.widgetRef.instance.setModel(this.model);
-    this.widgetRef.instance.setGroupUUID(this.uuid);
   }
 }

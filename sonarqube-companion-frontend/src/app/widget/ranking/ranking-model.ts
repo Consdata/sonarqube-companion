@@ -25,7 +25,7 @@ export class RankingModel extends WidgetModel {
     this.exclude = data.exclude;
     this.server = data.server;
     this.sort = data.sort;
-    this.customFromDateEnabled = !this.from || this.from.match(this.fromDateRegex).length == 0;
+    this.customFromDateEnabled = !this.from || this.from.match(this.fromDateRegex).length === 0;
   }
 }
 

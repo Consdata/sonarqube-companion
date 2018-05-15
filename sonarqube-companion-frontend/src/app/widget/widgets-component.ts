@@ -9,7 +9,7 @@ import {WidgetWrapperComponent} from "./widget-wrapper-component";
   template: `
     <div id="widgets">
       <div *ngFor="let model of models" class="widget-wrapper">
-        <widget-wrapper [uuid]="uuid" [model]="model" #widget></widget-wrapper>
+        <widget-wrapper [model]="model" #widget></widget-wrapper>
       </div>
     </div>`
 
@@ -18,10 +18,9 @@ export class WidgetsComponent implements AfterViewInit {
 
   @Input()
   uuid: string;
-
+  models: WidgetModel[];
   @ViewChildren('widget')
   private widgets: QueryList<WidgetWrapperComponent>;
-  models: WidgetModel[];
 
   constructor(private widgetService: WidgetService) {
   }

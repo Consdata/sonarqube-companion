@@ -26,5 +26,4 @@ public class ImplicitStatisticsService {
                 .getRootGroup().getAllWidgetsByType(UserStatisticsDependency.class).stream().map(widget -> new UserStatisticConfig(LocalDate.parse(((UserStatisticsDependency) widget).getFrom(), ISO_DATE))).
                         collect(Collectors.toList());
     }
-
 }
