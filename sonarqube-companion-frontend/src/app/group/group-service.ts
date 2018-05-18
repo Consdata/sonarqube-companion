@@ -15,4 +15,11 @@ export class GroupService {
       .map(response => new GroupDetails(response.json()));
   }
 
+  getGroupWidgets(uuid?: string): Observable<any[]> {
+    return this.http
+      .get(`api/v1/groups${uuid ? '/' + uuid : ''}/widgets`)
+      .map(response => response.json()
+      );
+  }
+
 }

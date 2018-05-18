@@ -3,8 +3,11 @@ package pl.consdata.ico.sqcompanion.repository;
 import lombok.Builder;
 import lombok.Data;
 import pl.consdata.ico.sqcompanion.config.GroupEvent;
+import pl.consdata.ico.sqcompanion.statistics.StatisticConfig;
+import pl.consdata.ico.sqcompanion.widget.Widget;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -15,6 +18,8 @@ public class Group {
     private List<Group> groups;
     private List<Project> projects;
     private List<GroupEvent> events;
+    private List<StatisticConfig> statistics;
+    private List<Widget> widgets;
 
     public void accept(final GroupVisitor visitor) {
         visitor.visit(this);
@@ -26,6 +31,19 @@ public class Group {
         accept(gr -> result.addAll(gr.getProjects()));
         return new ArrayList<>(result);
     }
+
+    public List<StatisticConfig> getAllStatisticConfigsByType(String type) {
+        final List<StatisticConfig> result = new ArrayList<>();
+        accept(gr -> result.addAll(gr.getStatistics(type)));
+        return result;
+    }
+
+    public List<Widget> getAllWidgetsByType(Class<?> dependecy) {
+        final List<Widget> result = new ArrayList<>();
+        accept(gr -> result.addAll(gr.getWidgets(dependecy)));
+        return result;
+    }
+
 
     public List<Group> getAllGroups() {
         final List<Group> result = new ArrayList<>();
@@ -44,6 +62,15 @@ public class Group {
     public List<Project> getProjects() {
         return projects != null ? projects : new ArrayList<>();
     }
+
+    private List<StatisticConfig> getStatistics(String type) {
+        return getStatistics().stream().filter(config -> config.getType().equals(type)).collect(Collectors.toList());
+    }
+
+    private List<Widget> getWidgets(Class<?> widgetClass) {
+        return getWidgets().stream().filter(widgetClass::isInstance).collect(Collectors.toList());
+    }
+
 
     @FunctionalInterface
     public interface GroupVisitor {

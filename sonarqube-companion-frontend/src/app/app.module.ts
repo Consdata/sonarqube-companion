@@ -31,6 +31,8 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
 import {ProjectComponent} from './project/project-component';
 import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
+import {WidgetModule} from "./widget/widget-module";
+import {WidgetsComponent} from "./widget/widgets-component";
 
 @NgModule({
   declarations: [
@@ -52,13 +54,15 @@ import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
     GroupProjectsComponent,
     ProjectViolationsComponent,
     ProjectComponent,
-    ProjectOverviewCardsComponent
+    ProjectOverviewCardsComponent,
+    WidgetsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpModule,
-    AmChartsModule
+    AmChartsModule,
+    WidgetModule
   ],
   providers: [
     OverviewService,
