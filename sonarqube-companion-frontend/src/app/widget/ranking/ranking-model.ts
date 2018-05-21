@@ -11,8 +11,7 @@ export class RankingModel extends WidgetModel {
   to: string;
   server: string;
   sort: string[];
-  customFromDateEnabled: boolean;
-  readonly fromDateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+  dynamicRange: boolean;
 
   constructor(data: any) {
     super(data);
@@ -25,7 +24,7 @@ export class RankingModel extends WidgetModel {
     this.exclude = data.exclude;
     this.server = data.server;
     this.sort = data.sort;
-    this.customFromDateEnabled = !this.from || this.from.match(this.fromDateRegex).length === 0;
+    this.dynamicRange = data.dynamicRange;
   }
 }
 
