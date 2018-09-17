@@ -4,9 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
-import pl.consdata.ico.sqcompanion.history.ViolationsHistoryService;
+import pl.consdata.ico.sqcompanion.users.UsersService;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.violation.user.UserProjectViolationsHistoryService;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +21,9 @@ import java.util.concurrent.TimeUnit;
 public class SynchronizationService {
 
     private final ProjectService projectService;
-    private final ViolationsHistoryService violationsHistoryService;
+    private final ProjectViolationsHistoryService projectViolationsHistoryService;
+    private final UserProjectViolationsHistoryService userProjectViolationsHistoryService;
+    private final UsersService usersService;
     private final RepositoryService repositoryService;
     private final SynchronizationStateService synchronizationStateService;
     private final CacheManager cacheManager;
@@ -27,12 +31,16 @@ public class SynchronizationService {
 
     public SynchronizationService(
             final ProjectService projectService,
-            final ViolationsHistoryService violationsHistoryService,
+            final ProjectViolationsHistoryService projectViolationsHistoryService,
+            final UserProjectViolationsHistoryService userProjectViolationsHistoryService,
+            final UsersService usersService,
             final RepositoryService repositoryService,
             final SynchronizationStateService synchronizationStateService,
             final CacheManager cacheManager) {
         this.projectService = projectService;
-        this.violationsHistoryService = violationsHistoryService;
+        this.projectViolationsHistoryService = projectViolationsHistoryService;
+        this.userProjectViolationsHistoryService = userProjectViolationsHistoryService;
+        this.usersService = usersService;
         this.repositoryService = repositoryService;
         this.synchronizationStateService = synchronizationStateService;
         this.cacheManager = cacheManager;
@@ -66,7 +74,10 @@ public class SynchronizationService {
         synchronizationStateService.initSynchronization();
         projectService.syncProjects();
         repositoryService.syncGroups();
-        violationsHistoryService.syncProjectsHistory();
+        usersService.sync();
+        projectViolationsHistoryService.syncProjectsHistory();
+        userProjectViolationsHistoryService.sync();
+
         synchronizationStateService.finishSynchronization();
 
         Caches.LIST

@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,5 +16,8 @@ public class InMemoryRepository {
 
     @Singular
     private Map<String, InMemoryProject> projects;
+
+    @Singular
+    private Map<String, SonarQubeUser> users;
 
 }

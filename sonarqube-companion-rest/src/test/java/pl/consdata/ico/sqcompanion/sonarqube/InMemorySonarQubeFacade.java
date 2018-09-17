@@ -39,6 +39,7 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 								.measures(new ArrayList<>())
 								.build()
 				)
+				.user(TestAppConfig.Users.USER_1, SonarQubeUser.builder().userId(TestAppConfig.Users.USER_1).build())
 				.build();
 	}
 
@@ -62,6 +63,11 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
 				.getProjects()
 				.get(projectKey)
 				.getIssues();
+	}
+
+	@Override
+	public List<SonarQubeUser> users(String serverId) {
+		return new ArrayList<>(inMemoryRepository.getUsers().values());
 	}
 
 	@Override

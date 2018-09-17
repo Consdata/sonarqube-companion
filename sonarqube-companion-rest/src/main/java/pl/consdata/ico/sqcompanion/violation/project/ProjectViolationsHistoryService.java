@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.history;
+package pl.consdata.ico.sqcompanion.violation.project;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,6 +12,9 @@ import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeMeasure;
 import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
+import pl.consdata.ico.sqcompanion.violation.ViolationHistoryEntry;
+import pl.consdata.ico.sqcompanion.violation.Violations;
+import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,13 +30,13 @@ import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
-public class ViolationsHistoryService {
+public class ProjectViolationsHistoryService {
 
     private final RepositoryService repositoryService;
     private final SonarQubeFacade sonarQubeFacade;
     private final ProjectHistoryRepository projectHistoryRepository;
 
-    public ViolationsHistoryService(
+    public ProjectViolationsHistoryService(
             final RepositoryService repositoryService,
             final SonarQubeFacade sonarQubeFacade,
             final ProjectHistoryRepository projectHistoryRepository) {

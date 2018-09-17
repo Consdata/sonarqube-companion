@@ -14,4 +14,5 @@ public interface SonarQubeFacade {
 
     List<SonarQubeMeasure> getProjectMeasureHistory(String serverId, String projectKey, LocalDate fromDate);
 
+    List<SonarQubeUser> users(String serverId);
 }

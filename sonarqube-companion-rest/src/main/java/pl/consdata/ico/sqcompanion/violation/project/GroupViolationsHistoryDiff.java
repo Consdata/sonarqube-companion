@@ -1,7 +1,9 @@
-package pl.consdata.ico.sqcompanion.history;
+package pl.consdata.ico.sqcompanion.violation.project;
 
 import lombok.Builder;
 import lombok.Data;
+import pl.consdata.ico.sqcompanion.violation.Violations;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
 
 import java.util.List;
 

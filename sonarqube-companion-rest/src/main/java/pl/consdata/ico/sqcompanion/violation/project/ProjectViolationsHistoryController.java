@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.history;
+package pl.consdata.ico.sqcompanion.violation.project;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,21 +8,22 @@ import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/violations/history")
-public class ViolationsHistoryController {
+public class ProjectViolationsHistoryController {
 
-    private final ViolationsHistoryService violationsHistoryService;
+    private final ProjectViolationsHistoryService projectViolationsHistoryService;
     private final RepositoryService repositoryService;
 
-    public ViolationsHistoryController(
-            final ViolationsHistoryService violationsHistoryService,
+    public ProjectViolationsHistoryController(
+            final ProjectViolationsHistoryService projectViolationsHistoryService,
             final RepositoryService repositoryService) {
-        this.violationsHistoryService = violationsHistoryService;
+        this.projectViolationsHistoryService = projectViolationsHistoryService;
         this.repositoryService = repositoryService;
     }
 
@@ -35,7 +36,7 @@ public class ViolationsHistoryController {
             value = "Returns group violations history"
     )
     public ViolationsHistory getRootGroupViolationsHistory(@RequestParam Optional<Integer> daysLimit) {
-        return violationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
+        return projectViolationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
     }
 
     @RequestMapping(
@@ -49,7 +50,7 @@ public class ViolationsHistoryController {
     public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid, @RequestParam Optional<Integer> daysLimit) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return violationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
+            return projectViolationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
@@ -69,7 +70,7 @@ public class ViolationsHistoryController {
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return violationsHistoryService.getGroupViolationsHistoryDiff(group.get(), fromDate, toDate);
+            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
@@ -89,7 +90,7 @@ public class ViolationsHistoryController {
             @RequestParam Optional<Integer> daysLimit) {
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent()) {
-            return violationsHistoryService.getProjectViolationsHistory(project.get(), daysLimit);
+            return projectViolationsHistoryService.getProjectViolationsHistory(project.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
@@ -110,7 +111,7 @@ public class ViolationsHistoryController {
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent()) {
-            return violationsHistoryService.getProjectViolationsHistoryDiff(project.get(), fromDate, toDate);
+            return projectViolationsHistoryService.getProjectViolationsHistoryDiff(project.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }

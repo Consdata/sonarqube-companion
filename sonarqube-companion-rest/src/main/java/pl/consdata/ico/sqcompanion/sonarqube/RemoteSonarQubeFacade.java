@@ -2,21 +2,11 @@ package pl.consdata.ico.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQComponent;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQComponentSearchResponse;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQIssue;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQIssuesSearchResponse;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasure;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasureHistory;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasuresSearchHistoryResponse;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,24 +25,28 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 
     @Override
     public List<SonarQubeProject> getProjects(final String serverId) {
-        return sonarQubeConnector.getForPaginatedList(
-                serverId,
-                "api/components/search_projects",
-                SQComponentSearchResponse.class,
-                SQComponentSearchResponse::getComponents
-        ).map(this::mapComponentToProject
-        ).collect(Collectors.toList());
+        return sonarQubeConnector
+                .getForPaginatedList(
+                        serverId,
+                        "api/components/search_projects",
+                        SQComponentSearchResponse.class,
+                        SQComponentSearchResponse::getComponents
+                )
+                .map(this::mapComponentToProject)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<SonarQubeIssue> getIssues(final String serverId, final String projectKey) {
-        return sonarQubeConnector.getForPaginatedList(
-                serverId,
-                "api/issues/search?projectKeys=" + projectKey,
-                SQIssuesSearchResponse.class,
-                SQIssuesSearchResponse::getIssues
-        ).map(this::mapSqIssueToIssue
-        ).collect(Collectors.toList());
+        return sonarQubeConnector
+                .getForPaginatedList(
+                        serverId,
+                        "api/issues/search?projectKeys=" + projectKey,
+                        SQIssuesSearchResponse.class,
+                        SQIssuesSearchResponse::getIssues
+                )
+                .map(this::mapSqIssueToIssue)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,6 +82,25 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .stream()
                 .sorted(Comparator.comparing(SonarQubeMeasure::getDate))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SonarQubeUser> users(String serverId) {
+        return sonarQubeConnector
+                .getForPaginatedList(
+                        serverId,
+                        "api/users/search",
+                        SQUsersSearchResponse.class,
+                        SQUsersSearchResponse::getUsers
+                )
+                .map(this::mapSqUserToUser)
+                .collect(Collectors.toList());
+    }
+
+    private SonarQubeUser mapSqUserToUser(SQUser sqUser) {
+        return SonarQubeUser.builder()
+                .userId(sqUser.getEmail())
+                .build();
     }
 
     private SonarQubeProject mapComponentToProject(final SQComponent component) {

@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.history;
+package pl.consdata.ico.sqcompanion.violation.project;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -57,11 +57,18 @@ public class TestAppConfig {
 		@UtilityClass
 		public static class Project1 {
 
-			public static final String KEY = "pl.proj:project1";
+			public static final String KEY =  Servers.Server1.ID + "$pl.proj:project1";
 
 			public static final String NAME = "Project1";
 
 		}
+
+	}
+
+	@UtilityClass
+	public static class Users {
+
+		public static final String USER_1 = "user@example.com";
 
 	}
 

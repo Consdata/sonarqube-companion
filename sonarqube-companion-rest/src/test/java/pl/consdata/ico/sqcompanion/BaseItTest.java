@@ -12,13 +12,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.history.ProjectHistoryRepository;
-import pl.consdata.ico.sqcompanion.history.ViolationsHistoryService;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryRepository;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationService;
+import pl.consdata.ico.sqcompanion.violation.user.UserProjectHistoryRepository;
 
 import javax.transaction.Transactional;
 
@@ -61,13 +62,16 @@ public abstract class BaseItTest {
 	protected SynchronizationService synchronizationService;
 
 	@Autowired
-	protected ViolationsHistoryService violationsHistoryService;
+	protected ProjectViolationsHistoryService projectViolationsHistoryService;
 
 	@Autowired
 	protected InMemorySonarQubeFacade inMemorySonarQubeFacade;
 
 	@Autowired
 	protected ProjectHistoryRepository projectHistoryRepository;
+
+	@Autowired
+	protected UserProjectHistoryRepository userProjectHistoryRepository;
 
 	@Before
 	public void setUpBaseItTest() {
