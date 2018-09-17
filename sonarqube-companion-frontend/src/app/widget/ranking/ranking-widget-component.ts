@@ -119,7 +119,7 @@ export class RankingWidgetComponent extends Widget<RankingModel> {
 
   onEvent(event: any) {
     this.model.to = event.toDate;
-    if (this.model.dynamicRange) {
+    if (this.model.customFromDateEnabled) {
       this.model.from = event.fromDate;
     }
     this.title = this.resolveVariables(this.model.title);

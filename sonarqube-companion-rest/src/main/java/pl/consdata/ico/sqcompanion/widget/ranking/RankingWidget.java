@@ -18,7 +18,6 @@ public class RankingWidget extends Widget implements UserStatisticsDependency {
     private List<String> include;
     private List<String> exclude;
     private String server;
-    private Boolean dynamicRange = true;
     private List<String> sort = Arrays.asList("-blockers", "-criticals", "-majors", "-minors", "-infos");
 
 }
