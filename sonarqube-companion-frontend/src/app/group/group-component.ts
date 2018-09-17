@@ -1,11 +1,10 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {GroupDetails} from './group-details';
 import {GroupService} from './group-service';
 import {ActivatedRoute} from '@angular/router';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
-import {WidgetsComponent} from "../widget/widgets-component";
 
 @Component({
   selector: 'sq-group',
@@ -26,29 +25,21 @@ import {WidgetsComponent} from "../widget/widgets-component";
       <div>
         <h2>Violations</h2>
         <div class="violations-history-chart-issues-menu">
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'all'}" queryParamsHandling="merge"
-             [class.active]="'all' === historyFilter">all</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'all'}" queryParamsHandling="merge" [class.active]="'all' === historyFilter">all</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'relevant'}" queryParamsHandling="merge"
-             [class.active]="'relevant' === historyFilter">relevant</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'relevant'}" queryParamsHandling="merge" [class.active]="'relevant' === historyFilter">relevant</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'nonrelevant'}" queryParamsHandling="merge"
-             [class.active]="'nonrelevant' === historyFilter">non relevant</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'nonrelevant'}" queryParamsHandling="merge" [class.active]="'nonrelevant' === historyFilter">non relevant</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'blockers'}" queryParamsHandling="merge"
-             [class.active]="'blockers' === historyFilter">blockers</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'blockers'}" queryParamsHandling="merge" [class.active]="'blockers' === historyFilter">blockers</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'criticals'}" queryParamsHandling="merge"
-             [class.active]="'criticals' === historyFilter">criticals</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'criticals'}" queryParamsHandling="merge" [class.active]="'criticals' === historyFilter">criticals</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'majors'}" queryParamsHandling="merge"
-             [class.active]="'majors' === historyFilter">majors</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'majors'}" queryParamsHandling="merge" [class.active]="'majors' === historyFilter">majors</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'minors'}" queryParamsHandling="merge"
-             [class.active]="'minors' === historyFilter">minors</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'minors'}" queryParamsHandling="merge" [class.active]="'minors' === historyFilter">minors</a>
           |
-          <a [routerLink] [queryParams]="{'history.filter.violations': 'infos'}" queryParamsHandling="merge"
-             [class.active]="'infos' === historyFilter">infos</a>
+          <a [routerLink] [queryParams]="{'history.filter.violations': 'infos'}" queryParamsHandling="merge" [class.active]="'infos' === historyFilter">infos</a>
         </div>
         <hr/>
         <sq-violations-history
@@ -67,14 +58,10 @@ import {WidgetsComponent} from "../widget/widgets-component";
       <div>
         <h2>Projects</h2>
         <div class="group-projects-filter">
-          <a class="project-filter-item" [class.active]="'changed' === projectsFilter" [routerLink]
-             [queryParams]="{'projects.filter.severity': 'changed'}" queryParamsHandling="merge">changed</a>
-          | <a class="project-filter-item" [class.active]="'regression' === projectsFilter" [routerLink]
-               [queryParams]="{'projects.filter.severity': 'regression'}" queryParamsHandling="merge">regression</a>
-          | <a class="project-filter-item" [class.active]="'improvement' === projectsFilter" [routerLink]
-               [queryParams]="{'projects.filter.severity': 'improvement'}" queryParamsHandling="merge">improvement</a>
-          | <a class="project-filter-item" [class.active]="'all' === projectsFilter" [routerLink]
-               [queryParams]="{'projects.filter.severity': 'all'}" queryParamsHandling="merge">all</a>
+          <a class="project-filter-item" [class.active]="'changed' === projectsFilter" [routerLink] [queryParams]="{'projects.filter.severity': 'changed'}" queryParamsHandling="merge">changed</a>
+          | <a class="project-filter-item" [class.active]="'regression' === projectsFilter" [routerLink] [queryParams]="{'projects.filter.severity': 'regression'}" queryParamsHandling="merge">regression</a>
+          | <a class="project-filter-item" [class.active]="'improvement' === projectsFilter" [routerLink] [queryParams]="{'projects.filter.severity': 'improvement'}" queryParamsHandling="merge">improvement</a>
+          | <a class="project-filter-item" [class.active]="'all' === projectsFilter" [routerLink] [queryParams]="{'projects.filter.severity': 'all'}" queryParamsHandling="merge">all</a>
         </div>
         <hr/>
         <sq-group-projects
@@ -84,13 +71,11 @@ import {WidgetsComponent} from "../widget/widgets-component";
           [uuid]="group.uuid">
         </sq-group-projects>
       </div>
-      <widgets [uuid]="group.uuid" #widgetsContainer></widgets>
     </div>
   `
 })
 export class GroupComponent {
-  @ViewChild('widgetsContainer')
-  widgets: WidgetsComponent;
+
   group: GroupDetails;
   violationsHistoryDiff: GroupViolationsHistoryDiff;
   projectsFilter = 'changed';
@@ -121,7 +106,6 @@ export class GroupComponent {
     this.violationsHistoryService
       .getGroupHistoryDiff(this.group.uuid, zoomedEvent.fromDate, zoomedEvent.toDate)
       .subscribe(result => this.violationsHistoryDiff = result);
-    this.widgets.onEvent(zoomedEvent);
   }
 
 }

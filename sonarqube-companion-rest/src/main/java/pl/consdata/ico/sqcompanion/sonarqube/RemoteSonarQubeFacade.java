@@ -2,11 +2,21 @@ package pl.consdata.ico.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.sonarqube.sqapi.*;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQComponent;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQComponentSearchResponse;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQIssue;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQIssuesSearchResponse;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasure;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasureHistory;
+import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQMeasuresSearchHistoryResponse;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -35,22 +45,13 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
     }
 
     @Override
-    public List<SonarQubeIssue> getIssues(final String serverId, IssueFilter filter) {
+    public List<SonarQubeIssue> getIssues(final String serverId, final String projectKey) {
         return sonarQubeConnector.getForPaginatedList(
                 serverId,
-                "api/issues/search" + filter.query(),
+                "api/issues/search?projectKeys=" + projectKey,
                 SQIssuesSearchResponse.class,
                 SQIssuesSearchResponse::getIssues
         ).map(this::mapSqIssueToIssue
-        ).collect(Collectors.toList());
-    }
-
-    public List<SQUser> getUsers(final String serverId, boolean includeDeactivated) {
-        return sonarQubeConnector.getForPaginatedList(
-                serverId,
-                "api/users/search?includeDeactivated=" + includeDeactivated,
-                SQUsersSearchResponse.class,
-                SQUsersSearchResponse::getUsers
         ).collect(Collectors.toList());
     }
 
@@ -103,11 +104,6 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .key(sqIssue.getKey())
                 .creationDate(sqIssue.getCreationDate())
                 .message(sqIssue.getMessage())
-                .author(sqIssue.getAuthor())
-                .status(SonarQubeIssueStatus.valueOf(sqIssue.getStatus()))
-                .severity(SonarQubeIssueSeverity.valueOf(sqIssue.getSeverity()))
-                .updateDate(sqIssue.getUpdateDate())
-                .project(sqIssue.getProject())
                 .build();
     }
 

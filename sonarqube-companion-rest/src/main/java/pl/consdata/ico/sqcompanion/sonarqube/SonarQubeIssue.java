@@ -9,13 +9,12 @@ import java.util.Date;
 @Builder
 public class SonarQubeIssue {
 
-    private final SonarQubeIssueSeverity severity;
-    private final String key;
-    private final SonarQubeIssueStatus status;
-    private final String author;
-    private final Date creationDate;
-    private final Date updateDate;
-    private final String message;
-    private final String project;
+    final SonarQubeIssueSeverity severity;
+    final String key;
+    final SonarQubeIssueStatus status;
+    final String author;
+    final Date creationDate;
+    final Date updateDate;
+    final String message;
 
 }

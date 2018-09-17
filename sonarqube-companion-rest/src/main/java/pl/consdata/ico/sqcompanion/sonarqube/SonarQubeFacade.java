@@ -10,8 +10,8 @@ public interface SonarQubeFacade {
 
     List<SonarQubeProject> getProjects(String serverId);
 
-    List<SonarQubeMeasure> getProjectMeasureHistory(String serverId, String projectKey, LocalDate fromDate);
+    List<SonarQubeIssue> getIssues(String serverId, String projectKey);
 
-    List<SonarQubeIssue> getIssues(String serverId, IssueFilter filter);
+    List<SonarQubeMeasure> getProjectMeasureHistory(String serverId, String projectKey, LocalDate fromDate);
 
 }
