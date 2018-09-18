@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 @Builder
 public class ActionResponse {
-    private Map<String, String> values = new HashMap<>();
+
+    private Map<String, String> values;
     private String actionResult;
+
 }

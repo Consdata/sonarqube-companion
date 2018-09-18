@@ -3,13 +3,13 @@ package pl.consdata.ico.sqcompanion.users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
+import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
-// TODO: implement!
 public class UsersService {
 
     private final SonarQubeFacade sonarQubeFacade;
@@ -18,9 +18,8 @@ public class UsersService {
         this.sonarQubeFacade = sonarQubeFacade;
     }
 
-    public List<User> users() {
-        sonarQubeFacade.users(serverId);
-        return new ArrayList<>();
+    public List<SonarQubeUser> users(final String serverId) {
+        return sonarQubeFacade.users(serverId);
     }
 
     public void sync() {

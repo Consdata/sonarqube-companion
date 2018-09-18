@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
         }
 )
 @Data
-@Builder
+@Builder(toBuilder = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class UserProjectHistoryEntryEntity {

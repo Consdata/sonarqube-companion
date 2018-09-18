@@ -2,6 +2,7 @@ package pl.consdata.ico.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.*;
 
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
     }
 
     @Override
-    public List<SonarQubeProject> getProjects(final String serverId) {
+    public List<SonarQubeProject> projects(final String serverId) {
         return sonarQubeConnector
                 .getForPaginatedList(
                         serverId,
@@ -32,25 +33,25 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                         SQComponentSearchResponse.class,
                         SQComponentSearchResponse::getComponents
                 )
-                .map(this::mapComponentToProject)
+                .map(this::componentToProject)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<SonarQubeIssue> getIssues(final String serverId, final String projectKey) {
+    public List<SonarQubeIssue> issues(final String serverId, final IssueFilter filter) {
         return sonarQubeConnector
                 .getForPaginatedList(
                         serverId,
-                        "api/issues/search?projectKeys=" + projectKey,
+                        "api/issues/search" + "?" + filter.query(),
                         SQIssuesSearchResponse.class,
                         SQIssuesSearchResponse::getIssues
                 )
-                .map(this::mapSqIssueToIssue)
+                .map(this::sqIssueToIssue)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<SonarQubeMeasure> getProjectMeasureHistory(final String serverId, final String projectKey, final LocalDate fromDate) {
+    public List<SonarQubeMeasure> projectMeasureHistory(final String serverId, final String projectKey, final LocalDate fromDate) {
         final StringBuilder serviceUri = new StringBuilder("api/measures/search_history")
                 .append("?component=" + projectKey)
                 .append("&metrics=" + ALL_VIOLATION_METRICS);
@@ -93,17 +94,17 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                         SQUsersSearchResponse.class,
                         SQUsersSearchResponse::getUsers
                 )
-                .map(this::mapSqUserToUser)
+                .map(this::sqUserToUser)
                 .collect(Collectors.toList());
     }
 
-    private SonarQubeUser mapSqUserToUser(SQUser sqUser) {
+    private SonarQubeUser sqUserToUser(SQUser sqUser) {
         return SonarQubeUser.builder()
                 .userId(sqUser.getEmail())
                 .build();
     }
 
-    private SonarQubeProject mapComponentToProject(final SQComponent component) {
+    private SonarQubeProject componentToProject(final SQComponent component) {
         return SonarQubeProject
                 .builder()
                 .key(component.getKey())
@@ -111,7 +112,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .build();
     }
 
-    private SonarQubeIssue mapSqIssueToIssue(final SQIssue sqIssue) {
+    private SonarQubeIssue sqIssueToIssue(final SQIssue sqIssue) {
         return SonarQubeIssue
                 .builder()
                 .key(sqIssue.getKey())

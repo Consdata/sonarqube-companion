@@ -137,7 +137,7 @@ public class ProjectViolationsHistoryService {
         log.info("Syncing project history [project={}]", project);
 
         final Optional<ProjectHistoryEntryEntity> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
-        final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.getProjectMeasureHistory(
+        final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.projectMeasureHistory(
                 project.getServerId(),
                 project.getKey(),
                 lastStoredMeasure.isPresent() ? lastStoredMeasure.get().getDate() : null
