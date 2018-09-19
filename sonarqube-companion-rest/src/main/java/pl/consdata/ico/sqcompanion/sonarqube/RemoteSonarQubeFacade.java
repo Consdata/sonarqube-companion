@@ -1,9 +1,11 @@
 package pl.consdata.ico.sqcompanion.sonarqube;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.*;
+import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -42,7 +44,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
         return sonarQubeConnector
                 .getForPaginatedList(
                         serverId,
-                        "api/issues/search" + "?" + filter.query(),
+                        "api/issues/search" + filter.query().map(q -> "?" + q).orElse(""),
                         SQIssuesSearchResponse.class,
                         SQIssuesSearchResponse::getIssues
                 )
@@ -95,6 +97,7 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                         SQUsersSearchResponse::getUsers
                 )
                 .map(this::sqUserToUser)
+                .filter(u -> StringUtils.isNotBlank(u.getUserId()))
                 .collect(Collectors.toList());
     }
 
@@ -117,8 +120,17 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .builder()
                 .key(sqIssue.getKey())
                 .creationDate(sqIssue.getCreationDate())
+                .creationDay(LocalDateUtil.asLocalDate(sqIssue.getCreationDate()))
                 .message(sqIssue.getMessage())
+                .severity(asSeveriyt(sqIssue))
+                .author(sqIssue.getAuthor())
+                .updateDate(sqIssue.getUpdateDate())
+                .updateDay(LocalDateUtil.asLocalDate(sqIssue.getUpdateDate()))
                 .build();
+    }
+
+    private SonarQubeIssueSeverity asSeveriyt(SQIssue sqIssue) {
+        return SonarQubeIssueSeverity.valueOf(sqIssue.getSeverity());
     }
 
 }

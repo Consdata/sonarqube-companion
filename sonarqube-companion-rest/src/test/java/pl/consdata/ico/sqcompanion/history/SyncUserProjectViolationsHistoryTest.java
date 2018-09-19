@@ -39,7 +39,7 @@ public class SyncUserProjectViolationsHistoryTest extends BaseItTest {
         final List<UserProjectHistoryEntryEntity> userHistory = userProjectHistoryRepository.findByUserId(USER);
         assertThat(userHistory)
                 .extracting(UserProjectHistoryEntryEntity::getBlockers)
-                .containsExactly(2, 2, 1);
+                .containsExactly(2);
     }
 
     @Test

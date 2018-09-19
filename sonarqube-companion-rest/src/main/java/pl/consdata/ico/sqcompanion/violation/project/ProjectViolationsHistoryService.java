@@ -45,7 +45,6 @@ public class ProjectViolationsHistoryService {
         this.projectHistoryRepository = projectHistoryRepository;
     }
 
-    @Transactional
     public void syncProjectsHistory() {
         repositoryService
                 .getRootGroup()

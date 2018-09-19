@@ -3,18 +3,19 @@ package pl.consdata.ico.sqcompanion.sonarqube.issues;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
+import org.apache.commons.lang.StringUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
 @Builder
 public class IssueFilter {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // Comma-separated list of the optional fields to be returned in response. Action plans are dropped in 5.5, it is not returned in the response.
     // _all, comments, languages, actionPlans, rules, transitions, actions, users
@@ -85,10 +86,12 @@ public class IssueFilter {
         parts.addAll(part(assignees, strings("assignees")));
         parts.addAll(part(authors, strings("authors")));
         parts.addAll(part(componentKeys, strings("componentKeys")));
+        parts.addAll(part(createdAfter, date("createdAfter")));
+        parts.addAll(part(createdBefore, date("createdBefore")));
         parts.addAll(part(resolved, yesNo("resolved")));
         parts.addAll(part(resolutions, queryParams("resolutions")));
         parts.addAll(part(sort, queryParam("s")));
-        parts.addAll(part(limit, l -> l.toString()));
+        parts.addAll(part(limit, limit -> String.format("%s=%d", "ps", limit)));
 
         if (parts.isEmpty()) {
             return Optional.empty();
@@ -104,7 +107,9 @@ public class IssueFilter {
     private <T> List<String> part(final T value, final Function<T, String> mapper) {
         return Optional
                 .ofNullable(value)
+                .filter(Objects::nonNull)
                 .map(mapper)
+                .filter(e -> StringUtils.isNotBlank(e))
                 .map(e -> Collections.singletonList(e))
                 .orElse(Collections.emptyList());
     }
@@ -113,8 +118,12 @@ public class IssueFilter {
         return a -> String.format("%s=%s", name, a ? "yes" : "no");
     }
 
+    private Function<LocalDate, String> date(final String name) {
+        return a -> String.format("%s=%s", name, a.format(DATE_FORMATTER));
+    }
+
     private Function<List<String>, String> strings(final String name) {
-        return a -> String.format("%s=%s", name, a.stream().collect(Collectors.joining(",")));
+        return a -> !a.isEmpty() ? String.format("%s=%s", name, a.stream().collect(Collectors.joining(","))) : null;
     }
 
     private Function<IssueFilterQueryParam, String> queryParam(final String name) {
@@ -122,7 +131,7 @@ public class IssueFilter {
     }
 
     private Function<List<? extends IssueFilterQueryParam>, String> queryParams(final String name) {
-        return a -> String.format("%s=%s", name, a.stream().map(param -> param.value()).collect(Collectors.joining(",")));
+        return a -> !a.isEmpty() ? String.format("%s=%s", name, a.stream().map(param -> param.value()).collect(Collectors.joining(","))) : null;
     }
 
 }

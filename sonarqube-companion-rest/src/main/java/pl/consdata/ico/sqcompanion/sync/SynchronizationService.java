@@ -77,7 +77,6 @@ public class SynchronizationService {
         usersService.sync();
         projectViolationsHistoryService.syncProjectsHistory();
         userProjectViolationsHistoryService.sync();
-
         synchronizationStateService.finishSynchronization();
 
         Caches.LIST

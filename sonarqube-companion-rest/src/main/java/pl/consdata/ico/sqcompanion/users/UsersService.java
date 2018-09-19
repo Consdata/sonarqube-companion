@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +18,7 @@ public class UsersService {
     }
 
     public List<SonarQubeUser> users(final String serverId) {
+        // TODO: blacklist for users
         return sonarQubeFacade.users(serverId);
     }
 
