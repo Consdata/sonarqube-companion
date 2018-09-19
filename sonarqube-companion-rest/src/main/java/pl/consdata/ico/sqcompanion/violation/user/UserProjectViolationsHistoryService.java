@@ -69,6 +69,7 @@ public class UserProjectViolationsHistoryService {
                     project.getKey(),
                     user.getUserId()
             );
+            return;
         }
 
         final List<UserProjectHistoryEntryEntity> entities = new ArrayList<>();
