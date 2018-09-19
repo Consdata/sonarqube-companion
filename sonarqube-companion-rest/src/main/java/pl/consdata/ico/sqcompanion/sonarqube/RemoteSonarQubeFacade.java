@@ -120,12 +120,10 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .builder()
                 .key(sqIssue.getKey())
                 .creationDate(sqIssue.getCreationDate())
-                .creationDay(LocalDateUtil.asLocalDate(sqIssue.getCreationDate()))
                 .message(sqIssue.getMessage())
                 .severity(asSeveriyt(sqIssue))
                 .author(sqIssue.getAuthor())
                 .updateDate(sqIssue.getUpdateDate())
-                .updateDay(LocalDateUtil.asLocalDate(sqIssue.getUpdateDate()))
                 .build();
     }
 

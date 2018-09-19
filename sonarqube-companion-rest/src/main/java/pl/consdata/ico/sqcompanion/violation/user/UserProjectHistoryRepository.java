@@ -9,6 +9,6 @@ public interface UserProjectHistoryRepository extends JpaRepository<UserProjectH
 
     List<UserProjectHistoryEntryEntity> findByUserId(String userId);
 
-    Optional<UserProjectHistoryEntryEntity> findByUserIdAndProjectKeyOrderByDateDesc(String key, String userId);
+    Optional<UserProjectHistoryEntryEntity> findFirstByUserIdAndProjectKeyOrderByDateDesc(String key, String userId);
 
 }
