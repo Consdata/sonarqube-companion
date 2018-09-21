@@ -10,9 +10,7 @@ import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeIssue;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeUser;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
-import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilterSortField;
 import pl.consdata.ico.sqcompanion.users.UsersService;
-import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -60,16 +58,10 @@ public class UserViolationDiffSyncService {
 
     private void syncUserProject(final Project project, final SonarQubeUser user) {
         final LocalDate today = LocalDate.now();
-        final Optional<LocalDate> firstRequiredSyncDate = firstSyncDate(project, user);
-        if (!firstRequiredSyncDate.isPresent()) {
-            log.debug(
-                    "Can't get first date to start syncing project for user, skipping [project={}, user={}]",
-                    project.getKey(),
-                    user.getUserId()
-            );
-            return;
-        }
-        if (!firstRequiredSyncDate.get().isBefore(today.minusDays(1))) {
+        final LocalDate firstRequiredSyncDate = lastMeasure(project, user)
+                .map(m -> m.getDate())
+                .orElse(LocalDate.now().minusDays(30));
+        if (!firstRequiredSyncDate.isBefore(today.minusDays(1))) {
             log.debug("All historic analysis already synchronized");
             return;
         }
@@ -133,10 +125,10 @@ public class UserViolationDiffSyncService {
                 .collect(Collectors.joining(","));
     }
 
-    private LocalDate syncStartDate(final Optional<LocalDate> firstRequiredSyncDate) {
+    private LocalDate syncStartDate(final LocalDate firstRequiredSyncDate) {
         // due to SonarQube housekeeping issues older than 30 day are removed
         final LocalDate minSyncDate = LocalDate.now().minusDays(30);
-        return firstRequiredSyncDate.get().isAfter(minSyncDate) ? firstRequiredSyncDate.get() : minSyncDate;
+        return firstRequiredSyncDate.isAfter(minSyncDate) ? firstRequiredSyncDate : minSyncDate;
     }
 
     private UserProjectViolationDiffHistoryEntry.UserProjectViolationDiffHistoryEntryBuilder emptyUserProjectEntry(final Project project, final SonarQubeUser user) {
@@ -162,36 +154,8 @@ public class UserViolationDiffSyncService {
                 .collect(Collectors.groupingBy(SonarQubeIssue::getCreationDay));
     }
 
-    private Optional<LocalDate> firstSyncDate(final Project project, final SonarQubeUser user) {
-        final Optional<LocalDate> lastMeasureDate = lastMeasure(project, user).map(m -> m.getDate());
-        if (lastMeasureDate.isPresent()) {
-            return lastMeasureDate;
-        } else {
-            return firstProjectIssue(project)
-                    .map(i -> i.getCreationDate())
-                    .map(LocalDateUtil::asLocalDate);
-        }
-    }
-
     private Optional<UserProjectViolationDiffHistoryEntry> lastMeasure(final Project project, final SonarQubeUser user) {
         return repository.findFirstByUserIdAndProjectKeyOrderByDateDesc(user.getUserId(), project.getKey());
-    }
-
-    private Optional<SonarQubeIssue> firstProjectIssue(final Project project) {
-        final List<SonarQubeIssue> issue = sonarQubeFacade.issues(
-                project.getServerId(),
-                IssueFilter.builder()
-                        .componentKey(project.getKey())
-                        .limit(1)
-                        .sort(IssueFilterSortField.CREATION_DATE)
-                        .asc(true)
-                        .build()
-        );
-        if (issue.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(issue.get(0));
-        }
     }
 
 }
