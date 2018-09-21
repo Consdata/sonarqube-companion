@@ -3,7 +3,6 @@ package pl.consdata.ico.sqcompanion.violation.project;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.repository.Group;
@@ -18,15 +17,12 @@ import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
@@ -55,25 +51,15 @@ public class ProjectViolationsHistoryService {
 
     @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #daysLimit")
     public ViolationsHistory getGroupViolationsHistory(final Group group, Optional<Integer> daysLimit) {
-        final List<ViolationHistoryEntry> history = group
-                .getAllProjects()
-                .stream()
-                .flatMap(project -> getProjectViolationsHistory(project, daysLimit).getViolationHistoryEntries().stream())
-                .collect(
-                        Collectors.groupingBy(
-                                ViolationHistoryEntry::getDate,
-                                Collectors.reducing(ViolationHistoryEntry::sumEntries)
-                        )
-                )
-                .values()
-                .stream()
-                .filter(entry -> entry.isPresent())
-                .map(entry -> entry.get())
-                .sorted(Comparator.comparing(ViolationHistoryEntry::getDate))
-                .collect(Collectors.toList());
         return ViolationsHistory
                 .builder()
-                .violationHistoryEntries(history)
+                .violationHistoryEntries(
+                        ViolationHistoryEntry.groupByDate(
+                                group.getAllProjects()
+                                        .stream()
+                                        .flatMap(project -> getProjectViolationsHistory(project, daysLimit).getViolationHistoryEntries().stream())
+                        )
+                )
                 .build();
     }
 
@@ -115,8 +101,10 @@ public class ProjectViolationsHistoryService {
                 .builder()
                 .violationHistoryEntries(
                         history.stream()
-                                .map(this::asViolationHistoryEntry)
-                                .collect(Collectors.toList())).build();
+                                .map(ViolationHistoryEntry::of)
+                                .collect(Collectors.toList())
+                )
+                .build();
     }
 
     @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#project.getId() + #fromDate + #toDate")
@@ -155,7 +143,7 @@ public class ProjectViolationsHistoryService {
                 history.add(asProjectHistoryEntryEntity(date, project, lastMeasure));
             }
 
-            log.info("Storing project historic analyses [analysesToStore={}, project={}]", history.size(), project);
+            log.debug("Storing project historic analyses [analysesToStore={}, project={}]", history.size(), project);
             projectHistoryRepository.saveAll(history);
         } else {
             log.info("Project has neither history nor analyses, skipping [projectId={}]", project.getId());
@@ -248,23 +236,6 @@ public class ProjectViolationsHistoryService {
                 .majors(entryEntity.getMajors())
                 .minors(entryEntity.getMinors())
                 .infos(entryEntity.getInfos())
-                .build();
-    }
-
-    private ViolationHistoryEntry asViolationHistoryEntry(final ProjectHistoryEntryEntity entry) {
-        return ViolationHistoryEntry
-                .builder()
-                .date(entry.getDate())
-                .violations(
-                        Violations
-                                .builder()
-                                .blockers(ofNullable(entry.getBlockers()).orElse(0))
-                                .criticals(ofNullable(entry.getCriticals()).orElse(0))
-                                .majors(ofNullable(entry.getMajors()).orElse(0))
-                                .minors(ofNullable(entry.getMinors()).orElse(0))
-                                .infos(ofNullable(entry.getInfos()).orElse(0))
-                                .build()
-                )
                 .build();
     }
 

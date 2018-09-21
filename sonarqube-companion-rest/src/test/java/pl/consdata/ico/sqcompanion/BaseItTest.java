@@ -19,7 +19,7 @@ import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationService;
-import pl.consdata.ico.sqcompanion.violation.user.UserProjectHistoryRepository;
+import pl.consdata.ico.sqcompanion.violation.user.diff.UserViolationDiffRepository;
 
 import javax.transaction.Transactional;
 
@@ -71,7 +71,7 @@ public abstract class BaseItTest {
 	protected ProjectHistoryRepository projectHistoryRepository;
 
 	@Autowired
-	protected UserProjectHistoryRepository userProjectHistoryRepository;
+	protected UserViolationDiffRepository userViolationDiffRepository;
 
 	@Before
 	public void setUpBaseItTest() {

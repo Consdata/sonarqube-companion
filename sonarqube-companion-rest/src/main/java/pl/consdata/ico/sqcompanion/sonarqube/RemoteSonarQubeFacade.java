@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
+import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilterFacet;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.*;
-import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -50,6 +50,31 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 )
                 .map(this::sqIssueToIssue)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SonarQubeIssuesFacets issuesFacet(String serverId, IssueFilter filter) {
+        if (filter.getFacets().isEmpty()) {
+            throw new IllegalArgumentException("Facet filter required for facet query");
+        }
+        filter.setLimit(1);
+
+        final Map<IssueFilterFacet, SonarQubeIssuesFacet> facets = new HashMap<>();
+        sonarQubeConnector
+                .getForPaginatedList(
+                        serverId,
+                        "api/issues/search" + filter.query().map(q -> "?" + q).orElse(""),
+                        SQIssuesSearchResponse.class,
+                        SQIssuesSearchResponse::getFacets
+                )
+                .forEach(facet -> facets.put(
+                        IssueFilterFacet.ofValue(facet.getProperty()),
+                        SonarQubeIssuesFacet.builder()
+                                .values(facet.getValues())
+                                .build()
+                ));
+
+        return SonarQubeIssuesFacets.builder().facets(facets).build();
     }
 
     @Override

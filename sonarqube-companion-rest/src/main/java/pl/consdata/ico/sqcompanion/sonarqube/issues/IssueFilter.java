@@ -77,6 +77,12 @@ public class IssueFilter {
     // ps
     private Integer limit;
 
+    // Comma-separated list of the facets to be computed. No facet is computed by default.<br/>Since 5.5, facet 'actionPlans' is deprecated.<br/>Since 5.5, facet 'reporters' is deprecated.
+    // severities, statuses, resolutions, actionPlans, projectUuids, rules, assignees, assigned_to_me, reporters, authors, moduleUuids, fileUuids, directories, languages, tags, types, createdAt
+    // facets
+    @Singular
+    private List<IssueFilterFacet> facets;
+
     public Optional<String> query() {
         final List<String> parts = new ArrayList<>();
 
@@ -92,6 +98,7 @@ public class IssueFilter {
         parts.addAll(part(resolutions, queryParams("resolutions")));
         parts.addAll(part(sort, queryParam("s")));
         parts.addAll(part(limit, limit -> String.format("%s=%d", "ps", limit)));
+        parts.addAll(part(facets, queryParams("facets")));
 
         if (parts.isEmpty()) {
             return Optional.empty();

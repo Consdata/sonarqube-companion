@@ -3,13 +3,12 @@ package pl.consdata.ico.sqcompanion.sonarqube;
 import pl.consdata.ico.sqcompanion.TestAppConfig;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
+import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilterFacet;
 import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +49,25 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
     }
 
     @Override
+    public SonarQubeIssuesFacets issuesFacet(String serverId, IssueFilter filter) {
+        final List<SonarQubeIssue> issues = issues(serverId, filter);
+        final SonarQubeIssuesFacets.SonarQubeIssuesFacetsBuilder result = SonarQubeIssuesFacets.builder();
+        if (filter.getFacets().contains(IssueFilterFacet.SEVERITIES)) {
+            result.facet(
+                    IssueFilterFacet.SEVERITIES,
+                    SonarQubeIssuesFacet.builder()
+                            .value(facetCount("BLOCKER", issues.stream().filter(i -> i.getSeverity() == SonarQubeIssueSeverity.BLOCKER).count()))
+                            .value(facetCount("CRITICAL", issues.stream().filter(i -> i.getSeverity() == SonarQubeIssueSeverity.CRITICAL).count()))
+                            .value(facetCount("MAJOR", issues.stream().filter(i -> i.getSeverity() == SonarQubeIssueSeverity.MAJOR).count()))
+                            .value(facetCount("MINOR", issues.stream().filter(i -> i.getSeverity() == SonarQubeIssueSeverity.MINOR).count()))
+                            .value(facetCount("INFO", issues.stream().filter(i -> i.getSeverity() == SonarQubeIssueSeverity.INFO).count()))
+                            .build()
+            );
+        }
+        return result.build();
+    }
+
+    @Override
     public List<SonarQubeProject> projects(final String serverId) {
         return inMemoryRepository
                 .getProjects()
@@ -86,6 +104,13 @@ public class InMemorySonarQubeFacade implements SonarQubeFacade {
                 .stream()
                 .filter(m -> fromLocalDate == null || m.getDate().after(fromDate))
                 .collect(Collectors.toList());
+    }
+
+    private Map<String, String> facetCount(String value, long count) {
+        final Map<String, String> map = new HashMap<>();
+        map.put("val", value);
+        map.put("count", String.valueOf(count));
+        return map;
     }
 
 }

@@ -14,6 +14,8 @@ public interface SonarQubeFacade {
 
     List<SonarQubeIssue> issues(String serverId, IssueFilter filter);
 
+    SonarQubeIssuesFacets issuesFacet(String serverId, IssueFilter filter);
+
     List<SonarQubeMeasure> projectMeasureHistory(String serverId, String projectKey, LocalDate fromDate);
 
     List<SonarQubeUser> users(String serverId);

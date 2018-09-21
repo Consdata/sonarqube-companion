@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ProjectHistoryEntryEntity {
+public class ProjectHistoryEntryEntity implements ViolationHistorySource {
 
     public static String combineId(final String serverId, final String projectKey, final LocalDate date) {
         return String.format(

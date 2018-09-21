@@ -8,7 +8,8 @@ import pl.consdata.ico.sqcompanion.users.UsersService;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
-import pl.consdata.ico.sqcompanion.violation.user.UserProjectViolationsHistoryService;
+import pl.consdata.ico.sqcompanion.violation.user.diff.UserViolationDiffSyncService;
+import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistorySyncService;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -22,9 +23,10 @@ public class SynchronizationService {
 
     private final ProjectService projectService;
     private final ProjectViolationsHistoryService projectViolationsHistoryService;
-    private final UserProjectViolationsHistoryService userProjectViolationsHistoryService;
+    private final UserViolationDiffSyncService userViolationDiffSyncService;
     private final UsersService usersService;
     private final RepositoryService repositoryService;
+    private final UserViolationSummaryHistorySyncService userViolationSummaryHistorySyncService;
     private final SynchronizationStateService synchronizationStateService;
     private final CacheManager cacheManager;
     private final Semaphore semaphore = new Semaphore(1);
@@ -32,16 +34,18 @@ public class SynchronizationService {
     public SynchronizationService(
             final ProjectService projectService,
             final ProjectViolationsHistoryService projectViolationsHistoryService,
-            final UserProjectViolationsHistoryService userProjectViolationsHistoryService,
+            final UserViolationDiffSyncService userViolationDiffSyncService,
             final UsersService usersService,
             final RepositoryService repositoryService,
+            final UserViolationSummaryHistorySyncService userViolationSummaryHistorySyncService,
             final SynchronizationStateService synchronizationStateService,
             final CacheManager cacheManager) {
         this.projectService = projectService;
         this.projectViolationsHistoryService = projectViolationsHistoryService;
-        this.userProjectViolationsHistoryService = userProjectViolationsHistoryService;
+        this.userViolationDiffSyncService = userViolationDiffSyncService;
         this.usersService = usersService;
         this.repositoryService = repositoryService;
+        this.userViolationSummaryHistorySyncService = userViolationSummaryHistorySyncService;
         this.synchronizationStateService = synchronizationStateService;
         this.cacheManager = cacheManager;
     }
@@ -76,7 +80,8 @@ public class SynchronizationService {
         repositoryService.syncGroups();
         usersService.sync();
         projectViolationsHistoryService.syncProjectsHistory();
-        userProjectViolationsHistoryService.sync();
+        userViolationSummaryHistorySyncService.sync();
+        userViolationDiffSyncService.sync();
         synchronizationStateService.finishSynchronization();
 
         Caches.LIST

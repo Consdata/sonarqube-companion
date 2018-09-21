@@ -1,5 +1,7 @@
 package pl.consdata.ico.sqcompanion.sonarqube;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,10 +39,12 @@ public class SonarQubeConnector {
     public static final String BASIC_AUTH_VALUE_TEMPLATE = "%s:%s";
     private final AppConfig config;
     private final RestTemplate restTemplate;
+    private final Timer paginatedListTimer;
 
-    public SonarQubeConnector(final AppConfig config, final RestTemplate restTemplate) {
+    public SonarQubeConnector(final AppConfig config, final RestTemplate restTemplate, final MeterRegistry meterRegistry) {
         this.config = config;
         this.restTemplate = restTemplate;
+        this.paginatedListTimer = meterRegistry.timer("SonarQubeConnector.getForPaginatedList");
     }
 
     public <T extends SQPaginatedResponse, R> Stream<R> getForPaginatedList(
@@ -48,39 +52,39 @@ public class SonarQubeConnector {
             final String uri,
             final Class<T> responseClass,
             final Function<T, List<R>> dataExtractor) {
-        final List<R> result = new ArrayList<>();
+        return paginatedListTimer.record(() -> {
+            final List<R> result = new ArrayList<>();
+            final ServerDefinition server = getServerDefinition(serverId);
+            T lastResponse = null;
+            do {
+                int pageIdx = lastResponse != null ? lastResponse.getNextPage() : FIRST_PAGE;
+                final String url = String.format(
+                        SERVER_WITH_URI_TEMPLATE + (uri.contains("?") ? "&" : "?") + PAGING_TEMPLATE,
+                        server.getUrl(),
+                        uri,
+                        pageIdx,
+                        DEFAULT_PAGE_SIZE
+                );
 
-        final ServerDefinition server = getServerDefinition(serverId);
+                final HttpHeaders headers = new HttpHeaders();
+                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 
-        T lastResponse = null;
-        do {
-            int pageIdx = lastResponse != null ? lastResponse.getNextPage() : FIRST_PAGE;
-            final String url = String.format(
-                    SERVER_WITH_URI_TEMPLATE + (uri.contains("?") ? "&" : "?") + PAGING_TEMPLATE,
-                    server.getUrl(),
-                    uri,
-                    pageIdx,
-                    DEFAULT_PAGE_SIZE
-            );
+                if (server.hasAuthentication()) {
+                    addAuthentication(server.getAuthentication(), headers);
+                }
 
-            final HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+                lastResponse = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        new HttpEntity<String>(null, headers),
+                        responseClass
+                ).getBody();
 
-            if (server.hasAuthentication()) {
-                addAuthentication(server.getAuthentication(), headers);
-            }
+                result.addAll(dataExtractor.apply(lastResponse));
+            } while (lastResponse != null && lastResponse.hasMorePages());
 
-            lastResponse = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    new HttpEntity<String>(null, headers),
-                    responseClass
-            ).getBody();
-
-            result.addAll(dataExtractor.apply(lastResponse));
-        } while (lastResponse != null && lastResponse.hasMorePages());
-
-        return result.stream();
+            return result.stream();
+        });
     }
 
     private void addAuthentication(final ServerAuthentication authentication, final HttpHeaders headers) {
