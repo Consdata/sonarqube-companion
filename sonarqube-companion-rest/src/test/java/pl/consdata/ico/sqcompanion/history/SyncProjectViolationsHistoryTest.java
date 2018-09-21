@@ -35,8 +35,8 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     public void shouldSyncProjectViolationHistory() throws SynchronizationException {
         // given
         int latestAnalyseBlockers = 2;
-        addAnalysedMeasure(LocalDate.now().minusDays(2), 1);
-        addAnalysedMeasure(LocalDate.now().minusDays(1), latestAnalyseBlockers);
+        addAnalysedMeasure(LocalDate.now().minusDays(3), 1);
+        addAnalysedMeasure(LocalDate.now().minusDays(2), latestAnalyseBlockers);
 
         // when
         tickSynchronization();
@@ -55,7 +55,7 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     public void shouldEstimateWhenHistoryExistButNoAnalyses() throws SynchronizationException {
         // when
         int latestAvailableHistoryBlockers = 2;
-        addHistoricEntry(LocalDate.now().minusDays(2), latestAvailableHistoryBlockers);
+        addHistoricEntry(LocalDate.now().minusDays(3), latestAvailableHistoryBlockers);
 
         // when
         tickSynchronization();

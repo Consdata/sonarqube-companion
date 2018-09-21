@@ -39,22 +39,12 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
         final List<UserProjectViolationDiffHistoryEntry> userHistory = userViolationDiffRepository.findByUserId(USER);
         assertThat(userHistory)
                 .extracting(UserProjectViolationDiffHistoryEntry::getBlockers)
-                .containsExactly(2, 0, 1);
+                .containsExactly(2, 0);
     }
 
     @Test
-    public void shouldOverrideTodayEntries() throws SynchronizationException {
+    public void shouldNotCreateEntryForToday() throws SynchronizationException {
         // given
-        userViolationDiffRepository.save(
-                UserProjectViolationDiffHistoryEntry.builder()
-                        .id(UserProjectViolationDiffHistoryEntry.combineId(SERVER_ID, USER, PROJECT_KEY, NOW))
-                        .serverId(SERVER_ID)
-                        .projectKey(PROJECT_KEY)
-                        .userId(USER)
-                        .blockers(0)
-                        .date(NOW)
-                        .build()
-        );
         addUserIssue(USER, PROJECT_KEY, NOW, SonarQubeIssueSeverity.BLOCKER);
 
         // when
@@ -62,9 +52,7 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
 
         // then
         final List<UserProjectViolationDiffHistoryEntry> userHistory = userViolationDiffRepository.findByUserId(USER);
-        assertThat(userHistory)
-                .extracting(UserProjectViolationDiffHistoryEntry::getBlockers)
-                .containsExactly(1);
+        assertThat(userHistory).hasSize(0);
     }
 
     private void addUserIssue(String user, String project, LocalDate date, SonarQubeIssueSeverity severity) {

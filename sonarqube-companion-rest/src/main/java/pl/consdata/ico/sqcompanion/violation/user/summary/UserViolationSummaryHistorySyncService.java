@@ -19,10 +19,12 @@ import pl.consdata.ico.sqcompanion.violation.ViolationHistoryEntry;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
+import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffHistoryEntry;
 
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
@@ -64,24 +66,27 @@ public class UserViolationSummaryHistorySyncService {
     }
 
     private void syncUser(final SonarQubeUser user, final List<Project> projects) {
-        log.info("Syncing user summary violations [userId={}, projects={}]", user.getUserId(), projects.size());
-        for (int projectIdx = 0; projectIdx < projects.size(); ++projectIdx) {
-            final Project project = projects.get(projectIdx);
-            log.debug("Syncing user summary violations [userId={}, project={}]", user.getUserId(), project.getKey());
-            if (projectIdx > 0 && projectIdx % 20 == 0) {
-                log.info("...syncing user summary projects [userId={}, progress={}/{}]", user.getUserId(), projectIdx, projects.size());
-            }
-            syncUserProject(project, user);
-        }
+        projects.forEach(project -> syncUserProject(project, user));
     }
 
     private void syncUserProject(final Project project, final SonarQubeUser user) {
         syncUserProjectTimer.record(() -> {
+            final LocalDate today = LocalDate.now();
+            final Optional<LocalDate> lastMeasureDate = lastMeasure(project, user).map(UserProjectSummaryViolationHistoryEntry::getDate);
+            if (lastMeasureDate.isPresent() && !lastMeasureDate.get().isBefore(today.minusDays(1))) {
+                log.debug("All historic analysis already synchronized");
+                return;
+            }
+
+            log.info("Syncing user summary violations [userId={}, project={}]", user.getUserId(), project.getKey());
+
+            final LocalDate date = today.minusDays(1);
             final SonarQubeIssuesFacets userIssuesFacets = sonarQubeFacade.issuesFacet(
                     project.getServerId(),
                     IssueFilter.builder()
                             .componentKey(project.getKey())
                             .author(user.getUserId())
+                            .createdBefore(date)
                             .resolved(false)
                             .facet(IssueFilterFacet.SEVERITIES)
                             .build()
@@ -89,7 +94,6 @@ public class UserViolationSummaryHistorySyncService {
             final SonarQubeIssuesFacet severities = userIssuesFacets
                     .getFacet(IssueFilterFacet.SEVERITIES)
                     .orElseThrow(() -> new IllegalStateException("Expected facet not returned from SonarQube!"));
-            final LocalDate today = LocalDate.now();
             repository.save(
                     UserProjectSummaryViolationHistoryEntry.builder()
                             .id(
@@ -97,10 +101,10 @@ public class UserViolationSummaryHistorySyncService {
                                             project.getServerId(),
                                             user.getUserId(),
                                             project.getKey(),
-                                            today
+                                            date
                                     )
                             )
-                            .date(today)
+                            .date(date)
                             .serverId(project.getServerId())
                             .userId(user.getUserId())
                             .projectKey(project.getKey())
@@ -116,6 +120,10 @@ public class UserViolationSummaryHistorySyncService {
 
     private int facetSeverityCount(SonarQubeIssuesFacet severities, String severity) {
         return Integer.parseInt(severities.getByProperty("val", severity, "count"));
+    }
+
+    private Optional<UserProjectSummaryViolationHistoryEntry> lastMeasure(final Project project, final SonarQubeUser user) {
+        return repository.findFirstByUserIdAndProjectKeyOrderByDateDesc(user.getUserId(), project.getKey());
     }
 
 }

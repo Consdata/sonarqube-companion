@@ -55,18 +55,11 @@ public class UserViolationDiffSyncService {
     }
 
     private void syncUser(final SonarQubeUser user, final List<Project> projects) {
-        log.info("Syncing user diff violations [userId={}, projects={}]", user.getUserId(), projects.size());
-        for (int projectIdx = 0; projectIdx < projects.size(); ++projectIdx) {
-            final Project project = projects.get(projectIdx);
-            log.debug("Syncing user diff violations [userId={}, project={}]", user.getUserId(), project.getKey());
-            if (projectIdx > 0 && projectIdx % 20 == 0) {
-                log.info("...syncing user diff projects [userId={}, progress={}/{}]", user.getUserId(), projectIdx, projects.size());
-            }
-            syncUserProject(project, user);
-        }
+        projects.forEach(project -> syncUserProject(project, user));
     }
 
     private void syncUserProject(final Project project, final SonarQubeUser user) {
+        final LocalDate today = LocalDate.now();
         final Optional<LocalDate> firstRequiredSyncDate = firstSyncDate(project, user);
         if (!firstRequiredSyncDate.isPresent()) {
             log.debug(
@@ -76,11 +69,17 @@ public class UserViolationDiffSyncService {
             );
             return;
         }
+        if (!firstRequiredSyncDate.get().isBefore(today.minusDays(1))) {
+            log.debug("All historic analysis already synchronized");
+            return;
+        }
+
+        log.info("Syncing user diff violations [userId={}, project={}]", user.getUserId(), project.getKey());
 
         final LocalDate syncDate = syncStartDate(firstRequiredSyncDate);
         final Map<LocalDate, List<SonarQubeIssue>> userIssues = userIssuesAfterDate(project, user, syncDate);
         final List<UserProjectViolationDiffHistoryEntry> entries = new ArrayList<>();
-        for (LocalDate date = syncDate; !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
+        for (LocalDate date = syncDate; date.isBefore(today); date = date.plusDays(1)) {
             log.trace("Syncing user history project history [user={}, project={}, date={}]", user.getUserId(), project.getKey(), date);
             final String entryByDayId = UserProjectViolationDiffHistoryEntry.combineId(project.getServerId(), user.getUserId(), project.getKey(), date);
             if (userIssues.containsKey(date)) {

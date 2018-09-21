@@ -121,9 +121,13 @@ public class ProjectViolationsHistoryService {
     }
 
     private void synProjectHistory(final Project project) {
-        log.info("Syncing project history [project={}]", project);
-
+        final LocalDate today = LocalDate.now();
         final Optional<ProjectHistoryEntryEntity> lastStoredMeasure = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey());
+        if (lastStoredMeasure.isPresent() && !lastStoredMeasure.map(ProjectHistoryEntryEntity::getDate).get().isBefore(today.minusDays(1))) {
+            log.debug("All historic analysis already synchronized");
+            return;
+        }
+
         final List<SonarQubeMeasure> historicAnalyses = sonarQubeFacade.projectMeasureHistory(
                 project.getServerId(),
                 project.getKey(),
@@ -131,12 +135,13 @@ public class ProjectViolationsHistoryService {
         );
 
         if (!historicAnalyses.isEmpty() || lastStoredMeasure.isPresent()) {
+            log.info("Syncing project history [project={}]", project);
             final Map<LocalDate, SonarQubeMeasure> combined = combineToSingleMeasurePerDay(historicAnalyses);
             final LocalDate startDate = !historicAnalyses.isEmpty() ? LocalDateUtil.asLocalDate(historicAnalyses.get(0).getDate()) : lastStoredMeasure.get().getDate();
 
             final List<ProjectHistoryEntryEntity> history = new ArrayList<>();
             SonarQubeMeasure lastMeasure = !historicAnalyses.isEmpty() ? historicAnalyses.get(0) : asSonarQubeMeasure(lastStoredMeasure.get());
-            for (LocalDate date = startDate; !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
+            for (LocalDate date = startDate; date.isBefore(today); date = date.plusDays(1)) {
                 if (combined.containsKey(date)) {
                     lastMeasure = combined.get(date);
                 }
@@ -146,7 +151,7 @@ public class ProjectViolationsHistoryService {
             log.debug("Storing project historic analyses [analysesToStore={}, project={}]", history.size(), project);
             projectHistoryRepository.saveAll(history);
         } else {
-            log.info("Project has neither history nor analyses, skipping [projectId={}]", project.getId());
+            log.debug("Project has neither history nor analyses, skipping [projectId={}]", project.getId());
         }
     }
 
