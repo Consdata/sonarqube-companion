@@ -14,6 +14,7 @@ import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffH
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
