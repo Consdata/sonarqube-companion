@@ -203,9 +203,3 @@ volumes:
 Default Intellij Formatter with modifications
 - Editor > Code Style > TypeScript > Punctuation
   - Use 'single' quotes
-
-
-# notes
-
-https://sonarcloud.io/api/issues/search?organizations=payara&ps=1&s=CREATION_DATE
-https://sonarcloud.io/api/issues/search?projectKeys=Mongo&createdAfter=2018-04-16&createdBefore=2018-04-16&ps=1
