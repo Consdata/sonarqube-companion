@@ -11,13 +11,13 @@ import java.util.Date;
 @Builder
 public class SonarQubeIssue {
 
-    final SonarQubeIssueSeverity severity;
-    final String key;
-    final SonarQubeIssueStatus status;
-    final String author;
-    final Date creationDate;
-    final Date updateDate;
-    final String message;
+    private SonarQubeIssueSeverity severity;
+    private String key;
+    private SonarQubeIssueStatus status;
+    private String author;
+    private Date creationDate;
+    private Date updateDate;
+    private String message;
 
     public LocalDate getCreationDay() {
         return creationDate != null ? LocalDateUtil.asLocalDate(creationDate) : null;

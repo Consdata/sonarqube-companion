@@ -1,7 +1,6 @@
 package pl.consdata.ico.sqcompanion.violation.user.summary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffHistoryEntry;
 
 import java.util.List;
 import java.util.Optional;

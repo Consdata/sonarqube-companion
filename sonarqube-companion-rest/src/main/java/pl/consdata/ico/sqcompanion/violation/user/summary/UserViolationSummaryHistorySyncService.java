@@ -15,19 +15,10 @@ import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeUser;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilterFacet;
 import pl.consdata.ico.sqcompanion.users.UsersService;
-import pl.consdata.ico.sqcompanion.violation.ViolationHistoryEntry;
-import pl.consdata.ico.sqcompanion.violation.Violations;
-import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
-import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffHistoryEntry;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service

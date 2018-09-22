@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
-import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistorySyncService;
 
 // TODO: filter by start and or end date
 // TODO: filter by project

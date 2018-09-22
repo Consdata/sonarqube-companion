@@ -24,16 +24,6 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class UserProjectSummaryViolationHistoryEntry implements ViolationHistorySource {
 
-    public static String combineId(final String serverId, final String userId, final String projectKey, final LocalDate date) {
-        return String.format(
-                "%s$%s$%s$%s",
-                serverId,
-                userId,
-                projectKey,
-                date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        );
-    }
-
     @Id
     private String id;
     private String serverId;
@@ -45,5 +35,15 @@ public class UserProjectSummaryViolationHistoryEntry implements ViolationHistory
     private Integer minors;
     private Integer infos;
     private LocalDate date;
+
+    public static String combineId(final String serverId, final String userId, final String projectKey, final LocalDate date) {
+        return String.format(
+                "%s$%s$%s$%s",
+                serverId,
+                userId,
+                projectKey,
+                date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        );
+    }
 
 }

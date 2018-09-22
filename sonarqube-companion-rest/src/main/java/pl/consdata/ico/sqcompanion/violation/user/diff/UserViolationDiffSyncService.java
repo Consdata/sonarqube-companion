@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -96,7 +97,12 @@ public class UserViolationDiffSyncService {
                 .date(date)
                 .issues(mapIssues(userIssues.get(date)))
                 .build();
-        userIssues.get(date).forEach(issue -> {
+        userIssues.get(date).forEach(updateEntryWithIssueSeverity(entry));
+        return entry;
+    }
+
+    private Consumer<SonarQubeIssue> updateEntryWithIssueSeverity(UserProjectViolationDiffHistoryEntry entry) {
+        return issue -> {
             switch (issue.getSeverity()) {
                 case BLOCKER:
                     entry.setBlockers(entry.getBlockers() + 1);
@@ -113,9 +119,10 @@ public class UserViolationDiffSyncService {
                 case INFO:
                     entry.setInfos(entry.getInfos() + 1);
                     break;
+                default:
+                    throw new IllegalArgumentException("Unknown issue severity [" + issue.getSeverity() + "]");
             }
-        });
-        return entry;
+        };
     }
 
     private String mapIssues(final List<SonarQubeIssue> userIssues) {

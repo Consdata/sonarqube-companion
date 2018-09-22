@@ -32,26 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public abstract class BaseItTest {
 
-	@TestConfiguration
-	static class ItTestConfiguration {
-
-		@Bean
-		public AppConfig appConfig() {
-			return TestAppConfig.config();
-		}
-
-		@Bean
-		public SonarQubeFacade sonarQubeFacade(final InMemorySonarQubeFacade inMemorySonarQubeFacade) {
-			return inMemorySonarQubeFacade;
-		}
-
-		@Bean
-		public InMemorySonarQubeFacade inMemorySonarQubeFacade() {
-			return new InMemorySonarQubeFacade();
-		}
-
-	}
-
 	@Autowired
 	protected RepositoryService repositoryService;
 
@@ -72,6 +52,26 @@ public abstract class BaseItTest {
 
 	@Autowired
 	protected UserViolationDiffRepository userViolationDiffRepository;
+
+	@TestConfiguration
+	static class ItTestConfiguration {
+
+		@Bean
+		public AppConfig appConfig() {
+			return TestAppConfig.config();
+		}
+
+		@Bean
+		public SonarQubeFacade sonarQubeFacade(final InMemorySonarQubeFacade inMemorySonarQubeFacade) {
+			return inMemorySonarQubeFacade;
+		}
+
+		@Bean
+		public InMemorySonarQubeFacade inMemorySonarQubeFacade() {
+			return new InMemorySonarQubeFacade();
+		}
+
+	}
 
 	@Before
 	public void setUpBaseItTest() {
