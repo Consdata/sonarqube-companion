@@ -39,7 +39,7 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
         final List<UserProjectViolationDiffHistoryEntry> userHistory = userViolationDiffRepository.findByUserId(USER);
         assertThat(userHistory)
                 .extracting(UserProjectViolationDiffHistoryEntry::getBlockers)
-                .containsExactly(2, 0);
+                .endsWith(2, 0);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
 
         // then
         final List<UserProjectViolationDiffHistoryEntry> userHistory = userViolationDiffRepository.findByUserId(USER);
-        assertThat(userHistory).hasSize(0);
+        assertThat(userHistory).extracting(UserProjectViolationDiffHistoryEntry::getDate).doesNotContain(NOW);
     }
 
     private void addUserIssue(String user, String project, LocalDate date, SonarQubeIssueSeverity severity) {
