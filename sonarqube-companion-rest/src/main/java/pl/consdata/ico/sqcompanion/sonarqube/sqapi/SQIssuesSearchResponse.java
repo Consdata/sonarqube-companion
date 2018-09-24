@@ -8,5 +8,6 @@ import java.util.List;
 public class SQIssuesSearchResponse extends SQPaginatedResponse {
 
     private List<SQIssue> issues;
+    private List<SQFacet> facets;
 
 }

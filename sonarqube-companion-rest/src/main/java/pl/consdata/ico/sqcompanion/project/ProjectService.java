@@ -39,7 +39,7 @@ public class ProjectService {
 
     private void syncServerProjects(final String serverId) {
         log.info("Syncing projects from {}", serverId);
-        final List<ProjectEntity> projects = sonarQubeFacade.getProjects(serverId)
+        final List<ProjectEntity> projects = sonarQubeFacade.projects(serverId)
                 .stream()
                 .map(
                         project -> ProjectEntity

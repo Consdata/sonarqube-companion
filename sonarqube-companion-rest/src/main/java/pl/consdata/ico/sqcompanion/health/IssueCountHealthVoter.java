@@ -2,8 +2,8 @@ package pl.consdata.ico.sqcompanion.health;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.history.ProjectHistoryEntryEntity;
-import pl.consdata.ico.sqcompanion.history.ProjectHistoryRepository;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryRepository;
 import pl.consdata.ico.sqcompanion.repository.Project;
 
 import java.util.Optional;

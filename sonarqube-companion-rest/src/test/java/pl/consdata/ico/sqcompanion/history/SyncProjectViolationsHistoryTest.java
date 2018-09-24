@@ -7,6 +7,8 @@ import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeMeasure;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
+import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -33,8 +35,8 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     public void shouldSyncProjectViolationHistory() throws SynchronizationException {
         // given
         int latestAnalyseBlockers = 2;
-        addAnalysedMeasure(LocalDate.now().minusDays(2), 1);
-        addAnalysedMeasure(LocalDate.now().minusDays(1), latestAnalyseBlockers);
+        addAnalysedMeasure(LocalDate.now().minusDays(3), 1);
+        addAnalysedMeasure(LocalDate.now().minusDays(2), latestAnalyseBlockers);
 
         // when
         tickSynchronization();
@@ -53,7 +55,7 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     public void shouldEstimateWhenHistoryExistButNoAnalyses() throws SynchronizationException {
         // when
         int latestAvailableHistoryBlockers = 2;
-        addHistoricEntry(LocalDate.now().minusDays(2), latestAvailableHistoryBlockers);
+        addHistoricEntry(LocalDate.now().minusDays(3), latestAvailableHistoryBlockers);
 
         // when
         tickSynchronization();
@@ -66,7 +68,7 @@ public class SyncProjectViolationsHistoryTest extends BaseItTest {
     }
 
     private ViolationsHistory getProjectViolationsHistory() {
-        return violationsHistoryService.getProjectViolationsHistory(
+        return projectViolationsHistoryService.getProjectViolationsHistory(
                 Project
                         .builder()
                         .serverId(SERVER_ID)

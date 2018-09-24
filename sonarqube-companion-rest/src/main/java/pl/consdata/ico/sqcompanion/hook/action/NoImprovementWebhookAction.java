@@ -2,8 +2,8 @@ package pl.consdata.ico.sqcompanion.hook.action;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.history.GroupViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.history.ViolationsHistoryService;
+import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
@@ -16,11 +16,11 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
 
     public static final String TYPE = "NO_IMPROVEMENT";
     private final RepositoryService repositoryService;
-    private final ViolationsHistoryService violationsHistoryService;
+    private final ProjectViolationsHistoryService projectViolationsHistoryService;
 
-    public NoImprovementWebhookAction(RepositoryService repositoryService, ViolationsHistoryService violationsHistoryService) {
+    public NoImprovementWebhookAction(RepositoryService repositoryService, ProjectViolationsHistoryService projectViolationsHistoryService) {
         this.repositoryService = repositoryService;
-        this.violationsHistoryService = violationsHistoryService;
+        this.projectViolationsHistoryService = projectViolationsHistoryService;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
     }
 
     private boolean isGroupClean(Group group, NoImprovementWebhookActionData actionData) {
-        GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now());
+        GroupViolationsHistoryDiff violationsHistoryDiff = projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now());
         return countDiff(violationsHistoryDiff, actionData) == 0;
     }
 
@@ -42,7 +42,7 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
             return createResponse("clean", null);
         }
 
-        GroupViolationsHistoryDiff violationsHistoryDiff = violationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(1), LocalDate.now());
+        GroupViolationsHistoryDiff violationsHistoryDiff = projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(1), LocalDate.now());
         if (groupWasImproved(violationsHistoryDiff, actionData)) {
             return createResponse("improvement", countDiff(violationsHistoryDiff, actionData));
         } else {
