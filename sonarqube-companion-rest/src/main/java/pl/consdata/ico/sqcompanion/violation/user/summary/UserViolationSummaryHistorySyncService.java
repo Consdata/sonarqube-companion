@@ -57,7 +57,13 @@ public class UserViolationSummaryHistorySyncService {
     }
 
     private void syncUser(final SonarQubeUser user, final List<Project> projects) {
-        projects.forEach(project -> syncUserProject(project, user));
+        projects.forEach(project -> {
+            try {
+                syncUserProject(project, user);
+            } catch (final Exception ex) {
+                log.warn("Can't sync user project [user={}, project={}]", user.getUserId(), project.getKey(), ex);
+            }
+        });
     }
 
     private void syncUserProject(final Project project, final SonarQubeUser user) {
