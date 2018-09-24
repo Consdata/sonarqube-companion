@@ -77,26 +77,23 @@ public class UserViolationDiffSyncService {
 
         final LocalDate syncDate = syncStartDate(firstRequiredSyncDate);
         final Map<LocalDate, List<SonarQubeIssue>> userIssues = userIssuesAfterDate(project, user, syncDate);
-        final Optional<LocalDate> firstDate = userIssues.keySet().stream().sorted().findFirst();
-        if (firstDate.isPresent()) {
-            final List<UserProjectViolationDiffHistoryEntry> entries = new ArrayList<>();
-            for (LocalDate date = firstDate.get(); date.isBefore(today); date = date.plusDays(1)) {
-                log.trace("Syncing user history project history [user={}, project={}, date={}]", user.getUserId(), project.getKey(), date);
-                final String entryByDayId = UserProjectViolationDiffHistoryEntry.combineId(project.getServerId(), user.getUserId(), project.getKey(), date);
-                if (userIssues.containsKey(date)) {
-                    entries.add(historyEntryForIssues(project, user, userIssues, date, entryByDayId));
-                } else {
-                    entries.add(
-                            emptyUserProjectEntry(project, user)
-                                    .id(entryByDayId)
-                                    .date(date)
-                                    .build()
-                    );
-                }
+        final List<UserProjectViolationDiffHistoryEntry> entries = new ArrayList<>();
+        for (LocalDate date = syncDate; date.isBefore(today); date = date.plusDays(1)) {
+            log.trace("Syncing user history project history [user={}, project={}, date={}]", user.getUserId(), project.getKey(), date);
+            final String entryByDayId = UserProjectViolationDiffHistoryEntry.combineId(project.getServerId(), user.getUserId(), project.getKey(), date);
+            if (userIssues.containsKey(date)) {
+                entries.add(historyEntryForIssues(project, user, userIssues, date, entryByDayId));
+            } else {
+                entries.add(
+                        emptyUserProjectEntry(project, user)
+                                .id(entryByDayId)
+                                .date(date)
+                                .build()
+                );
             }
-            if (!entries.isEmpty()) {
-                repository.saveAll(entries);
-            }
+        }
+        if (!entries.isEmpty()) {
+            repository.saveAll(entries);
         }
     }
 
