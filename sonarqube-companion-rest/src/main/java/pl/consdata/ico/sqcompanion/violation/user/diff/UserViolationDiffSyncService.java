@@ -75,10 +75,9 @@ public class UserViolationDiffSyncService {
 
         log.info("Syncing user diff violations [userId={}, project={}]", user.getUserId(), project.getKey());
 
-        final LocalDate syncDate = syncStartDate(firstRequiredSyncDate);
-        final Map<LocalDate, List<SonarQubeIssue>> userIssues = userIssuesAfterDate(project, user, syncDate);
+        final Map<LocalDate, List<SonarQubeIssue>> userIssues = userIssuesAfterDate(project, user, firstRequiredSyncDate);
         final List<UserProjectViolationDiffHistoryEntry> entries = new ArrayList<>();
-        for (LocalDate date = syncDate; date.isBefore(today); date = date.plusDays(1)) {
+        for (LocalDate date = firstRequiredSyncDate; date.isBefore(today); date = date.plusDays(1)) {
             log.trace("Syncing user history project history [user={}, project={}, date={}]", user.getUserId(), project.getKey(), date);
             final String entryByDayId = UserProjectViolationDiffHistoryEntry.combineId(project.getServerId(), user.getUserId(), project.getKey(), date);
             if (userIssues.containsKey(date)) {
@@ -138,12 +137,6 @@ public class UserViolationDiffSyncService {
                 .collect(Collectors.joining(","));
     }
 
-    private LocalDate syncStartDate(final LocalDate firstRequiredSyncDate) {
-        // due to SonarQube housekeeping issues older than 30 day are removed
-        final LocalDate minSyncDate = LocalDate.now().minusDays(30);
-        return firstRequiredSyncDate.isAfter(minSyncDate) ? firstRequiredSyncDate : minSyncDate;
-    }
-
     private UserProjectViolationDiffHistoryEntry.UserProjectViolationDiffHistoryEntryBuilder emptyUserProjectEntry(final Project project, final SonarQubeUser user) {
         return UserProjectViolationDiffHistoryEntry.builder()
                 .userId(user.getUserId())
@@ -160,7 +153,8 @@ public class UserViolationDiffSyncService {
         final IssueFilter userIssuesFilter = IssueFilter.builder()
                 .componentKey(project.getKey())
                 .author(user.getUserId())
-                .createdAfter(syncDate)
+                // due to SonarQube housekeeping issues older than 30 day are removed
+                .createdAfter(dateMin30DaysAgo(syncDate))
                 .build();
         return sonarQubeFacade.issues(project.getServerId(), userIssuesFilter)
                 .stream()
@@ -169,6 +163,11 @@ public class UserViolationDiffSyncService {
 
     private Optional<UserProjectViolationDiffHistoryEntry> lastMeasure(final Project project, final SonarQubeUser user) {
         return repository.findFirstByUserIdAndProjectKeyOrderByDateDesc(user.getUserId(), project.getKey());
+    }
+
+    private LocalDate dateMin30DaysAgo(final LocalDate firstRequiredSyncDate) {
+        final LocalDate minSyncDate = LocalDate.now().minusDays(30);
+        return firstRequiredSyncDate.isAfter(minSyncDate) ? firstRequiredSyncDate : minSyncDate;
     }
 
 }
