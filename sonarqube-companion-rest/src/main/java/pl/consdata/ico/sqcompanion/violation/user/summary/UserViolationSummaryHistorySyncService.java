@@ -69,28 +69,21 @@ public class UserViolationSummaryHistorySyncService {
     private void syncUserProject(final Project project, final SonarQubeUser user) {
         syncUserProjectTimer.record(() -> {
             final LocalDate today = LocalDate.now();
-            final Optional<LocalDate> lastMeasureDate = lastMeasure(project, user).map(UserProjectSummaryViolationHistoryEntry::getDate);
+            final Optional<UserProjectSummaryViolationHistoryEntry> lastMeasure = lastMeasure(project, user);
+            final Optional<LocalDate> lastMeasureDate = lastMeasure.map(UserProjectSummaryViolationHistoryEntry::getDate);
             if (lastMeasureDate.isPresent() && !lastMeasureDate.get().isBefore(today.minusDays(1))) {
                 log.debug("All historic analysis already synchronized");
                 return;
             }
 
             log.info("Syncing user summary violations [userId={}, project={}]", user.getUserId(), project.getKey());
+            final LocalDate dateToSync = today.minusDays(1);
 
-            final LocalDate date = today.minusDays(1);
-            final SonarQubeIssuesFacets userIssuesFacets = sonarQubeFacade.issuesFacet(
-                    project.getServerId(),
-                    IssueFilter.builder()
-                            .componentKey(project.getKey())
-                            .author(user.getUserId())
-                            .createdBefore(date)
-                            .resolved(false)
-                            .facet(IssueFilterFacet.SEVERITIES)
-                            .build()
-            );
-            final SonarQubeIssuesFacet severities = userIssuesFacets
-                    .getFacet(IssueFilterFacet.SEVERITIES)
-                    .orElseThrow(() -> new IllegalStateException("Expected facet not returned from SonarQube!"));
+            if (lastMeasure.isPresent()) {
+                useLastKnownMeasureForMissingDates(project, user, lastMeasure, lastMeasureDate, dateToSync);
+            }
+
+            final SonarQubeIssuesFacet severities = userIssues(project, user, dateToSync);
             repository.save(
                     UserProjectSummaryViolationHistoryEntry.builder()
                             .id(
@@ -98,10 +91,10 @@ public class UserViolationSummaryHistorySyncService {
                                             project.getServerId(),
                                             user.getUserId(),
                                             project.getKey(),
-                                            date
+                                            dateToSync
                                     )
                             )
-                            .date(date)
+                            .date(dateToSync)
                             .serverId(project.getServerId())
                             .userId(user.getUserId())
                             .projectKey(project.getKey())
@@ -113,6 +106,48 @@ public class UserViolationSummaryHistorySyncService {
                             .build()
             );
         });
+    }
+
+    private SonarQubeIssuesFacet userIssues(Project project, SonarQubeUser user, LocalDate dateToSync) {
+        final SonarQubeIssuesFacets userIssuesFacets = sonarQubeFacade.issuesFacet(
+                project.getServerId(),
+                IssueFilter.builder()
+                        .componentKey(project.getKey())
+                        .author(user.getUserId())
+                        .createdBefore(dateToSync)
+                        .resolved(false)
+                        .facet(IssueFilterFacet.SEVERITIES)
+                        .build()
+        );
+        return userIssuesFacets
+                .getFacet(IssueFilterFacet.SEVERITIES)
+                .orElseThrow(() -> new IllegalStateException("Expected facet not returned from SonarQube!"));
+    }
+
+    private void useLastKnownMeasureForMissingDates(Project project, SonarQubeUser user, Optional<UserProjectSummaryViolationHistoryEntry> lastMeasure, Optional<LocalDate> lastMeasureDate, LocalDate dateToSync) {
+        for (LocalDate syncMissingDate = lastMeasureDate.get(); syncMissingDate.isBefore(dateToSync); syncMissingDate = syncMissingDate.plusDays(1)) {
+            repository.save(
+                    UserProjectSummaryViolationHistoryEntry.builder()
+                            .id(
+                                    UserProjectSummaryViolationHistoryEntry.combineId(
+                                            project.getServerId(),
+                                            user.getUserId(),
+                                            project.getKey(),
+                                            syncMissingDate
+                                    )
+                            )
+                            .date(syncMissingDate)
+                            .serverId(project.getServerId())
+                            .userId(user.getUserId())
+                            .projectKey(project.getKey())
+                            .blockers(lastMeasure.get().getBlockers())
+                            .criticals(lastMeasure.get().getCriticals())
+                            .majors(lastMeasure.get().getMajors())
+                            .minors(lastMeasure.get().getMinors())
+                            .infos(lastMeasure.get().getInfos())
+                            .build()
+            );
+        }
     }
 
     private int facetSeverityCount(SonarQubeIssuesFacet severities, String severity) {
