@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.config;
+package pl.consdata.ico.sqcompanion.config.model;
 
 public enum ProjectLinkType {
 

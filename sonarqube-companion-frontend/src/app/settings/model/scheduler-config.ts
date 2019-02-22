@@ -1,0 +1,22 @@
+export enum TimeUnit {
+  NANOSECONDS,
+  MICROSECONDS,
+  MILLISECONDS,
+  SECONDS,
+  MINUTES,
+  HOURS,
+  DAYS
+}
+
+export class SchedulerConfig {
+
+  interval: number;
+  timeUnit: TimeUnit;
+
+  constructor(data?: any) {
+    if (data) {
+      this.interval = data.interval;
+      this.timeUnit = data.timeUnit;
+    }
+  }
+}

@@ -1,5 +1,7 @@
 package pl.consdata.ico.sqcompanion.config;
 
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
+
 import java.util.List;
 
 public class RegexProjectLink {

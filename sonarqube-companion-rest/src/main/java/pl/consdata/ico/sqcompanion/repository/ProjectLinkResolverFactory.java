@@ -2,7 +2,7 @@ package pl.consdata.ico.sqcompanion.repository;
 
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
-import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
 
 /**
  * @author gregorry

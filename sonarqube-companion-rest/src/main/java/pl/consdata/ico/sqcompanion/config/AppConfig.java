@@ -3,6 +3,9 @@ package pl.consdata.ico.sqcompanion.config;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
+import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.SchedulerConfig;
+import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 
 import java.util.ArrayList;
 import java.util.List;

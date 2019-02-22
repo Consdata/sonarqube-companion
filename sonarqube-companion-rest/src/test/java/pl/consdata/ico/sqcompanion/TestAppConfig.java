@@ -3,10 +3,10 @@ package pl.consdata.ico.sqcompanion;
 import lombok.experimental.UtilityClass;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.DirectProjectLink;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
-import pl.consdata.ico.sqcompanion.config.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
+import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 
 /**
  * @author gregorry

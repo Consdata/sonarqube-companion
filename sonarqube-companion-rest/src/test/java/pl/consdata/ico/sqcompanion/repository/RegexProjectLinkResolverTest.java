@@ -4,11 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.ProjectLinkType;
+import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
 import pl.consdata.ico.sqcompanion.config.RegexProjectLink;
-import pl.consdata.ico.sqcompanion.config.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 import pl.consdata.ico.sqcompanion.project.ProjectEntity;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 

@@ -3,8 +3,8 @@ package pl.consdata.ico.sqcompanion.hook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.WebhookDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.WebhookDefinition;
 import pl.consdata.ico.sqcompanion.hook.trigger.WebhookTrigger;
 
 import java.util.ArrayList;

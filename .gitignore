@@ -5,7 +5,7 @@ target/
 bin/
 node_modules/
 sq-companion-config.json
-sq-companion-config.*.json
+sq-companion-config.*.json*
 *-own.json
 sonarqube-keystore.keystore
 consdata-ca.crt

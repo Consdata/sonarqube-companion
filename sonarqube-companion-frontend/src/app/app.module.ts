@@ -31,6 +31,19 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
 import {ProjectComponent} from './project/project-component';
 import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
+import {SettingsComponent} from "./settings/settings-component";
+import {GeneralSettingsComponent} from "./settings/general-settings-component";
+import {ServersSettingsComponent} from "./settings/servers-settings-component";
+import {GroupsSettingsComponent} from "./settings/groups-settings-component";
+import {WebhooksSettingsComponent} from "./settings/webhooks-settings-component";
+import {FormsModule} from "@angular/forms";
+import {TokenAuthenticationComponent} from "./settings/authentication/token-authentication-component";
+import {BasicAuthenticationComponent} from "./settings/authentication/basic-authentication-component";
+import {SettingsService} from "./settings/service/settings-service";
+import {ServerComponent} from "./settings/server-component";
+import {EnumToSelectPipe, SchedulerComponent} from "./settings/scheduler/scheduler-component";
+import {GroupSettingsComponent} from "./settings/group/group-settings-component";
+import {GroupDetailSettingsComponent} from "./settings/group/group-detail-settings-component";
 
 @NgModule({
   declarations: [
@@ -42,7 +55,6 @@ import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
     NotFoundComponent,
     SpinnerComponent,
     GroupComponent,
-    GroupComponent,
     GroupOverviewTreeItemComponent,
     ViolationsHistoryComponent,
     GroupOverviewCardComponent,
@@ -52,13 +64,26 @@ import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
     GroupProjectsComponent,
     ProjectViolationsComponent,
     ProjectComponent,
-    ProjectOverviewCardsComponent
+    ProjectOverviewCardsComponent,
+    SettingsComponent,
+    GeneralSettingsComponent,
+    ServersSettingsComponent,
+    GroupsSettingsComponent,
+    WebhooksSettingsComponent,
+    TokenAuthenticationComponent,
+    BasicAuthenticationComponent,
+    GroupSettingsComponent,
+    ServerComponent,
+    SchedulerComponent,
+    EnumToSelectPipe,
+    GroupDetailSettingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpModule,
-    AmChartsModule
+    AmChartsModule,
+    FormsModule
   ],
   providers: [
     OverviewService,
@@ -68,7 +93,8 @@ import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
     SynchronizationService,
     AppState,
     AppStateService,
-    ProjectService
+    ProjectService,
+    SettingsService
   ],
   bootstrap: [
     SonarQubeCompanionComponent

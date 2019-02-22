@@ -1,0 +1,16 @@
+sq-settings {
+  .sq-settings-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sq-settings-navbar-element {
+    cursor: pointer;
+  }
+
+  .sq-settings-group-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+}

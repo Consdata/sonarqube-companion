@@ -1,5 +1,6 @@
-package pl.consdata.ico.sqcompanion.config;
+package pl.consdata.ico.sqcompanion.config.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class SchedulerConfig {
 
     public static final int DEFAULT_INTERVAL = 30;

@@ -80,8 +80,8 @@ public class SynchronizationService {
         repositoryService.syncGroups();
         usersService.sync();
         projectViolationsHistoryService.syncProjectsHistory();
-        userViolationDiffSyncService.sync();
-        userViolationSummaryHistorySyncService.sync();
+        //userViolationDiffSyncService.sync();
+        //userViolationSummaryHistorySyncService.sync();
         synchronizationStateService.finishSynchronization();
 
         Caches.LIST

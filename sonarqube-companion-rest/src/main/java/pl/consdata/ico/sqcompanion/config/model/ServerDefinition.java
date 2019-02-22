@@ -1,8 +1,7 @@
-package pl.consdata.ico.sqcompanion.config;
+package pl.consdata.ico.sqcompanion.config.model;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Singular;
 
 import java.util.ArrayList;
 import java.util.List;

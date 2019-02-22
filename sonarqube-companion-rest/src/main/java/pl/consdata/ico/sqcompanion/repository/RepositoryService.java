@@ -3,9 +3,9 @@ package pl.consdata.ico.sqcompanion.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 
 import java.util.List;
 import java.util.Objects;

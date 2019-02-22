@@ -12,8 +12,8 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.ServerAuthentication;
-import pl.consdata.ico.sqcompanion.config.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.ServerAuthentication;
+import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 import pl.consdata.ico.sqcompanion.sonarqube.sqapi.SQPaginatedResponse;
 
 import java.nio.charset.StandardCharsets;

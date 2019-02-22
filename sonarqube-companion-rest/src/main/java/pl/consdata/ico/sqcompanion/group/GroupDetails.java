@@ -2,7 +2,7 @@ package pl.consdata.ico.sqcompanion.group;
 
 import lombok.Builder;
 import lombok.Data;
-import pl.consdata.ico.sqcompanion.config.GroupEvent;
+import pl.consdata.ico.sqcompanion.config.model.GroupEvent;
 import pl.consdata.ico.sqcompanion.health.HealthStatus;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.issue.IssueSummary;
