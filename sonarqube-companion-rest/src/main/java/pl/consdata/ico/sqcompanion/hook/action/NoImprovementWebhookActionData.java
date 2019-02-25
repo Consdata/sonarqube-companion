@@ -9,10 +9,10 @@ import java.util.List;
 public class NoImprovementWebhookActionData extends WebhookActionData {
 
     @JsonProperty("period")
-    private Period period;
+    private String period;
     @JsonProperty("severity")
     private List<String> severity;
 
-    enum Period {DAILY}
+    enum Period {DAILY, WEEKLY, MONTHLY}
 
 }
