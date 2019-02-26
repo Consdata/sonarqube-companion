@@ -1,24 +1,22 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {SynchronizationState} from './synchronization-state';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class SynchronizationService {
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
 
   }
 
   startSynchronization(): Observable<SynchronizationState> {
     return this.http
-      .post('api/v1/sync/start', {})
-      .map(response => response.json());
+      .post<SynchronizationState>('api/v1/sync/start', {});
   }
 
   synchronizationState(): Observable<SynchronizationState> {
     return this.http
-      .get('api/v1/sync/state')
-      .map(response => response.json());
+      .get<SynchronizationState>('api/v1/sync/state');
   }
 
 }

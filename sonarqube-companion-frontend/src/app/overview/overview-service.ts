@@ -1,18 +1,21 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Http} from '@angular/http';
+import {Observable} from 'rxjs';
 import {GroupOverview} from './group-overview';
+import {HttpClient} from "@angular/common/http";
+import {map} from "rxjs/internal/operators";
 
 @Injectable()
 export class OverviewService {
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   getRootGroupOverview(): Observable<GroupOverview> {
     return this.http
-      .get('api/v1/overview')
-      .map(response => new GroupOverview(response.json()));
+      .get<any>('api/v1/overview')
+      .pipe(
+        map(data => new GroupOverview(data))
+      );
   }
 
 }

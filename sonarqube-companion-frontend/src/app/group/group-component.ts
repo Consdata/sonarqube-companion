@@ -5,6 +5,7 @@ import {GroupService} from './group-service';
 import {ActivatedRoute} from '@angular/router';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
+import {filter, map, switchMap} from "rxjs/internal/operators";
 
 @Component({
   selector: 'sq-group',
@@ -87,17 +88,23 @@ export class GroupComponent {
               private violationsHistoryService: ViolationsHistoryService) {
     route
       .paramMap
-      .switchMap(params => groupService.getGroup(params.get('uuid')))
+      .pipe(
+        switchMap(params => groupService.getGroup(params.get('uuid')))
+      )
       .subscribe(group => this.group = group);
     route
       .queryParamMap
-      .filter(params => params.has("projects.filter.severity"))
-      .map(params => params.get("projects.filter.severity"))
+      .pipe(
+        filter(params => params.has("projects.filter.severity")),
+        map(params => params.get("projects.filter.severity"))
+      )
       .subscribe(filterSeverity => this.projectsFilter = filterSeverity);
     route
       .queryParamMap
-      .filter(params => params.has("history.filter.violations"))
-      .map(params => params.get("history.filter.violations"))
+      .pipe(
+        filter(params => params.has("history.filter.violations")),
+        map(params => params.get("history.filter.violations"))
+      )
       .subscribe(historyFilter => this.historyFilter = historyFilter);
   }
 
