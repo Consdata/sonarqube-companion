@@ -33,6 +33,7 @@
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
     "moment": "2.21.0",
+    "sshpk": "1.16.1",
     "node-sass": "4.11.0",
     "rxjs": "6.4.0",
     "spinkit": "1.2.5",
