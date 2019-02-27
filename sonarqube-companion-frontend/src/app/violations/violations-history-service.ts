@@ -4,7 +4,7 @@ import {ViolationsHistory} from './violations-history';
 import {GroupViolationsHistoryDiff} from './group-violations-history-diff';
 import {ProjectViolationsHistoryDiff} from './project-violations-history-diff';
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs/internal/operators";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class ViolationsHistoryService {

@@ -5,7 +5,7 @@ import {GroupService} from './group-service';
 import {ActivatedRoute} from '@angular/router';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
-import {filter, map, switchMap} from "rxjs/internal/operators";
+import {filter, map, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'sq-group',

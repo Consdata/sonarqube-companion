@@ -14,7 +14,7 @@ import {AmChartsService} from '@amcharts/amcharts3-angular';
 import {Observable, Subject, timer} from 'rxjs';
 import {GroupDetails} from '../group/group-details';
 import {GroupEvent} from '../group/group-event';
-import {debounce, filter, map} from "rxjs/internal/operators";
+import {debounce, filter, map} from "rxjs/operators";
 
 @Component({
   selector: 'sq-violations-history',
