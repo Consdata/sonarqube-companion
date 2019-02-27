@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {SynchronizationService} from './synchronization-service';
 import {SynchronizationState} from './synchronization-state';
-import {TimerObservable} from 'rxjs/observable/TimerObservable';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription, timer} from 'rxjs';
 
 @Component({
   selector: 'sq-synchronization',
@@ -93,7 +92,7 @@ export class SynchronizationComponent implements AfterViewInit, OnDestroy {
     if (this.pollTimerSubscription) {
       this.pollTimerSubscription.unsubscribe();
     }
-    this.pollTimerSubscription = TimerObservable.create(this.pollScheduleInterval).subscribe(() => {
+    this.pollTimerSubscription = timer(this.pollScheduleInterval).subscribe(() => {
       this.pollState();
     });
   }

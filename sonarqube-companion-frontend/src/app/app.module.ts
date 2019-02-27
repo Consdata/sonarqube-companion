@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HttpModule} from '@angular/http';
 
 import {AmChartsModule} from '@amcharts/amcharts3-angular';
 
@@ -31,6 +30,7 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
 import {ProjectComponent} from './project/project-component';
 import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -57,7 +57,7 @@ import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpModule,
+    HttpClientModule,
     AmChartsModule
   ],
   providers: [

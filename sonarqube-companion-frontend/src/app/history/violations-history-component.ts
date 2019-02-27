@@ -1,15 +1,20 @@
 import {
-  Component, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output,
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   SimpleChanges
 } from '@angular/core';
-
-import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {ViolationsHistory} from '../violations/violations-history';
 import {AmChartsService} from '@amcharts/amcharts3-angular';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subject, timer} from 'rxjs';
 import {GroupDetails} from '../group/group-details';
 import {GroupEvent} from '../group/group-event';
+import {debounce, filter, map} from "rxjs/operators";
 
 @Component({
   selector: 'sq-violations-history',
@@ -58,8 +63,10 @@ export class ViolationsHistoryComponent implements OnChanges, OnDestroy, OnInit 
       });
     this.changesSubject
       .asObservable()
-      .filter(changes => changes.violationsFilter !== undefined)
-      .map(changes => changes.violationsFilter.currentValue)
+      .pipe(
+        filter(changes => changes.violationsFilter !== undefined),
+        map(changes => changes.violationsFilter.currentValue)
+      )
       .subscribe(filter => this.changeChartIssue(filter));
   }
 
@@ -125,7 +132,9 @@ export class ViolationsHistoryComponent implements OnChanges, OnDestroy, OnInit 
     });
     zoomedSubject
       .asObservable()
-      .debounce(() => Observable.timer(500))
+      .pipe(
+        debounce(() => timer(500))
+      )
       .subscribe(ev => this.ngZone.run(() => this.zoomed.emit(ev)));
 
     let zoomInitialized = false;
