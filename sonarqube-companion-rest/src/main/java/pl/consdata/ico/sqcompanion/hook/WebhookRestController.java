@@ -28,10 +28,10 @@ public class WebhookRestController {
     }
 
     private String getRandomCallbackIdIfNotSet(WebhookCallback callback) {
-        if (StringUtils.isBlank(callback.getId())) {
+        if (StringUtils.isBlank(callback.getUuid())) {
             return UUID.randomUUID().toString();
         } else {
-            return callback.getId();
+            return callback.getUuid();
         }
     }
 

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
+
 @Slf4j
 @Service
 public class WebhookService {
@@ -27,12 +30,12 @@ public class WebhookService {
     }
 
     private List<Webhook> buildWebhooks(GroupDefinition group) {
-        return group.getWebhooks().stream().map(webhookDef -> buildWebhook(webhookDef, group.getUuid())).collect(Collectors.toList());
+        return ofNullable(group.getWebhooks()).orElse(emptyList()).stream().map(webhookDef -> buildWebhook(webhookDef, group.getUuid())).collect(Collectors.toList());
     }
 
     private void agregateWebhooks(final GroupDefinition group) {
         try {
-            group.getGroups().forEach(this::agregateWebhooks);
+            ofNullable(group.getGroups()).orElse(emptyList()).forEach(this::agregateWebhooks);
             webhooks.addAll(buildWebhooks(group));
         } catch (final Exception exception) {
             log.error("Can't sync group details [group={}]", group, exception);

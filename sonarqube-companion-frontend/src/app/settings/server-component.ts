@@ -1,74 +1,64 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {ServerDefinition} from "./model/server-definition";
-import {BasicAuthenticationData, TokenAuthenticationData} from "./model/authentication-data";
+import {Component} from '@angular/core';
+import {ServerDefinition} from './model/server-definition';
+import {SettingsListDetailsItem} from './common/settings-list-item';
+import * as uuid from 'uuid';
 
 
 @Component({
   selector: `sq-settings-server`,
   template: `
-    <div class="header">
-      <div class="id">{{server.id}}</div>
-      <div class="actions">
-        <button *ngIf="edit" (click)="onSave()">save</button>
-        <button (click)="toggleEdit()">edit</button>
-        <button (click)="onRemove()">remove</button>
-      </div>
-    </div>
-    <div class="detail" *ngIf="edit">
-      <div class="id">
+    <div class="sq-settings-detail">
+      <div class="element">
+        <label class="sq-setting-label">Server unique id</label>
         <input type="text" [(ngModel)]="server.id"/>
       </div>
-      <div class="url">
+      <div class="element">
+        <label class="sq-setting-label">Server url</label>
         <input type="text" [(ngModel)]="server.url"/>
       </div>
-      <div class="authentication">
-        <select [(ngModel)]="server.authentication.type">
-          <option value="none">None</option>
-          <option value="token" (select)="onTokenAuthSelect()">Token</option>
-          <option value="basic" (select)="onBasicAuthSelect()">Basic</option>
-        </select>
+      <div class="element">
+        <label class="sq-setting-label">Authorization method</label>
         <div>
-          <basic-authentication *ngIf="server.authentication.type=='basic'"
-                                [params]="server.authentication.params"></basic-authentication>
-          <token-authentication *ngIf="server.authentication.type=='token'"
-                                [params]="server.authentication.params"></token-authentication>
+          <select [(ngModel)]="server.authentication.type">
+            <option value="none">None</option>
+            <option value="token">Token</option>
+            <option value="basic">Basic</option>
+          </select>
         </div>
+      </div>
+      <div class="element">
+        <basic-authentication *ngIf="server.authentication.type=='basic'"
+                              [(params)]="server.authentication.params"></basic-authentication>
+        <token-authentication *ngIf="server.authentication.type=='token'"
+                              [(params)]="server.authentication.params"></token-authentication>
+      </div>
+
+      <div class="element">
+        <sq-settings-badge [(items)]="server.blacklistUsers"
+                           [title]="'Users blackList'"></sq-settings-badge>
       </div>
     </div>
   `
 })
-export class ServerComponent {
+export class ServerComponent implements SettingsListDetailsItem {
 
+  server: ServerDefinition;
 
-  @Input()
-  private server: ServerDefinition;
-  @Input()
-  private edit: boolean = false;
-
-  @Output()
-  private remove = new EventEmitter<void>();
-
-  @Output()
-  private save = new EventEmitter<ServerDefinition>();
-
-  toggleEdit() {
-    this.edit = !this.edit;
+  setModel(model: any): void {
+    this.server = <ServerDefinition>model;
+    if (!this.server.id) {
+      this.server.id = uuid.v4();
+    }
   }
 
-  onSave() {
-    this.save.emit(this.server);
-    this.toggleEdit();
+  setMetadata(data: any): void {
   }
 
-  onRemove() {
-    this.remove.emit();
+  getModel(): any {
+    return this.server
   }
 
-  onTokenAuthSelect() {
-    this.server.authentication.params = new TokenAuthenticationData({token: ''});
-  }
-
-  onBasicAuthSelect() {
-    this.server.authentication.params = new BasicAuthenticationData({user: '', password: ''});
+  getTitle(): string {
+    return this.server.id;
   }
 }

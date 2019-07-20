@@ -16,7 +16,7 @@ import {AppStateService} from 'app/app-state-service';
 export class SettingsMenuComponent {
 
   @Output()
-  private toggle = new EventEmitter<void>();
+  toggle = new EventEmitter<void>();
 
   constructor(private appStateService: AppStateService) {
   }

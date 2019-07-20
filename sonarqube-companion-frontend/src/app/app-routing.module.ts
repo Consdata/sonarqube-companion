@@ -29,7 +29,7 @@ const routes: Routes = [
     component: SettingsComponent
   },
   {
-    path: 'settings/group/:uuid',
+    path: 'settings/group/:parentUuid/:uuid',
     component: GroupDetailSettingsComponent
   },
   {

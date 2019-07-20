@@ -1,16 +1,67 @@
-sq-settings {
-  .sq-settings-container {
+
+.sq-settings-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.sq-settings-navbar-element {
+  cursor: pointer;
+}
+
+.sq-settings-group-title {
+  display: flex;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.sq-settings-group-sub-title {
+  font-size: 1.0rem;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.sq-settings-group-sub-container {
+  margin-left: 20px;
+}
+
+.sq-setting-label {
+  font-size: 1.0rem;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.sq-setting-container {
+  display: flex;
+  margin-left: 20px;
+}
+
+.sq-setting-error {
+  display: flex;
+  justify-content: center;
+  font-weight: 400;
+  color: $color-danger;
+  font-size: 20px;
+  margin: 5px;
+}
+
+.node-content-wrapper-focused {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.sq-settings-detail {
+  .element {
+    label {
+      margin: 10px;
+    }
+    margin: 10px
+  }
+
+  input {
     width: 100%;
-    display: flex;
-    flex-direction: column;
   }
 
-  .sq-settings-navbar-element {
-    cursor: pointer;
-  }
-
-  .sq-settings-group-title {
-    font-size: 1.6rem;
-    font-weight: 600;
-  }
 }

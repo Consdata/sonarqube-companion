@@ -8,650 +8,106 @@
         "token" : "ad12c8f5f53dbad1c497f00c81ac5d8bbf582ecf"
       }
     },
-    "blacklistUsers" : [ ]
+    "blacklistUsers" : [ "ghuber.*", "mkowalski.*", "hudson.*" ]
   }, {
-    "id" : "sdsdads",
-    "url" : "adsadas",
+    "id" : "sonarqube7.consdata.local",
+    "url" : "http://sonarqube7.consdata.local:9000/",
     "authentication" : {
-      "type" : "none",
-      "params" : null
+      "type" : "token",
+      "params" : {
+        "token" : "5943c2b13176a32698a3e67d7f4a4de53e88525f"
+      }
     },
-    "blacklistUsers" : [ ]
+    "blacklistUsers" : [ "asd", "asd", "asd", "asd", "678", "asdas", "asdasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dasasd", "dsaasd", "asdasd", "asd", "asd", "123123" ]
   } ],
   "rootGroup" : {
     "uuid" : "82145dba-aed1-4273-a3f8-07d305aa2ee9",
-    "name" : "Consdata",
-    "description" : null,
+    "name" : "82145dba-aed1-4273-a3f8-07d305aa2ee9",
+    "description" : "null",
     "groups" : [ {
-      "uuid" : "c9727b46-423e-4fae-8480-7fa045de84b2",
-      "name" : "Eximee",
+      "uuid" : "a429f288-9b81-4b01-a68c-218843f740c7",
+      "name" : "a429f288-9b81-4b01-a68c-218843f740c7",
       "description" : null,
-      "groups" : [ {
-        "uuid" : "db9b61eb-a02d-4b97-8db6-3cf53cda5400",
-        "name" : "Pantery",
-        "description" : null,
-        "groups" : [ {
-          "uuid" : "4f757449-594d-4573-a863-12cb1a800ce5",
-          "name" : "Pantery 1",
-          "description" : null,
-          "groups" : [ ],
-          "projectLinks" : [ {
-            "serverId" : "sonarqube.consdata.local",
-            "type" : "REGEX",
-            "config" : {
-              "include" : [ "^pl.consdata.eximee:eximee-bzwbk-dyspozycje:master$", "^pl.consdata.eximee:eximee-bzwbk-kg:master$", "^pl.consdata.eximee:eximee-bzwbk-kameleon-commons:master$", "^pl.consdata.eximee:eximee-saved-forms:master$", "^pl.consdata.eximee.bzwbk.alfresco:eximee-alfresco-bzwbk:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-common-biz:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-knp:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-kpf:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-ps:master$", "^pl.consdata.eximee:eximee-survey:master$", "^pl.consdata.eximee.sgb:eximee-sgb-kg:master$", "^pl.consdata.eximee:eximee-osgi-bridge-commons:master$", "^pl.consdata.eximee.notification:eximee-notification:master", "^pl.consdata.eximee:repository:master$", "^pl.consdata.eximee.validation.basevalidators:parent:master$", "^pl.consdata.eximee:eximee-license-service:master$", "^pl.consdata.eximee.osgi:osgi-bridge:master$", "^pl.consdata.eximee.knowledge.base:knowledge-base:master$", "^pl.consdata.eximee:repository-ift:master$", "^pl.consdata.eximee:eximee-ws-logging:master$", "^pl.consdata.eximee:eximee-tomcat-filters:master$", "^pl.consdata.eximee:eximee-status:master$", "^pl.consdata.eximee:eximee-report-core-overlay:master$", "^pl.consdata.eximee.webforms:webforms:master$", "^pl.consdata.eximee.validation:validation:master$", "^pl.consdata.eximee:repository-text-content:master", "^pl.consdata.iew.serviceproxy:eximee-baseproxies:master$", "^pl.consdata.iew.serviceproxy:serviceproxy:master$", "^pl.consdata.eximee:router:master$", "^pl.consdata.eximee:repository-connector:master$", "^pl.consdata.eximee:repository-commons:master$" ],
-              "exclude" : [ ]
-            }
-          } ],
-          "events" : [ {
-            "type" : "date",
-            "name" : "I schizma panter",
-            "description" : null,
-            "data" : {
-              "date" : "2018-04-16"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 1",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-04-17",
-              "endDate" : "2018-04-19"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 2",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-04-19",
-              "endDate" : "2018-04-26"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 3",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-04-26",
-              "endDate" : "2018-05-11"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 4",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-05-11",
-              "endDate" : "2018-05-18"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 5",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-05-18",
-              "endDate" : "2018-05-25"
-            }
-          } ],
-          "webhooks" : [ ]
-        }, {
-          "uuid" : "690cfbe1-87a2-43bf-b37a-40320191ab3e",
-          "name" : "Pantery 2",
-          "description" : null,
-          "groups" : [ ],
-          "projectLinks" : [ {
-            "serverId" : "sonarqube.consdata.local",
-            "type" : "REGEX",
-            "config" : {
-              "include" : [ "^pl.consdata.eximee.eximee-ca-kr:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-ib24:master$", "^pl.consdata.eximee:eximee-bzwbk-dyspozycje:master$", "^pl.consdata.eximee:eximee-bzwbk-kameleon-commons:master$", "^pl.consdata.eximee:eximee-saved-forms:master$", "^pl.consdata.eximee.bzwbk.alfresco:eximee-alfresco-bzwbk:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-common-biz:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-kfc:master$", "^pl.consdata.eximee:eximee-ca-core:master$", "^pl.consdata.eximee:eximee-ca-security-proxy:master$", "^pl.consdata.eximee:eximee-survey:master$", "^pl.consdata.eximee.sgb:eximee-sgb-kg:master$", "^pl.consdata.eximee:eximee-osgi-bridge-commons:master$", "^pl.consdata.eximee.notification:eximee-notification:master", "^pl.consdata.eximee:repository:master$", "^pl.consdata.eximee.validation.basevalidators:parent:master$", "^pl.consdata.eximee:eximee-license-service:master$", "^pl.consdata.eximee.osgi:osgi-bridge:master$", "^pl.consdata.eximee.knowledge.base:knowledge-base:master$", "^pl.consdata.eximee:repository-ift:master$", "^pl.consdata.eximee:eximee-ws-logging:master$", "^pl.consdata.eximee:eximee-tomcat-filters:master$", "^pl.consdata.eximee:eximee-status:master$", "^pl.consdata.eximee:eximee-report-core-overlay:master$", "^pl.consdata.eximee.webforms:webforms:master$", "^pl.consdata.eximee.validation:validation:master$", "^pl.consdata.eximee:repository-text-content:master", "^pl.consdata.iew.serviceproxy:eximee-baseproxies:master$", "^pl.consdata.iew.serviceproxy:serviceproxy:master$", "^pl.consdata.eximee:router:master$", "^pl.consdata.eximee:repository-connector:master$", "^pl.consdata.eximee:repository-commons:master$" ],
-              "exclude" : [ ]
-            }
-          } ],
-          "events" : [ {
-            "type" : "date",
-            "name" : "I schizma panter",
-            "description" : null,
-            "data" : {
-              "date" : "2018-04-16"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 1",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-04-17",
-              "endDate" : "2018-04-19"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 2",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-04-19",
-              "endDate" : "2018-04-26"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 3",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-04-26",
-              "endDate" : "2018-05-11"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 4",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-05-11",
-              "endDate" : "2018-05-18"
-            }
-          }, {
-            "type" : "period",
-            "name" : "Sprint 5",
-            "description" : null,
-            "data" : {
-              "startDate" : "2018-05-18",
-              "endDate" : "2018-05-25"
-            }
-          } ],
-          "webhooks" : [ ]
-        } ],
-        "projectLinks" : [ {
-          "serverId" : "sonarqube.consdata.local",
-          "type" : "REGEX",
-          "config" : {
-            "include" : [ "^pl.consdata.eximee.eximee-ca-kr:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-ib24:master$", "^pl.consdata.eximee:eximee-bzwbk-dyspozycje:master$", "^pl.consdata.eximee:eximee-bzwbk-kg:master$", "^pl.consdata.eximee:eximee-bzwbk-kameleon-commons:master$", "^pl.consdata.eximee:eximee-saved-forms:master$", "^pl.consdata.eximee.bzwbk.alfresco:eximee-alfresco-bzwbk:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-common-biz:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-kfc:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-knp:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-kpf:master$", "^pl.consdata.eximee.bzwbk:eximee-bzwbk-ps:master$", "^pl.consdata.eximee:eximee-ca-core:master$", "^pl.consdata.eximee:eximee-ca-security-proxy:master$", "^pl.consdata.eximee:eximee-survey:master$", "^pl.consdata.eximee.sgb:eximee-sgb-kg:master$", "^pl.consdata.eximee:eximee-osgi-bridge-commons:master$", "^pl.consdata.eximee.notification:eximee-notification:master", "^pl.consdata.eximee:repository:master$", "^pl.consdata.eximee.validation.basevalidators:parent:master$", "^pl.consdata.eximee:eximee-license-service:master$", "^pl.consdata.eximee.osgi:osgi-bridge:master$", "^pl.consdata.eximee.knowledge.base:knowledge-base:master$", "^pl.consdata.eximee:repository-ift:master$", "^pl.consdata.eximee:eximee-ws-logging:master$", "^pl.consdata.eximee:eximee-tomcat-filters:master$", "^pl.consdata.eximee:eximee-status:master$", "^pl.consdata.eximee:eximee-report-core-overlay:master$", "^pl.consdata.eximee.webforms:webforms:master$", "^pl.consdata.eximee.validation:validation:master$", "^pl.consdata.eximee:repository-text-content:master", "^pl.consdata.iew.serviceproxy:eximee-baseproxies:master$", "^pl.consdata.iew.serviceproxy:serviceproxy:master$", "^pl.consdata.eximee:router:master$", "^pl.consdata.eximee:repository-connector:master$", "^pl.consdata.eximee:repository-commons:master$" ],
-            "exclude" : [ ]
-          }
-        } ],
-        "events" : [ {
-          "type" : "period",
-          "name" : "pantery - CAC5",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-08-07",
-            "endDate" : "2017-08-11"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-1 - Nowy, lepszy świat",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-08-11",
-            "endDate" : "2017-08-25"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-2 - Sprint bez nazwy",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-08-25",
-            "endDate" : "2017-09-01"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-3 - wash&go",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-09-01",
-            "endDate" : "2017-09-08"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-4 - napierdalamy dalej",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-09-08",
-            "endDate" : "2017-09-16"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-5 - same ważne rzeczy",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-09-16",
-            "endDate" : "2017-09-22"
-          }
-        }, {
-          "type" : "date",
-          "name" : "Świadomie wrzucamy niepełną zmianę na master",
-          "description" : null,
-          "data" : {
-            "date" : "2017-09-22"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-6 - koniec stażu",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-09-22",
-            "endDate" : "2017-09-29"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-7 - same ciekawe rzeczy",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-09-29",
-            "endDate" : "2017-10-06"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-8 - to już jest koniec",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-10-06",
-            "endDate" : "2017-10-13"
-          }
-        }, {
-          "type" : "date",
-          "name" : "Udrożnienie buildu 500+ BZWBK",
-          "description" : null,
-          "data" : {
-            "date" : "2017-10-12"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-9 - lot of tits",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-10-13",
-            "endDate" : "2017-10-20"
-          }
-        }, {
-          "type" : "date",
-          "name" : "Coś się stało z bazą sonara",
-          "description" : null,
-          "data" : {
-            "date" : "2017-10-16"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-10 - samfing kriejtiff",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-10-20",
-            "endDate" : "2017-10-27"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-11 - mały ale wariat",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-10-27",
-            "endDate" : "2017-11-03"
-          }
-        }, {
-          "type" : "date",
-          "name" : "Lombok w eximee-ib24",
-          "description" : null,
-          "data" : {
-            "date" : "2017-11-08"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-12 - mam już dość ib24",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-11-03",
-            "endDate" : "2017-11-10"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-13 - mamy luz z 500pluz",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-11-10",
-            "endDate" : "2017-11-17"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-14 - pochłanialnia testerów",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-11-17",
-            "endDate" : "2017-11-24"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-15 - no myślę właśnie",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-11-24",
-            "endDate" : "2017-12-01"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-16 - kamień się zerwał",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-12-01",
-            "endDate" : "2017-12-08"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-17 - joemonster",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-12-08",
-            "endDate" : "2017-12-15"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-18",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-12-15",
-            "endDate" : "2017-12-22"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-18 3/4 - Ratujemy CA",
-          "description" : null,
-          "data" : {
-            "startDate" : "2017-12-22",
-            "endDate" : "2018-01-02"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery-19 - Nowa nadzieja",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-01-02",
-            "endDate" : "2018-01-09"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 20 - Przebudzenie mocy",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-01-09",
-            "endDate" : "2018-01-16"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 21 - Stabilizacja mocy",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-01-16",
-            "endDate" : "2018-01-22"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 22",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-01-22",
-            "endDate" : "2018-01-30"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 23",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-01-30",
-            "endDate" : "2018-02-01"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 24",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-02-01",
-            "endDate" : "2018-02-09"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 25",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-02-09",
-            "endDate" : "2018-02-16"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 26",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-02-16",
-            "endDate" : "2018-02-23"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 27",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-02-23",
-            "endDate" : "2018-03-02"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 28",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-03-02",
-            "endDate" : "2018-03-09"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 29",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-03-09",
-            "endDate" : "2018-03-16"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 30",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-03-16",
-            "endDate" : "2018-03-23"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 31",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-03-23",
-            "endDate" : "2018-03-31"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 32",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-03-31",
-            "endDate" : "2018-04-06"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 33",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-04-06",
-            "endDate" : "2018-04-09"
-          }
-        }, {
-          "type" : "period",
-          "name" : "pantery 34",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-04-09",
-            "endDate" : "2018-04-16"
-          }
-        }, {
-          "type" : "date",
-          "name" : "I schizma panter",
-          "description" : null,
-          "data" : {
-            "date" : "2018-04-16"
-          }
-        }, {
-          "type" : "period",
-          "name" : "Sprint 1",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-04-17",
-            "endDate" : "2018-04-19"
-          }
-        }, {
-          "type" : "period",
-          "name" : "Sprint 2",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-04-19",
-            "endDate" : "2018-04-26"
-          }
-        }, {
-          "type" : "period",
-          "name" : "Sprint 3",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-04-26",
-            "endDate" : "2018-05-11"
-          }
-        }, {
-          "type" : "period",
-          "name" : "Sprint 4",
-          "description" : null,
-          "data" : {
-            "startDate" : "2018-05-11",
-            "endDate" : "2018-05-18"
-          }
-        } ],
-        "webhooks" : [ {
-          "action" : {
-            "type" : "NO_IMPROVEMENT",
-            "type" : "NO_IMPROVEMENT",
-            "period" : "DAILY",
-            "severity" : [ "blockers", "criticals", "majors" ]
+      "groups" : [ ],
+      "projectLinks" : [ {
+        "uuid" : "852995c5-112a-428d-ad83-c6770172bf72",
+        "serverId" : "sonarqube.consdata.local",
+        "type" : "DIRECT",
+        "config" : {
+          "link" : "pl.consdata.eximee.parking.alfresco:eximee-parking-alfresco:master"
+        }
+      }, {
+        "uuid" : "04bdfd39-0f88-4b58-8f67-89bac802a037",
+        "serverId" : "sonarqube.consdata.local",
+        "type" : "REGEX",
+        "config" : {
+          "include" : [ "sdaadsdasasd", "asd", "das", "sda", "das", "das", "sda", "asd", "asd" ],
+          "exclude" : [ "sd", "ads", "das", "asd", "asd", "asd", "asd", "ads", "ads" ]
+        }
+      } ],
+      "events" : [ {
+        "uuid" : "cc77a9b3-6ed0-40cc-91e8-d80a7e0ffa2c",
+        "type" : "period",
+        "name" : "asdasdasdaadadsasdasdsdaasdaadasd",
+        "description" : "asd",
+        "data" : {
+          "startDate" : "2013-04-12",
+          "endDate" : "2013-04-13"
+        }
+      }, {
+        "uuid" : "b3e62caf-9caf-48da-8929-2dd611ccd3a4",
+        "type" : "date",
+        "name" : "asdads",
+        "description" : "asd",
+        "data" : {
+          "date" : "2019-02-01"
+        }
+      } ],
+      "webhooks" : [ {
+        "uuid" : "0da8178f-45f6-4196-859c-cd30fa731f0d",
+        "name" : "asdasd",
+        "action" : {
+          "type" : "NO_IMPROVEMENT",
+          "type" : "NO_IMPROVEMENT",
+          "period" : "WEEKLY",
+          "severity" : [ "critical" ]
+        },
+        "trigger" : {
+          "type" : "REST",
+          "method" : "GET",
+          "endpoint" : "asd"
+        },
+        "callbacks" : [ {
+          "type" : "POST",
+          "uuid" : "49afd302-dd96-40f1-8cf4-4fc96255adfc",
+          "name" : "asdasdasd111",
+          "body" : {
+            "no_improvement" : "asdads",
+            "improvement" : "sadasd111",
+            "clean" : "asdads11"
           },
-          "trigger" : {
-            "type" : "CRON",
-            "definition" : "0 0 12 * * *"
-          },
-          "callbacks" : [ {
-            "type" : "POST",
-            "id" : null,
-            "body" : {
-              "no_improvement" : "{ 'text': 'http://gph.is/1RFg2r3 E, sonar sam sie nie zrobi'}",
-              "improvement" : "{ 'text': 'http://gph.is/1a7RlDR Kutos dle tego co poprawił sonarki'}",
-              "clean" : "{ 'text': 'https://gph.is/1IH3RW6 Kutos dla zespołu za wyczyszczenie sonarków'}"
-            },
-            "url" : "https://hooks.slack.com/services/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"
-          } ]
+          "url" : "asdasdas",
+          "type" : "POST"
         }, {
-          "action" : {
-            "type" : "NO_IMPROVEMENT",
-            "type" : "NO_IMPROVEMENT",
-            "period" : "DAILY",
-            "severity" : [ "blockers", "criticals", "majors" ]
+          "type" : "POST",
+          "uuid" : "7f39ff7e-7859-4629-acda-56e63bae349d",
+          "name" : "asdasdasd",
+          "body" : {
+            "no_improvement" : "asdasd",
+            "improvement" : "asdasd",
+            "clean" : "asdasd"
           },
-          "trigger" : {
-            "type" : "REST",
-            "method" : "GET",
-            "endpoint" : "no_improvement_pantery"
-          },
-          "callbacks" : [ {
-            "type" : "JSON",
-            "id" : "response",
-            "body" : {
-              "no_improvement" : "'Brak poprawy'",
-              "improvement" : "'Poprawiono: ${diff}'",
-              "clean" : "'Czysto'"
-            }
-          } ]
+          "url" : "asdads",
+          "type" : "POST"
         } ]
-      }, {
-        "uuid" : "db9b61eb-a02d-4b97-8db6-3cf53cda5401",
-        "name" : "Avengers",
-        "description" : null,
-        "groups" : [ ],
-        "projectLinks" : [ {
-          "serverId" : "sonarqube.consdata.local",
-          "type" : "REGEX",
-          "config" : {
-            "include" : [ "^pl.consdata.eximee:eximee-form-counter:master$", "^pl.consdata.eximee:eximee-router-mbank:master$", "^eximee-mbank-core:eximee-mbank-core:master$", "^pl.consdata.eximee:eximee-mbank-status:master$", "^pl.consdata.eximee.mbank.alfresco:eximee-mbank-alfresco:master$", "^pl.consdata.eximee:repository:master$", "^pl.consdata.eximee.validation.basevalidators:parent:master$", "^pl.consdata.eximee:eximee-license-service:master$", "^pl.consdata.eximee.osgi:osgi-bridge:master$", "^pl.consdata.eximee.knowledge.base:knowledge-base:master$", "^pl.consdata.eximee:repository-ift:master$", "^pl.consdata.eximee:eximee-ws-logging:master$", "^pl.consdata.eximee:eximee-tomcat-filters:master$", "^pl.consdata.eximee:eximee-status:master$", "^pl.consdata.eximee:eximee-report-core-overlay:master$", "^pl.consdata.eximee.webforms:webforms:master$", "^pl.consdata.eximee.validation:validation:master$", "^pl.consdata.eximee:repository-text-content:master$", "^pl.consdata.iew.serviceproxy:eximee-baseproxies:master$", "^pl.consdata.iew.serviceproxy:serviceproxy:master$", "^pl.consdata.eximee:router:master$", "^pl.consdata.eximee:repository-connector:master$", "^pl.consdata.eximee:repository-commons:master$" ],
-            "exclude" : [ ]
-          }
-        } ],
-        "events" : [ ],
-        "webhooks" : [ ]
-      }, {
-        "uuid" : "db9b61eb-a02d-4b97-8db6-3cf53cda5402",
-        "name" : "Gwiezdna flota",
-        "description" : null,
-        "groups" : [ ],
-        "projectLinks" : [ {
-          "serverId" : "sonarqube.consdata.local",
-          "type" : "REGEX",
-          "config" : {
-            "include" : [ "^pl.consdata.eximee:eximee-pko-ror:master$", "^pl.consdata.eximee:eximee-pko-rbmsp:master", "^pl.consdata.eximee:eximee-pko-core:master$", "^pl.consdata.eximee:eximee-pko-authorization:master$", "^pl.consdata.eximee:eximee-500plus:master$", "^pl.consdata.eximee.bzwbk:eximee-500plus-bzwbk:master$", "^pl.consdata.eximee:repository:master$", "^pl.consdata.eximee.validation.basevalidators:parent:master$", "^pl.consdata.eximee:eximee-license-service:master$", "^pl.consdata.eximee.osgi:osgi-bridge:master$", "^pl.consdata.eximee.knowledge.base:knowledge-base:master$", "^pl.consdata.eximee:repository-ift:master$", "^pl.consdata.eximee:eximee-ws-logging:master$", "^pl.consdata.eximee:eximee-tomcat-filters:master$", "^pl.consdata.eximee:eximee-status:master$", "^pl.consdata.eximee:eximee-report-core-overlay:master$", "^pl.consdata.eximee.webforms:webforms:master$", "^pl.consdata.eximee.validation:validation:master$", "^pl.consdata.eximee:repository-text-content:master", "^pl.consdata.iew.serviceproxy:eximee-baseproxies:master$", "^pl.consdata.iew.serviceproxy:serviceproxy:master$", "^pl.consdata.eximee:router:master$", "^pl.consdata.eximee:repository-connector:master$", "^pl.consdata.eximee:repository-commons:master$" ],
-            "exclude" : [ ]
-          }
-        } ],
-        "events" : [ ],
-        "webhooks" : [ ]
-      } ],
-      "projectLinks" : [ {
-        "serverId" : "sonarqube.consdata.local",
-        "type" : "REGEX",
-        "config" : {
-          "include" : [ "^pl.consdata.eximee.*:master$", "^pl.consdata.iew.*:master$" ],
-          "exclude" : [ ".*:eximee-mbank-serviceproxy-commons.*", ".*:eximee-mbank-serviceproxy-dpd.*", ".*:brebank-serviceproxy.*", ".*:brebank-validation.*", ".*:eximee-mbank-serviceproxy-disposition.*", ".*:eximee-mbank-serviceproxy-axa.*", ".*:eximee-axa.*" ]
-        }
-      } ],
-      "events" : null,
-      "webhooks" : [ ]
-    }, {
-      "uuid" : "fd803caa-5040-4d83-9911-67d37f45fc25",
-      "name" : "Poczta",
-      "description" : null,
-      "groups" : [ ],
-      "projectLinks" : [ {
-        "serverId" : "sonarqube.consdata.local",
-        "type" : "REGEX",
-        "config" : {
-          "include" : [ "^pl.consdata.poczta2[^:]*:[^:]*$", "^pl.consdata.poczta2.*:origin/master$", "^pl.consdata.poczta2.*:origin/kafka$" ]
-        }
-      } ],
-      "events" : null,
-      "webhooks" : [ ]
-    }, {
-      "uuid" : "93895ca8-7d94-4b75-933b-7bb45dcf09d1",
-      "name" : "ib24",
-      "description" : null,
-      "groups" : [ ],
-      "projectLinks" : [ {
-        "serverId" : "sonarqube.consdata.local",
-        "type" : "REGEX",
-        "config" : {
-          "include" : [ "^pl.com.pbpolsoft.emb24[^:]*:[^:]*$", "^pl.com.pbpolsoft.emb24.*master$", "^pl.com.pbpolsoft.emb24.*:default" ]
-        }
-      } ],
-      "events" : null,
-      "webhooks" : [ ]
-    }, {
-      "uuid" : "330c754d-5595-4a6a-898b-77e3cfe8f01b",
-      "name" : "Commons",
-      "description" : null,
-      "groups" : [ ],
-      "projectLinks" : [ {
-        "serverId" : "sonarqube.consdata.local",
-        "type" : "REGEX",
-        "config" : {
-          "include" : [ "^pl.consdata.ico[^:]*:[^:]*$", "^pl.consdata.ico.*:master$", "^pl.consdata.ico.*:default$" ]
-        }
-      } ],
-      "events" : null,
-      "webhooks" : [ ]
+      } ]
     } ],
     "projectLinks" : [ ],
-    "events" : null,
+    "events" : [ ],
     "webhooks" : [ ]
   },
   "scheduler" : {
-    "interval" : 1,
-    "timeUnit" : "MINUTES"
+    "interval" : 30231,
+    "timeUnit" : "HOURS"
   }
 }

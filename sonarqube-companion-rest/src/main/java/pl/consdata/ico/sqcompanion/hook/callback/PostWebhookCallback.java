@@ -1,6 +1,7 @@
 package pl.consdata.ico.sqcompanion.hook.callback;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 import static pl.consdata.ico.sqcompanion.hook.util.ResolveVariables.resolveVariables;
@@ -25,6 +27,23 @@ public class PostWebhookCallback extends WebhookCallback {
     public PostWebhookCallback() {
         restTemplate.getMessageConverters()
                 .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+    }
+
+    @Builder
+    public PostWebhookCallback(String type, String uuid, String name, Map<String, String> body, String url) {
+        super(type, uuid, name);
+        this.body = body;
+        this.url = url;
+        restTemplate.getMessageConverters()
+                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+    }
+
+    public PostWebhookCallback(PostWebhookCallback callback, String uuid) {
+        this.setName(callback.getName());
+        this.setUuid(uuid);
+        this.setType(callback.getType());
+        this.setUrl(callback.getUrl());
+        this.setBody(new HashMap<>(callback.getBody()));
     }
 
     @Override

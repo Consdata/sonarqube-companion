@@ -1,5 +1,5 @@
-import {WebhookDefinition} from "./webhook-definition";
-import {GroupEvent} from "../../group/group-event";
+import {WebhookDefinition} from './webhook-definition';
+import {GroupEvent} from '../../group/group-event';
 
 export class GroupDefinition {
   constructor(data: any) {
@@ -8,43 +8,78 @@ export class GroupDefinition {
       this.name = data.name;
       this.description = data.description;
 
-      //this.projectLinks = data.projectLinks.map(projectLink => new ProjectLink(projectLink));
-      this.groups = data.groups.map(group => new GroupDefinition(group));
-     // this.events = data.events.map(event => new GroupEvent(event));
+      if (data.projectLinks) {
+        this.projectLinks = data.projectLinks.map(projectLink => new ProjectLink(projectLink));
+      }
+      if (data.groups) {
+        this.groups = data.groups.map(group => new GroupDefinition(group));
+      }
+      if (data.events) {
+        this.events = data.events.map(event => new GroupEvent(event));
+      }
+      if (data.webhooks) {
+        this.webhooks = data.webhooks.map(webhook => new WebhookDefinition(webhook));
+      }
     }
   }
 
 
-  private uuid: string;
-  private name: string;
-  private description: string;
+  uuid: string;
+  name: string;
+  description: string;
 
-  private projectLinks: ProjectLink[];
-  private groups: GroupDefinition[];
-  private events: GroupEvent[];
-  private webhooks: WebhookDefinition[];
+  projectLinks: ProjectLink[];
+  groups: GroupDefinition[];
+  events: GroupEvent[];
+  webhooks: WebhookDefinition[];
 }
 
 export class ProjectLink {
   constructor(data: any) {
     if (data) {
+      this.uuid = data.uuid;
       this.serverId = data.serverId;
       this.type = data.type;
-      this.config = new ProjectLinkConfig(data.config);
+
+
+      if (this.type === 'REGEX') {
+        this.config = new RegexProjectLinkConfig(data.config);
+      }
+
+      if (this.type === 'DIRECT') {
+        this.config = new DirectProjectLinkConfig(data.config);
+      }
+
     }
   }
 
-  private serverId: string;
-  private type: string;
-  private config: ProjectLinkConfig;
+  uuid: string;
+  serverId: string;
+  type: string;
+  config: ProjectLinkConfig;
 }
 
 export class ProjectLinkConfig {
+
+}
+
+export class RegexProjectLinkConfig extends ProjectLinkConfig {
   constructor(data: any) {
+    super();
     this.include = data.include;
     this.exclude = data.exclude;
   }
 
-  private include: string[];
-  private exclude: string[];
+  include: string[];
+  exclude: string[];
+}
+
+
+export class DirectProjectLinkConfig extends ProjectLinkConfig {
+  constructor(data: any) {
+    super();
+    this.link = data.link;
+  }
+
+  link: string;
 }

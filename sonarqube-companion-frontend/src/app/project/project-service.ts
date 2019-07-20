@@ -1,18 +1,21 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Http} from '@angular/http';
+import {Observable} from 'rxjs';
 import {ProjectSummary} from './project-summary';
+import {HttpClient} from "@angular/common/http";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class ProjectService {
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   getProject(uuid: string, projectKey: string): Observable<ProjectSummary> {
     return this.http
-      .get(`api/v1/projects/${uuid}/${encodeURIComponent(projectKey)}`)
-      .map(response => new ProjectSummary(response.json()));
+      .get<any>(`api/v1/projects/${uuid}/${encodeURIComponent(projectKey)}`)
+      .pipe(
+        map(data => new ProjectSummary(data))
+      );
   }
 
 }

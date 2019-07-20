@@ -1,11 +1,16 @@
 package pl.consdata.ico.sqcompanion.config.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.service.event.GroupEventValidator;
+import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
+import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -13,24 +18,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
+
+import static pl.consdata.ico.sqcompanion.config.validation.ValidationResult.invalid;
+import static pl.consdata.ico.sqcompanion.config.validation.ValidationResult.valid;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SettingsService {
 
     private static final String BACKUP_SUFFIX = "_backup";
 
-    private AppConfig appConfig;
-    private ObjectMapper objectMapper;
+    private final AppConfig appConfig;
+    private final ObjectMapper objectMapper;
+    private final CacheManager cacheManager;
+    private final RepositoryService repositoryService;
+    private final GroupEventValidator groupEventValidator;
 
     @Value("${app.configFile:sq-companion-config.json}")
     private String appConfigFile;
-
-    private SettingsService(final AppConfig appConfig, final ObjectMapper objectMapper) {
-        this.appConfig = appConfig;
-        this.objectMapper = objectMapper;
-    }
 
     private boolean copy(String src, String dst) {
         Path srcPath = Paths.get(src);
@@ -44,23 +50,8 @@ public class SettingsService {
         return true;
     }
 
-    public GroupDefinition getGroup(String uuid, List<GroupDefinition> groups) {
-        for (int i = 0; i < groups.size(); i++) {
-            if (groups.get(i).getUuid().equals(uuid)) {
-                return groups.get(i);
-            } else {
-                GroupDefinition definition = getGroup(uuid, groups.get(i).getGroups());
-                if (definition != null) {
-                    return definition;
-                }
-            }
-        }
-        return null;
-    }
 
-    public void setGroup(String uuid, GroupDefinition groupDefinition) {
 
-    }
 
     @PostConstruct
     public void backupDefaultSettings() {
@@ -75,9 +66,24 @@ public class SettingsService {
         return appConfig;
     }
 
-    public boolean store() {
+    public ValidationResult save() {
+        if (store()) {
+            return valid();
+        } else {
+            return invalid("STORE", "Cannot save configuration");
+        }
+    }
+
+    private boolean store() {
         try {
             objectMapper.writeValue(Paths.get(appConfigFile).toFile(), appConfig);
+            //TODO resync and clear only new elements
+            // wait with spinner if required
+            repositoryService.syncGroups();
+            Caches.LIST
+                    .stream()
+                    .map(cacheManager::getCache)
+                    .forEach(cache -> cache.clear());
             return true;
         } catch (IOException e) {
             log.error("Unable to store configuration in {}", this.appConfigFile, e);

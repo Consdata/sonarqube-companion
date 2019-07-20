@@ -1,6 +1,6 @@
-import {Component, OnInit, Pipe, PipeTransform} from "@angular/core";
-import {SchedulerConfig, TimeUnit} from "../model/scheduler-config";
-import {SettingsService} from "../service/settings-service";
+import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
+import {SchedulerConfig, TimeUnit} from '../model/scheduler-config';
+import {SchedulerSettingsService} from '../service/scheduler-settings-service';
 
 
 @Pipe({name: 'enumToSelect'})
@@ -20,21 +20,34 @@ export class EnumToSelectPipe implements PipeTransform {
   selector: `sq-scheduler`,
   template: `
     <sq-spinner *ngIf="!loaded"></sq-spinner>
+    <div class="sq-settings-group-sub-title">
+      <div>Scheduler</div>
+      <hr>
+    </div>
     <div *ngIf="loaded">
-      <div class="edit wrapper">
-        <div class="interval">
-          <input (blur)="onSave()"
-                 type="number"
-                 [(ngModel)]="config.interval"/>
+      <div class="edit sq-settings-group-sub-container">
+        <div class="sq-setting-label">Interval between synchronizations</div>
+        <div class="sq-setting-container">
+          <div class="interval">
+            <label for="intervalInput">Interval:</label>
+            <input (blur)="onSave()"
+                   type="number"
+                   id="intervalInput"
+                   [(ngModel)]="config.interval"/>
+          </div>
+          <div class="timeUnit">
+            <label for="timeUnitSelect">Time unit:</label>
+            <select (change)="onTimeUnitSelect($event)" id="timeUnitSelect">
+              <option *ngFor="let item of timeUnits | enumToSelect" [value]="item.key"
+                      [selected]="timeUnits[item.key] === config.timeUnit"
+              >{{item.value}}
+              </option>
+            </select>
+          </div>
         </div>
-        <div class="timeUnit">
-          <select (change)="onTimeUnitSelect($event)">
-            <option *ngFor="let item of timeUnits | enumToSelect" [value]="item.key"
-                    [selected]="timeUnits[item.key] === config.timeUnit"
-            >{{item.value}}
-            </option>
-          </select>
-        </div>
+      </div>
+      <div class="sq-settings-group-sub-container">
+        <div class="sq-setting-label error" *ngIf="errorMessage">{{errorMessage}}</div>
       </div>
     </div>`
 })
@@ -42,9 +55,10 @@ export class SchedulerComponent implements OnInit {
 
   private config: SchedulerConfig = new SchedulerConfig();
   private timeUnits = TimeUnit;
-  private loaded: boolean = false;
+  loaded: boolean = false;
+  private errorMessage: string;
 
-  constructor(private settingsService: SettingsService) {
+  constructor(private schedulerService: SchedulerSettingsService) {
   }
 
   ngOnInit(): void {
@@ -52,9 +66,17 @@ export class SchedulerComponent implements OnInit {
   }
 
   onSave() {
-    this.settingsService.saveScheduler(this.config).subscribe(response => {
-      this.load();
-    });
+    this.loaded = false;
+    this.schedulerService.update(this.config).subscribe(validationResult => {
+        if (validationResult.valid) {
+          this.errorMessage = '';
+          this.load();
+        } else {
+          this.errorMessage = validationResult.message;
+        }
+        this.loaded = true;
+      }
+    );
   }
 
   onTimeUnitSelect(event: any) {
@@ -62,8 +84,10 @@ export class SchedulerComponent implements OnInit {
     this.onSave();
   }
 
+
   load() {
-    this.settingsService.getScheduler().subscribe(config => {
+    this.loaded = false;
+    this.schedulerService.get().subscribe(config => {
       this.config = config;
       this.loaded = true;
     });

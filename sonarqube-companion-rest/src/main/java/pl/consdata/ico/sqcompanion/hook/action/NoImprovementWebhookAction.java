@@ -2,13 +2,16 @@ package pl.consdata.ico.sqcompanion.hook.action;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Optional;
+
+import static pl.consdata.ico.sqcompanion.hook.action.NoImprovementWebhookActionData.Period.*;
 
 @Slf4j
 @Service
@@ -32,8 +35,25 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
         return null;
     }
 
+    private GroupViolationsHistoryDiff getViolationsHistoryDiffByPeriod(Group group, String period) {
+        String ucPeriod = Optional.ofNullable(period).orElse(DAILY.name()).toUpperCase();
+        LocalDate toDate = LocalDate.now().minusDays(1);
+        if (DAILY.name().equals(ucPeriod)) {
+            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(2), toDate);
+        } else if (WEEKLY.name().equals(ucPeriod)) {
+            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusWeeks(1).minusDays(1), toDate);
+        } else if (MONTHLY.name().equals(ucPeriod)) {
+            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusMonths(1).minusDays(1), toDate);
+        } else if (ucPeriod.endsWith("D")) {
+            Long days = Long.parseLong(ucPeriod.substring(0, ucPeriod.length() - 1));
+            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(days).minusDays(1), toDate);
+        } else {
+            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(2), toDate);
+        }
+    }
+
     private boolean isGroupClean(Group group, NoImprovementWebhookActionData actionData) {
-        GroupViolationsHistoryDiff violationsHistoryDiff = projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now());
+        GroupViolationsHistoryDiff violationsHistoryDiff = projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now().minusDays(1));
         return countDiff(violationsHistoryDiff, actionData) == 0;
     }
 
@@ -42,7 +62,7 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
             return createResponse("clean", null);
         }
 
-        GroupViolationsHistoryDiff violationsHistoryDiff = projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(1), LocalDate.now());
+        GroupViolationsHistoryDiff violationsHistoryDiff = getViolationsHistoryDiffByPeriod(group, actionData.getPeriod());
         if (groupWasImproved(violationsHistoryDiff, actionData)) {
             return createResponse("improvement", countDiff(violationsHistoryDiff, actionData));
         } else {
@@ -58,7 +78,8 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
         }
     }
 
-    private int countDiff(GroupViolationsHistoryDiff violationsHistoryDiff, NoImprovementWebhookActionData actionData) {
+    private int countDiff(GroupViolationsHistoryDiff violationsHistoryDiff, NoImprovementWebhookActionData
+            actionData) {
         int diff = 0;
         if (actionData.getSeverity().contains("blockers")) {
             diff += violationsHistoryDiff.getRemovedViolations().getBlockers() - violationsHistoryDiff.getAddedViolations().getBlockers();
@@ -78,7 +99,8 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
         return diff;
     }
 
-    private boolean groupWasImproved(GroupViolationsHistoryDiff violationsHistoryDiff, NoImprovementWebhookActionData actionData) {
+    private boolean groupWasImproved(GroupViolationsHistoryDiff
+                                             violationsHistoryDiff, NoImprovementWebhookActionData actionData) {
         int diff = countDiff(violationsHistoryDiff, actionData);
         return diff > 0;
     }

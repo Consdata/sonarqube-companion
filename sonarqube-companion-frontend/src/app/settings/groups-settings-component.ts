@@ -1,25 +1,21 @@
-import {Component, OnInit} from "@angular/core";
-import {GroupDefinition} from "./model/group-definition";
-import {SettingsService} from "./service/settings-service";
+import {Component, OnInit} from '@angular/core';
+import {GroupDefinition} from './model/group-definition';
+import {GroupSettingsService} from './service/group-settings-service';
 
 
 @Component({
   selector: `sq-settings-groups`,
   template: `
-    <div class="sq-settings-group-title">
-      <div>Groups</div>
-      <hr>
-    </div>
     <div class="sq-settings-container">
-      <sq-settings-group [definition]="rootGroup"></sq-settings-group>
+      <sq-settings-subgroups *ngIf="rootGroup" [uuid]="rootGroup.uuid"></sq-settings-subgroups>
     </div>
   `
 })
 export class GroupsSettingsComponent implements OnInit {
 
-  private rootGroup: GroupDefinition;
+  rootGroup: GroupDefinition;
 
-  constructor(private settingsService: SettingsService) {
+  constructor(private settingsService: GroupSettingsService) {
   }
 
   ngOnInit(): void {

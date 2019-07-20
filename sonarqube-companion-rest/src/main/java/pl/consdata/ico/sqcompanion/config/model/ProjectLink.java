@@ -3,7 +3,6 @@ package pl.consdata.ico.sqcompanion.config.model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
-import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
 
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import java.util.Map;
 @Builder
 public class ProjectLink {
 
+    private String uuid;
     private String serverId;
     private ProjectLinkType type;
     @Singular("config")

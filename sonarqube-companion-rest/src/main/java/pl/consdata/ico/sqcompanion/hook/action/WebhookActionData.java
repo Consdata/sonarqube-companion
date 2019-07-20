@@ -15,6 +15,6 @@ import lombok.Data;
 })
 @Data
 public abstract class WebhookActionData {
-    @JsonProperty("type")
+    @JsonProperty("type") //TODO double occurenc in json !
     public String type;
 }

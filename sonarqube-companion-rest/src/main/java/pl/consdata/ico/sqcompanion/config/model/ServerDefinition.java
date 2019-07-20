@@ -3,8 +3,7 @@ package pl.consdata.ico.sqcompanion.config.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Builder
@@ -18,7 +17,8 @@ public class ServerDefinition {
     public boolean hasAuthentication() {
         return authentication != null
                 && authentication.getType() != null
-                && !authentication.getType().isEmpty();
+                && !authentication.getType().isEmpty()
+                && !authentication.getType().toLowerCase().equals("none");
     }
 
     public List<String> getBlacklistUsers() {

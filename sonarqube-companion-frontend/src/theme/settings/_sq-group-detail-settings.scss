@@ -1,6 +1,12 @@
 sq-group-detail-settings {
-  .sq-settings-group-title {
-    font-size: 1.6rem;
-    font-weight: 600;
+
+  input {
+    width: 100%;
+  }
+
+  .error {
+    margin: auto;
+    font-size: 20px;
+    color: $color-danger;
   }
 }

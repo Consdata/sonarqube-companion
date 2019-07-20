@@ -13,6 +13,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
+
 
 /**
  * Możliwości rozwoju:
@@ -66,8 +69,8 @@ public class RepositoryService {
 
     private Group buildGroup(final GroupDefinition group) {
         try {
-            final List<Group> subGroups = group.getGroups().stream().map(this::buildGroup).collect(Collectors.toList());
-            final List<Project> projects = group.getProjectLinks()
+            final List<Group> subGroups = ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::buildGroup).collect(Collectors.toList());
+            final List<Project> projects = ofNullable(group.getProjectLinks()).orElse(emptyList())
                     .stream()
                     .flatMap(this::linkProjects)
                     .collect(Collectors.toList());

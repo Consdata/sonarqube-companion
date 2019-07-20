@@ -1,54 +1,89 @@
-import {Component, OnInit} from "@angular/core";
-import {ServerDefinition} from "./model/server-definition";
-import {SettingsService} from "./service/settings-service";
+import {Component, OnInit, Type} from '@angular/core';
+import {ServerDefinition} from './model/server-definition';
+import {SettingsListDetailsItem} from './common/settings-list-item';
+import {ServerComponent} from './server-component';
+import {Subject} from 'rxjs/index';
+import {ValidationResult} from './common/settings-list-component';
+import {ServerSettingsService} from './service/server-settings-service';
 
 
 @Component({
   selector: `sq-settings-servers`,
   template: `
-    <div class="sq-settings-group-title">
-      <div>Servers</div>
-      <hr>
-    </div>
     <div class="sq-settings-container">
-      <div class="servers-list">
-        <div *ngFor="let server of servers; let i=index; let l=last"
-             class="server">
-          <div>
-            <sq-settings-server [server]="server" (remove)="removeServer(i)" (save)="saveServer($event, i)"
-                                [edit]="l"></sq-settings-server>
-          </div>
-
-        </div>
-      </div>
-      <div>
-        <button (click)="addServer()">Add</button>
-      </div>
+      <sq-spinner *ngIf="!loaded"></sq-spinner>
+      <sq-settings-list
+        [loaded]="loaded"
+        [details]="serverType"
+        [(data)]="servers"
+        [title]="'Servers'"
+        [foldedListLabel]="'%number% more servers defined'"
+        [newItem]="newItem.asObservable()"
+        [validation]="validation.asObservable()"
+        [label]="getLabel"
+        (addClick)="addServer()"
+        (removeItem)="removeServer($event)"
+        (saveItem)="saveServer($event)"
+      ></sq-settings-list>
     </div>
   `
 })
 export class ServersSettingsComponent implements OnInit {
+  loaded: boolean = false;
   servers: ServerDefinition[] = [];
+  serverType: Type<SettingsListDetailsItem> = ServerComponent;
+  newItem: Subject<ServerDefinition> = new Subject();
+  validation: Subject<ValidationResult> = new Subject();
 
-  constructor(private settingsService: SettingsService) {
+  constructor(private serverService: ServerSettingsService) {
   }
 
   ngOnInit(): void {
-    this.settingsService.getServers().subscribe(data => this.servers = data);
+    this.load();
   }
 
   addServer() {
-    this.servers.push(new ServerDefinition());
+    const newServerDefinition: ServerDefinition = new ServerDefinition();
+    this.servers.push(newServerDefinition);
+    this.newItem.next(newServerDefinition);
   }
 
-  removeServer(i: number) {
-    this.servers.splice(i, 1);
-    this.settingsService.saveServers(this.servers).subscribe();
+  removeServer(server: ServerDefinition) {
+    this.loaded = false;
+    this.serverService.delete(server).subscribe(validationResult => {
+      if (validationResult.valid) {
+        this.load();
+      } else {
+        this.loaded = true;
+      }
+      validationResult.item = server;
+      this.validation.next(validationResult);
 
+    });
   }
 
-  saveServer(server: ServerDefinition, i: number) {
-    this.servers[i] = server;
-    this.settingsService.saveServers(this.servers).subscribe();
+  saveServer(server: { item: ServerDefinition, newItem: boolean }) {
+    this.loaded = false;
+    this.serverService.save(server.item, server.newItem).subscribe(validationResult => {
+      if (validationResult.valid) {
+        this.load();
+      } else {
+        this.loaded = true;
+      }
+      validationResult.item = server.item;
+      this.validation.next(validationResult);
+    });
+  }
+
+  load() {
+    this.loaded = false;
+    this.serverService.get().subscribe(data => {
+      this.servers = data;
+      this.loaded = true;
+    });
+  }
+
+  getLabel(item: ServerDefinition): string {
+    return item.id;
   }
 }

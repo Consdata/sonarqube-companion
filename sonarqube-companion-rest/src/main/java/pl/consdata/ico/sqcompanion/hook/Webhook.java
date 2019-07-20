@@ -13,6 +13,8 @@ import java.util.List;
 @Data
 @Builder
 public class Webhook {
+    private String uuid;
+    private String name;
     private WebhookActionData action;
     private WebhookTrigger trigger;
     private List<WebhookCallback> callbacks;

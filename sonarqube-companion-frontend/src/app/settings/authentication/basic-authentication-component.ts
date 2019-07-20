@@ -1,15 +1,37 @@
-import {Component, Input} from "@angular/core";
-import {BasicAuthenticationData} from "../model/authentication-data";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {BasicAuthenticationData} from '../model/authentication-data';
 
 @Component({
   selector: `basic-authentication`,
   template: `
     <div>
-      <input [(ngModel)]="params.user"/>
-      <input [(ngModel)]="params.password"/>
+      <div>
+        <label class="sq-setting-label">Username</label>
+        <input [ngModel]="_params.user" (ngModelChange)="onUserChange($event)"/>
+      </div>
+      <div>
+        <label class="sq-setting-label">Password</label>
+        <input [ngModel]="_params.password" (ngModelChange)="onPasswordChange($event)"/>
+      </div>
     </div>`
 })
 export class BasicAuthenticationComponent {
+  _params: BasicAuthenticationData;
   @Input()
-  private params: BasicAuthenticationData;
+  set params(data: BasicAuthenticationData) {
+    this._params = new BasicAuthenticationData(data);
+    this.paramsChange.emit(this._params);
+  }
+
+  @Output() paramsChange: EventEmitter<BasicAuthenticationData> = new EventEmitter();
+
+  onUserChange(user: string) {
+    this._params.user = user;
+    this.paramsChange.emit(this._params);
+  }
+
+  onPasswordChange(password: string) {
+    this._params.password = password;
+    this.paramsChange.emit(this._params);
+  }
 }

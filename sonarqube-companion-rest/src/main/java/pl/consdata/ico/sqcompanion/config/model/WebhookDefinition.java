@@ -11,6 +11,9 @@ import java.util.List;
 @Data
 @Builder
 public class WebhookDefinition {
+    private String uuid;
+
+    private String name;
 
     private WebhookActionData action;
 
