@@ -7,7 +7,6 @@ import lombok.Data;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         visible = true,
         property = "type")
 @JsonSubTypes({
@@ -15,6 +14,6 @@ import lombok.Data;
 })
 @Data
 public abstract class WebhookActionData {
-    @JsonProperty("type") //TODO double occurenc in json !
+    @JsonProperty("type")
     public String type;
 }

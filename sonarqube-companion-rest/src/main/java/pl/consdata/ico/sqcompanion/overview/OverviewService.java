@@ -10,9 +10,7 @@ import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;

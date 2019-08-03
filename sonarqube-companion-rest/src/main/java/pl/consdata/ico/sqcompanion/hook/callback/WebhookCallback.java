@@ -10,7 +10,6 @@ import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         visible = true,
         property = "type")
 @JsonSubTypes({

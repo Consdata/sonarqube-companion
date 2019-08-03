@@ -78,7 +78,6 @@ public class SettingsService {
         try {
             objectMapper.writeValue(Paths.get(appConfigFile).toFile(), appConfig);
             //TODO resync and clear only new elements
-            // wait with spinner if required
             repositoryService.syncGroups();
             Caches.LIST
                     .stream()

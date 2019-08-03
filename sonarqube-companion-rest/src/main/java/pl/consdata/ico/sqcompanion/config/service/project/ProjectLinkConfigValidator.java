@@ -2,13 +2,11 @@ package pl.consdata.ico.sqcompanion.config.service.project;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.DirectProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
-import pl.consdata.ico.sqcompanion.project.ProjectEntity;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 
 @Service

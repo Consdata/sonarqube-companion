@@ -34,7 +34,6 @@ import {SettingsComponent} from './settings/settings-component';
 import {GeneralSettingsComponent} from './settings/general-settings-component';
 import {ServersSettingsComponent} from './settings/servers-settings-component';
 import {GroupsSettingsComponent} from './settings/groups-settings-component';
-import {WebhooksSettingsComponent} from './settings/webhooks-settings-component';
 import {FormsModule} from '@angular/forms';
 import {TokenAuthenticationComponent} from './settings/authentication/token-authentication-component';
 import {BasicAuthenticationComponent} from './settings/authentication/basic-authentication-component';
