@@ -93,7 +93,6 @@ import {PostWebhookCallbackComponent} from './settings/group/webhook/callback/po
     GeneralSettingsComponent,
     ServersSettingsComponent,
     GroupsSettingsComponent,
-    WebhooksSettingsComponent,
     TokenAuthenticationComponent,
     BasicAuthenticationComponent,
     SubgroupsSettingsComponent,
