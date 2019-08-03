@@ -62,19 +62,19 @@ public class WebhookConfigValidator {
         return ValidationResult.valid();
     }
 
-    public ValidationResult validateNoImporvementAction(NoImprovementWebhookActionData action) {
+    public ValidationResult validateNoImprovementAction(NoImprovementWebhookActionData action) {
         return ValidationResult.valid();
     }
 
     public ValidationResult validateTrigger(WebhookTrigger trigger) {
         if (trigger instanceof CronWebhookTrigger) {
             CronWebhookTrigger cronWebhookTrigger = (CronWebhookTrigger) trigger;
-            validateCronTrigger(cronWebhookTrigger);
+            return validateCronTrigger(cronWebhookTrigger);
         }
 
         if (trigger instanceof RestWebhookTrigger) {
             RestWebhookTrigger restWebhookTrigger = (RestWebhookTrigger) trigger;
-            validateRestTrigger(restWebhookTrigger);
+            return validateRestTrigger(restWebhookTrigger);
         }
         return ValidationResult.invalid("WEBHOOK_TRIGGER", "Unknown webhook trigger");
     }
@@ -82,7 +82,7 @@ public class WebhookConfigValidator {
     public ValidationResult validateAction(WebhookActionData actionData) {
         if (actionData instanceof NoImprovementWebhookActionData) {
             NoImprovementWebhookActionData noImprovementWebhookActionData = (NoImprovementWebhookActionData) actionData;
-            validateNoImporvementAction(noImprovementWebhookActionData);
+            return validateNoImprovementAction(noImprovementWebhookActionData);
         }
         return ValidationResult.invalid("WEBHOOK_ACTION", "Unknown webhook action");
     }

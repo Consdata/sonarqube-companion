@@ -21,9 +21,10 @@ import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class WebhookCallback {
-    @JsonProperty("type") //TODO double occurenc in json !
+    @JsonProperty("type")
     public String type;
     private String uuid;
     private String name;
+
     public abstract CallbackResponse call(ActionResponse response);
 }

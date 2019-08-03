@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 @UtilityClass
 public class DeserializationUtil {
 
@@ -25,8 +27,8 @@ public class DeserializationUtil {
         return StringUtils.isBlank(uuid) ? UUID.randomUUID().toString() : uuid;
     }
 
-    public static String textOfNullable(JsonNode node, String defaultValue) {
-        if (node != null) {
+    public static String textOfBlankNode(JsonNode node, String defaultValue) {
+        if (node != null && isNotBlank(node.asText())) {
             return node.asText();
         } else {
             return defaultValue;

@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.apache.commons.lang.StringUtils;
 import pl.consdata.ico.sqcompanion.config.model.WebhookDefinition;
 
 import java.io.IOException;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static pl.consdata.ico.sqcompanion.config.deserialization.DeserializationUtil.generateUuidIfRequired;
 
 public class WebhookDeserializer extends StdDeserializer<WebhookDefinition> implements ResolvableDeserializer {
@@ -27,7 +27,7 @@ public class WebhookDeserializer extends StdDeserializer<WebhookDefinition> impl
             throws IOException {
         WebhookDefinition webhookDefinition = (WebhookDefinition) defaultDeserializer.deserialize(jsonParser, context);
         webhookDefinition.setUuid(generateUuidIfRequired(webhookDefinition.getUuid()));
-        webhookDefinition.setName(StringUtils.isBlank(webhookDefinition.getName()) ? webhookDefinition.getUuid() : webhookDefinition.getName());
+        webhookDefinition.setName(isBlank(webhookDefinition.getName()) ? webhookDefinition.getUuid() : webhookDefinition.getName());
         return webhookDefinition;
     }
 

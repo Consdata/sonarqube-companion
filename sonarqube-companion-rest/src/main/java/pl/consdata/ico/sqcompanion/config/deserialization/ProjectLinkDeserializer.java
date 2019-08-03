@@ -30,8 +30,8 @@ public class ProjectLinkDeserializer extends StdDeserializer<ProjectLink> {
         ObjectMapper mapper = new ObjectMapper();
         return ProjectLink.builder()
                 .uuid(generateUuidIfRequired(node.get("uuid")))
-                .serverId(textOfNullable(node.get("serverId"), EMPTY))
-                .type(ProjectLinkType.valueOf(textOfNullable(node.get("type"), "DIRECT")))
+                .serverId(textOfBlankNode(node.get("serverId"), EMPTY))
+                .type(ProjectLinkType.valueOf(textOfBlankNode(node.get("type"), "DIRECT")))
                 .config(mapOfNullable(node.get("config"), mapper))
                 .build();
     }

@@ -29,10 +29,10 @@ public class GroupEventDeserializer extends StdDeserializer<GroupEvent> {
         ObjectMapper mapper = new ObjectMapper();
         return GroupEvent.builder()
                 .uuid(generateUuidIfRequired(node.get("uuid")))
-                .type(textOfNullable(node.get("type"), EMPTY))
-                .name(textOfNullable(node.get("name"), EMPTY))
+                .type(textOfBlankNode(node.get("type"), EMPTY))
+                .name(textOfBlankNode(node.get("name"), EMPTY))
                 .data(mapOfNullable(node.get("data"), mapper))
-                .description(textOfNullable(node.get("description"), EMPTY))
+                .description(textOfBlankNode(node.get("description"), EMPTY))
                 .build();
     }
 }
