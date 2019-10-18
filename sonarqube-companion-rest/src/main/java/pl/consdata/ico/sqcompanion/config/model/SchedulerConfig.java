@@ -6,12 +6,14 @@ import lombok.Data;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Optional.ofNullable;
+
 @Data
 @Builder
 @AllArgsConstructor
 public class SchedulerConfig {
 
-    public static final int DEFAULT_INTERVAL = 30;
+    public static final long DEFAULT_INTERVAL = 30;
     public static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MINUTES;
 
     private Long interval;
@@ -22,11 +24,11 @@ public class SchedulerConfig {
     }
 
     public Long getInterval() {
-        return interval != null ? interval : DEFAULT_INTERVAL;
+        return ofNullable(interval).orElse(DEFAULT_INTERVAL);
     }
 
     public TimeUnit getTimeUnit() {
-        return timeUnit != null ? timeUnit : DEFAULT_TIME_UNIT;
+        return ofNullable(timeUnit).orElse(DEFAULT_TIME_UNIT);
     }
 
 }

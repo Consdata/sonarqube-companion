@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.consdata.ico.sqcompanion.config.deserialization.*;
 import pl.consdata.ico.sqcompanion.config.model.*;
+import pl.consdata.ico.sqcompanion.hook.action.NoImprovementWebhookActionData;
 import pl.consdata.ico.sqcompanion.hook.callback.JSONWebhookCallback;
 import pl.consdata.ico.sqcompanion.hook.callback.PostWebhookCallback;
 
@@ -46,14 +47,19 @@ public class AppConfigConfiguration {
                 if (beanDesc.getBeanClass() == WebhookDefinition.class) {
                     return new WebhookDeserializer(deserializer);
                 }
+
+                if (beanDesc.getBeanClass() == ServerDefinition.class) {
+                    return new ServerDefinitionDeserializer(deserializer);
+                }
                 return deserializer;
             }
         });
-
+        module.addDeserializer(ServerAuthentication.class, new ServerAuthenticationDeserializer());
         module.addDeserializer(GroupEvent.class, new GroupEventDeserializer());
         module.addDeserializer(ProjectLink.class, new ProjectLinkDeserializer());
         module.addDeserializer(PostWebhookCallback.class, new PostWebhookCallbackDeserializer());
         module.addDeserializer(JSONWebhookCallback.class, new JsonWebhookCallbackDeserializer());
+        module.addDeserializer(NoImprovementWebhookActionData.class, new NoImprovementWebhookActionDataDeserializer());
         objectMapper.registerModule(module);
 
         if (!appConfigPath.toFile().exists()) {

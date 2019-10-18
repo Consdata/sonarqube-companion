@@ -13,6 +13,6 @@ public class CronWebhookTrigger implements SpringWebhookTrigger {
     @JsonIgnore
     @Override
     public Trigger getTrigger() {
-        return new  CronTrigger(definition);
+        return new CronTrigger(definition);
     }
 }

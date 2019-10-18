@@ -5,7 +5,7 @@ import {Observable, Subject} from 'rxjs';
 export class AppState {
 
   private appState: any = {};
-  private subjects: {[key: string]: Subject<any>} = {};
+  private subjects: { [key: string]: Subject<any> } = {};
 
   setValue(key: string, value: any) {
     this.appState[key] = value;

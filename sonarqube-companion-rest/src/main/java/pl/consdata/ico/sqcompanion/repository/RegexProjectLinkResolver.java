@@ -2,8 +2,8 @@ package pl.consdata.ico.sqcompanion.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.RegexProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 
 import java.util.List;

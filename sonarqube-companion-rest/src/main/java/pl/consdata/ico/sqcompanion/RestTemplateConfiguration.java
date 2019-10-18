@@ -17,6 +17,9 @@ import javax.net.ssl.SSLContext;
 @Configuration
 public class RestTemplateConfiguration {
 
+    @Value("${app.allowSelfSignedHttps:false}")
+    private boolean allowSelfSignedHttps;
+
     @Bean
     public RestTemplate restTemplate() {
         if (allowSelfSignedHttps) {
@@ -45,8 +48,5 @@ public class RestTemplateConfiguration {
             throw new SQCompanionException("Can't initialize RestTemplate with Self Signed https support", exception);
         }
     }
-
-    @Value("${app.allowSelfSignedHttps:false}")
-    private boolean allowSelfSignedHttps;
 
 }

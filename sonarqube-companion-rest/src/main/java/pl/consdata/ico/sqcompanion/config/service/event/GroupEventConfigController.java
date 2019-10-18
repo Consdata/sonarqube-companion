@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.config.model.GroupEvent;
-import pl.consdata.ico.sqcompanion.config.service.group.GroupConfigService;
 import pl.consdata.ico.sqcompanion.config.validation.SettingsExceptionHandler;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/settings/group")
 public class GroupEventConfigController extends SettingsExceptionHandler {
 
-    private final GroupConfigService groupConfigService;
+    private final GroupEventConfigService service;
 
 
     @ApiOperation(value = "Get group events",
@@ -27,7 +26,7 @@ public class GroupEventConfigController extends SettingsExceptionHandler {
     @GetMapping(value = "/{uuid}/events", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GroupEvent> getEvents(@PathVariable String uuid) {
         log.info("Get group events {}", uuid);
-        return groupConfigService.getEvents(uuid);
+        return service.getEvents(uuid);
     }
 
     @ApiOperation(value = "Create group event",
@@ -37,7 +36,7 @@ public class GroupEventConfigController extends SettingsExceptionHandler {
     @PostMapping(value = "/{uuid}/events/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ValidationResult createEvent(@PathVariable String uuid, @RequestBody GroupEvent groupEvent) {
         log.info("Create group event [{}] {}", uuid, groupEvent);
-        return groupConfigService.createEvent(uuid, groupEvent);
+        return service.createEvent(uuid, groupEvent);
     }
 
     @ApiOperation(value = "Update group event",
@@ -47,7 +46,7 @@ public class GroupEventConfigController extends SettingsExceptionHandler {
     @PostMapping(value = "/{uuid}/events/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ValidationResult updateEvent(@PathVariable String uuid, @RequestBody GroupEvent groupEvent) {
         log.info("Update group event [{}] {}", uuid, groupEvent);
-        return groupConfigService.updateEvent(uuid, groupEvent);
+        return service.updateEvent(uuid, groupEvent);
 
     }
 
@@ -57,6 +56,6 @@ public class GroupEventConfigController extends SettingsExceptionHandler {
     @DeleteMapping(value = "/{uuid}/events/{eventUuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ValidationResult deleteEvent(@PathVariable String uuid, @PathVariable String eventUuid) {
         log.info("Delete group event {}/{}", uuid, eventUuid);
-        return groupConfigService.deleteEvent(uuid, eventUuid);
+        return service.deleteEvent(uuid, eventUuid);
     }
 }

@@ -30,8 +30,8 @@ public class PostWebhookCallback extends WebhookCallback {
     }
 
     @Builder
-    public PostWebhookCallback(String type, String uuid, String name, Map<String, String> body, String url) {
-        super(type, uuid, name);
+    public PostWebhookCallback(String uuid, String name, Map<String, String> body, String url) {
+        super(uuid, name);
         this.body = body;
         this.url = url;
         restTemplate.getMessageConverters()
@@ -41,7 +41,6 @@ public class PostWebhookCallback extends WebhookCallback {
     public PostWebhookCallback(PostWebhookCallback callback, String uuid) {
         this.setName(callback.getName());
         this.setUuid(uuid);
-        this.setType(callback.getType());
         this.setUrl(callback.getUrl());
         this.setBody(new HashMap<>(callback.getBody()));
     }

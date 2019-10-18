@@ -4,10 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
+import pl.consdata.ico.sqcompanion.config.RegexProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
-import pl.consdata.ico.sqcompanion.config.RegexProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 import pl.consdata.ico.sqcompanion.project.ProjectEntity;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
@@ -122,11 +122,11 @@ public class RegexProjectLinkResolverTest {
     private void addSonarQubeProjects(final String... projectKeys) {
         sonarQubeProjects.addAll(
                 Arrays.asList(projectKeys)
-                .stream()
-                .map(
-                        projectKey -> ProjectEntity.builder().key(projectKey).build()
-                )
-                .collect(Collectors.toList())
+                        .stream()
+                        .map(
+                                projectKey -> ProjectEntity.builder().key(projectKey).build()
+                        )
+                        .collect(Collectors.toList())
         );
     }
 

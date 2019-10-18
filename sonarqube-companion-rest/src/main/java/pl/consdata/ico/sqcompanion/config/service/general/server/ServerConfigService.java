@@ -7,6 +7,7 @@ import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 import pl.consdata.ico.sqcompanion.config.service.SettingsService;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
+import pl.consdata.ico.sqcompanion.config.validation.general.server.ServerConfigValidator;
 
 import java.util.List;
 
@@ -20,15 +21,14 @@ public class ServerConfigService {
     private final AppConfig appConfig;
 
     public ValidationResult update(final ServerDefinition serverDefinition) {
-        ValidationResult validationResult = validator.validate(serverDefinition, false);
+        log.info("Update server with {}", serverDefinition);
+        ValidationResult validationResult = validator.validate(serverDefinition);
         if (validationResult.isValid()) {
-            appConfig.getServers().stream().filter(server -> server.getId().equals(serverDefinition.getId()))
-                    .forEach(server -> {
-                        server.setId(serverDefinition.getId());
-                        server.setUrl(serverDefinition.getUrl());
-                        server.setAuthentication(serverDefinition.getAuthentication());
-                        server.setBlacklistUsers(serverDefinition.getBlacklistUsers());
-                    });
+            ServerDefinition server = appConfig.getServer(serverDefinition.getUuid());
+            server.setId(serverDefinition.getId());
+            server.setUrl(serverDefinition.getUrl());
+            server.setAuthentication(serverDefinition.getAuthentication());
+            server.setBlacklistUsers(serverDefinition.getBlacklistUsers());
             return settingsService.save();
         } else {
             log.info("Invalid server definition {} reason: {}", serverDefinition, validationResult);
@@ -37,7 +37,8 @@ public class ServerConfigService {
     }
 
     public ValidationResult create(final ServerDefinition serverDefinition) {
-        ValidationResult validationResult = validator.validate(serverDefinition, true);
+        log.info("Create server with {}", serverDefinition);
+        ValidationResult validationResult = validator.validate(serverDefinition);
         if (validationResult.isValid()) {
             appConfig.getServers().add(serverDefinition);
             return settingsService.save();

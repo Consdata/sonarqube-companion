@@ -39,7 +39,7 @@ public class ServerConfigController extends SettingsExceptionHandler {
         return serverConfigService.create(serverDefinition);
     }
 
-    @ApiOperation(value = "Delete group event",
+    @ApiOperation(value = "Delete server definition",
             httpMethod = "DELETE",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @DeleteMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -48,12 +48,12 @@ public class ServerConfigController extends SettingsExceptionHandler {
         return serverConfigService.delete(uuid);
     }
 
-    @ApiOperation(value = "Get event for specific group",
+    @ApiOperation(value = "Get servers definitions",
             httpMethod = "GET",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<ServerDefinition> get() {
-        log.info("Get available server definitions");
+        log.info("Get available servers definitions");
         return serverConfigService.get();
     }
 

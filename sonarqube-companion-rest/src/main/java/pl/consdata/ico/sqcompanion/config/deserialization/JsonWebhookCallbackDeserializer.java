@@ -30,7 +30,6 @@ public class JsonWebhookCallbackDeserializer extends StdDeserializer<JSONWebhook
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         ObjectMapper mapper = new ObjectMapper();
         return JSONWebhookCallback.builder()
-                .type(textOfBlankNode(node.get("type"), "POST"))
                 .uuid(generateUuidIfRequired(node.get("uuid")))
                 .name(textOfBlankNode(node.get("name"), EMPTY))
                 .body(mapper.convertValue(node.get("body"), new TypeReference<Map<String, String>>() {

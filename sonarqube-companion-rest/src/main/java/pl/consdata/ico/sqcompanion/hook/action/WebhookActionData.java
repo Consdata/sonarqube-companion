@@ -1,9 +1,9 @@
 package pl.consdata.ico.sqcompanion.hook.action;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -13,7 +13,6 @@ import lombok.Data;
         @JsonSubTypes.Type(value = NoImprovementWebhookActionData.class, name = "NO_IMPROVEMENT"),
 })
 @Data
+@NoArgsConstructor
 public abstract class WebhookActionData {
-    @JsonProperty("type")
-    public String type;
 }

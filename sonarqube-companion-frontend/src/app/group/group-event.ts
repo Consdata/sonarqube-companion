@@ -5,7 +5,7 @@ export class GroupEvent {
   description: string;
   data: { [key: string]: any };
 
-  constructor(data) {
+  constructor(data: any = {}) {
     this.uuid = data.uuid;
     this.type = data.type;
     this.name = data.name;

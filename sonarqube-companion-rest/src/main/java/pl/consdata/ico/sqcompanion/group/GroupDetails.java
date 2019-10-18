@@ -4,9 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import pl.consdata.ico.sqcompanion.config.model.GroupEvent;
 import pl.consdata.ico.sqcompanion.health.HealthStatus;
-import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.issue.IssueSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
+import pl.consdata.ico.sqcompanion.violation.Violations;
 
 import java.util.List;
 

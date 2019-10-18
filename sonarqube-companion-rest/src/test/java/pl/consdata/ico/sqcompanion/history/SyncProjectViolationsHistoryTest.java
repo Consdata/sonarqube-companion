@@ -7,8 +7,8 @@ import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeMeasure;
 import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
 
 import java.time.LocalDate;
 import java.util.Optional;

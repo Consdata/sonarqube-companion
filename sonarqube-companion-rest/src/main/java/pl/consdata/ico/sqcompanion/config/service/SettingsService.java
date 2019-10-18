@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.service.event.GroupEventValidator;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
@@ -33,33 +33,24 @@ public class SettingsService {
     private final ObjectMapper objectMapper;
     private final CacheManager cacheManager;
     private final RepositoryService repositoryService;
-    private final GroupEventValidator groupEventValidator;
 
     @Value("${app.configFile:sq-companion-config.json}")
     private String appConfigFile;
 
-    private boolean copy(String src, String dst) {
+    private void copy(String src, String dst) {
         Path srcPath = Paths.get(src);
         Path dstPath = Paths.get(dst);
         try {
             Files.copy(srcPath, dstPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             log.error("Unable to copy config from {} to {}", src, dst, e);
-            return false;
         }
-        return true;
     }
-
-
 
 
     @PostConstruct
     public void backupDefaultSettings() {
         copy(appConfigFile, appConfigFile + BACKUP_SUFFIX);
-    }
-
-    public boolean restoreDefaultConfig() {
-        return copy(appConfigFile + BACKUP_SUFFIX, appConfigFile);
     }
 
     public AppConfig getConfig() {
@@ -82,7 +73,7 @@ public class SettingsService {
             Caches.LIST
                     .stream()
                     .map(cacheManager::getCache)
-                    .forEach(cache -> cache.clear());
+                    .forEach(Cache::clear);
             return true;
         } catch (IOException e) {
             log.error("Unable to store configuration in {}", this.appConfigFile, e);

@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString(exclude = {"groups", "projectLinks", "events", "webhooks"})
 public class GroupDefinition {
-
     private String uuid;
     private String name;
     private String description;

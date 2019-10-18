@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -32,6 +30,14 @@ public class DeserializationUtil {
             return node.asText();
         } else {
             return defaultValue;
+        }
+    }
+
+    public static List<String> listOfNullable(JsonNode node, ObjectMapper objectMapper) {
+        if (node == null) {
+            return new ArrayList<>();
+        } else {
+            return objectMapper.convertValue(node, List.class);
         }
     }
 

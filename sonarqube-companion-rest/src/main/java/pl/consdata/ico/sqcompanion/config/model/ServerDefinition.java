@@ -3,13 +3,15 @@ package pl.consdata.ico.sqcompanion.config.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
 public class ServerDefinition {
 
     private String id;
+    private String uuid;
     private String url;
     private ServerAuthentication authentication;
     private List<String> blacklistUsers;

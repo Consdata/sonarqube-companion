@@ -10,12 +10,12 @@ export class AppStateService {
   constructor(private appState: AppState) {
   }
 
-  set theme(theme: string) {
-    this.appState.setValue(AppStateService.THEME, theme);
-  }
-
   get theme(): string {
     return this.appState.getValue(AppStateService.THEME);
+  }
+
+  set theme(theme: string) {
+    this.appState.setValue(AppStateService.THEME, theme);
   }
 
   get themeObservable(): Observable<string> {

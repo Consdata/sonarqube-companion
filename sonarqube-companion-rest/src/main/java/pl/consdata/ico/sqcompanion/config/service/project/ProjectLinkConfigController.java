@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.service.group.GroupConfigService;
 import pl.consdata.ico.sqcompanion.config.validation.SettingsExceptionHandler;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/settings/group")
 public class ProjectLinkConfigController extends SettingsExceptionHandler {
 
-    private final GroupConfigService groupConfigService;
+    private final ProjectLinkConfigService service;
 
     @ApiOperation(value = "Get group project links",
             httpMethod = "GET",
@@ -26,7 +25,7 @@ public class ProjectLinkConfigController extends SettingsExceptionHandler {
     @GetMapping(value = "/{groupUuid}/projectLinks", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<ProjectLink> getProjectLinks(@PathVariable String groupUuid) {
         log.info("Get group project links {}", groupUuid);
-        return groupConfigService.getProjectLinks(groupUuid);
+        return service.getProjectLinks(groupUuid);
     }
 
     @ApiOperation(value = "Create project link",
@@ -36,7 +35,7 @@ public class ProjectLinkConfigController extends SettingsExceptionHandler {
     @PostMapping(value = "/{groupUuid}/projectLinks/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ValidationResult createProjectLink(@PathVariable String groupUuid, @RequestBody ProjectLink projectLink) {
         log.info("Create project link [{}] {}", groupUuid, projectLink);
-        return groupConfigService.createProjectLink(groupUuid, projectLink);
+        return service.createProjectLink(groupUuid, projectLink);
     }
 
     @ApiOperation(value = "Update project link",
@@ -46,7 +45,7 @@ public class ProjectLinkConfigController extends SettingsExceptionHandler {
     @PostMapping(value = "/{groupUuid}/projectLinks/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ValidationResult updateProjectLink(@PathVariable String groupUuid, @RequestBody ProjectLink projectLink) {
         log.info("Update project link [{}] {}", groupUuid, projectLink);
-        return groupConfigService.updateProjectLink(groupUuid, projectLink);
+        return service.updateProjectLink(groupUuid, projectLink);
     }
 
     @ApiOperation(value = "Delete project link",
@@ -55,6 +54,6 @@ public class ProjectLinkConfigController extends SettingsExceptionHandler {
     @DeleteMapping(value = "/{groupUuid}/projectLinks/{projectLinkUuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ValidationResult deleteProjectLink(@PathVariable String groupUuid, @PathVariable String projectLinkUuid) {
         log.info("Delete project link {}/{}", groupUuid, projectLinkUuid);
-        return groupConfigService.deleteProjectLink(groupUuid, projectLinkUuid);
+        return service.deleteProjectLink(groupUuid, projectLinkUuid);
     }
 }

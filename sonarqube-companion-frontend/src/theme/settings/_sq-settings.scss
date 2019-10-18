@@ -26,6 +26,15 @@
   margin-left: 20px;
 }
 
+
+.sq-settings-widget {
+  font-size: 1.0rem;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
 .sq-setting-label {
   font-size: 1.0rem;
   font-weight: 600;
@@ -40,6 +49,10 @@
 .sq-setting-error {
   display: flex;
   justify-content: center;
+  align-items: center;
+  &.left {
+    justify-content: start;
+  }
   font-weight: 400;
   color: $color-danger;
   font-size: 20px;

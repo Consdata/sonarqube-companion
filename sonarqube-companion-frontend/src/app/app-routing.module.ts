@@ -4,8 +4,8 @@ import {OverviewComponent} from './overview/overview-component';
 import {NotFoundComponent} from './not-found/not-found-component';
 import {GroupComponent} from './group/group-component';
 import {ProjectComponent} from './project/project-component';
-import {SettingsComponent} from "./settings/settings-component";
-import {GroupDetailSettingsComponent} from "./settings/group/group-detail-settings-component";
+import {SettingsComponent} from './config/settings-component';
+import {GroupDetailSettingsComponent} from './config/group/group-detail-settings-component';
 
 const routes: Routes = [
   {

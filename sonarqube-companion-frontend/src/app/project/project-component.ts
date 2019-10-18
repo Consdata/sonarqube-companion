@@ -34,7 +34,6 @@ export class ProjectComponent {
   project: ProjectSummary;
   group: GroupDetails;
   projectViolationsDiff: ProjectViolationsHistoryDiff;
-  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getProjectHistory(daysLimit, this.group.uuid, this.project.key);
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -52,6 +51,8 @@ export class ProjectComponent {
   get loaded(): boolean {
     return !!this.project && !!this.group;
   }
+
+  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getProjectHistory(daysLimit, this.group.uuid, this.project.key);
 
   onChartZoomed(zoomedEvent: any) {
     this.projectViolationsDiff = undefined;

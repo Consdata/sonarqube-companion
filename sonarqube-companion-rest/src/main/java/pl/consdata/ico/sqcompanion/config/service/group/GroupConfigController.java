@@ -5,12 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
 import pl.consdata.ico.sqcompanion.config.validation.SettingsExceptionHandler;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 
 import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.EMPTY;
 
 @RestController
 @Slf4j
@@ -19,7 +22,6 @@ import java.util.List;
 public class GroupConfigController extends SettingsExceptionHandler {
 
     private final GroupConfigService groupConfigService;
-
 
     @ApiOperation(value = "Create new group definition",
             httpMethod = "POST",
@@ -94,5 +96,21 @@ public class GroupConfigController extends SettingsExceptionHandler {
     public ValidationResult getSubgroups(@PathVariable String uuid, @RequestBody List<GroupDefinition> groupDefinitions) {
         log.info("Update subgroups for {}", uuid);
         return groupConfigService.updateSubgroups(uuid, groupDefinitions);
+    }
+
+
+    @RequestMapping(
+            value = "/{uuid}/parent",
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_PLAIN_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group parent.",
+            notes = "<p>Returns group parent</p>"
+    )
+    public ResponseEntity<String> getGroupParent(@PathVariable final String uuid) {
+        return groupConfigService.getGroupParent(uuid)
+                .map(groupDefinition -> ResponseEntity.ok(groupDefinition.getUuid()))
+                .orElseGet(() -> ResponseEntity.ok(EMPTY));
     }
 }

@@ -9,14 +9,14 @@ import java.util.Objects;
 @Builder
 public class Project {
 
-    public static String getProjectUniqueId(final String serverId, final String projectKey) {
-        return String.format("%s$%s", serverId, projectKey);
-    }
-
     private String serverId;
     private String key;
     private String name;
     private String serverUrl;
+
+    public static String getProjectUniqueId(final String serverId, final String projectKey) {
+        return String.format("%s$%s", serverId, projectKey);
+    }
 
     public Project withServerUrl(final String serverUrl) {
         return Project

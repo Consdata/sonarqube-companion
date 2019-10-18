@@ -1,6 +1,5 @@
 package pl.consdata.ico.sqcompanion.hook.callback;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,6 @@ import pl.consdata.ico.sqcompanion.hook.action.ActionResponse;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class WebhookCallback {
-    @JsonProperty("type")
-    public String type;
     private String uuid;
     private String name;
 

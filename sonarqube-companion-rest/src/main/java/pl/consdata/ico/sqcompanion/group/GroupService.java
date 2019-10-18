@@ -45,7 +45,7 @@ public class GroupService {
                 .events(group.getEvents())
                 .build();
     }
-    
+
     private GroupSummary asGroupSummary(final Group group) {
         final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
         final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
