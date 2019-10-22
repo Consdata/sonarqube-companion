@@ -41,6 +41,7 @@ public class RegexProjectLinkResolverTest {
                         ServerDefinition
                                 .builder()
                                 .id(ANY_SERVER_ID)
+                                .uuid(ANY_SERVER_ID)
                                 .build()
                 ).build();
 

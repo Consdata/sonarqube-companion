@@ -1,6 +1,5 @@
 package pl.consdata.ico.sqcompanion.config;
 
-import com.google.common.collect.Collections2;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
@@ -10,7 +9,6 @@ import pl.consdata.ico.sqcompanion.config.model.SchedulerConfig;
 import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +62,7 @@ public class AppConfig {
 
     private GroupDefinition getGroupParent(String uuid, List<GroupDefinition> groups) {
         for (GroupDefinition group : groups) {
-            if(CollectionUtils.isEmpty(group.getGroups())){
+            if (CollectionUtils.isEmpty(group.getGroups())) {
                 return null;
             }
             if (group.getGroups().stream().anyMatch(g -> g.getUuid().equals(uuid))) {

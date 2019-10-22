@@ -13,6 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.history.SyncUserProjectViolationsDiffHistoryTest;
+import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
@@ -38,6 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource("/it-test.properties")
 @Transactional
 public abstract class BaseItTest {
+
+    @Autowired
+    protected WebhookScheduler webhookScheduler;
 
     @Autowired
     protected RepositoryService repositoryService;

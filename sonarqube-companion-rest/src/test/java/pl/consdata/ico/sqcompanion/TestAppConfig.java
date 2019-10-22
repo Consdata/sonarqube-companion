@@ -19,6 +19,7 @@ public class TestAppConfig {
                 .builder()
                 .server(
                         ServerDefinition.builder()
+                                .uuid(Servers.Server1.UUID)
                                 .id(Servers.Server1.ID)
                                 .url(Servers.Server1.URL)
                                 .build()
@@ -44,7 +45,7 @@ public class TestAppConfig {
         public static class Server1 {
 
             public static final String ID = "Server1";
-
+            public static final String UUID = "Server1";
             public static final String URL = "http://server1.sonarqube/";
 
         }
