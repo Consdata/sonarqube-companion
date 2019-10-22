@@ -15,6 +15,8 @@ import pl.consdata.ico.sqcompanion.hook.trigger.WebhookTrigger;
 
 import java.util.List;
 
+import static org.springframework.scheduling.support.CronSequenceGenerator.isValidExpression;
+
 @Service
 public class WebhookConfigValidator {
     public ValidationResult validate(WebhookDefinition webhook) {
@@ -55,6 +57,9 @@ public class WebhookConfigValidator {
     }
 
     public ValidationResult validateCronTrigger(CronWebhookTrigger trigger) {
+        if (!isValidExpression(trigger.getDefinition())) {
+            return ValidationResult.invalid("INVALID_CRON_EXP", "Cron expression is invalid");
+        }
         return ValidationResult.valid();
     }
 

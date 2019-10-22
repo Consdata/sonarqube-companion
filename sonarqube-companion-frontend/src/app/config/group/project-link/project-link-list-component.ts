@@ -5,7 +5,6 @@ import {SettingsListDetailsItem} from '../../common/settings-list/settings-list-
 import {Subject} from 'rxjs/index';
 import {ProjectLinkComponent} from './project-link-component';
 import {GroupSettingsService} from '../../service/group-settings-service';
-import * as uuid from 'uuid';
 
 @Component({
   selector: `sq-project-link-list`,

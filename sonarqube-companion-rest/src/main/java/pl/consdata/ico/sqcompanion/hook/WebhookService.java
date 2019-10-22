@@ -25,7 +25,8 @@ public class WebhookService {
         syncWebhooks();
     }
 
-    private void syncWebhooks() {
+    public void syncWebhooks() {
+        webhooks.clear();
         agregateWebhooks(config.getRootGroup());
     }
 

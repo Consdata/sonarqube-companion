@@ -94,7 +94,6 @@ public class GroupValidator {
         }
     }
 
-
     private ValidationResult getWebhookExistsResult(GroupDefinition groupDefinition, String uuid) {
         if (groupDefinition.getWebhooks().stream().noneMatch(webhook -> webhook.getUuid().equals(uuid))) {
             return ValidationResult.invalid("WEBHOOK_NOT_FOUND", "Webhook not found");
@@ -146,14 +145,6 @@ public class GroupValidator {
     private ValidationResult getCallbackNotExistsResult(WebhookDefinition webhookDefinition, String uuid) {
         if (webhookDefinition.getCallbacks().stream().noneMatch(callback -> callback.getUuid().equals(uuid))) {
             return ValidationResult.invalid("WEBHOOK_CALLBACK_NOT_EXISTS", "Webhook callback not exists");
-        } else {
-            return ValidationResult.valid();
-        }
-    }
-
-    private ValidationResult getCallbackExistsResult(WebhookDefinition webhookDefinition, String uuid) {
-        if (webhookDefinition.getCallbacks().stream().anyMatch(callback -> callback.getUuid().equals(uuid))) {
-            return ValidationResult.invalid("WEBHOOK_CALLBACK_ALREADY_EXISTS", "Webhook callback already exists");
         } else {
             return ValidationResult.valid();
         }

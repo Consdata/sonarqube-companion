@@ -22,11 +22,11 @@ import java.util.UUID;
 @RequestMapping("/api/v1/webhooks")
 public class WebhookRestController {
 
-    private List<Webhook> restWebhooks;
+    private WebhookService service;
     private WebhookActionDispatcher dispatcher;
 
     public WebhookRestController(WebhookService service, WebhookActionDispatcher dispatcher) {
-        restWebhooks = service.getAllWebhooksWithTrigger(RestWebhookTrigger.class);
+        this.service = service;
         this.dispatcher = dispatcher;
     }
 
@@ -41,7 +41,7 @@ public class WebhookRestController {
     @RequestMapping(value = "/trigger", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Map<String, CallbackResponse> get(@RequestParam String endpoint) {
         log.info("Webhook REST trigger request[endpoint={}]", endpoint);
-        Webhook endpointWebhook = restWebhooks.stream().filter(webhook -> ((RestWebhookTrigger) webhook.getTrigger()).getMethod().equals("GET")
+        Webhook endpointWebhook = service.getAllWebhooksWithTrigger(RestWebhookTrigger.class).stream().filter(webhook -> ((RestWebhookTrigger) webhook.getTrigger()).getMethod().equals("GET")
                 && ((RestWebhookTrigger) webhook.getTrigger()).getEndpoint().equals(endpoint)).findFirst().orElse(null);
         if (endpointWebhook != null) {
             ActionResponse response = dispatcher.dispatch(endpointWebhook);

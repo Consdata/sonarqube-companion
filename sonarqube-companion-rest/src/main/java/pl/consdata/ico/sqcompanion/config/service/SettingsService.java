@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
+import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
+import pl.consdata.ico.sqcompanion.hook.WebhookService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +34,9 @@ public class SettingsService {
     private final AppConfig appConfig;
     private final ObjectMapper objectMapper;
     private final CacheManager cacheManager;
+    private final WebhookScheduler webhookScheduler;
     private final RepositoryService repositoryService;
+    private final WebhookService webhookService;
 
     @Value("${app.configFile:sq-companion-config.json}")
     private String appConfigFile;
@@ -70,6 +74,9 @@ public class SettingsService {
             objectMapper.writeValue(Paths.get(appConfigFile).toFile(), appConfig);
             //TODO resync and clear only new elements
             repositoryService.syncGroups();
+            webhookService.syncWebhooks();
+            webhookScheduler.cleanup();
+            webhookScheduler.initScheduledWebhooks();
             Caches.LIST
                     .stream()
                     .map(cacheManager::getCache)

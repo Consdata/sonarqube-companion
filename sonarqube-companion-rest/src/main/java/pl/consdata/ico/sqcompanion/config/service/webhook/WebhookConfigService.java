@@ -162,7 +162,7 @@ public class WebhookConfigService {
 
     private WebhookCallback updateCallback(WebhookCallback dst, WebhookCallback src) {
         if (dst.getUuid().equals(src.getUuid())) {
-            return createSpecificCallback(dst);
+            return createSpecificCallback(src);
         } else {
             return dst;
         }
