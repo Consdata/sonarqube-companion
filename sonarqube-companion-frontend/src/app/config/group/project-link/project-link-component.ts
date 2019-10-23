@@ -43,5 +43,4 @@ export class ProjectLinkComponent implements SettingsListDetailsItem {
   getTitle(): string {
     return this.projectLink.serverId;
   }
-
 }
