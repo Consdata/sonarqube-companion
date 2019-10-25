@@ -59,5 +59,4 @@ public class GroupController {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
     }
-
 }

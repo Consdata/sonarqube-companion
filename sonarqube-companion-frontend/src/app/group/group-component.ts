@@ -5,7 +5,7 @@ import {GroupService} from './group-service';
 import {ActivatedRoute} from '@angular/router';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
-import {filter, map, switchMap} from "rxjs/operators";
+import {filter, map, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'sq-group',
@@ -81,7 +81,6 @@ export class GroupComponent {
   violationsHistoryDiff: GroupViolationsHistoryDiff;
   projectsFilter = 'changed';
   historyFilter = 'relevant';
-  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getGroupHistory(daysLimit, this.group.uuid);
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -95,18 +94,20 @@ export class GroupComponent {
     route
       .queryParamMap
       .pipe(
-        filter(params => params.has("projects.filter.severity")),
-        map(params => params.get("projects.filter.severity"))
+        filter(params => params.has('projects.filter.severity')),
+        map(params => params.get('projects.filter.severity'))
       )
       .subscribe(filterSeverity => this.projectsFilter = filterSeverity);
     route
       .queryParamMap
       .pipe(
-        filter(params => params.has("history.filter.violations")),
-        map(params => params.get("history.filter.violations"))
+        filter(params => params.has('history.filter.violations')),
+        map(params => params.get('history.filter.violations'))
       )
       .subscribe(historyFilter => this.historyFilter = historyFilter);
   }
+
+  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getGroupHistory(daysLimit, this.group.uuid);
 
   onChartZoomed(zoomedEvent: any) {
     this.violationsHistoryDiff = undefined;

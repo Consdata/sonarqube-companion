@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {GroupDetails} from './group-details';
-import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs/operators";
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class GroupService {

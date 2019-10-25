@@ -30,7 +30,44 @@ import {ProjectViolationsComponent} from './group/project-violations-component';
 import {ProjectComponent} from './project/project-component';
 import {ProjectService} from 'app/project/project-service';
 import {ProjectOverviewCardsComponent} from './project/project-overview-cards';
-import {HttpClientModule} from "@angular/common/http";
+import {SettingsComponent} from './config/settings-component';
+import {GeneralSettingsComponent} from './config/general-settings-component';
+import {ServersSettingsComponent} from './config/servers-settings-component';
+import {GroupsSettingsComponent} from './config/groups-settings-component';
+import {FormsModule} from '@angular/forms';
+import {TokenAuthenticationComponent} from './config/authentication/token-authentication-component';
+import {BasicAuthenticationComponent} from './config/authentication/basic-authentication-component';
+import {ServerComponent} from './config/server-component';
+import {EnumToSelectPipe, SchedulerComponent} from './config/scheduler/scheduler-component';
+import {GroupDetailSettingsComponent} from './config/group/group-detail-settings-component';
+import {HttpClientModule} from '@angular/common/http';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {EventComponent} from './config/group/event/event-component';
+import {ProjectLinkComponent} from './config/group/project-link/project-link-component';
+import {SubgroupsSettingsComponent} from './config/group/subgroups-settings-component';
+import {TreeModule} from 'angular-tree-component';
+import {WebhooksListComponent} from './config/group/webhook/webhooks-list-component';
+import {SettingsListDetailsComponent} from './config/common/settings-list/settings-list-details-component';
+import {SettingsListComponent} from './config/common/settings-list/settings-list-component';
+import {BadgeComponent} from './config/common/badge/badge-component';
+import {AutofocusDirective} from './config/common/autofocus-directive';
+import {EventDetailsComponent} from './config/group/event/event-details-component';
+import {WebhookDetailsComponent} from './config/group/webhook/webhook-details-component';
+import {ProjectLinkListComponent} from './config/group/project-link/project-link-list-component';
+import {PeriodGroupEvent} from './config/group/event/period-group-event';
+import {DateGroupEvent} from './config/group/event/date-group-event';
+import {ServerSettingsService} from './config/service/server-settings-service';
+import {SchedulerSettingsService} from './config/service/scheduler-settings-service';
+import {GroupSettingsService} from './config/service/group-settings-service';
+import {RegexProjectLinkComponent} from './config/group/project-link/regex-project-link-component';
+import {DirectProjectLinkComponent} from './config/group/project-link/direct-project-link-component';
+import {WebhookCallbackDetailComponent} from './config/group/webhook/callback/webhook-callback-detail-component';
+import {RestWebhookTriggerComponent} from './config/group/webhook/trigger/rest-webhook-trigger-component';
+import {JsonWebhookCallbackComponent} from './config/group/webhook/callback/json-webhook-callback-component';
+import {CronWebhookTriggerComponent} from './config/group/webhook/trigger/cron-webhook-trigger-component';
+import {NoImprovementActionComponent} from './config/group/webhook/action/no-improvement-action-component';
+import {NoImprovementActionCallbackParamsComponent} from './config/group/webhook/callback/no-improvement-action-callback-params-component';
+import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post-webhook-callback-component';
 
 @NgModule({
   declarations: [
@@ -42,7 +79,6 @@ import {HttpClientModule} from "@angular/common/http";
     NotFoundComponent,
     SpinnerComponent,
     GroupComponent,
-    GroupComponent,
     GroupOverviewTreeItemComponent,
     ViolationsHistoryComponent,
     GroupOverviewCardComponent,
@@ -52,13 +88,48 @@ import {HttpClientModule} from "@angular/common/http";
     GroupProjectsComponent,
     ProjectViolationsComponent,
     ProjectComponent,
-    ProjectOverviewCardsComponent
+    ProjectOverviewCardsComponent,
+    SettingsComponent,
+    GeneralSettingsComponent,
+    ServersSettingsComponent,
+    GroupsSettingsComponent,
+    TokenAuthenticationComponent,
+    BasicAuthenticationComponent,
+    SubgroupsSettingsComponent,
+    ServerComponent,
+    SchedulerComponent,
+    EnumToSelectPipe,
+    GroupDetailSettingsComponent,
+    EventComponent,
+    ProjectLinkComponent,
+    WebhooksListComponent,
+    SettingsListComponent,
+    SettingsListDetailsComponent,
+    BadgeComponent,
+    AutofocusDirective,
+    EventDetailsComponent,
+    WebhookDetailsComponent,
+    ProjectLinkListComponent,
+    PeriodGroupEvent,
+    DateGroupEvent,
+    RegexProjectLinkComponent,
+    DirectProjectLinkComponent,
+    WebhookCallbackDetailComponent,
+    RestWebhookTriggerComponent,
+    JsonWebhookCallbackComponent,
+    CronWebhookTriggerComponent,
+    NoImprovementActionComponent,
+    NoImprovementActionCallbackParamsComponent,
+    PostWebhookCallbackComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AmChartsModule
+    AmChartsModule,
+    FormsModule,
+    DragDropModule,
+    TreeModule.forRoot()
   ],
   providers: [
     OverviewService,
@@ -68,7 +139,17 @@ import {HttpClientModule} from "@angular/common/http";
     SynchronizationService,
     AppState,
     AppStateService,
-    ProjectService
+    ProjectService,
+    SchedulerSettingsService,
+    ServerSettingsService,
+    GroupSettingsService
+  ],
+  entryComponents: [
+    ServerComponent,
+    EventDetailsComponent,
+    WebhookDetailsComponent,
+    ProjectLinkComponent,
+    WebhookCallbackDetailComponent
   ],
   bootstrap: [
     SonarQubeCompanionComponent

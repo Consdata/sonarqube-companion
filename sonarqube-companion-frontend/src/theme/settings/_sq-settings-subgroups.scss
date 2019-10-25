@@ -1,0 +1,31 @@
+sq-settings-subgroups {
+  .actions {
+    margin-left: auto;
+    margin-right: 0;
+
+    .action {
+      margin-left: 10px;
+    }
+  }
+
+  .node-content-wrapper {
+    font-size: 20px;
+  }
+
+  .tree-phony-root.selected {
+    cursor: pointer;
+    background-color: #beebff;
+  }
+
+  .tree-phony-root {
+    width: fit-content;
+    font-size: 20px;
+    padding: 5px;
+  }
+
+  tree-viewport {
+    overflow-y: hidden;
+  }
+
+}
+

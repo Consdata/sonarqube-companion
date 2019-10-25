@@ -1,5 +1,7 @@
 package pl.consdata.ico.sqcompanion.config;
 
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
+
 public class DirectProjectLink {
 
     public static final String LINK = "link";

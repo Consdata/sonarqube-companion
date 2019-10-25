@@ -1,0 +1,36 @@
+sq-settings-server {
+  font-size: 1.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+
+  .preview {
+    display: flex;
+    align-items: center;
+    .element {
+      margin: 5px;
+    }
+    border-bottom: 1px solid $color-gray-light;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+
+  .title {
+    display: flex;
+  }
+
+  .element {
+    label {
+      margin: 10px;
+    }
+    margin: 10px
+  }
+
+  input {
+    width: 100%;
+  }
+
+}

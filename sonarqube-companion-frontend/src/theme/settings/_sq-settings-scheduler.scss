@@ -1,0 +1,22 @@
+sq-scheduler {
+
+
+  .timeUnit, .interval {
+    margin: 5px;
+    margin-left: 0;
+  }
+
+  .interval {
+    input {
+      width: 150px;
+    }
+
+    label {
+      margin-right: 5px;
+    }
+  }
+
+  .timeUnit label {
+    margin-right: 5px;
+  }
+}

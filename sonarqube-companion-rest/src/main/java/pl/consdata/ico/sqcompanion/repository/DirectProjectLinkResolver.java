@@ -3,7 +3,7 @@ package pl.consdata.ico.sqcompanion.repository;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.DirectProjectLink;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 import pl.consdata.ico.sqcompanion.project.ProjectEntity;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 

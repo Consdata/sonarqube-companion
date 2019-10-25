@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {AppStateService} from 'app/app-state-service';
 
 @Component({
@@ -8,9 +8,15 @@ import {AppStateService} from 'app/app-state-service';
       <i class="fa fa-check" *ngIf="isPresentationMode()"></i>
       Presentation theme
     </a>
+    <a class="menu-item" routerLink="/settings" (click)="toggle.emit();">
+      Settings
+    </a>
   `
 })
 export class SettingsMenuComponent {
+
+  @Output()
+  toggle = new EventEmitter<void>();
 
   constructor(private appStateService: AppStateService) {
   }
@@ -26,5 +32,4 @@ export class SettingsMenuComponent {
   isPresentationMode() {
     return this.appStateService.theme === 'presentation';
   }
-
 }

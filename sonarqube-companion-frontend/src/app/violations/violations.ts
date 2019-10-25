@@ -14,14 +14,6 @@ export class Violations {
     this.infos = data.infos || 0;
   }
 
-  hasAny(): boolean {
-    return this.blockers !== 0 || this.criticals !== 0 || this.majors !== 0 || this.minors !== 0 || this.infos !== 0;
-  }
-
-  hasRelevant(): boolean {
-    return this.relevant > 0;
-  }
-
   get all(): number {
     return this.blockers + this.criticals + this.majors + this.minors + this.infos;
   }
@@ -32,6 +24,14 @@ export class Violations {
 
   get nonRelevant(): number {
     return this.majors + this.minors + this.infos;
+  }
+
+  hasAny(): boolean {
+    return this.blockers !== 0 || this.criticals !== 0 || this.majors !== 0 || this.minors !== 0 || this.infos !== 0;
+  }
+
+  hasRelevant(): boolean {
+    return this.relevant > 0;
   }
 
 }

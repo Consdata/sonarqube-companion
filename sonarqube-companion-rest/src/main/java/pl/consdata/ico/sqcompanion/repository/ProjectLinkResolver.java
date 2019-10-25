@@ -1,6 +1,6 @@
 package pl.consdata.ico.sqcompanion.repository;
 
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 
 import java.util.List;
 

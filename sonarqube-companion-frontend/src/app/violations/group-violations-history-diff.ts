@@ -6,7 +6,7 @@ export class GroupViolationsHistoryDiff {
   groupDiff: Violations;
   addedViolations: Violations;
   removedViolations: Violations;
-  projects: {[key: string]: ProjectViolationsHistoryDiff} = {};
+  projects: { [key: string]: ProjectViolationsHistoryDiff } = {};
 
   constructor(data) {
     this.groupDiff = new Violations(data.groupDiff);

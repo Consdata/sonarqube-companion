@@ -15,7 +15,7 @@ public class WebhookActionDispatcher {
     }
 
     public ActionResponse dispatch(Webhook webhook) {
-        if (webhook.getAction().getType().equals(NoImprovementWebhookAction.TYPE)) {
+        if (webhook.getAction() instanceof NoImprovementWebhookActionData) {
             return noImprovementWebhookAction.call(webhook.getGroupUuid(), (NoImprovementWebhookActionData) webhook.getAction());
         }
         return null;

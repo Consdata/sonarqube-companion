@@ -34,7 +34,7 @@ public class WebhookScheduler {
     }
 
     @PostConstruct
-    public void initScheduledWebhooksAfterAppInit() {
+    public void initScheduledWebhooks() {
         List<Webhook> scheduledWebhooks = webhookService.getAllWebhooksWithTrigger(SpringWebhookTrigger.class);
         scheduledWebhooks.forEach(webhook -> {
             ScheduledFuture<?> task = taskScheduler.schedule(() -> callCallbacks(dispatcher.dispatch(webhook), webhook), getSpringTrigger(webhook));
@@ -53,7 +53,7 @@ public class WebhookScheduler {
                 task.cancel(true);
             }
         });
-
+        tasks.clear();
     }
 
 

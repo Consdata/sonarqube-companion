@@ -3,15 +3,18 @@ package pl.consdata.ico.sqcompanion.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
-import pl.consdata.ico.sqcompanion.config.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
+import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 
 
 /**
@@ -66,8 +69,8 @@ public class RepositoryService {
 
     private Group buildGroup(final GroupDefinition group) {
         try {
-            final List<Group> subGroups = group.getGroups().stream().map(this::buildGroup).collect(Collectors.toList());
-            final List<Project> projects = group.getProjectLinks()
+            final List<Group> subGroups = ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::buildGroup).collect(Collectors.toList());
+            final List<Project> projects = ofNullable(group.getProjectLinks()).orElse(emptyList())
                     .stream()
                     .flatMap(this::linkProjects)
                     .collect(Collectors.toList());

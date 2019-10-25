@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

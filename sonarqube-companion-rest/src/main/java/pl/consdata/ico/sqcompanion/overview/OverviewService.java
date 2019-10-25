@@ -13,6 +13,9 @@ import pl.consdata.ico.sqcompanion.repository.Group;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
+
 @Service
 @Slf4j
 public class OverviewService {
@@ -41,7 +44,7 @@ public class OverviewService {
                 .name(group.getName())
                 .violations(ProjectSummary.summarizedViolations(projectSummaries))
                 .projectCount(projectSummaries.size())
-                .groups(group.getGroups().stream().map(this::asGroupWithSubGroupsSummary).collect(Collectors.toList()))
+                .groups(ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::asGroupWithSubGroupsSummary).collect(Collectors.toList()))
                 .build();
     }
 

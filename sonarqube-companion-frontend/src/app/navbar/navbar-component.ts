@@ -18,7 +18,7 @@ import {Component} from '@angular/core';
         <i class="fa fa-cog"></i>
       </a>
     </div>
-    <sq-settings-menu *ngIf="settingsMenuVisible">
+    <sq-settings-menu *ngIf="settingsMenuVisible" (toggle)="toggleSettingsMenu()">
     </sq-settings-menu>
   `
 })

@@ -2,7 +2,7 @@ package pl.consdata.ico.sqcompanion.repository;
 
 import lombok.Builder;
 import lombok.Data;
-import pl.consdata.ico.sqcompanion.config.GroupEvent;
+import pl.consdata.ico.sqcompanion.config.model.GroupEvent;
 
 import java.util.*;
 

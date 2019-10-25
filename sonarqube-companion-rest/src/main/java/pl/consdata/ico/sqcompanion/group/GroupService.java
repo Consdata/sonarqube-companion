@@ -13,6 +13,9 @@ import pl.consdata.ico.sqcompanion.repository.Group;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
+
 @Service
 @Slf4j
 public class GroupService {
@@ -33,7 +36,7 @@ public class GroupService {
 
         return GroupDetails
                 .builder()
-                .groups(group.getGroups().stream().map(this::asGroupSummary).collect(Collectors.toList()))
+                .groups(ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::asGroupSummary).collect(Collectors.toList()))
                 .uuid(group.getUuid())
                 .name(group.getName())
                 .projects(projectSummaries)
@@ -42,7 +45,7 @@ public class GroupService {
                 .events(group.getEvents())
                 .build();
     }
-    
+
     private GroupSummary asGroupSummary(final Group group) {
         final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
         final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);

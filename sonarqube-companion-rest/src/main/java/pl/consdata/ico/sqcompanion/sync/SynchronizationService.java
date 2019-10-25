@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
-import pl.consdata.ico.sqcompanion.users.UsersService;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.project.ProjectService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.users.UsersService;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.violation.user.diff.UserViolationDiffSyncService;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistorySyncService;
 
