@@ -15,7 +15,7 @@
   <name>sonarqube-companion-frontend</name>
 
   <properties>
-    <sonar.sources>.</sonar.sources>
+    <sonar.typescript.tslint.reportPaths>target/tslint-report.json</sonar.typescript.tslint.reportPaths>
   </properties>
 
   <dependencies>
@@ -66,6 +66,16 @@
             <goals>
               <goal>yarn</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>yarn lint</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>lint</arguments>
+            </configuration>
           </execution>
           <execution>
             <id>yarn build</id>
