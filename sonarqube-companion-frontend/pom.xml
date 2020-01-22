@@ -16,6 +16,7 @@
 
   <properties>
     <sonar.typescript.tslint.reportPaths>target/tslint-report.json</sonar.typescript.tslint.reportPaths>
+    <sonar.sources>src/app</sonar.sources>
   </properties>
 
   <dependencies>
