@@ -6,7 +6,7 @@
     "ng": "node node_modules/.bin/ng",
     "ngc": "node node_modules/.bin/ngc",
     "ts-node": "node node_modules/.bin/ts-node",
-    "lint": "node node_modules/.bin/ng lint --force=true --format=json | sed 's/Linting.*$//' > target/tslint-report.json",
+    "lint": "node node_modules/.bin/ng lint --force=true --format=json | sed 's/Linting.*$//' | sed 's/\"[^\"]*src\\//\"src\\//g' > target/tslint-report.json",
     "test": "yarn ng test --single-run --browsers PhantomJS",
     "e2e": "yarn ng e2e --proxy-config proxy.local.conf.json",
     "build": "yarn ng build --prod",
