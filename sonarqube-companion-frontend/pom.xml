@@ -15,7 +15,7 @@
   <name>sonarqube-companion-frontend</name>
 
   <properties>
-    <sonar.sources>.,src</sonar.sources>
+    <sonar.sources>.</sonar.sources>
   </properties>
 
   <dependencies>
