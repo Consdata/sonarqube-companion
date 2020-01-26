@@ -46,7 +46,7 @@ interface Node {
   `
 })
 export class SubgroupsSettingsComponent {
-  @ViewChild('tree')
+  @ViewChild('tree', {static: false})
   tree: TreeComponent;
   errorMessage = '';
   loaded: boolean = false;
