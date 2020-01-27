@@ -20,7 +20,7 @@ import {SettingsListDetailsItem} from './settings-list-item';
 })
 export class SettingsListDetailsComponent {
 
-  @ViewChild('details', {read: ViewContainerRef})
+  @ViewChild('details', {read: ViewContainerRef, static: false})
   container: ViewContainerRef;
   componentRef: ComponentRef<SettingsListDetailsItem>;
 
