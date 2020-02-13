@@ -15,6 +15,7 @@ public class Group {
     private List<Group> groups;
     private List<Project> projects;
     private List<GroupEvent> events;
+    private List<String> members;
 
     public void accept(final GroupVisitor visitor) {
         visitor.visit(this);

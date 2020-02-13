@@ -29,6 +29,7 @@ public class GroupDeserializer extends StdDeserializer<GroupDefinition> implemen
         groupDefinition.setEvents(ofNullable(groupDefinition.getEvents()).orElse(new ArrayList<>()));
         groupDefinition.setProjectLinks(ofNullable(groupDefinition.getProjectLinks()).orElse(new ArrayList<>()));
         groupDefinition.setWebhooks(ofNullable(groupDefinition.getWebhooks()).orElse(new ArrayList<>()));
+        groupDefinition.setMembers(ofNullable(groupDefinition.getMembers()).orElse(new ArrayList<>()));
     }
 
     @Override

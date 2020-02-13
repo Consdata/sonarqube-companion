@@ -11,6 +11,7 @@ import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.config.validation.group.GroupValidator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,7 @@ public class GroupConfigService {
             GroupDefinition group = this.appConfig.getGroup(groupDefinition.getUuid());
             group.setName(groupDefinition.getName());
             group.setDescription(groupDefinition.getDescription());
+            group.setMembers(groupDefinition.getMembers());
             return settingsService.save();
         } else {
             log.info("Invalid group definition {} reason: {}", groupDefinition, validationResult);

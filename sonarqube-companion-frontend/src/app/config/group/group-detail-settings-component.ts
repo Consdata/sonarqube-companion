@@ -25,6 +25,11 @@ import {GroupSettingsService} from '../service/group-settings-service';
         <div class="sq-settings-widget"><label class="sq-setting-label">Description</label>
           <div class="sq-setting-container"><input type="text" [(ngModel)]="config.description"/></div>
         </div>
+        <div class="sq-settings-widget"><label class="sq-setting-label">Members</label>
+          <div class="sq-setting-container">
+            <sq-settings-badge class="members" [(items)]="config.members"></sq-settings-badge>
+          </div>
+        </div>
       </div>
       <div>
         <div>

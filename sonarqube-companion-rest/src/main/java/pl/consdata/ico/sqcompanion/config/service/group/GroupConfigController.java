@@ -98,7 +98,6 @@ public class GroupConfigController extends SettingsExceptionHandler {
         return groupConfigService.updateSubgroups(uuid, groupDefinitions);
     }
 
-
     @RequestMapping(
             value = "/{uuid}/parent",
             method = RequestMethod.GET,

@@ -9,6 +9,7 @@ export class GroupDefinition {
   groups: GroupDefinition[] = [];
   events: GroupEvent[] = [];
   webhooks: WebhookDefinition[] = [];
+  members: string[] = [];
 
   constructor(data: any) {
     if (data) {
@@ -27,6 +28,9 @@ export class GroupDefinition {
       }
       if (data.webhooks) {
         this.webhooks = data.webhooks.map(webhook => new WebhookDefinition(webhook));
+      }
+      if (data.members) {
+        this.members = data.members;
       }
     }
   }
