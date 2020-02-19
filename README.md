@@ -2,7 +2,6 @@
 
 SonarQube Companion application for Scrum teams.
 
-[![Gitter](https://badges.gitter.im/Consdata/sonarqube-companion.svg)](https://gitter.im/Consdata/sonarqube-companion?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://travis-ci.org/Consdata/sonarqube-companion.svg?branch=master)](https://travis-ci.org/Consdata/sonarqube-companion)
 
 ## Building
