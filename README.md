@@ -7,7 +7,7 @@ SonarQube Companion application for Scrum teams.
 ## Building
 
 ```bash
-$ ./mvwn clean package
+$ ./mvnw clean package
 ```
 
 ### Running builded artifact
