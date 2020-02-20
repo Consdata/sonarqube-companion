@@ -18,7 +18,7 @@
     "yarn": ">=1.0.0"
   },
   "dependencies": {
-    "@amcharts/amcharts3-angular": "2.2.3",
+    "@amcharts/amcharts3-angular": "2.2.4",
     "@angular/animations": "8.2.14",
     "@angular/cdk": "7.0.3",
     "@angular/common": "8.2.14",
