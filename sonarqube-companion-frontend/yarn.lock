@@ -898,6 +898,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@consdata/tslint-config@1.13.0":
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/@consdata/tslint-config/-/tslint-config-1.13.0.tgz#5b03af0304131a136917ed5b9788da3f61f4c9ed"
+  integrity sha512-1gGGY8DrED6EVuGYXkaltbUAl4QZArS5302XoXwoTseDrOF9WllL+oISmgeyP8eFI+So5J3JuLe0F/rj0gqrVQ==
+  dependencies:
+    tslint-defocus "2.0.6"
+
 "@istanbuljs/schema@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
@@ -3310,6 +3317,11 @@ es6-promisify@^5.0.0:
   integrity sha1-UQnWLz5W6pZ8S2NQWu8IKRyKUgM=
   dependencies:
     es6-promise "^4.0.3"
+
+es6-shim@^0.35.0:
+  version "0.35.5"
+  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.5.tgz#46f59dc0a84a1c5029e8ff1166ca0a902077a9ab"
+  integrity sha512-E9kK/bjtCQRpN1K28Xh4BlmP8egvZBGJJ+9GtnzOwt7mdqtrjHFuVGr7QJfdjBIKqrlU5duPf3pCBoDrkjVYFg==
 
 escape-html@~1.0.3:
   version "1.0.3"
@@ -8865,6 +8877,13 @@ tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
+
+tslint-defocus@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/tslint-defocus/-/tslint-defocus-2.0.6.tgz#f6174a2f8e3ce6dd066e13595e1311dcf4d382d6"
+  integrity sha512-0mMfs24HYO2QXNmWoqFSoNyN+Cn2INoYATZDZP1Tk7zy9ZWeORL0btxL//Dav3NJAZmed9jGbzrU4WaJ9cvwMQ==
+  dependencies:
+    es6-shim "^0.35.0"
 
 tslint@5.11.0:
   version "5.11.0"
