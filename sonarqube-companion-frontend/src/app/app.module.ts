@@ -68,6 +68,8 @@ import {CronWebhookTriggerComponent} from './config/group/webhook/trigger/cron-w
 import {NoImprovementActionComponent} from './config/group/webhook/action/no-improvement-action-component';
 import {NoImprovementActionCallbackParamsComponent} from './config/group/webhook/callback/no-improvement-action-callback-params-component';
 import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post-webhook-callback-component';
+import {MembersSettingsComponent} from './config/member/members-settings.component';
+import {MemberComponent} from './config/member/member-component';
 
 @NgModule({
   declarations: [
@@ -120,7 +122,9 @@ import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post
     CronWebhookTriggerComponent,
     NoImprovementActionComponent,
     NoImprovementActionCallbackParamsComponent,
-    PostWebhookCallbackComponent
+    PostWebhookCallbackComponent,
+    MembersSettingsComponent,
+    MemberComponent
   ],
   imports: [
     BrowserModule,
@@ -149,7 +153,8 @@ import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post
     EventDetailsComponent,
     WebhookDetailsComponent,
     ProjectLinkComponent,
-    WebhookCallbackDetailComponent
+    WebhookCallbackDetailComponent,
+    MemberComponent
   ],
   bootstrap: [
     SonarQubeCompanionComponent
