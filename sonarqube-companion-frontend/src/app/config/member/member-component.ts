@@ -10,6 +10,14 @@ import {Member} from '../model/member';
         <label class="sq-setting-label">First name</label>
         <input type="text" [(ngModel)]="member.firstName"/>
       </div>
+      <div class="element">
+        <label class="sq-setting-label">Last name</label>
+        <input type="text" [(ngModel)]="member.lastName"/>
+      </div>
+      <div class="element">
+        <label class="sq-setting-label">Mail</label>
+        <input type="text" [(ngModel)]="member.mail"/>
+      </div>
     </div>
   `
 })
