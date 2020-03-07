@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDefinition {
+public class Member {
     private String firstName;
     private String lastName;
     private String mail;

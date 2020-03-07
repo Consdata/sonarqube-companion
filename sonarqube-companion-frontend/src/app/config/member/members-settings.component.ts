@@ -3,6 +3,8 @@ import {SettingsListDetailsItem} from '../common/settings-list/settings-list-ite
 import {Subject} from 'rxjs';
 import {ValidationResult} from '../common/settings-list/settings-list-component';
 import {MemberComponent} from './member-component';
+import {Member} from '../model/member';
+import {MemberService} from '../service/member.service';
 
 @Component({
   selector: 'sq-settings-members',
@@ -18,7 +20,7 @@ import {MemberComponent} from './member-component';
         [newItem]="newItem.asObservable()"
         [validation]="validation.asObservable()"
         [label]="getLabel"
-        (addClick)="addServer()"
+        (addClick)="addMember()"
         (removeItem)="removeMember($event)"
         (saveItem)="saveMember($event)"
       ></sq-settings-list>
@@ -28,19 +30,20 @@ import {MemberComponent} from './member-component';
 
 export class MembersSettingsComponent implements OnInit {
   loaded: boolean = true;
-  members: any[] = [];
+  members: Member[] = [];
   memberType: Type<SettingsListDetailsItem> = MemberComponent;
   newItem: Subject<any> = new Subject();
   validation: Subject<ValidationResult> = new Subject();
 
-  constructor() {
+  constructor(private memberService: MemberService) {
   }
 
   ngOnInit() {
+    this.load();
   }
 
 
-  addServer() {
+  addMember() {
   }
 
   removeMember(member: any) {
@@ -52,9 +55,17 @@ export class MembersSettingsComponent implements OnInit {
   }
 
   load() {
+    this.loaded = false;
+    this.memberService.all().subscribe(data => {
+      this.members = data;
+      this.loaded = true;
+    }, er => {
+      this.loaded = true;
+      this.validation.next({valid: false, message: 'Unable to load items'});
+    });
   }
 
-  getLabel(item: any): string {
-    return item.id;
+  getLabel(item: Member): string {
+    return `${item.firstName} ${item.lastName}`;
   }
 }

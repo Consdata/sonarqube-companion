@@ -70,6 +70,7 @@ import {NoImprovementActionCallbackParamsComponent} from './config/group/webhook
 import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post-webhook-callback-component';
 import {MembersSettingsComponent} from './config/member/members-settings.component';
 import {MemberComponent} from './config/member/member-component';
+import {MemberService} from './config/service/member.service';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,8 @@ import {MemberComponent} from './config/member/member-component';
     ProjectService,
     SchedulerSettingsService,
     ServerSettingsService,
-    GroupSettingsService
+    GroupSettingsService,
+    MemberService
   ],
   entryComponents: [
     ServerComponent,

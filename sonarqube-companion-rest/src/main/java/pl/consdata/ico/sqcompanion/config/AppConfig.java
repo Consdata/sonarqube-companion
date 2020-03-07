@@ -4,9 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import org.springframework.util.CollectionUtils;
-import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.model.SchedulerConfig;
-import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +23,8 @@ public class AppConfig {
     private GroupDefinition rootGroup;
 
     private SchedulerConfig scheduler;
+
+    private MembersDefinition members;
 
     public ServerDefinition getServer(final String uuid) {
         return servers
