@@ -48,6 +48,10 @@ public class AppConfigConfiguration {
                     return new WebhookDeserializer(deserializer);
                 }
 
+                if (beanDesc.getBeanClass() == Member.class) {
+                    return new MemberDeserializer(deserializer);
+                }
+
                 if (beanDesc.getBeanClass() == ServerDefinition.class) {
                     return new ServerDefinitionDeserializer(deserializer);
                 }
@@ -57,7 +61,6 @@ public class AppConfigConfiguration {
         module.addDeserializer(ServerAuthentication.class, new ServerAuthenticationDeserializer());
         module.addDeserializer(GroupEvent.class, new GroupEventDeserializer());
         module.addDeserializer(ProjectLink.class, new ProjectLinkDeserializer());
-        module.addDeserializer(Member.class, new MemberDeserializer());
         module.addDeserializer(PostWebhookCallback.class, new PostWebhookCallbackDeserializer());
         module.addDeserializer(JSONWebhookCallback.class, new JsonWebhookCallbackDeserializer());
         module.addDeserializer(NoImprovementWebhookActionData.class, new NoImprovementWebhookActionDataDeserializer());

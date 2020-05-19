@@ -2,39 +2,36 @@ package pl.consdata.ico.sqcompanion.config.deserialization;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import pl.consdata.ico.sqcompanion.config.model.Member;
 
 import java.io.IOException;
 
-import static org.apache.commons.lang.StringUtils.EMPTY;
-import static pl.consdata.ico.sqcompanion.config.deserialization.DeserializationUtil.*;
+import static pl.consdata.ico.sqcompanion.config.deserialization.DeserializationUtil.generateUuidIfRequired;
 
-public class MemberDeserializer extends StdDeserializer<Member> {
+public class MemberDeserializer extends StdDeserializer<Member> implements ResolvableDeserializer {
 
-    public MemberDeserializer() {
-        this(null);
+    private final JsonDeserializer<?> defaultDeserializer;
+
+    public MemberDeserializer(JsonDeserializer<?> defaultDeserializer) {
+        super(Member.class);
+        this.defaultDeserializer = defaultDeserializer;
     }
 
-    protected MemberDeserializer(Class<?> vc) {
-        super(vc);
+    @Override
+    public Member deserialize(JsonParser jsonParser, DeserializationContext context)
+            throws IOException {
+        Member member = (Member) defaultDeserializer.deserialize(jsonParser, context);
+        member.setUuid(generateUuidIfRequired(member.getUuid()));
+        return member;
     }
 
 
     @Override
-    public Member deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        ObjectMapper mapper = new ObjectMapper();
-        return Member.builder()
-                .uuid(generateUuidIfRequired(node.get("uuid")))
-                .firstName(textOfBlankNode(node.get("firstName"), EMPTY))
-                .lastName(textOfBlankNode(node.get("lastName"), EMPTY))
-                .sonarId(textOfBlankNode(node.get("sonarId"), EMPTY))
-                .aliases(listOfNullable(node.get("aliases"), mapper))
-                .mail(textOfBlankNode(node.get("mail"), EMPTY))
-                .memberOf(listOfNullable(node.get("memberOf"), mapper))
-                .build();
+    public void resolve(DeserializationContext context) throws JsonMappingException {
+        ((ResolvableDeserializer) defaultDeserializer).resolve(context);
     }
 }

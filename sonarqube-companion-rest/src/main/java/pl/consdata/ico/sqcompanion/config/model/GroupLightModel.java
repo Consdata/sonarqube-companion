@@ -5,17 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
-    private String firstName;
-    private String lastName;
-    private String mail;
+public class GroupLightModel {
+    private String name;
     private String uuid;
-    private String sonarId;
-    private List<String> aliases;
 }

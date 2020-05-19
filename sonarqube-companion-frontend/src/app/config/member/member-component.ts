@@ -18,6 +18,10 @@ import {Member} from '../model/member';
         <label class="sq-setting-label">Mail</label>
         <input type="text" [(ngModel)]="member.mail"/>
       </div>
+      <div class="element">
+        <label class="sq-setting-label">Member of</label>
+        <sq-settings-group-badge></sq-settings-group-badge>
+      </div>
     </div>
   `
 })

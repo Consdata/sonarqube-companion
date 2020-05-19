@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.validation.SettingsExceptionHandler;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 
@@ -113,4 +114,20 @@ public class GroupConfigController extends SettingsExceptionHandler {
                 .map(groupDefinition -> ResponseEntity.ok(groupDefinition.getUuid()))
                 .orElseGet(() -> ResponseEntity.ok(EMPTY));
     }
+
+
+    @RequestMapping(
+            value = "/all",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns light groups list",
+            notes = "<p>Returns light groups list</p>"
+    )
+    public List<GroupLightModel> getAll() {
+        return groupConfigService.getAll();
+    }
+
+
 }

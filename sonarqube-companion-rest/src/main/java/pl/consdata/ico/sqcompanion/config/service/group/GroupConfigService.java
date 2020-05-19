@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.deserialization.GroupDeserializer;
 import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.service.SettingsService;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.config.validation.group.GroupValidator;
+import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 
@@ -109,4 +112,7 @@ public class GroupConfigService {
         return ofNullable(appConfig.getGroupParent(uuid));
     }
 
+    public List<GroupLightModel> getAll() {
+        return appConfig.getGroupList(appConfig.getRootGroup().getUuid(), appConfig.getRootGroup().getGroups());
+    }
 }

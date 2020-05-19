@@ -71,6 +71,7 @@ import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post
 import {MembersSettingsComponent} from './config/member/members-settings.component';
 import {MemberComponent} from './config/member/member-component';
 import {MemberService} from './config/service/member.service';
+import {GroupSelectBadgeComponent} from './config/common/badge/group-select-badge-component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import {MemberService} from './config/service/member.service';
     NoImprovementActionCallbackParamsComponent,
     PostWebhookCallbackComponent,
     MembersSettingsComponent,
-    MemberComponent
+    MemberComponent,
+    GroupSelectBadgeComponent
   ],
   imports: [
     BrowserModule,

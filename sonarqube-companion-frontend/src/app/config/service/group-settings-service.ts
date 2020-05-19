@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {GroupDefinition, ProjectLink} from '../model/group-definition';
 import {GroupEvent} from '../../group/group-event';
 import {WebhookCallback, WebhookDefinition} from '../model/webhook-definition';
+import {GroupLightModel} from '../model/group-light-model';
 
 
 @Injectable()
@@ -165,6 +166,10 @@ export class GroupSettingsService {
   getParent(nodeId: string): Observable<string> {
     return this.http
       .get(`api/v1/settings/group/${nodeId}/parent/`, {responseType: 'text'});
+  }
+
+  getAll(): Observable<GroupLightModel[]> {
+    return this.http.get<GroupLightModel[]>(`api/v1/settings/group/all`);
   }
 
 }
