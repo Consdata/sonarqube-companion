@@ -19,6 +19,14 @@ import {Member} from '../model/member';
         <input type="text" [(ngModel)]="member.mail"/>
       </div>
       <div class="element">
+        <label class="sq-setting-label">SonarID</label>
+        <input type="text" [(ngModel)]="member.sonarId"/>
+      </div>
+      <div class="element">
+        <label class="sq-setting-label">Aliases</label>
+        <sq-settings-group-badge></sq-settings-group-badge>
+      </div>
+      <div class="element">
         <label class="sq-setting-label">Member of</label>
         <sq-settings-group-badge></sq-settings-group-badge>
       </div>

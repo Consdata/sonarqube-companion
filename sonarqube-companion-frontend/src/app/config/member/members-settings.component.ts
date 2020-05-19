@@ -38,20 +38,47 @@ export class MembersSettingsComponent implements OnInit {
   constructor(private memberService: MemberService) {
   }
 
-  ngOnInit() {
-    this.load();
-  }
-
-
   addMember() {
+    const newMember: Member = new Member();
+    this.members.push(newMember);
+    this.newItem.next(newMember);
   }
 
   removeMember(member: any) {
-
+    this.loaded = false;
+    this.memberService.delete(member).subscribe(validationResult => {
+      if (validationResult.valid) {
+        this.load();
+      } else {
+        this.loaded = true;
+      }
+      validationResult.item = member;
+      this.validation.next(validationResult);
+    }, er => {
+      this.loaded = true;
+      this.validation.next({valid: false, message: 'Unable to delete item'});
+    });
   }
 
   saveMember(member: { item: any, newItem: boolean }) {
+    this.loaded = false;
+    this.memberService.save(member.item, member.newItem).subscribe(validationResult => {
+      if (validationResult.valid) {
+        this.load();
+      } else {
+        this.loaded = true;
+      }
+      validationResult.item = member.item;
+      this.validation.next(validationResult);
+    }, er => {
+      this.validation.next({valid: false, message: 'Unable to save item'});
+      this.loaded = true;
+    });
+  }
 
+
+  ngOnInit(): void {
+    this.load();
   }
 
   load() {

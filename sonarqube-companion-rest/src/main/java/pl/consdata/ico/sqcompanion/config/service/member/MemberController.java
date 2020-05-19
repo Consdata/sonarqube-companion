@@ -41,7 +41,7 @@ public class MemberController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ValidationResult updateProjectLink(@RequestBody Member member) {
+    public ValidationResult updateMember(@RequestBody Member member) {
         log.info("Update member {}", member);
         return service.update(member);
     }
@@ -50,7 +50,7 @@ public class MemberController {
             httpMethod = "DELETE",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @DeleteMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ValidationResult deleteProjectLink(@PathVariable String uuid) {
+    public ValidationResult deleteMember(@PathVariable String uuid) {
         log.info("Delete member {}", uuid);
         return service.delete(uuid);
     }

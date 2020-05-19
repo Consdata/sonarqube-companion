@@ -34,7 +34,7 @@ public class MemberService {
     }
 
     public ValidationResult update(Member member) {
-        ValidationResult validationResult = validator.memberWithSonarIdNotExists(member.getSonarId()).and(validator.memberExists(member.getUuid()));
+        ValidationResult validationResult = validator.memberExists(member.getUuid());
         if (validationResult.isValid()) {
             Member updateMember = appConfig.getMember(member.getUuid());
             updateMember.setFirstName(member.getFirstName());
