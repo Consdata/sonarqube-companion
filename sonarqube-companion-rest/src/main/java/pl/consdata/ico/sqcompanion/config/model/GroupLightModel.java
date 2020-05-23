@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.consdata.ico.sqcompanion.repository.Group;
 
 @Data
 @Builder
@@ -12,4 +13,11 @@ import lombok.NoArgsConstructor;
 public class GroupLightModel {
     private String name;
     private String uuid;
+
+    public static GroupLightModel of(GroupDefinition group) {
+        return GroupLightModel.builder()
+                .uuid(group.getUuid())
+                .name(group.getName())
+                .build();
+    }
 }

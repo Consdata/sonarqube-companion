@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -16,6 +16,6 @@ public class Member {
     private String lastName;
     private String mail;
     private String uuid;
-    private String sonarId;
-    private List<String> aliases;
+    private Set<String> aliases;
+    private Set<String> groups;
 }

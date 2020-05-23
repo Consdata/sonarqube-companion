@@ -1,21 +1,34 @@
 package pl.consdata.ico.sqcompanion.members;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity(name = "members")
-@Table(indexes = {
-        @Index(name = "IDX_MEMBERS_USER_ID", columnList = "userID", unique = true),
-})
 @Data
-public class MemberEntity {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MemberEntryEntity {
     @Id
     private String id;
-    private String userId;
     private String firstName;
     private String lastName;
+
+    @ElementCollection
+    private Set<String> aliases = new HashSet<>();
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "member"
+    )
+    private List<MembershipEntryEntity> membershipEvents = new ArrayList<>();
+
 }

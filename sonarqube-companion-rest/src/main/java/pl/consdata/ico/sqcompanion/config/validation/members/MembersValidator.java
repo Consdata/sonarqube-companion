@@ -18,9 +18,9 @@ public class MembersValidator {
         return ValidationResult.valid();
     }
 
-    public ValidationResult memberWithSonarIdNotExists(String sonarId) {
-        if (appConfig.getMembers().getLocal().stream().anyMatch(m -> sonarId.equals(m.getSonarId()))) {
-            return ValidationResult.invalid("MEMBER_ALREADY_EXISTS", "Member with sonarId: " + sonarId + " already exist");
+    public ValidationResult memberWithSonarIdNotExists(String uuid) {
+        if (appConfig.getMembers().getLocal().stream().anyMatch(m -> uuid.equals(m.getUuid()))) {
+            return ValidationResult.invalid("MEMBER_ALREADY_EXISTS", "Member already exist");
         }
         return ValidationResult.valid();
     }

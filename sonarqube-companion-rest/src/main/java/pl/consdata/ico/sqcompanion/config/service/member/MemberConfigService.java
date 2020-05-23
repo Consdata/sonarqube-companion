@@ -17,7 +17,7 @@ import static java.util.Optional.ofNullable;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberConfigService {
     private final AppConfig appConfig;
     private final SettingsService settingsService;
     private final MembersValidator validator;
@@ -40,9 +40,9 @@ public class MemberService {
             updateMember.setFirstName(member.getFirstName());
             updateMember.setLastName(member.getLastName());
             updateMember.setMail(member.getMail());
-            updateMember.setSonarId(member.getSonarId());
             updateMember.setUuid(member.getUuid());
             updateMember.setAliases(member.getAliases());
+            updateMember.setGroups(member.getGroups());
             return settingsService.save();
         } else {
             log.info("Unable to create member definition {} reason: {}", member, validationResult);
@@ -51,7 +51,7 @@ public class MemberService {
     }
 
     public ValidationResult create(Member member) {
-        ValidationResult validationResult = validator.memberWithSonarIdNotExists(member.getSonarId());
+        ValidationResult validationResult = validator.memberWithSonarIdNotExists(member.getUuid());
         if (validationResult.isValid()) {
             appConfig.getMembers().getLocal().add(member);
             return settingsService.save();

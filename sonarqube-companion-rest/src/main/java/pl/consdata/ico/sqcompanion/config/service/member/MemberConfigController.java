@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/settings/member")
-public class MemberController {
+public class MemberConfigController {
     private final MemberConfigService service;
 
     @ApiOperation(value = "Get all members",

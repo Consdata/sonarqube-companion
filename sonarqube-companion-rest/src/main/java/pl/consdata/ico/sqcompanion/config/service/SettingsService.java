@@ -12,6 +12,7 @@ import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
 import pl.consdata.ico.sqcompanion.hook.WebhookService;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +38,7 @@ public class SettingsService {
     private final WebhookScheduler webhookScheduler;
     private final RepositoryService repositoryService;
     private final WebhookService webhookService;
+    private final MemberService memberService;
 
     @Value("${app.configFile:sq-companion-config.json}")
     private String appConfigFile;
@@ -72,6 +74,7 @@ public class SettingsService {
     private boolean store() {
         try {
             objectMapper.writeValue(Paths.get(appConfigFile).toFile(), appConfig);
+            memberService.syncLocalMembers();
             //TODO resync and clear only new elements
             repositoryService.syncGroups();
             webhookService.syncWebhooks();
