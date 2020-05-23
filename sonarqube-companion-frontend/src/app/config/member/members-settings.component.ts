@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {ValidationResult} from '../common/settings-list/settings-list-component';
 import {MemberComponent} from './member-component';
 import {Member} from '../model/member';
-import {MemberService} from '../service/member.service';
+import {MemberConfigService} from '../service/member-config.service';
 
 @Component({
   selector: 'sq-settings-members',
@@ -35,7 +35,7 @@ export class MembersSettingsComponent implements OnInit {
   newItem: Subject<any> = new Subject();
   validation: Subject<ValidationResult> = new Subject();
 
-  constructor(private memberService: MemberService) {
+  constructor(private memberService: MemberConfigService) {
   }
 
   addMember() {

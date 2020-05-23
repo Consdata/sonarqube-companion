@@ -15,13 +15,22 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/settings/member")
 public class MemberController {
-    private final MemberService service;
+    private final MemberConfigService service;
 
     @ApiOperation(value = "Get all members",
             httpMethod = "GET",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Member> getAllMembers() {
+        log.info("Get all members");
+        return service.getAll();
+    }
+
+    @ApiOperation(value = "Get group members",
+            httpMethod = "GET",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/group/{groupId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Member> getAllMembers(@PathVariable String groupId) {
         log.info("Get all members");
         return service.getAll();
     }

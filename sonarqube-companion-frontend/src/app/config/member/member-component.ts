@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SettingsListDetailsItem} from '../common/settings-list/settings-list-item';
 import {Member} from '../model/member';
+import {MemberService} from './member-service';
+import {GroupLightModel} from '../model/group-light-model';
 
 @Component({
   selector: 'sq-member-component',
@@ -19,29 +21,28 @@ import {Member} from '../model/member';
         <input type="text" [(ngModel)]="member.mail"/>
       </div>
       <div class="element">
-        <label class="sq-setting-label">SonarID</label>
-        <input type="text" [(ngModel)]="member.sonarId"/>
+        <sq-settings-badge [(items)]="member.aliases"
+                           [title]="'Aliases'"></sq-settings-badge>
       </div>
       <div class="element">
-        <label class="sq-setting-label">Aliases</label>
-        <sq-settings-group-badge></sq-settings-group-badge>
-      </div>
-      <div class="element">
-        <label class="sq-setting-label">Member of</label>
-        <sq-settings-group-badge></sq-settings-group-badge>
+        <sq-settings-group-badge [title]="'Member of'" (itemsChange)="onItemsChange($event)"
+                                 [items]="memberGroups"></sq-settings-group-badge>
       </div>
     </div>
   `
 })
 
-export class MemberComponent implements OnInit, SettingsListDetailsItem {
+export class MemberComponent implements AfterViewInit, SettingsListDetailsItem {
   member: Member;
+  memberGroups: GroupLightModel[] = [];
 
-  constructor() {
+  constructor(private memberService: MemberService) {
   }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
+    this.memberService.getGroups(this.member.uuid).subscribe(data => this.memberGroups = data);
   }
+
 
   getModel(): any {
     return this.member;
@@ -58,4 +59,8 @@ export class MemberComponent implements OnInit, SettingsListDetailsItem {
     this.member = <Member>model;
   }
 
+  onItemsChange(items: GroupLightModel[]) {
+    this.memberGroups = items;
+    this.member.groups = items.map(i => i.uuid);
+  }
 }

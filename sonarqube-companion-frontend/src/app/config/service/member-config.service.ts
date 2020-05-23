@@ -6,7 +6,7 @@ import {ValidationResult} from '../common/settings-list/settings-list-component'
 
 
 @Injectable()
-export class MemberService {
+export class MemberConfigService {
   constructor(private http: HttpClient) {
   }
 

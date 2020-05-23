@@ -57,6 +57,10 @@ import {filter, map, switchMap} from 'rxjs/operators';
         </div>
       </div>
       <div>
+        <h2>Members</h2>
+        <sq-group-members [group]="group" [zoom]="zoom"></sq-group-members>
+      </div>
+      <div>
         <h2>Projects</h2>
         <div class="group-projects-filter">
           <a class="project-filter-item" [class.active]="'changed' === projectsFilter" [routerLink] [queryParams]="{'projects.filter.severity': 'changed'}" queryParamsHandling="merge">changed</a>
@@ -81,6 +85,7 @@ export class GroupComponent {
   violationsHistoryDiff: GroupViolationsHistoryDiff;
   projectsFilter = 'changed';
   historyFilter = 'relevant';
+  zoom: any;
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -110,6 +115,7 @@ export class GroupComponent {
   violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getGroupHistory(daysLimit, this.group.uuid);
 
   onChartZoomed(zoomedEvent: any) {
+    this.zoom = zoomedEvent;
     this.violationsHistoryDiff = undefined;
     this.violationsHistoryService
       .getGroupHistoryDiff(this.group.uuid, zoomedEvent.fromDate, zoomedEvent.toDate)

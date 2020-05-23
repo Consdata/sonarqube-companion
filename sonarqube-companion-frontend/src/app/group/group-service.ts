@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {GroupDetails} from './group-details';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {Member} from '../config/model/member';
 
 @Injectable()
 export class GroupService {
@@ -18,4 +19,13 @@ export class GroupService {
       );
   }
 
+  getGroupMembers(uuid: string): Observable<Member[]> {
+    return this.http
+      .get<Member[]>(`api/v1/groups/${uuid}/members`);
+  }
+
+  getGroupMembersBetween(uuid: string, from: any, to: any): Observable<Member[]> {
+    return this.http
+      .get<Member[]>(`api/v1/groups/${uuid}/members/${from}/${to}`);
+  }
 }

@@ -70,8 +70,10 @@ import {NoImprovementActionCallbackParamsComponent} from './config/group/webhook
 import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post-webhook-callback-component';
 import {MembersSettingsComponent} from './config/member/members-settings.component';
 import {MemberComponent} from './config/member/member-component';
-import {MemberService} from './config/service/member.service';
+import {MemberConfigService} from './config/service/member-config.service';
 import {GroupSelectBadgeComponent} from './config/common/badge/group-select-badge-component';
+import {GroupMembersComponent} from './group/group-members.component';
+import {MemberService} from './config/member/member-service';
 
 @NgModule({
   declarations: [
@@ -127,7 +129,8 @@ import {GroupSelectBadgeComponent} from './config/common/badge/group-select-badg
     PostWebhookCallbackComponent,
     MembersSettingsComponent,
     MemberComponent,
-    GroupSelectBadgeComponent
+    GroupSelectBadgeComponent,
+    GroupMembersComponent
   ],
   imports: [
     BrowserModule,
@@ -150,6 +153,7 @@ import {GroupSelectBadgeComponent} from './config/common/badge/group-select-badg
     SchedulerSettingsService,
     ServerSettingsService,
     GroupSettingsService,
+    MemberConfigService,
     MemberService
   ],
   entryComponents: [
