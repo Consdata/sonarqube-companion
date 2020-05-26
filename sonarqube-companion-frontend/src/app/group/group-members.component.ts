@@ -27,7 +27,7 @@ export class GroupMembersComponent {
   }
 
   @Input()
-  set zoom(_zoom: any) {
+  set zoom(_zoom: { fromDate: string, toDate: string }) {
     if (this.group && _zoom) {
       this.groupService.getGroupMembersBetween(this.group.uuid, _zoom.fromDate, _zoom.toDate).subscribe(data => this.members = data);
     } else {

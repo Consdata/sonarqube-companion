@@ -33,11 +33,10 @@ export class GroupSelectBadgeComponent implements AfterViewInit {
   @Input()
   title: string;
   selectedBadge: number = -1;
+  _items: GroupLightModel[] = [];
 
   constructor(private groupSettingsService: GroupSettingsService) {
   }
-
-  _items: GroupLightModel[] = [];
 
   @Input()
   set items(data: GroupLightModel[]) {

@@ -100,9 +100,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
     }
 
 
-    @RequestMapping(
+    @GetMapping(
             value = "/{uuid}/parent",
-            method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE
     )
     @ApiOperation(
@@ -116,9 +115,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
     }
 
 
-    @RequestMapping(
+    @GetMapping(
             value = "/all",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
