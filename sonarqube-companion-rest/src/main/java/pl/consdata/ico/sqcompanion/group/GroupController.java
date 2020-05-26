@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.members.MemberService;
@@ -61,9 +58,8 @@ public class GroupController {
         }
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/{uuid}/members",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
@@ -74,9 +70,8 @@ public class GroupController {
         return memberService.groupMembers(uuid);
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/{uuid}/members/{from}/{to}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(

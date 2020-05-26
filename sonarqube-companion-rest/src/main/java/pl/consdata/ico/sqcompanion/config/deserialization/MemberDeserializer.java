@@ -14,7 +14,7 @@ import static pl.consdata.ico.sqcompanion.config.deserialization.Deserialization
 
 public class MemberDeserializer extends StdDeserializer<Member> implements ResolvableDeserializer {
 
-    private final JsonDeserializer<?> defaultDeserializer;
+    private final transient JsonDeserializer<?> defaultDeserializer;
 
     public MemberDeserializer(JsonDeserializer<?> defaultDeserializer) {
         super(Member.class);

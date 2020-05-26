@@ -44,7 +44,7 @@ export class MemberComponent implements AfterViewInit, SettingsListDetailsItem {
   }
 
 
-  getModel(): any {
+  getModel(): Member {
     return this.member;
   }
 
@@ -52,14 +52,14 @@ export class MemberComponent implements AfterViewInit, SettingsListDetailsItem {
     return `${this.member.firstName || ''} ${this.member.lastName || ''}`;
   }
 
-  setMetadata(data: any): void {
+  setMetadata(data: unknown): void {
   }
 
-  setModel(model: any): void {
-    this.member = <Member>model;
+  setModel(model: Member): void {
+    this.member = model;
   }
 
-  onItemsChange(items: GroupLightModel[]) {
+  onItemsChange(items: GroupLightModel[]): void {
     this.memberGroups = items;
     this.member.groups = items.map(i => i.uuid);
   }

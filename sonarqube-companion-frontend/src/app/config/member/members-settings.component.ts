@@ -32,19 +32,19 @@ export class MembersSettingsComponent implements OnInit {
   loaded: boolean = true;
   members: Member[] = [];
   memberType: Type<SettingsListDetailsItem> = MemberComponent;
-  newItem: Subject<any> = new Subject();
+  newItem: Subject<Member> = new Subject();
   validation: Subject<ValidationResult> = new Subject();
 
   constructor(private memberService: MemberConfigService) {
   }
 
-  addMember() {
+  addMember(): void {
     const newMember: Member = new Member({});
     this.members.push(newMember);
     this.newItem.next(newMember);
   }
 
-  removeMember(member: any) {
+  removeMember(member: Member): void {
     this.loaded = false;
     this.memberService.delete(member).subscribe(validationResult => {
       if (validationResult.valid) {
@@ -60,7 +60,7 @@ export class MembersSettingsComponent implements OnInit {
     });
   }
 
-  saveMember(member: { item: any, newItem: boolean }) {
+  saveMember(member: { item: Member, newItem: boolean }): void {
     this.loaded = false;
     this.memberService.save(member.item, member.newItem).subscribe(validationResult => {
       if (validationResult.valid) {
@@ -81,7 +81,7 @@ export class MembersSettingsComponent implements OnInit {
     this.load();
   }
 
-  load() {
+  load(): void {
     this.loaded = false;
     this.memberService.all().subscribe(data => {
       this.members = data;

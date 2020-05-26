@@ -6,6 +6,7 @@ export class Member {
   aliases: string[];
   groups: string[];
 
+
   constructor(data: any) {
     this.firstName = data.firstName;
     this.lastName = data.lastName;

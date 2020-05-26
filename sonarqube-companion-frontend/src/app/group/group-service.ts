@@ -24,7 +24,7 @@ export class GroupService {
       .get<Member[]>(`api/v1/groups/${uuid}/members`);
   }
 
-  getGroupMembersBetween(uuid: string, from: any, to: any): Observable<Member[]> {
+  getGroupMembersBetween(uuid: string, from: string, to: string): Observable<Member[]> {
     return this.http
       .get<Member[]>(`api/v1/groups/${uuid}/members/${from}/${to}`);
   }

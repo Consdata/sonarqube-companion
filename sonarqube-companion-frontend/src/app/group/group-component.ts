@@ -85,7 +85,7 @@ export class GroupComponent {
   violationsHistoryDiff: GroupViolationsHistoryDiff;
   projectsFilter = 'changed';
   historyFilter = 'relevant';
-  zoom: any;
+  zoom: {fromDate: string, toDate: string};
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -114,7 +114,7 @@ export class GroupComponent {
 
   violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getGroupHistory(daysLimit, this.group.uuid);
 
-  onChartZoomed(zoomedEvent: any) {
+  onChartZoomed(zoomedEvent: {fromDate: string, toDate: string}) {
     this.zoom = zoomedEvent;
     this.violationsHistoryDiff = undefined;
     this.violationsHistoryService
