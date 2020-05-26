@@ -66,8 +66,8 @@ export class GroupSelectBadgeComponent implements AfterViewInit {
   }
 
   onSelect(event: any, i: number) {
-    this._items[i] = this.domain.filter(i => i.uuid === event.target.value)[0];
-    this.currantDomain = this.domain.filter(d => this._items.filter(i => i.uuid === d.uuid).length === 0);
+    this._items[i] = this.domain.filter(item => item.uuid === event.target.value)[0];
+    this.currantDomain = this.domain.filter(d => this._items.filter(item => item.uuid === d.uuid).length === 0);
     this.addBadge();
   }
 }
