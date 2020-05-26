@@ -1,6 +1,7 @@
 sq-group-members {
   .members {
     display: flex;
+    flex-wrap: wrap;
   }
   .member {
     span {
