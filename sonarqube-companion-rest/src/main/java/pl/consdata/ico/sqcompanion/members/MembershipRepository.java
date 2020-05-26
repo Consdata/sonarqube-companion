@@ -9,10 +9,14 @@ import java.util.Set;
 public interface MembershipRepository extends JpaRepository<MembershipEntryEntity, Long> {
     Optional<MembershipEntryEntity> findFirstByMemberIdAndGroupIdOrderByDateDesc(String memberId, String groupId);
 
-    Set<GroupsOnlyProjection> findDistinctByMemberIdOrderByDateDesc(String memberId);
+    Set<GroupsOnlyProjection> findByMemberId(String memberId);
 
-    Set<MembershipEntryEntity> findDistinctByGroupIdAndDateIsBetweenOrderByDateDesc(String groupId, LocalDate from, LocalDate to);
+    Set<MembershipEntryEntity> findByGroupIdAndDateIsBetweenOrderByDateDesc(String groupId, LocalDate from, LocalDate to);
 
-    Set<MembershipEntryEntity> findDistinctByGroupIdAndDateIsLessThanEqualOrderByDateDesc(String groupId, LocalDate to);
+    Set<MembershipEntryEntity> findByMemberIdAndDateIsBetweenOrderByDateDesc(String memberId, LocalDate from, LocalDate to);
+
+    Set<MembershipEntryEntity> findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(String groupId, LocalDate to);
+
+    Set<MembershipEntryEntity> findByMemberIdAndDateIsLessThanEqualOrderByDateDesc(String memberId, LocalDate to);
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @Slf4j
@@ -23,7 +23,7 @@ public class MemberController {
             httpMethod = "GET",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @GetMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<GroupLightModel> getMemberGroups(@PathVariable String uuid) {
+    public Collection<GroupLightModel> getMemberGroups(@PathVariable String uuid) {
         log.info("Get member groups");
         return memberService.memberGroups(uuid);
     }

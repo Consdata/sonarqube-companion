@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {SettingsListDetailsItem} from '../common/settings-list/settings-list-item';
 import {Member} from '../model/member';
 import {MemberService} from './member-service';
@@ -49,7 +49,7 @@ export class MemberComponent implements AfterViewInit, SettingsListDetailsItem {
   }
 
   getTitle(): string {
-    return `${this.member.firstName} ${this.member.lastName}`;
+    return `${this.member.firstName || ''} ${this.member.lastName || ''}`;
   }
 
   setMetadata(data: any): void {

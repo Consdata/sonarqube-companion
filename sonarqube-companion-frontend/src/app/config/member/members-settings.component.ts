@@ -39,7 +39,7 @@ export class MembersSettingsComponent implements OnInit {
   }
 
   addMember() {
-    const newMember: Member = new Member();
+    const newMember: Member = new Member({});
     this.members.push(newMember);
     this.newItem.next(newMember);
   }
@@ -93,6 +93,6 @@ export class MembersSettingsComponent implements OnInit {
   }
 
   getLabel(item: Member): string {
-    return `${item.firstName} ${item.lastName}`;
+    return `${item.firstName || ''} ${item.lastName || ''}`;
   }
 }

@@ -14,6 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.history.SyncUserProjectViolationsDiffHistoryTest;
 import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
+import pl.consdata.ico.sqcompanion.members.MemberRepository;
+import pl.consdata.ico.sqcompanion.members.MemberService;
+import pl.consdata.ico.sqcompanion.members.MembershipRepository;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
@@ -66,6 +69,15 @@ public abstract class BaseItTest {
 
     @Autowired
     protected UserViolationHistoryRepository userViolationHistoryRepository;
+
+    @Autowired
+    protected MemberRepository memberRepository;
+
+    @Autowired
+    protected MembershipRepository membershipRepository;
+
+    @Autowired
+    protected MemberService memberService;
 
     @Before
     public void setUpBaseItTest() {

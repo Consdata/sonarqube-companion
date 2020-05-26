@@ -1,12 +1,15 @@
 package pl.consdata.ico.sqcompanion.config.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MembersDefinition {
-    private List<MemberIntegration> integrations;
+    @Singular("local")
     private List<Member> local = new ArrayList<>();
 }

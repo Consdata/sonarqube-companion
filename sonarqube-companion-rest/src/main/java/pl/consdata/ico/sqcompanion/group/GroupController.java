@@ -61,7 +61,6 @@ public class GroupController {
         }
     }
 
-
     @RequestMapping(
             value = "/{uuid}/members",
             method = RequestMethod.GET,
@@ -74,7 +73,6 @@ public class GroupController {
     public List<Member> getMembers(@PathVariable final String uuid) {
         return memberService.groupMembers(uuid);
     }
-
 
     @RequestMapping(
             value = "/{uuid}/members/{from}/{to}",

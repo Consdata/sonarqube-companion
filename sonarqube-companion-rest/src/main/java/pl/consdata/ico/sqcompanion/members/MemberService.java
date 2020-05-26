@@ -33,11 +33,13 @@ public class MemberService {
                         .lastName(definition.getLastName())
                         .id(definition.getUuid())
                         .aliases(definition.getAliases())
+                        .mail(definition.getMail())
                         .build()
                 )
                 .collect(Collectors.toList()));
-        appConfig.getMembers().getLocal().forEach(this::addLocalAttachedEvents);
+
         appConfig.getMembers().getLocal().forEach(this::addLocalDetachedEvents);
+        appConfig.getMembers().getLocal().forEach(this::addLocalAttachedEvents);
         log.info("< Done");
     }
 
@@ -45,89 +47,111 @@ public class MemberService {
         log.info("> Sync attached events");
 
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
-
-
-        member.getGroups().forEach(groupId -> {
-                    Optional<MembershipEntryEntity> latestEvent = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc(member.getUuid(), groupId);
-
-                    if (latestEvent.isPresent() && !latestEvent.get().getDate().isBefore(LocalDate.now())) {
-                        latestEvent.get().setEvent(MembershipEntryEntity.Event.ATTACHED);
-                        membershipRepository.save(latestEvent.get());
-                    } else if (!latestEvent.isPresent() || latestEvent.get().getEvent().equals(MembershipEntryEntity.Event.DETACHED)) {
-                        membershipRepository.save(MembershipEntryEntity.builder()
-                                .date(LocalDate.now())
-                                .event(MembershipEntryEntity.Event.ATTACHED)
-                                .member(memberEntryEntity)
-                                .groupId(groupId)
-                                .build());
-
-                    }
-                }
-        );
-
+        member.getGroups().forEach(groupId -> processAttached(memberEntryEntity, groupId));
 
         log.info("< Done");
+    }
+
+    private void processAttached(MemberEntryEntity memberEntryEntity, String groupId) {
+        Optional<MembershipEntryEntity> latestEvent = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc(memberEntryEntity.getId(), groupId);
+
+        if (latestEvent.isPresent() && !latestEvent.get().getDate().isBefore(LocalDate.now())) {
+            latestEvent.get().setEvent(MembershipEntryEntity.Event.ATTACHED);
+            membershipRepository.save(latestEvent.get());
+        } else if (!latestEvent.isPresent() || isDetached(latestEvent.get())) {
+            membershipRepository.save(MembershipEntryEntity.builder()
+                    .date(LocalDate.now())
+                    .event(MembershipEntryEntity.Event.ATTACHED)
+                    .member(memberEntryEntity)
+                    .groupId(groupId)
+                    .build());
+
+        }
     }
 
     private void addLocalDetachedEvents(Member member) {
-        log.info("> Sync detachedEvent");
+        log.info("> Sync detached events");
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
-
-        Set<GroupsOnlyProjection> groupsProjection = membershipRepository.findDistinctByMemberIdOrderByDateDesc(member.getUuid());
-        groupsProjection.stream().map(GroupsOnlyProjection::getGroupId).forEach(groupId -> {
-                    Optional<MembershipEntryEntity> latestEvent = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc(member.getUuid(), groupId);
-
-                    if (latestEvent.isPresent() && !latestEvent.get().getDate().isBefore(LocalDate.now())) {
-                        latestEvent.get().setEvent(MembershipEntryEntity.Event.DETACHED);
-                        membershipRepository.save(latestEvent.get());
-                    } else if (latestEvent.get().getEvent().equals(MembershipEntryEntity.Event.ATTACHED)) {
-                        membershipRepository.save(MembershipEntryEntity.builder()
-                                .date(LocalDate.now())
-                                .event(MembershipEntryEntity.Event.DETACHED)
-                                .member(memberEntryEntity)
-                                .groupId(groupId)
-                                .build());
-
-                    }
-                }
-        );
+        membershipRepository.findByMemberId(member.getUuid()).stream()
+                .map(GroupsOnlyProjection::getGroupId)
+                .filter(groupId -> !member.getGroups().contains(groupId))
+                .forEach(groupId -> processDetached(memberEntryEntity, groupId));
         log.info("< Done");
     }
 
+    private void processDetached(MemberEntryEntity memberEntryEntity, String groupId) {
+        Optional<MembershipEntryEntity> latestEvent = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc(memberEntryEntity.getId(), groupId);
+        if (latestEvent.isPresent() && !latestEvent.get().getDate().isBefore(LocalDate.now())) {
+            latestEvent.get().setEvent(MembershipEntryEntity.Event.DETACHED);
+            membershipRepository.save(latestEvent.get());
+        } else if (latestEvent.isPresent() && isAttached(latestEvent.get())) {
+            membershipRepository.save(MembershipEntryEntity.builder()
+                    .date(LocalDate.now())
+                    .event(MembershipEntryEntity.Event.DETACHED)
+                    .member(memberEntryEntity)
+                    .groupId(groupId)
+                    .build());
+
+        }
+    }
+
     public List<Member> groupMembers(String groupId) {
-        return getAttachedMembers(membershipRepository.findDistinctByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now()));
+        return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now()));
     }
 
     public List<Member> groupMembers(String groupId, LocalDate form, LocalDate to) {
-        return getAttachedMembers(membershipRepository.findDistinctByGroupIdAndDateIsBetweenOrderByDateDesc(groupId, form, to));
+        return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsBetweenOrderByDateDesc(groupId, form, to));
     }
 
     public List<GroupLightModel> memberGroups(String memberId) {
-        return appConfig.getMembers().getLocal().stream()
-                .filter(m -> memberId.equals(m.getUuid()))
-                .findFirst()
-                .map(Member::getGroups)
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(groupId -> GroupLightModel.of(appConfig.getGroup(groupId)))
+        return getMemberGroups(membershipRepository.findByMemberIdAndDateIsLessThanEqualOrderByDateDesc(memberId, LocalDate.now()));
+    }
+
+    public List<GroupLightModel> memberGroups(String memberId, LocalDate form, LocalDate to) {
+        return getMemberGroups(membershipRepository.findByMemberIdAndDateIsBetweenOrderByDateDesc(memberId, form, to));
+    }
+
+    private void putIfLatestOrSkip(Map<String, MembershipEntryEntity> map, MembershipEntryEntity entryEntity, String key) {
+        if (!map.containsKey(key) || entryEntity.getDate().isAfter(map.get(key).getDate())) {
+            map.put(key, entryEntity);
+        }
+    }
+
+    private List<GroupLightModel> getMemberGroups(Set<MembershipEntryEntity> entries) {
+        return entries.stream()
+                .collect(
+                        HashMap<String, MembershipEntryEntity>::new,
+                        (map, e) -> putIfLatestOrSkip(map, e, e.getGroupId()),
+                        HashMap::putAll
+                ).values().stream()
+                .filter(this::isAttached)
+                .map(entry -> GroupLightModel.builder()
+                        .uuid(entry.getGroupId())
+                        .name(appConfig.getGroup(entry.getGroupId()).getName())
+                        .build())
                 .collect(Collectors.toList());
     }
 
     private List<Member> getAttachedMembers(Set<MembershipEntryEntity> entries) {
-        Map<String, MembershipEntryEntity> latestEvents = new HashMap<>();
-        entries.forEach(e -> {
-            if (latestEvents.containsKey(e.getMember().getId()) && e.getDate().isAfter(latestEvents.get(e.getMember().getId()).getDate())) {
-                latestEvents.put(e.getMember().getId(), e);
-            } else if (!latestEvents.containsKey(e.getMember().getId())) {
-                latestEvents.put(e.getMember().getId(), e);
-            }
-        });
-        return latestEvents.values().stream()
-                .filter(e -> e.getEvent().equals(MembershipEntryEntity.Event.ATTACHED))
+        return entries.stream()
+                .collect(
+                        HashMap<String, MembershipEntryEntity>::new,
+                        (map, e) -> putIfLatestOrSkip(map, e, e.getMember().getId()),
+                        HashMap::putAll
+                ).values().stream()
+                .filter(this::isAttached)
                 .map(entry -> Member.builder()
                         .uuid(entry.getMember().getId())
                         .firstName(entry.getMember().getFirstName())
                         .lastName(entry.getMember().getLastName())
                         .build()).collect(Collectors.toList());
+    }
+
+    private boolean isAttached(MembershipEntryEntity entryEntity) {
+        return MembershipEntryEntity.Event.ATTACHED.equals(entryEntity.getEvent());
+    }
+
+    private boolean isDetached(MembershipEntryEntity entryEntity) {
+        return MembershipEntryEntity.Event.DETACHED.equals(entryEntity.getEvent());
     }
 }
