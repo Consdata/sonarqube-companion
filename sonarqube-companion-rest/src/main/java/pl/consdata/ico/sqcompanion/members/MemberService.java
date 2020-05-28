@@ -40,7 +40,7 @@ public class MemberService {
 
         appConfig.getMembers().getLocal().forEach(this::addLocalDetachedEvents);
         appConfig.getMembers().getLocal().forEach(this::addLocalAttachedEvents);
-        log.info("< Done");
+        log.info("< Synced local members");
     }
 
     private void addLocalAttachedEvents(Member member) {
@@ -49,7 +49,7 @@ public class MemberService {
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
         member.getGroups().forEach(groupId -> processAttached(memberEntryEntity, groupId));
 
-        log.info("< Done");
+        log.info("< Synced attached events");
     }
 
     private void processAttached(MemberEntryEntity memberEntryEntity, String groupId) {
@@ -76,7 +76,7 @@ public class MemberService {
                 .map(GroupsOnlyProjection::getGroupId)
                 .filter(groupId -> !member.getGroups().contains(groupId))
                 .forEach(groupId -> processDetached(memberEntryEntity, groupId));
-        log.info("< Done");
+        log.info("< Synced detached events");
     }
 
     private void processDetached(MemberEntryEntity memberEntryEntity, String groupId) {
