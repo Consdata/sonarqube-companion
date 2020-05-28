@@ -1,3 +1,5 @@
+import {MemberData} from '../service/member-data';
+
 export class Member {
   firstName: string;
   lastName: string;
@@ -7,7 +9,7 @@ export class Member {
   groups: string[];
 
 
-  constructor(data: any) {
+  constructor(data: MemberData) {
     this.firstName = data.firstName;
     this.lastName = data.lastName;
     this.mail = data.mail;

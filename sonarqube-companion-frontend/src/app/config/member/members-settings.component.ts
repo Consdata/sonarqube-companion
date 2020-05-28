@@ -39,7 +39,14 @@ export class MembersSettingsComponent implements OnInit {
   }
 
   addMember(): void {
-    const newMember: Member = new Member({});
+    const newMember: Member = new Member({
+      firstName: '',
+      lastName: '',
+      aliases: [],
+      groups: [],
+      mail: '',
+      uuid: ''
+    });
     this.members.push(newMember);
     this.newItem.next(newMember);
   }
