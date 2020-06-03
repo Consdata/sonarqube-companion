@@ -4,13 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import org.springframework.util.CollectionUtils;
-import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.model.SchedulerConfig;
-import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
@@ -26,6 +25,8 @@ public class AppConfig {
 
     private SchedulerConfig scheduler;
 
+    private MembersDefinition members;
+
     public ServerDefinition getServer(final String uuid) {
         return servers
                 .stream()
@@ -36,6 +37,10 @@ public class AppConfig {
 
     public List<ServerDefinition> getServers() {
         return servers != null ? servers : new ArrayList<>();
+    }
+
+    public MembersDefinition getMembers() {
+        return ofNullable(members).orElse(new MembersDefinition());
     }
 
     public GroupDefinition getRootGroup() {
@@ -60,6 +65,16 @@ public class AppConfig {
         return null;
     }
 
+    public List<GroupLightModel> getGroupList(String uuid, List<GroupDefinition> groups) {
+        List<GroupLightModel> output = groups.stream().map(g -> GroupLightModel.builder()
+                .name(g.getName())
+                .uuid(g.getUuid())
+                .build()).collect(Collectors.toList());
+
+        output.addAll(groups.stream().map(g -> getGroupList(uuid, ofNullable(g.getGroups()).orElse(emptyList()))).flatMap(List::stream).collect(Collectors.toList()));
+        return output;
+    }
+
     private GroupDefinition getGroupParent(String uuid, List<GroupDefinition> groups) {
         for (GroupDefinition group : groups) {
             if (CollectionUtils.isEmpty(group.getGroups())) {
@@ -79,6 +94,10 @@ public class AppConfig {
 
     public GroupDefinition getGroup(String uuid, GroupDefinition groupDefinition) {
         return getGroup(uuid, Collections.singletonList(groupDefinition));
+    }
+
+    public Member getMember(String uuid){
+        return ofNullable(members).orElse(new MembersDefinition()).getLocal().stream().filter(m -> uuid.equals(m.getUuid())).findFirst().orElse(null);
     }
 
     public GroupDefinition getGroup(String uuid) {

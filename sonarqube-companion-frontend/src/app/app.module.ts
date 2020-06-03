@@ -68,6 +68,12 @@ import {CronWebhookTriggerComponent} from './config/group/webhook/trigger/cron-w
 import {NoImprovementActionComponent} from './config/group/webhook/action/no-improvement-action-component';
 import {NoImprovementActionCallbackParamsComponent} from './config/group/webhook/callback/no-improvement-action-callback-params-component';
 import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post-webhook-callback-component';
+import {MembersSettingsComponent} from './config/member/members-settings.component';
+import {MemberComponent} from './config/member/member-component';
+import {MemberConfigService} from './config/service/member-config.service';
+import {GroupSelectBadgeComponent} from './config/common/badge/group-select-badge-component';
+import {GroupMembersComponent} from './group/group-members.component';
+import {MemberService} from './config/member/member-service';
 
 @NgModule({
   declarations: [
@@ -120,7 +126,11 @@ import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post
     CronWebhookTriggerComponent,
     NoImprovementActionComponent,
     NoImprovementActionCallbackParamsComponent,
-    PostWebhookCallbackComponent
+    PostWebhookCallbackComponent,
+    MembersSettingsComponent,
+    MemberComponent,
+    GroupSelectBadgeComponent,
+    GroupMembersComponent
   ],
   imports: [
     BrowserModule,
@@ -142,14 +152,17 @@ import {PostWebhookCallbackComponent} from './config/group/webhook/callback/post
     ProjectService,
     SchedulerSettingsService,
     ServerSettingsService,
-    GroupSettingsService
+    GroupSettingsService,
+    MemberConfigService,
+    MemberService
   ],
   entryComponents: [
     ServerComponent,
     EventDetailsComponent,
     WebhookDetailsComponent,
     ProjectLinkComponent,
-    WebhookCallbackDetailComponent
+    WebhookCallbackDetailComponent,
+    MemberComponent
   ],
   bootstrap: [
     SonarQubeCompanionComponent

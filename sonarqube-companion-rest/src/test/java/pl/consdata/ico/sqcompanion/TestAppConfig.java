@@ -3,10 +3,12 @@ package pl.consdata.ico.sqcompanion;
 import lombok.experimental.UtilityClass;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.DirectProjectLink;
-import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
-import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
-import pl.consdata.ico.sqcompanion.config.model.ProjectLinkType;
-import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
+import pl.consdata.ico.sqcompanion.config.model.*;
+
+import java.util.Set;
+
+import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
+
 
 /**
  * @author gregorry
@@ -26,15 +28,30 @@ public class TestAppConfig {
                 )
                 .rootGroup(
                         GroupDefinition.builder()
+                                .uuid("group1")
                                 .projectLink(
                                         ProjectLink.builder()
                                                 .serverId(Servers.Server1.ID)
-                                                .config(DirectProjectLink.LINK, TestAppConfig.RootGroup.Project1.KEY)
+                                                .config(DirectProjectLink.LINK, RootGroup.Project1.KEY)
                                                 .type(ProjectLinkType.DIRECT)
+                                                .build()
+                                )
+                                .group(
+                                        GroupDefinition.builder()
+                                                .uuid("group2")
                                                 .build()
                                 )
                                 .build()
                 )
+                .members(MembersDefinition.builder()
+                        .local(Member.builder()
+                                .aliases(Members.Member1.aliases)
+                                .groups(Members.Member1.groups)
+                                .firstName(Members.Member1.firstName)
+                                .lastName(Members.Member1.lastName)
+                                .uuid(Members.Member1.uuid)
+                                .build())
+                        .build())
                 .build();
     }
 
@@ -70,6 +87,19 @@ public class TestAppConfig {
     public static class Users {
 
         public static final String USER_1 = "user@example.com";
+
+    }
+
+    @UtilityClass
+    public static class Members {
+        @UtilityClass
+        public static class Member1 {
+            public static final String uuid = "member1";
+            public static final String firstName = "Member";
+            public static final String lastName = "1";
+            public static final Set<String> aliases = asSet("alias1", "alias2");
+            public static final Set<String> groups = asSet("group1");
+        }
 
     }
 

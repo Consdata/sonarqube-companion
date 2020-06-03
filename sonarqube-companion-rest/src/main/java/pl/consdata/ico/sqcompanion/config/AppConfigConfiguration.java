@@ -48,6 +48,10 @@ public class AppConfigConfiguration {
                     return new WebhookDeserializer(deserializer);
                 }
 
+                if (beanDesc.getBeanClass() == Member.class) {
+                    return new MemberDeserializer(deserializer);
+                }
+
                 if (beanDesc.getBeanClass() == ServerDefinition.class) {
                     return new ServerDefinitionDeserializer(deserializer);
                 }
