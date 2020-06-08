@@ -74,7 +74,7 @@ public class SettingsService {
     private boolean store() {
         try {
             objectMapper.writeValue(Paths.get(appConfigFile).toFile(), appConfig);
-            memberService.syncLocalMembers();
+            memberService.syncMembers();
             //TODO resync and clear only new elements
             repositoryService.syncGroups();
             webhookService.syncWebhooks();

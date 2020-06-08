@@ -25,6 +25,15 @@ import {MemberConfigService} from '../service/member-config.service';
         (saveItem)="saveMember($event)"
       ></sq-settings-list>
     </div>
+    <div class="sq-settings-container">
+      <div class="header">
+        <div class="sq-settings-group-title">Remote members</div>
+        <hr>
+      </div>
+      <div *ngFor="let integration of integrationsSummary | keyvalue">
+        {{integration.key}}: {{integration.value}}
+      </div>
+    </div>
   `
 })
 
@@ -34,6 +43,7 @@ export class MembersSettingsComponent implements OnInit {
   memberType: Type<SettingsListDetailsItem> = MemberComponent;
   newItem: Subject<Member> = new Subject();
   validation: Subject<ValidationResult> = new Subject();
+  integrationsSummary: { [key: string]: string };
 
   constructor(private memberService: MemberConfigService) {
   }
@@ -96,6 +106,14 @@ export class MembersSettingsComponent implements OnInit {
     }, er => {
       this.loaded = true;
       this.validation.next({valid: false, message: 'Unable to load items'});
+    });
+
+    this.loadIntegrationsSummary();
+  }
+
+  loadIntegrationsSummary(): void {
+    this.memberService.integrationsSummary().subscribe(data => {
+      this.integrationsSummary = data;
     });
   }
 

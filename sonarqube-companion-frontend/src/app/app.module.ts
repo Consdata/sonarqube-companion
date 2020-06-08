@@ -74,6 +74,10 @@ import {MemberConfigService} from './config/service/member-config.service';
 import {GroupSelectBadgeComponent} from './config/common/badge/group-select-badge-component';
 import {GroupMembersComponent} from './group/group-members.component';
 import {MemberService} from './config/member/member-service';
+import {SettingsIntegrationsComponent} from './config/integrations/sq-settings-integrations.component';
+import {SettingsLdapIntegrationsComponent} from './config/integrations/ldap/sq-settings-ldap-integrations.component';
+import {LdapIntegrationService} from './config/integrations/ldap/ldap-integration-service';
+import {SqSettingsMapComponent} from './config/common/map/sq-settings-map-component';
 
 @NgModule({
   declarations: [
@@ -130,7 +134,10 @@ import {MemberService} from './config/member/member-service';
     MembersSettingsComponent,
     MemberComponent,
     GroupSelectBadgeComponent,
-    GroupMembersComponent
+    GroupMembersComponent,
+    SettingsIntegrationsComponent,
+    SettingsLdapIntegrationsComponent,
+    SqSettingsMapComponent
   ],
   imports: [
     BrowserModule,
@@ -154,7 +161,8 @@ import {MemberService} from './config/member/member-service';
     ServerSettingsService,
     GroupSettingsService,
     MemberConfigService,
-    MemberService
+    MemberService,
+    LdapIntegrationService
   ],
   entryComponents: [
     ServerComponent,

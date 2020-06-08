@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Singular;
 import org.springframework.util.CollectionUtils;
 import pl.consdata.ico.sqcompanion.config.model.*;
+import pl.consdata.ico.sqcompanion.integrations.IntegrationsConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,8 @@ public class AppConfig {
     private SchedulerConfig scheduler;
 
     private MembersDefinition members;
+
+    private IntegrationsConfig integrations = new IntegrationsConfig();
 
     public ServerDefinition getServer(final String uuid) {
         return servers

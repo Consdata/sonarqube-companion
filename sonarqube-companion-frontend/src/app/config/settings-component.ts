@@ -9,6 +9,7 @@ import {Component} from '@angular/core';
       <sq-settings-servers></sq-settings-servers>
       <sq-settings-members></sq-settings-members>
       <sq-settings-groups></sq-settings-groups>
+      <sq-settings-integrations></sq-settings-integrations>
     </div>
   `
 })

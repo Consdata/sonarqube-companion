@@ -20,12 +20,16 @@ public class MemberService {
     private final AppConfig appConfig;
     private final MemberRepository memberRepository;
     private final MembershipRepository membershipRepository;
+    private final MembersIntegrations membersIntegrations;
 
     public void syncMembers() {
+        log.info("> Sync members");
         syncLocalMembers();
+        syncRemoteMembers();
+        log.info("< Synced  members");
     }
 
-    public void syncLocalMembers() {
+    private void syncLocalMembers() {
         log.info("> Sync local members");
         memberRepository.saveAll(appConfig.getMembers().getLocal()
                 .stream().map(definition -> MemberEntryEntity.builder()
@@ -34,16 +38,34 @@ public class MemberService {
                         .id(definition.getUuid())
                         .aliases(definition.getAliases())
                         .mail(definition.getMail())
+                        .remote(false)
                         .build()
                 )
                 .collect(Collectors.toList()));
-
-        appConfig.getMembers().getLocal().forEach(this::addLocalDetachedEvents);
-        appConfig.getMembers().getLocal().forEach(this::addLocalAttachedEvents);
-        log.info("< Synced local members");
+        appConfig.getMembers().getLocal().forEach(this::addDetachedEvents);
+        appConfig.getMembers().getLocal().forEach(this::addAttachedEvents);
     }
 
-    private void addLocalAttachedEvents(Member member) {
+    private void syncRemoteMembers() {
+        log.info("> Sync remote members");
+        List<Member> remoteMembers = membersIntegrations.getMembers();
+        memberRepository.saveAll(remoteMembers
+                .stream().map(definition -> MemberEntryEntity.builder()
+                        .firstName(definition.getFirstName())
+                        .lastName(definition.getLastName())
+                        .id(definition.getUuid())
+                        .aliases(definition.getAliases())
+                        .mail(definition.getMail())
+                        .remote(definition.isRemote())
+                        .remoteType(definition.getRemoteType())
+                        .build()
+                )
+                .collect(Collectors.toList()));
+        remoteMembers.forEach(this::addDetachedEvents);
+        remoteMembers.forEach(this::addAttachedEvents);
+    }
+
+    private void addAttachedEvents(Member member) {
         log.info("> Sync attached events");
 
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
@@ -69,7 +91,7 @@ public class MemberService {
         }
     }
 
-    private void addLocalDetachedEvents(Member member) {
+    private void addDetachedEvents(Member member) {
         log.info("> Sync detached events");
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
         membershipRepository.findByMemberId(member.getUuid()).stream()
@@ -153,5 +175,9 @@ public class MemberService {
 
     private boolean isDetached(MembershipEntryEntity entryEntity) {
         return MembershipEntryEntity.Event.DETACHED.equals(entryEntity.getEvent());
+    }
+
+    public Map<String, Long> getIntegrationsSummary() {
+        return membersIntegrations.getSummary();
     }
 }

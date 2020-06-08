@@ -9,6 +9,7 @@ import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -62,5 +63,14 @@ public class MemberConfigController {
     public ValidationResult deleteMember(@PathVariable String uuid) {
         log.info("Delete member {}", uuid);
         return service.delete(uuid);
+    }
+
+    @ApiOperation(value = "Get members integration summary",
+            httpMethod = "GET",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/integrations", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Map<String, Long> getMemberGroups() {
+        log.info("Get member integrations summary");
+        return service.getIntegrationsSummary();
     }
 }

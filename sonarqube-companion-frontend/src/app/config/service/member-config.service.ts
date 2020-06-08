@@ -14,6 +14,10 @@ export class MemberConfigService {
     return this.http.get<Member[]>('/api/v1/settings/member/all');
   }
 
+  integrationsSummary(): Observable<{ [key: string]: string; }> {
+    return this.http.get<{ [key: string]: string; }>('/api/v1/settings/member/integrations');
+  }
+
   save(member: Member, newMember: boolean = false): Observable<ValidationResult> {
     if (newMember) {
       return this.http
