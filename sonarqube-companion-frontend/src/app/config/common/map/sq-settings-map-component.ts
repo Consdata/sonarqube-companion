@@ -18,7 +18,8 @@ import {GroupLightModel} from '../../model/group-light-model';
         <div *ngFor="let item of data | keyvalue">
           <input type="text" [value]="item.key" (change)="onKeyChange($event, item.key)">
           <select (change)="onSelect($event, item.key)" [value]="item.value">
-            <option *ngFor="let group of domain" [value]="group.uuid" [selected]="group.uuid === data[item.key]">{{group.name}}</option>
+            <option *ngFor="let group of domain" [value]="group.uuid"
+                    [selected]="group.uuid === data[item.key]">{{group.name}}</option>
           </select>
           <button (click)="onDelete(item.key)">x</button>
         </div>
@@ -53,18 +54,18 @@ export class SqSettingsMapComponent implements AfterViewInit {
   }
 
 
-  onSelect(event: Event, key: string) {
+  onSelect(event: Event, key: string): void {
     this.data[key] = (<HTMLSelectElement>event.target).value;
     this.dataChange.emit(this.data);
   }
 
-  onKeyChange(event: Event, key: string) {
+  onKeyChange(event: Event, key: string): void {
     this.data[(<HTMLInputElement>event.target).value] = this.data[key];
     delete this.data[''];
     this.dataChange.emit(this.data);
   }
 
-  onDelete(key: string) {
+  onDelete(key: string): void {
     delete this.data[key];
     this.dataChange.emit(this.data);
   }
