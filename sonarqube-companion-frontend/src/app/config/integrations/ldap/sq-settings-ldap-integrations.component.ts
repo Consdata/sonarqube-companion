@@ -1,7 +1,8 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {LdapIntegrationService} from './ldap-integration-service';
 import {LdapConfig} from './ldap-config';
 import {GroupLightModel} from '../../model/group-light-model';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'sq-settings-ldap-integrations',
@@ -121,7 +122,7 @@ import {GroupLightModel} from '../../model/group-light-model';
   `
 })
 
-export class SettingsLdapIntegrationsComponent implements AfterViewInit {
+export class SettingsLdapIntegrationsComponent implements OnInit {
 
   ldapConfig: LdapConfig;
   loaded: boolean = false;
@@ -131,7 +132,7 @@ export class SettingsLdapIntegrationsComponent implements AfterViewInit {
   constructor(private ldapIntegrationService: LdapIntegrationService) {
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.load();
   }
 

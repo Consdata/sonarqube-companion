@@ -19,11 +19,11 @@ public class LdapService {
     private final LdapTemplate ldapTemplate;
 
     public LdapTemplate getLdapTemplate() {
-        ldapTemplate.setContextSource(updateContextSource());
+        ldapTemplate.setContextSource(ldapContextSource());
         return ldapTemplate;
     }
 
-    private ContextSource updateContextSource() {
+    private ContextSource ldapContextSource() {
         LdapContextSource ldapContextSource = new LdapContextSource();
         LdapConnectionConfig config = appConfig.getIntegrations().getLdap().getConnection();
         ldapContextSource.setUrls(config.getUrls());

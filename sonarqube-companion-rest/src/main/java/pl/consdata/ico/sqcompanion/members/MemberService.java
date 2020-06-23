@@ -42,8 +42,8 @@ public class MemberService {
                         .build()
                 )
                 .collect(Collectors.toList()));
-        appConfig.getMembers().getLocal().forEach(this::addDetachedEvents);
-        appConfig.getMembers().getLocal().forEach(this::addAttachedEvents);
+        appConfig.getMembers().getLocal().forEach(this::detachMemberFromGroups);
+        appConfig.getMembers().getLocal().forEach(this::attachMemberToGroups);
     }
 
     private void syncRemoteMembers() {
@@ -61,20 +61,20 @@ public class MemberService {
                         .build()
                 )
                 .collect(Collectors.toList()));
-        remoteMembers.forEach(this::addDetachedEvents);
-        remoteMembers.forEach(this::addAttachedEvents);
+        remoteMembers.forEach(this::detachMemberFromGroups);
+        remoteMembers.forEach(this::attachMemberToGroups);
     }
 
-    private void addAttachedEvents(Member member) {
+    private void attachMemberToGroups(Member member) {
         log.info("> Sync attached events");
 
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
-        member.getGroups().forEach(groupId -> processAttached(memberEntryEntity, groupId));
+        member.getGroups().forEach(groupId -> attachMemberToGroup(memberEntryEntity, groupId));
 
         log.info("< Synced attached events");
     }
 
-    private void processAttached(MemberEntryEntity memberEntryEntity, String groupId) {
+    private void attachMemberToGroup(MemberEntryEntity memberEntryEntity, String groupId) {
         Optional<MembershipEntryEntity> latestEvent = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc(memberEntryEntity.getId(), groupId);
 
         if (latestEvent.isPresent() && !latestEvent.get().getDate().isBefore(LocalDate.now())) {
@@ -91,17 +91,17 @@ public class MemberService {
         }
     }
 
-    private void addDetachedEvents(Member member) {
+    private void detachMemberFromGroups(Member member) {
         log.info("> Sync detached events");
         final MemberEntryEntity memberEntryEntity = memberRepository.getOne(member.getUuid());
         membershipRepository.findByMemberId(member.getUuid()).stream()
                 .map(GroupsOnlyProjection::getGroupId)
                 .filter(groupId -> !member.getGroups().contains(groupId))
-                .forEach(groupId -> processDetached(memberEntryEntity, groupId));
+                .forEach(groupId -> detachMemberFromGroup(memberEntryEntity, groupId));
         log.info("< Synced detached events");
     }
 
-    private void processDetached(MemberEntryEntity memberEntryEntity, String groupId) {
+    private void detachMemberFromGroup(MemberEntryEntity memberEntryEntity, String groupId) {
         Optional<MembershipEntryEntity> latestEvent = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc(memberEntryEntity.getId(), groupId);
         if (latestEvent.isPresent() && !latestEvent.get().getDate().isBefore(LocalDate.now())) {
             latestEvent.get().setEvent(MembershipEntryEntity.Event.DETACHED);
