@@ -5,8 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 @Component({
   selector: 'sq-member-settings-remote-users',
   template: `
-    <sq-spinner *ngIf="!(loaded | async)"></sq-spinner>
-    <ng-container *ngIf="loaded | async">
+    <ng-container *ngIf="integrationsSummary">
       <div class="header">
         <div class="sq-settings-group-title">Remote members</div>
         <hr>
@@ -20,7 +19,6 @@ import {BehaviorSubject} from 'rxjs';
 
 export class MemberSettingsRemoteUsersComponent implements OnInit {
   integrationsSummary: { [key: string]: string };
-  loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private memberService: MemberConfigService) {
   }
@@ -30,10 +28,8 @@ export class MemberSettingsRemoteUsersComponent implements OnInit {
   }
 
   loadIntegrationsSummary(): void {
-    this.loaded.next(true);
     this.memberService.integrationsSummary().subscribe(data => {
       this.integrationsSummary = data;
-      this.loaded.next(true);
     });
   }
 
