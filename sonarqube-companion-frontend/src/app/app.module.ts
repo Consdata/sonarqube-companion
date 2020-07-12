@@ -78,6 +78,7 @@ import {SettingsIntegrationsComponent} from './config/integrations/sq-settings-i
 import {SettingsLdapIntegrationsComponent} from './config/integrations/ldap/sq-settings-ldap-integrations.component';
 import {LdapIntegrationService} from './config/integrations/ldap/ldap-integration-service';
 import {SqSettingsMapComponent} from './config/common/map/sq-settings-map-component';
+import {MemberSettingsRemoteUsersComponent} from './config/member/member-settings-remote-users.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import {SqSettingsMapComponent} from './config/common/map/sq-settings-map-compon
     GroupMembersComponent,
     SettingsIntegrationsComponent,
     SettingsLdapIntegrationsComponent,
-    SqSettingsMapComponent
+    SqSettingsMapComponent,
+    MemberSettingsRemoteUsersComponent
   ],
   imports: [
     BrowserModule,

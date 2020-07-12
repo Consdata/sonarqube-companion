@@ -1,6 +1,6 @@
 import {Component, OnInit, Type} from '@angular/core';
 import {SettingsListDetailsItem} from '../common/settings-list/settings-list-item';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {ValidationResult} from '../common/settings-list/settings-list-component';
 import {MemberComponent} from './member-component';
 import {Member} from '../model/member';
@@ -10,9 +10,9 @@ import {MemberConfigService} from '../service/member-config.service';
   selector: 'sq-settings-members',
   template: `
     <div class="sq-settings-container">
-      <sq-spinner *ngIf="!loaded"></sq-spinner>
+      <sq-spinner *ngIf="!(loaded | async)"></sq-spinner>
       <sq-settings-list
-        [loaded]="loaded"
+        [loaded]="loaded | async"
         [details]="memberType"
         [(data)]="members"
         [title]="'Members'"
@@ -26,24 +26,17 @@ import {MemberConfigService} from '../service/member-config.service';
       ></sq-settings-list>
     </div>
     <div class="sq-settings-container">
-      <div class="header">
-        <div class="sq-settings-group-title">Remote members</div>
-        <hr>
-      </div>
-      <div *ngFor="let integration of integrationsSummary | keyvalue">
-        {{integration.key}}: {{integration.value}}
-      </div>
+      <sq-member-settings-remote-users></sq-member-settings-remote-users>
     </div>
   `
 })
 
 export class MembersSettingsComponent implements OnInit {
-  loaded: boolean = true;
+  loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   members: Member[] = [];
   memberType: Type<SettingsListDetailsItem> = MemberComponent;
   newItem: Subject<Member> = new Subject();
   validation: Subject<ValidationResult> = new Subject();
-  integrationsSummary: { [key: string]: string };
 
   constructor(private memberService: MemberConfigService) {
   }
@@ -62,34 +55,20 @@ export class MembersSettingsComponent implements OnInit {
   }
 
   removeMember(member: Member): void {
-    this.loaded = false;
+    this.loaded.next(false);
     this.memberService.delete(member).subscribe(validationResult => {
-      if (validationResult.valid) {
-        this.load();
-      } else {
-        this.loaded = true;
-      }
-      validationResult.item = member;
-      this.validation.next(validationResult);
+      this.onValidationResult(validationResult, {item: member, newItem: false});
     }, er => {
-      this.loaded = true;
-      this.validation.next({valid: false, message: 'Unable to delete item'});
+      this.onError('Unable to delete item');
     });
   }
 
   saveMember(member: { item: Member, newItem: boolean }): void {
-    this.loaded = false;
+    this.loaded.next(false);
     this.memberService.save(member.item, member.newItem).subscribe(validationResult => {
-      if (validationResult.valid) {
-        this.load();
-      } else {
-        this.loaded = true;
-      }
-      validationResult.item = member.item;
-      this.validation.next(validationResult);
+      this.onValidationResult(validationResult, member);
     }, er => {
-      this.validation.next({valid: false, message: 'Unable to save item'});
-      this.loaded = true;
+      this.onError('Unable to save item');
     });
   }
 
@@ -98,22 +77,28 @@ export class MembersSettingsComponent implements OnInit {
     this.load();
   }
 
-  load(): void {
-    this.loaded = false;
-    this.memberService.all().subscribe(data => {
-      this.members = data;
-      this.loaded = true;
-    }, er => {
-      this.loaded = true;
-      this.validation.next({valid: false, message: 'Unable to load items'});
-    });
-
-    this.loadIntegrationsSummary();
+  onError(msg: string): void {
+    this.validation.next({valid: false, message: msg});
+    this.loaded.next(true);
   }
 
-  loadIntegrationsSummary(): void {
-    this.memberService.integrationsSummary().subscribe(data => {
-      this.integrationsSummary = data;
+  onValidationResult(validationResult: ValidationResult, member: { item: Member, newItem: boolean }): void {
+    if (validationResult.valid) {
+      this.load();
+    } else {
+      this.loaded.next(true);
+    }
+    validationResult.item = member.item;
+    this.validation.next(validationResult);
+  }
+
+  load(): void {
+    this.loaded.next(false);
+    this.memberService.all().subscribe(data => {
+      this.members = data;
+      this.loaded.next(true);
+    }, er => {
+      this.onError('Unable to load items');
     });
   }
 
