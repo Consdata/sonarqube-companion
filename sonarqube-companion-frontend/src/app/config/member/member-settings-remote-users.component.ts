@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {MemberConfigService} from '../service/member-config.service';
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'sq-member-settings-remote-users',
