@@ -18,4 +18,6 @@ public class Member {
     private String uuid;
     private Set<String> aliases;
     private Set<String> groups;
+    private boolean remote;
+    private String remoteType;
 }

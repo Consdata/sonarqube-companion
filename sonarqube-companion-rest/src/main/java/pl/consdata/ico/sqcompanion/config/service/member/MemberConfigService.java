@@ -8,9 +8,11 @@ import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.config.service.SettingsService;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.config.validation.members.MembersValidator;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Optional.ofNullable;
 
@@ -21,6 +23,7 @@ public class MemberConfigService {
     private final AppConfig appConfig;
     private final SettingsService settingsService;
     private final MembersValidator validator;
+    private final MemberService memberService;
 
     public ValidationResult delete(String uuid) {
         ValidationResult validationResult = validator.memberExists(uuid);
@@ -63,5 +66,9 @@ public class MemberConfigService {
 
     public List<Member> getAll() {
         return appConfig.getMembers().getLocal();
+    }
+
+    public Map<String, Long> getIntegrationsSummary() {
+        return memberService.getIntegrationsSummary();
     }
 }

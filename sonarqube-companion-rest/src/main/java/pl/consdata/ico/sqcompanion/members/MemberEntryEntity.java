@@ -22,6 +22,8 @@ public class MemberEntryEntity {
     private String firstName;
     private String lastName;
     private String mail;
+    private boolean remote;
+    private String remoteType;
 
     @ElementCollection
     private Set<String> aliases = new HashSet<>();

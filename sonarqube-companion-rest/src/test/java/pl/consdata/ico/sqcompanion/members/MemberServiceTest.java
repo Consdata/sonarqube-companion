@@ -21,7 +21,7 @@ public class MemberServiceTest extends BaseItTest {
         //TestAppConfig
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         List<MemberEntryEntity> entries = memberRepository.findAll();
@@ -36,7 +36,7 @@ public class MemberServiceTest extends BaseItTest {
         //TestAppConfig
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll();
@@ -60,7 +60,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         Optional<MembershipEntryEntity> entry = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc("member1", "group1");
@@ -84,7 +84,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll();
@@ -107,7 +107,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll();
@@ -125,7 +125,7 @@ public class MemberServiceTest extends BaseItTest {
         //TestAppConfig
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         Optional<MembershipEntryEntity> entry = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc("member1", "group1");
@@ -147,7 +147,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         Optional<MembershipEntryEntity> entry = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc("member1", "group2");
@@ -169,7 +169,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll().stream().filter(e -> "group2".equals(e.getGroupId())).collect(Collectors.toList());
@@ -192,7 +192,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll().stream().filter(e -> "group2".equals(e.getGroupId())).collect(Collectors.toList());
@@ -207,7 +207,7 @@ public class MemberServiceTest extends BaseItTest {
     public void shouldReturnGroupsForMemberInGivenPeriod() {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
         membershipRepository.save(MembershipEntryEntity.builder()
                 .groupId("group2")
                 .event(MembershipEntryEntity.Event.ATTACHED)
@@ -226,7 +226,7 @@ public class MemberServiceTest extends BaseItTest {
     public void shouldReturnCurrentGroupsForMember() {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
         membershipRepository.save(MembershipEntryEntity.builder()
                 .groupId("group2")
                 .event(MembershipEntryEntity.Event.ATTACHED)
@@ -252,7 +252,7 @@ public class MemberServiceTest extends BaseItTest {
                 .date(LocalDate.now().minusDays(3))
                 .member(member)
                 .build());
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //when
         List<Member> members = memberService.groupMembers("group1");
@@ -271,7 +271,7 @@ public class MemberServiceTest extends BaseItTest {
                 .date(LocalDate.now().minusDays(3))
                 .member(member)
                 .build());
-        memberService.syncLocalMembers();
+        memberService.syncMembers();
 
         //when
         List<Member> members = memberService.groupMembers("group1", LocalDate.now().minusDays(4), LocalDate.now().minusDays(2));
