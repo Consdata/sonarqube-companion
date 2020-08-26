@@ -34,5 +34,4 @@ export class GroupMembersComponent {
       this.groupService.getGroupMembers(this.group.uuid).subscribe(data => this.members = data);
     }
   }
-
 }

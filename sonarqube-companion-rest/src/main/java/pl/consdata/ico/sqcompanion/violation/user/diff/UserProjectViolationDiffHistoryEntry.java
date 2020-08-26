@@ -33,6 +33,7 @@ public class UserProjectViolationDiffHistoryEntry {
     private Integer majors;
     private Integer minors;
     private Integer infos;
+    private Integer unknown;
     private LocalDate date;
     @Column(columnDefinition = "VARCHAR(MAX)")
     private String issues;

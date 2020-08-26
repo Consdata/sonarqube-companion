@@ -243,8 +243,8 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldReturnLatestAttachedMembers() {
-        //given
+    public void shouldReturnLatestAttachedMembersOnlyForCompletedDays() {
+        //given`
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member2").build());
         membershipRepository.save(MembershipEntryEntity.builder()
                 .groupId("group1")
@@ -258,7 +258,7 @@ public class MemberServiceTest extends BaseItTest {
         List<Member> members = memberService.groupMembers("group1");
 
         //then
-        assertThat(members).hasSize(2);
+        assertThat(members).hasSize(1);
     }
 
     @Test
