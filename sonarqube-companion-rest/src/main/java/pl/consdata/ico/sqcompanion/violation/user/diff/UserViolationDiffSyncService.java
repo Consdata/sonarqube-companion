@@ -125,7 +125,6 @@ public class UserViolationDiffSyncService {
                     entry.setInfos(entry.getInfos() + 1);
                     break;
                 case UNKNOWN:
-                    entry.setUnknown(entry.getUnknown() + 1);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown issue severity [" + issue.getSeverity() + "]");
@@ -149,8 +148,7 @@ public class UserViolationDiffSyncService {
                 .criticals(0)
                 .majors(0)
                 .minors(0)
-                .infos(0)
-                .unknown(0);
+                .infos(0);
     }
 
     private Map<LocalDate, List<SonarQubeIssue>> userIssuesAfterDate(final Project project, final SonarQubeUser user, final LocalDate syncDate) {
