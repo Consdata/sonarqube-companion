@@ -118,7 +118,7 @@ public class MemberService {
     }
 
     public List<Member> groupMembers(String groupId) {
-        return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now()));
+        return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now().minusDays(1)));
     }
 
     public List<Member> groupMembers(String groupId, LocalDate form, LocalDate to) {
