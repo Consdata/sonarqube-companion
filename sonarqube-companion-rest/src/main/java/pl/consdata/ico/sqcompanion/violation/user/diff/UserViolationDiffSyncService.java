@@ -124,6 +124,8 @@ public class UserViolationDiffSyncService {
                 case INFO:
                     entry.setInfos(entry.getInfos() + 1);
                     break;
+                case UNKNOWN:
+                    break;
                 default:
                     throw new IllegalArgumentException("Unknown issue severity [" + issue.getSeverity() + "]");
             }
