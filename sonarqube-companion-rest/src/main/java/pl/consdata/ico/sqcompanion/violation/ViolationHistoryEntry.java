@@ -1,7 +1,9 @@
 package pl.consdata.ico.sqcompanion.violation;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
 
@@ -17,6 +19,8 @@ import static java.util.Optional.ofNullable;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ViolationHistoryEntry implements ViolationHistorySource {
 
     private LocalDate date;

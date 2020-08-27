@@ -37,7 +37,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {BaseItTest.ItTestConfiguration.class})
+@SpringBootTest(classes = {BaseItTest.ItTestConfiguration.class}, properties = "spring.main.allow-bean-definition-overriding=true")
 @ActiveProfiles("ittest")
 @TestPropertySource("/it-test.properties")
 @Transactional

@@ -1,14 +1,14 @@
 package pl.consdata.ico.sqcompanion.version;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @author pogoma
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ApplicationVersion {
 
