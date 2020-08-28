@@ -1,8 +1,6 @@
 package pl.consdata.ico.sqcompanion.config;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 import org.springframework.util.CollectionUtils;
 import pl.consdata.ico.sqcompanion.config.model.*;
 import pl.consdata.ico.sqcompanion.integrations.IntegrationsConfig;
@@ -17,6 +15,8 @@ import static java.util.Optional.ofNullable;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppConfig {
 
     @Singular

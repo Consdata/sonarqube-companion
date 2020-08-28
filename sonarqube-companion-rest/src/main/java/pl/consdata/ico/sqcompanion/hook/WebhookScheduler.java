@@ -1,5 +1,6 @@
 package pl.consdata.ico.sqcompanion.hook;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.TaskScheduler;
@@ -16,18 +17,12 @@ import java.util.concurrent.ScheduledFuture;
 
 @Slf4j
 @Service
-@Profile("default")
+@RequiredArgsConstructor
 public class WebhookScheduler {
-    private TaskScheduler taskScheduler;
-    private WebhookService webhookService;
-    private WebhookActionDispatcher dispatcher;
+    private final TaskScheduler webhookTaskScheduler;
+    private final WebhookService webhookService;
+    private final WebhookActionDispatcher dispatcher;
     private List<ScheduledFuture<?>> tasks = new ArrayList<>();
-
-    public WebhookScheduler(final TaskScheduler taskScheduler, WebhookService webhookService, WebhookActionDispatcher dispatcher) {
-        this.taskScheduler = taskScheduler;
-        this.webhookService = webhookService;
-        this.dispatcher = dispatcher;
-    }
 
     private void callCallbacks(ActionResponse response, Webhook webhook) {
         webhook.getCallbacks().forEach(callback -> callback.call(response));
@@ -37,7 +32,7 @@ public class WebhookScheduler {
     public void initScheduledWebhooks() {
         List<Webhook> scheduledWebhooks = webhookService.getAllWebhooksWithTrigger(SpringWebhookTrigger.class);
         scheduledWebhooks.forEach(webhook -> {
-            ScheduledFuture<?> task = taskScheduler.schedule(() -> callCallbacks(dispatcher.dispatch(webhook), webhook), getSpringTrigger(webhook));
+            ScheduledFuture<?> task = webhookTaskScheduler.schedule(() -> callCallbacks(dispatcher.dispatch(webhook), webhook), getSpringTrigger(webhook));
             tasks.add(task);
         });
     }

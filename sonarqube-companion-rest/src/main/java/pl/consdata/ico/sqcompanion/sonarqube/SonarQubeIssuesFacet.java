@@ -1,14 +1,14 @@
 package pl.consdata.ico.sqcompanion.sonarqube;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.List;
 import java.util.Map;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SonarQubeIssuesFacet {
 
     @Singular

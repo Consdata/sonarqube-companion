@@ -1,13 +1,13 @@
 package pl.consdata.ico.sqcompanion.violation;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ViolationsHistory {
 
     @Singular

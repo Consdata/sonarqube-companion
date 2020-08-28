@@ -1,8 +1,6 @@
 package pl.consdata.ico.sqcompanion.config.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.Map;
 
@@ -12,6 +10,8 @@ import java.util.Map;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectLink {
 
     private String uuid;
