@@ -1,8 +1,10 @@
 package pl.consdata.ico.sqcompanion.overview;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.consdata.ico.sqcompanion.health.HealthStatus;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 
@@ -13,6 +15,8 @@ import java.util.List;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupOverview {
 
     @ApiModelProperty(value = "Unique identifier", example = "22160a1d-8978-4e0b-b70c-2e07f35e10c1", required = true)

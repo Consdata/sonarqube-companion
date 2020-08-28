@@ -1,4 +1,4 @@
-FROM consdata/java:base
+FROM consdata/java:11-openjdk
 MAINTAINER Grzegorz Lipecki <grzegorz.lipecki@gmail.com>
 
 ENV dir /opt/sonarqube-companion
