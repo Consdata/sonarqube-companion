@@ -139,7 +139,7 @@ public class UserViolationDiffSyncService {
                 .collect(Collectors.joining(","));
     }
 
-    private UserProjectViolationDiffHistoryEntry.UserProjectViolationDiffHistoryEntryBuilder emptyUserProjectEntry(final Project project, final SonarQubeUser user) {
+    private UserProjectViolationDiffHistoryEntry.UserProjectViolationDiffHistoryEntryBuilder  emptyUserProjectEntry(final Project project, final SonarQubeUser user) {
         return UserProjectViolationDiffHistoryEntry.builder()
                 .userId(user.getUserId())
                 .projectKey(project.getKey())

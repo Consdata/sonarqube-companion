@@ -6,6 +6,7 @@ import {GroupComponent} from './group/group-component';
 import {ProjectComponent} from './project/project-component';
 import {SettingsComponent} from './config/settings-component';
 import {GroupDetailSettingsComponent} from './config/group/group-detail-settings-component';
+import {ProjectsComponent} from './project/projects-component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'groups',
     component: GroupComponent
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent
   },
   {
     path: 'groups/:uuid',
