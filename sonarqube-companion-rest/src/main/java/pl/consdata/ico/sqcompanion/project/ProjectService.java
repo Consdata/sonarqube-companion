@@ -30,7 +30,7 @@ public class ProjectService {
         appConfig.getServers()
                 .stream()
                 .map(ServerDefinition::getId)
-                .forEach(serverId -> syncServerProjects(serverId));
+                .forEach(this::syncServerProjects);
     }
 
     public List<ProjectEntity> getProjects(String serverId) {

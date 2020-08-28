@@ -6,10 +6,7 @@ import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,18 +58,14 @@ public class ViolationHistoryEntry implements ViolationHistorySource {
                 )
                 .values()
                 .stream()
-                .filter(entry -> entry.isPresent())
-                .map(entry -> entry.get())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .sorted(Comparator.comparing(ViolationHistoryEntry::getDate))
                 .collect(Collectors.toList());
     }
 
     public static List<ViolationHistoryEntry> groupByDate(Collection<? extends ViolationHistorySource> violationHistorySources) {
         return groupByDate(violationHistorySources.stream());
-    }
-
-    public String getDateString() {
-        return date.toString();
     }
 
     @Override

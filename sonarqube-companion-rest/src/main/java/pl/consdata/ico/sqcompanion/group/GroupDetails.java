@@ -23,6 +23,7 @@ public class GroupDetails {
     private Violations violations;
     private List<GroupSummary> groups;
     private List<ProjectSummary> projects;
+    private List<ProjectSummary> projectsByMembers;
     private List<IssueSummary> issues;
     private List<GroupEvent> events;
 

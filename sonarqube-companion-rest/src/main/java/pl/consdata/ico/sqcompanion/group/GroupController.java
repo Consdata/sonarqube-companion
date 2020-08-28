@@ -78,7 +78,7 @@ public class GroupController {
             value = "Returns group members between given period.",
             notes = "<p>Returns group members</p>"
     )
-    public List<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate to) {
+    public List<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         return memberService.groupMembers(uuid, from, to);
     }
 }
