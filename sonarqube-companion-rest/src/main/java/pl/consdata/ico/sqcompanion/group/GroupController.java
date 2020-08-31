@@ -58,6 +58,25 @@ public class GroupController {
         }
     }
 
+    @RequestMapping(
+            value = "/2/{uuid}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group details.",
+            notes = "<p>Returns group details with current violations state, health status and sub groups and projects.</p>"
+    )
+    public GroupDetails getGroup2(@PathVariable final String uuid) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return groupService.getGroupDetails2(group.get());
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
+
     @GetMapping(
             value = "/{uuid}/members",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE

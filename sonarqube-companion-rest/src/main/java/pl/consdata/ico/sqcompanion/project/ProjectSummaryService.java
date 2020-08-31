@@ -1,15 +1,18 @@
 package pl.consdata.ico.sqcompanion.project;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.health.HealthCheckService;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryRepository;
+import pl.consdata.ico.sqcompanion.violation.user.UserViolationProjectSummaryHistoryService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,20 +22,14 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProjectSummaryService {
 
     private final ProjectHistoryRepository projectHistoryRepository;
     private final HealthCheckService healthCheckService;
     private final MeterRegistry meterRegistry;
+    private final UserViolationProjectSummaryHistoryService userViolationProjectSummaryHistoryService;
 
-    public ProjectSummaryService(
-            final ProjectHistoryRepository projectHistoryRepository,
-            final HealthCheckService healthCheckService,
-            final MeterRegistry meterRegistry) {
-        this.projectHistoryRepository = projectHistoryRepository;
-        this.healthCheckService = healthCheckService;
-        this.meterRegistry = meterRegistry;
-    }
 
     @Cacheable(value = Caches.PROJECT_SUMMARY_CACHE, sync = true, key = "#project.key")
     public ProjectSummary getProjectSummary(final Project project) {
@@ -45,6 +42,14 @@ public class ProjectSummaryService {
                 .map(this::asProjectSummary)
                 .collect(Collectors.toList());
     }
+
+    public List<ProjectSummary> getProjectSummaries2(final List<Project> allProjects, String groupId) {
+        return allProjects
+                .stream()
+                .map(project -> )
+                .collect(Collectors.toList());
+    }
+
 
     private ProjectSummary asProjectSummary(final Project p) {
         meterRegistry.counter("services.ProjectSummaryService.asProjectSummary.count").increment();

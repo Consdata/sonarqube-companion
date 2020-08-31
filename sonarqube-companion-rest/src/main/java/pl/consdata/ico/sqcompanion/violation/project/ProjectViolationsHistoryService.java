@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.cache.Caches;
+import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
@@ -165,6 +166,47 @@ public class ProjectViolationsHistoryService {
                 .entrySet()
                 .stream()
                 .collect(mapOptionalValuesToValues());
+    }
+
+    // Get list of members id form members + all aliases
+    // Get all userViolationSummaryHistory for all from and to
+    // Merge
+    private Function<Project, ProjectViolationsHistoryDiff> getGroupMembersProjectViolationsHistoryDiffMappingFunction(List<Member> members, LocalDate fromDate, LocalDate toDate) {
+        return project -> {
+            final Optional<ProjectHistoryEntryEntity> fromDateEntryOptional =
+                    projectHistoryRepository
+                            .findByProjectKeyAndDateEquals(project.getKey(), fromDate);
+            final Optional<ProjectHistoryEntryEntity> toDateEntryOptional = projectHistoryRepository
+                    .findByProjectKeyAndDateEquals(project.getKey(), toDate);
+
+            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
+                throw new SQCompanionException(
+                        String.format(
+                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
+                                project.getKey()
+                        )
+                );
+            }
+            final ProjectHistoryEntryEntity fromDateEntry = fromDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
+            final ProjectHistoryEntryEntity toDateEntry = toDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
+
+            final Violations violationsDiff = Violations
+                    .builder()
+                    .blockers(toDateEntry.getBlockers() - fromDateEntry.getBlockers())
+                    .criticals(toDateEntry.getCriticals() - fromDateEntry.getCriticals())
+                    .majors(toDateEntry.getMajors() - fromDateEntry.getMajors())
+                    .minors(toDateEntry.getMinors() - fromDateEntry.getMinors())
+                    .infos(toDateEntry.getInfos() - fromDateEntry.getInfos())
+                    .build();
+            return ProjectViolationsHistoryDiff
+                    .builder()
+                    .projectId(project.getId())
+                    .fromDate(fromDate)
+                    .toDate(toDate)
+                    .projectKey(project.getKey())
+                    .violationsDiff(violationsDiff)
+                    .build();
+        };
     }
 
     private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(LocalDate fromDate, LocalDate toDate) {

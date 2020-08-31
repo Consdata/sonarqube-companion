@@ -16,6 +16,5 @@ public class GroupViolationsHistoryDiff {
     private final Violations addedViolations;
     private final Violations removedViolations;
     private final List<ProjectViolationsHistoryDiff> projectDiffs;
-    private final List<ProjectViolationsHistoryDiff> projectDiffsByMembers1;
 
 }

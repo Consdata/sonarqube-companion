@@ -15,6 +15,8 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
@@ -24,6 +26,7 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 @RequiredArgsConstructor
 public class LdapMembersIntegration implements MembersProvider {
     public static final String TYPE = "LDAP";
+    private final static Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{(.*?)}");
     private final LdapService ldapService;
     private final AppConfig appConfig;
 
@@ -86,10 +89,24 @@ public class LdapMembersIntegration implements MembersProvider {
 
     private Set<String> getAttributeOrDefault(List<String> keys, Set<String> defaultValue, Attributes attributes) {
         try {
-            return keys.stream().map(k -> getAttributeOrDefault(k, StringUtils.EMPTY, attributes))
+            return keys.stream().map(k -> resolveVariables(k, attributes)).map(k -> getAttributeOrDefault(k, StringUtils.EMPTY, attributes))
                     .filter(StringUtils::isNotBlank).collect(Collectors.toSet());
         } catch (Exception e) {
             return defaultValue;
+        }
+    }
+
+    private String resolveVariables(String key, Attributes attributes) {
+        try {
+            Matcher matcher = VARIABLE_PATTERN.matcher(key);
+            String resolvedKey = key;
+            while (matcher.find()) {
+                resolvedKey = resolvedKey.replace(matcher.group(0), getAttributeOrDefault(matcher.group(1), StringUtils.EMPTY, attributes));
+                matcher = VARIABLE_PATTERN.matcher(resolvedKey);
+            }
+            return resolvedKey;
+        } catch (Exception e) {
+            return key;
         }
     }
 

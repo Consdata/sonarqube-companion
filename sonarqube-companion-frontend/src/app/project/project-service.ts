@@ -17,5 +17,4 @@ export class ProjectService {
         map(data => new ProjectSummary(data))
       );
   }
-
 }
