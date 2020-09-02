@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.UnableToStoreAppConfigException;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
+import pl.consdata.ico.sqcompanion.config.AppConfigStore;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
 import pl.consdata.ico.sqcompanion.hook.WebhookService;
@@ -39,6 +41,8 @@ public class SettingsService {
     private final RepositoryService repositoryService;
     private final WebhookService webhookService;
     private final MemberService memberService;
+    private final AppConfigStore appConfigStore;
+
 
     @Value("${app.configFile:sq-companion-config.json}")
     private String appConfigFile;
@@ -73,7 +77,7 @@ public class SettingsService {
 
     private boolean store() {
         try {
-            objectMapper.writeValue(Paths.get(appConfigFile).toFile(), appConfig);
+            appConfigStore.store(objectMapper, appConfig);
             memberService.syncMembers();
             //TODO resync and clear only new elements
             repositoryService.syncGroups();
@@ -85,8 +89,8 @@ public class SettingsService {
                     .map(cacheManager::getCache)
                     .forEach(Cache::clear);
             return true;
-        } catch (IOException e) {
-            log.error("Unable to store configuration in {}", this.appConfigFile, e);
+        } catch (UnableToStoreAppConfigException e) {
+            log.error("Unable to store app config", e);
             return false;
         }
     }
