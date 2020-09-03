@@ -50,8 +50,7 @@ public class GitConfiguration {
                 git.checkout().setCreateBranch(true).setName(workBranch).call();
             }
             return new GitAppConfigStore(git, configPath, workBranch, message);
-        } catch (GitAPIException | IOException e) {
-            e.printStackTrace();
+        } catch (GitAPIException | IOException e) {e
             throw new UnableToCloneRepoException();
         }
     }

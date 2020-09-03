@@ -31,9 +31,6 @@ public class AppConfigConfiguration {
     @Value("${app.configFile:sq-companion-config.json}")
     private String appConfigFile;
 
-    @Autowired
-    private AppConfigStore appConfigStore;
-
     @Bean
     @ConditionalOnProperty(value = "config.store", havingValue = "file")
     public AppConfigStore appConfigStore() {
@@ -41,7 +38,7 @@ public class AppConfigConfiguration {
     }
 
     @Bean
-    public AppConfig appConfig(final ObjectMapper objectMapper) throws UnableToReadAppConfigException, UnableToStoreAppConfigException {
+    public AppConfig appConfig(final ObjectMapper objectMapper, final AppConfigStore appConfigStore) throws UnableToReadAppConfigException, UnableToStoreAppConfigException {
         SimpleModule module = new SimpleModule();
 
         module.setDeserializerModifier(new BeanDeserializerModifier() {
