@@ -49,7 +49,6 @@ public class GitAppConfigStore implements AppConfigStore {
             git.commit().setMessage(message).call();
             git.push().setRemote(origin).setRefSpecs(new RefSpec(branch + ":" + branch)).call();
         } catch (GitAPIException | IOException e) {
-            log.error("Unable to store config", e);
             throw new UnableToStoreAppConfigException(e);
         }
     }

@@ -41,9 +41,8 @@ public class GitConfiguration {
             Git git = Git.cloneRepository()
                     .setURI(repoUrl)
                     .setDirectory(Paths.get(workspace).toFile())
+                    .setBranch(branch)
                     .call();
-
-            git.checkout().setCreateBranch(false).setName(branch).call();
             return new GitAppConfigStore(git, configPath, origin, branch, message);
         } catch (GitAPIException | IOException e) {
             throw new UnableToCloneRepoException(e);
