@@ -71,8 +71,6 @@ public class AppConfigConfiguration {
 
         final AppConfig appConfig = appConfigStore.read(objectMapper, getDefaultAppConfig());
         log.info("App config loaded [appConfig={}]", appConfig);
-        appConfigStore.store(objectMapper, appConfig);
-        log.info("Fixed config saved [appConfig={}]", appConfig);
         return appConfig;
     }
 

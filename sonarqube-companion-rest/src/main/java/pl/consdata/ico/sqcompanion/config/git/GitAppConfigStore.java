@@ -21,6 +21,7 @@ public class GitAppConfigStore implements AppConfigStore {
 
     private final Git git;
     private final String path;
+    private final String origin;
     private final String branch;
     private final String message;
 
@@ -35,7 +36,7 @@ public class GitAppConfigStore implements AppConfigStore {
             }
             return objectMapper.readValue(appConfigFile, AppConfig.class);
         } catch (IOException | UnableToStoreAppConfigException e) {
-            throw new UnableToReadAppConfigException();
+            throw new UnableToReadAppConfigException(e);
         }
     }
 
@@ -46,10 +47,10 @@ public class GitAppConfigStore implements AppConfigStore {
             objectMapper.writeValue(appConfigFile, appConfig);
             git.add().addFilepattern(".").call();
             git.commit().setMessage(message).call();
-            git.push().setRemote("origin").setRefSpecs(new RefSpec(branch + ":" + branch)).call();
+            git.push().setRemote(origin).setRefSpecs(new RefSpec(branch + ":" + branch)).call();
         } catch (GitAPIException | IOException e) {
             log.error("Unable to store config", e);
-            throw new UnableToStoreAppConfigException();
+            throw new UnableToStoreAppConfigException(e);
         }
     }
 }

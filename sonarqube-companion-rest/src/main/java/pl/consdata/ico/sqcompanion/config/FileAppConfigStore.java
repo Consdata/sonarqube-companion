@@ -26,7 +26,7 @@ public class FileAppConfigStore implements AppConfigStore {
             }
             return objectMapper.readValue(Paths.get(appConfigPath).toFile(), AppConfig.class);
         } catch (IOException | UnableToStoreAppConfigException e) {
-            throw new UnableToReadAppConfigException();
+            throw new UnableToReadAppConfigException(e);
         }
     }
 
@@ -35,7 +35,7 @@ public class FileAppConfigStore implements AppConfigStore {
         try {
             objectMapper.writeValue(Paths.get(appConfigPath).toFile(), appConfig);
         } catch (IOException e) {
-            throw new UnableToStoreAppConfigException();
+            throw new UnableToStoreAppConfigException(e);
         }
     }
 }

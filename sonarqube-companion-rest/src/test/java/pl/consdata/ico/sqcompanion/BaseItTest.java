@@ -1,5 +1,7 @@
 package pl.consdata.ico.sqcompanion;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,38 +46,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class BaseItTest {
 
     @Autowired
+    public ObjectMapper objectMapper;
+    @Autowired
     protected WebhookScheduler webhookScheduler;
-
     @Autowired
     protected RepositoryService repositoryService;
-
     @Autowired
     protected ApplicationContext applicationContext;
-
     @Autowired
     protected SynchronizationService synchronizationService;
-
     @Autowired
     protected ProjectViolationsHistoryService projectViolationsHistoryService;
-
     @Autowired
     protected InMemorySonarQubeFacade inMemorySonarQubeFacade;
-
     @Autowired
     protected ProjectHistoryRepository projectHistoryRepository;
-
     @Autowired
     protected UserViolationDiffRepository userViolationDiffRepository;
-
     @Autowired
     protected UserViolationHistoryRepository userViolationHistoryRepository;
-
     @Autowired
     protected MemberRepository memberRepository;
-
     @Autowired
     protected MembershipRepository membershipRepository;
-
     @Autowired
     protected MemberService memberService;
 

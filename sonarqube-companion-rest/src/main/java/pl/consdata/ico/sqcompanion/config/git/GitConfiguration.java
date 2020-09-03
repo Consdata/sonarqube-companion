@@ -1,7 +1,6 @@
 package pl.consdata.ico.sqcompanion.config.git;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 @Configuration
@@ -30,8 +27,11 @@ public class GitConfiguration {
     @Value("${git.message:SQC}")
     private String message;
 
-    @Value("${git.branch:}")
+    @Value("${git.branch:master}")
     private String branch;
+
+    @Value("${git.remote:origin}")
+    private String origin;
 
     @Bean
     @ConditionalOnProperty(value = "config.store", havingValue = "git")
@@ -42,16 +42,11 @@ public class GitConfiguration {
                     .setURI(repoUrl)
                     .setDirectory(Paths.get(workspace).toFile())
                     .call();
-            String workBranch = branch;
-            if (StringUtils.isNotBlank(branch)) {
-                git.checkout().setCreateBranch(false).setName(branch).call();
-            } else {
-                workBranch = "SQC-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss"));
-                git.checkout().setCreateBranch(true).setName(workBranch).call();
-            }
-            return new GitAppConfigStore(git, configPath, workBranch, message);
+
+            git.checkout().setCreateBranch(false).setName(branch).call();
+            return new GitAppConfigStore(git, configPath, origin, branch, message);
         } catch (GitAPIException | IOException e) {
-            throw new UnableToCloneRepoException();
+            throw new UnableToCloneRepoException(e);
         }
     }
 }
