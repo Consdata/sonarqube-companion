@@ -13,28 +13,28 @@ import java.nio.file.Paths;
 
 
 @Configuration
+@ConditionalOnProperty(value = "config.store", havingValue = "git")
 public class GitConfiguration {
 
-    @Value("${git.repo:}")
+    @Value("${git.repo}")
     private String repoUrl;
 
-    @Value("${git.path:}")
+    @Value("${git.path}")
     private String configPath;
 
-    @Value("${git.workspace:}")
+    @Value("${git.workspace}")
     private String workspace;
 
     @Value("${git.message:SQC}")
     private String message;
 
-    @Value("${git.branch:master}")
+    @Value("${git.branch}")
     private String branch;
 
     @Value("${git.remote:origin}")
     private String origin;
 
     @Bean
-    @ConditionalOnProperty(value = "config.store", havingValue = "git")
     public GitAppConfigStore gitIntegration() throws UnableToCloneRepoException {
         try {
             FileUtils.deleteDirectory(Paths.get(workspace).toFile());
