@@ -13,7 +13,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
              (click)="selectedBadge=i">
           <div *ngIf="selectedBadge !== i">{{item}}</div>
           <div class="editable" *ngIf="selectedBadge === i">
-            <input autoFocus type="text" [(ngModel)]="item" (keydown)="onKeyDown($event, i, item)"
+            <input autoFocus
+                   type="text"
+                   [value]="item"
+                   (change)="onItemChange(item, i, $event)"
+                   (keydown)="onKeyDown($event, i, item)"
                    (blur)="onBlur($event, i, item)">
             <button (mousedown)="removeBadge(i)">X</button>
           </div>
@@ -78,4 +82,15 @@ export class BadgeComponent {
     }
     this.selectedBadge = -1;
   }
+
+  onBlur($event: FocusEvent, index: number, item: string): void {
+    // todo: bradlinski, co to miało robić?
+  }
+
+  onItemChange(item: string, index: number, $event: Event): void {
+    const changed = [...this._items];
+    changed[index] = (<any> $event.target).value;
+    this.itemsChange.emit(changed);
+  }
+
 }
