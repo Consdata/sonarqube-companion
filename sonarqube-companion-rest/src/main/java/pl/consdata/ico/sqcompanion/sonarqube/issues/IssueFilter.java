@@ -1,8 +1,6 @@
 package pl.consdata.ico.sqcompanion.sonarqube.issues;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.time.LocalDate;
@@ -13,6 +11,8 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class IssueFilter {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");

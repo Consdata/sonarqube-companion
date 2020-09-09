@@ -1,8 +1,6 @@
 package pl.consdata.ico.sqcompanion.sonarqube;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilterFacet;
 
 import java.util.Map;
@@ -10,6 +8,8 @@ import java.util.Optional;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SonarQubeIssuesFacets {
 
     @Singular

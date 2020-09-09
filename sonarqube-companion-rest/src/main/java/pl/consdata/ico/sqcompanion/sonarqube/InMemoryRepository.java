@@ -1,8 +1,6 @@
 package pl.consdata.ico.sqcompanion.sonarqube;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.Map;
 
@@ -11,6 +9,8 @@ import java.util.Map;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InMemoryRepository {
 
     @Singular

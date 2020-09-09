@@ -1,10 +1,14 @@
 package pl.consdata.ico.sqcompanion.config.validation;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ValidationResult {
     private String message;
     private String code;

@@ -3,6 +3,7 @@ package pl.consdata.ico.sqcompanion.config.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,6 +11,7 @@ import static java.util.Optional.ofNullable;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class SchedulerConfig {
 

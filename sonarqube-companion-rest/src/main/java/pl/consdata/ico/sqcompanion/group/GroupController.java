@@ -1,33 +1,31 @@
 package pl.consdata.ico.sqcompanion.group;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.config.model.Member;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * @author gregorry
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/groups")
 public class GroupController {
 
     private final RepositoryService repositoryService;
     private final GroupService groupService;
-
-    public GroupController(
-            final RepositoryService repositoryService,
-            final GroupService groupService) {
-        this.repositoryService = repositoryService;
-        this.groupService = groupService;
-    }
+    private final MemberService memberService;
 
     @RequestMapping(
             value = "",
@@ -58,5 +56,29 @@ public class GroupController {
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
+    }
+
+    @GetMapping(
+            value = "/{uuid}/members",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group members.",
+            notes = "<p>Returns group members</p>"
+    )
+    public List<Member> getMembers(@PathVariable final String uuid) {
+        return memberService.groupMembers(uuid);
+    }
+
+    @GetMapping(
+            value = "/{uuid}/members/{from}/{to}",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group members between given period.",
+            notes = "<p>Returns group members</p>"
+    )
+    public List<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate to) {
+        return memberService.groupMembers(uuid, from, to);
     }
 }

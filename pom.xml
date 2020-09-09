@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.5.RELEASE</version>
+        <version>2.3.3.RELEASE</version>
     </parent>
 
     <groupId>pl.consdata.ico</groupId>
@@ -27,10 +27,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <jacoco.version>0.7.9</jacoco.version>
+        <java.version>11</java.version>
+        <jacoco.version>0.8.5</jacoco.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
-        <lombok.version>1.16.18</lombok.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
 
     <dependencyManagement>

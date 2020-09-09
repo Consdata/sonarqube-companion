@@ -1,5 +1,7 @@
 package pl.consdata.ico.sqcompanion;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.history.SyncUserProjectViolationsDiffHistoryTest;
 import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
+import pl.consdata.ico.sqcompanion.members.MemberRepository;
+import pl.consdata.ico.sqcompanion.members.MemberService;
+import pl.consdata.ico.sqcompanion.members.MembershipRepository;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.sonarqube.InMemorySonarQubeFacade;
@@ -34,38 +39,38 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {BaseItTest.ItTestConfiguration.class})
+@SpringBootTest(classes = {BaseItTest.ItTestConfiguration.class}, properties = "spring.main.allow-bean-definition-overriding=true")
 @ActiveProfiles("ittest")
 @TestPropertySource("/it-test.properties")
 @Transactional
 public abstract class BaseItTest {
 
     @Autowired
+    public ObjectMapper objectMapper;
+    @Autowired
     protected WebhookScheduler webhookScheduler;
-
     @Autowired
     protected RepositoryService repositoryService;
-
     @Autowired
     protected ApplicationContext applicationContext;
-
     @Autowired
     protected SynchronizationService synchronizationService;
-
     @Autowired
     protected ProjectViolationsHistoryService projectViolationsHistoryService;
-
     @Autowired
     protected InMemorySonarQubeFacade inMemorySonarQubeFacade;
-
     @Autowired
     protected ProjectHistoryRepository projectHistoryRepository;
-
     @Autowired
     protected UserViolationDiffRepository userViolationDiffRepository;
-
     @Autowired
     protected UserViolationHistoryRepository userViolationHistoryRepository;
+    @Autowired
+    protected MemberRepository memberRepository;
+    @Autowired
+    protected MembershipRepository membershipRepository;
+    @Autowired
+    protected MemberService memberService;
 
     @Before
     public void setUpBaseItTest() {

@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * @author gregorry
  */
@@ -153,7 +155,9 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
     }
 
     private SonarQubeIssueSeverity asSeveriyt(SQIssue sqIssue) {
-        return SonarQubeIssueSeverity.valueOf(sqIssue.getSeverity());
+        return ofNullable(sqIssue.getSeverity())
+                .map(SonarQubeIssueSeverity::valueOf)
+                .orElse(SonarQubeIssueSeverity.UNKNOWN);
     }
 
 }

@@ -1,12 +1,16 @@
 package pl.consdata.ico.sqcompanion.repository;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Project {
 
     private String serverId;

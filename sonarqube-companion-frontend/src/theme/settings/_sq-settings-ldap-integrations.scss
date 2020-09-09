@@ -1,0 +1,68 @@
+sq-settings-ldap-integrations {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .enable {
+    margin-left: 20px;
+
+    label {
+      font-weight: 600;
+    }
+  }
+
+  .section > label {
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .horizontal {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 10px;
+
+    label {
+      margin: 0 10px 0 0;
+      font-weight: 600;
+    }
+  }
+
+  .features {
+    margin-left: 20px;
+    font-weight: 300;
+    font-size: 11px;
+
+    span {
+      border: #cadbdc;
+      background: #cadbdc;
+      border-radius: 4px;
+      padding: 2px 5px;
+      margin: 2px;
+    }
+  }
+
+  .groups {
+    margin-left: 10px;
+
+    .sq-settings-group-title {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      padding: 5px;
+    }
+
+    .title {
+      margin-right: 10px;
+    }
+
+  }
+}

@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"groups", "projectLinks", "events", "webhooks"})
+@ToString(exclude = {"groups", "projectLinks", "events", "webhooks", "members"})
 public class GroupDefinition {
     private String uuid;
     private String name;
@@ -21,5 +21,6 @@ public class GroupDefinition {
     private List<GroupEvent> events;
     @Singular
     private List<WebhookDefinition> webhooks;
-
+    @Singular
+    private List<String> members;
 }

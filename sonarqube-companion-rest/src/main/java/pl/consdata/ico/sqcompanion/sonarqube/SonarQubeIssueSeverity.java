@@ -5,5 +5,6 @@ public enum SonarQubeIssueSeverity {
     CRITICAL,
     MAJOR,
     MINOR,
-    INFO
+    INFO,
+    UNKNOWN
 }
