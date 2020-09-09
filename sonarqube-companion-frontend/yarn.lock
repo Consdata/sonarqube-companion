@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@amcharts/amcharts3-angular@2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts3-angular/-/amcharts3-angular-2.2.3.tgz#ef2056f7ee69062aa222f671cbef973fba90ee2b"
-  integrity sha512-T1X75WyfeogLjM1SLgepDZ1Ok14a6n6ekt4tvBVOVlEi+LkCLWmbb2UX9/RAuw8pEIOwJTNwTctuTq+IJNgHRQ==
+"@amcharts/amcharts3-angular@2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts3-angular/-/amcharts3-angular-2.2.4.tgz#7db40e32a8961f3a2ffad4d14ca9b3e60ce2ef9e"
+  integrity sha512-+vRTn4Sp37NKnmWV42raKJ/8U+Jyx+cOEsYwvXjm8FmS8cnM8KdeLssoNM9ryUhiWnRO1w+Dq189pbNUhPBFGQ==
 
 "@angular-devkit/architect@0.803.29":
   version "0.803.29"
@@ -1539,10 +1539,10 @@ ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amcharts3@3.21.14:
-  version "3.21.14"
-  resolved "https://registry.yarnpkg.com/amcharts3/-/amcharts3-3.21.14.tgz#f910eb191abd2e3b6b2c1599b83196a70f2f25ab"
-  integrity sha512-RnJdhla2UuoZ62ODlpiqc02SBASV3hsn8zp9i3SzUE3VRgHxaG1mAH09uJGfR9kq+Q1QbtTWd4MTS/ok22xZ9g==
+amcharts3@3.21.15:
+  version "3.21.15"
+  resolved "https://registry.yarnpkg.com/amcharts3/-/amcharts3-3.21.15.tgz#1a8036c85da8e5248b23b5ca9875e42af058f028"
+  integrity sha512-t7/RA0iuDXN2QAneUThW87DbCnSUBYFWxSr2Hsd/+sPvfG0aqeUXEFpqsozcEl2y2XgCEQJ4jMaZ1X/CoYArGA==
 
 amdefine@>=0.0.4:
   version "1.0.1"
