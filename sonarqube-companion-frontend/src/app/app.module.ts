@@ -1,8 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {AmChartsModule} from '@amcharts/amcharts3-angular';
-
 import {AppRoutingModule} from './app-routing.module';
 import {SonarQubeCompanionComponent} from './sonarqube-companion-component';
 import {NavbarComponent} from './navbar/navbar-component';
@@ -45,7 +43,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {EventComponent} from './config/group/event/event-component';
 import {ProjectLinkComponent} from './config/group/project-link/project-link-component';
 import {SubgroupsSettingsComponent} from './config/group/subgroups-settings-component';
-import {TreeModule} from 'angular-tree-component';
+import {TreeModule} from '@circlon/angular-tree-component';
 import {WebhooksListComponent} from './config/group/webhook/webhooks-list-component';
 import {SettingsListDetailsComponent} from './config/common/settings-list/settings-list-details-component';
 import {SettingsListComponent} from './config/common/settings-list/settings-list-component';
@@ -145,10 +143,9 @@ import {MemberSettingsRemoteUsersComponent} from './config/member/member-setting
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AmChartsModule,
     FormsModule,
     DragDropModule,
-    TreeModule.forRoot()
+    TreeModule
   ],
   providers: [
     OverviewService,

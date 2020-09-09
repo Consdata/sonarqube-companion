@@ -1,4 +1,9 @@
 {
+  "rules": {
+    "deprecation": {
+      "severity": "warning"
+    }
+  },
   "extends": [
     "@consdata/tslint-config"
   ]

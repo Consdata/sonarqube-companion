@@ -1,7 +1,7 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {GroupDefinition} from '../model/group-definition';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TreeComponent} from 'angular-tree-component';
+import {TreeComponent} from '@circlon/angular-tree-component';
 import {GroupSettingsService} from '../service/group-settings-service';
 
 

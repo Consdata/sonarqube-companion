@@ -15,7 +15,6 @@
             "showCircularDependencies": false,
             "assets": [
               "src/assets",
-              "src/amcharts",
               "src/favicon.ico"
             ],
             "index": "src/index.html",
@@ -27,9 +26,6 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/amcharts3/amcharts/amcharts.js",
-              "node_modules/amcharts3/amcharts/lang/pl.js",
-              "node_modules/amcharts3/amcharts/serial.js"
             ]
           },
           "configurations": {
