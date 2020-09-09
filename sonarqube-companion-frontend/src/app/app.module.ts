@@ -166,14 +166,6 @@ import {MemberSettingsRemoteUsersComponent} from './config/member/member-setting
     MemberService,
     LdapIntegrationService
   ],
-  entryComponents: [
-    ServerComponent,
-    EventDetailsComponent,
-    WebhookDetailsComponent,
-    ProjectLinkComponent,
-    WebhookCallbackDetailComponent,
-    MemberComponent
-  ],
   bootstrap: [
     SonarQubeCompanionComponent
   ]
