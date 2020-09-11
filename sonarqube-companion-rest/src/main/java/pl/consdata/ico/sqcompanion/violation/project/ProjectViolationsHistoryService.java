@@ -1,10 +1,12 @@
 package pl.consdata.ico.sqcompanion.violation.project;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.cache.Caches;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
@@ -14,6 +16,7 @@ import pl.consdata.ico.sqcompanion.util.LocalDateUtil;
 import pl.consdata.ico.sqcompanion.violation.ViolationHistoryEntry;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
+import pl.consdata.ico.sqcompanion.violation.user.diff.UserViolationDiffRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,20 +29,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProjectViolationsHistoryService {
 
     private final RepositoryService repositoryService;
     private final SonarQubeFacade sonarQubeFacade;
     private final ProjectHistoryRepository projectHistoryRepository;
-
-    public ProjectViolationsHistoryService(
-            final RepositoryService repositoryService,
-            final SonarQubeFacade sonarQubeFacade,
-            final ProjectHistoryRepository projectHistoryRepository) {
-        this.repositoryService = repositoryService;
-        this.sonarQubeFacade = sonarQubeFacade;
-        this.projectHistoryRepository = projectHistoryRepository;
-    }
+    private final UserViolationDiffRepository userViolationDiffRepository;
+    private final MemberService memberService;
 
     public void syncProjectsHistory() {
         repositoryService
@@ -69,7 +66,7 @@ public class ProjectViolationsHistoryService {
                 .getAllProjects()
                 .stream()
                 .filter(project -> projectHistoryRepository.existsByProjectKey(project.getKey()))
-                .map(getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate))
+                .map(getProjectViolationsHistoryDiffMappingFunction(new GroupProjectHistoryEntityProvider(group, userViolationDiffRepository, memberService), fromDate, toDate))
                 .collect(Collectors.toList());
 
         final Violations addedViolations = Violations.builder().build();
@@ -109,7 +106,7 @@ public class ProjectViolationsHistoryService {
 
     @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#project.getId() + #fromDate + #toDate")
     public ProjectViolationsHistoryDiff getProjectViolationsHistoryDiff(final Project project, final LocalDate fromDate, final LocalDate toDate) {
-        return getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate).apply(project);
+        return getProjectViolationsHistoryDiffMappingFunction(new DefaultProjectHistoryEntityProvider(projectHistoryRepository), fromDate, toDate).apply(project);
     }
 
     private void synProjectHistoryAndCatch(final Project project) {
@@ -167,13 +164,10 @@ public class ProjectViolationsHistoryService {
                 .collect(mapOptionalValuesToValues());
     }
 
-    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(LocalDate fromDate, LocalDate toDate) {
+    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(ProjectHistoryEntryEntityProvider projectHistoryEntryEntityProvider, LocalDate fromDate, LocalDate toDate) {
         return project -> {
-            final Optional<ProjectHistoryEntryEntity> fromDateEntryOptional =
-                    projectHistoryRepository
-                            .findByProjectKeyAndDateEquals(project.getKey(), fromDate);
-            final Optional<ProjectHistoryEntryEntity> toDateEntryOptional = projectHistoryRepository
-                    .findByProjectKeyAndDateEquals(project.getKey(), toDate);
+            final Optional<ProjectHistoryEntryEntity> fromDateEntryOptional = projectHistoryEntryEntityProvider.getEntity(project, fromDate);
+            final Optional<ProjectHistoryEntryEntity> toDateEntryOptional = projectHistoryEntryEntityProvider.getEntity(project, toDate);
 
             if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
                 throw new SQCompanionException(
