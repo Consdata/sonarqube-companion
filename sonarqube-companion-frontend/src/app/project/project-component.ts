@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ViolationsHistoryService} from '../violations/violations-history-service';
-import {ProjectSummary} from './project-summary';
-import {ProjectService} from './project-service';
-import {ProjectViolationsHistoryDiff} from '../violations/project-violations-history-diff';
-import {GroupService} from '../group/group-service';
 import {GroupDetails} from 'app/group/group-details';
+import {GroupService} from '../group/group-service';
+import {ProjectViolationsHistoryDiff} from '../violations/project-violations-history-diff';
+import {ViolationsHistoryService} from '../violations/violations-history-service';
+import {ProjectService} from './project-service';
+import {ProjectSummary} from './project-summary';
 
 @Component({
   selector: 'sq-project',
@@ -22,8 +22,8 @@ import {GroupDetails} from 'app/group/group-details';
         <h2>Violations</h2>
         <sq-violations-history
           [group]="group"
-          [violationsHistoryProvider]="violationsHistoryProvider"
-          (zoomed)="onChartZoomed($event)">
+          [violationsFilter]="'all'"
+          [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
       </div>
     </div>
@@ -34,6 +34,7 @@ export class ProjectComponent {
   project: ProjectSummary;
   group: GroupDetails;
   projectViolationsDiff: ProjectViolationsHistoryDiff;
+  readonly daysLimit: number = 90;
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -45,19 +46,12 @@ export class ProjectComponent {
         groupService.getGroup(params.get('uuid')).subscribe(group => this.group = group);
         projectService.getProject(params.get('uuid'), params.get('projectKey')).subscribe(project => this.project = project);
       });
-
   }
 
   get loaded(): boolean {
     return !!this.project && !!this.group;
   }
 
-  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getProjectHistory(daysLimit, this.group.uuid, this.project.key);
+  violationsHistoryProvider = () => this.violationsHistoryService.getProjectHistory(this.daysLimit, this.group.uuid, this.project.key);
 
-  onChartZoomed(zoomedEvent: any) {
-    this.projectViolationsDiff = undefined;
-    this.violationsHistoryService
-      .getProjectHistoryDiff(this.group.uuid, this.project.key, zoomedEvent.fromDate, zoomedEvent.toDate)
-      .subscribe(result => this.projectViolationsDiff = result);
-  }
 }

@@ -1,5 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LineChartModule} from '@swimlane/ngx-charts';
 
 import {AppRoutingModule} from './app-routing.module';
 import {SonarQubeCompanionComponent} from './sonarqube-companion-component';
@@ -141,11 +143,13 @@ import {MemberSettingsRemoteUsersComponent} from './config/member/member-setting
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     DragDropModule,
-    TreeModule
+    TreeModule,
+    LineChartModule,
   ],
   providers: [
     OverviewService,
