@@ -1,20 +1,23 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {filter, map, switchMap} from 'rxjs/operators';
+import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
+import {ViolationsHistoryService} from '../violations/violations-history-service';
 
 import {GroupDetails} from './group-details';
 import {GroupService} from './group-service';
-import {ActivatedRoute} from '@angular/router';
-import {ViolationsHistoryService} from '../violations/violations-history-service';
-import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
-import {filter, map, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'sq-group',
   template: `
-    <sq-spinner *ngIf="!group"></sq-spinner>
-    <div *ngIf="group" class="group-sections">
+    <ng-template #spinner>
+      <sq-spinner></sq-spinner>
+    </ng-template>
+    <div *ngIf="group$ | async as group; else spinner" class="group-sections">
       <h1>{{group.name}}</h1>
       <hr/>
-      <div class="overview-cards">
+      <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff">
         <sq-group-overview-cards
           [group]="group"
           [violations]="group.violations"
@@ -54,8 +57,7 @@ import {filter, map, switchMap} from 'rxjs/operators';
         <sq-violations-history
           [group]="group"
           [violationsFilter]="historyFilter"
-          [violationsHistoryProvider]="violationsHistoryProvider"
-          (zoomed)="onChartZoomed($event)">
+          [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
       </div>
       <div>
@@ -84,20 +86,21 @@ import {filter, map, switchMap} from 'rxjs/operators';
         <sq-group-projects
           [projects]="group.projects"
           [filter]="projectsFilter"
-          [violationsHistoryDiff]="violationsHistoryDiff"
+          [violationsHistoryDiff]="violationsHistoryDiff$ | async"
           [uuid]="group.uuid">
         </sq-group-projects>
       </div>
     </div>
   `
 })
-export class GroupComponent {
+export class GroupComponent implements OnInit {
 
-  group: GroupDetails;
-  violationsHistoryDiff: GroupViolationsHistoryDiff;
-  projectsFilter = 'changed';
-  historyFilter = 'relevant';
+  group$: BehaviorSubject<GroupDetails> = new BehaviorSubject<GroupDetails>(undefined);
+  violationsHistoryDiff$: Observable<GroupViolationsHistoryDiff>;
+  projectsFilter: string = 'changed';
+  historyFilter: string = 'relevant';
   zoom: { fromDate: string, toDate: string };
+  readonly daysLimit: number = 90;
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
@@ -107,7 +110,7 @@ export class GroupComponent {
       .pipe(
         switchMap(params => groupService.getGroup(params.get('uuid')))
       )
-      .subscribe(group => this.group = group);
+      .subscribe(group => this.group$.next(group));
     route
       .queryParamMap
       .pipe(
@@ -124,14 +127,20 @@ export class GroupComponent {
       .subscribe(historyFilter => this.historyFilter = historyFilter);
   }
 
-  violationsHistoryProvider = (daysLimit: number) => this.violationsHistoryService.getGroupHistory(daysLimit, this.group.uuid);
+  violationsHistoryProvider = () => this.violationsHistoryService.getGroupHistory(this.daysLimit, this.group$.value.uuid);
 
-  onChartZoomed(zoomedEvent: { fromDate: string, toDate: string }): void {
-    this.zoom = zoomedEvent;
-    this.violationsHistoryDiff = undefined;
-    this.violationsHistoryService
-      .getGroupHistoryDiff(this.group.uuid, zoomedEvent.fromDate, zoomedEvent.toDate)
-      .subscribe(result => this.violationsHistoryDiff = result);
+  ngOnInit(): void {
+    const to = this.dateMinusDays(1);
+    const from = this.dateMinusDays(this.daysLimit);
+    this.violationsHistoryDiff$ = this.group$.pipe(
+      switchMap(group => this.violationsHistoryService.getGroupHistoryDiff(group.uuid, from, to))
+    );
+  }
+
+  private dateMinusDays(days: number): string {
+    const date = new Date();
+    date.setDate(date.getDate() - days);
+    return date.toISOString().substring(0, 10);
   }
 
 }

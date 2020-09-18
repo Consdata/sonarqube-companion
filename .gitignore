@@ -20,3 +20,4 @@ consdata-ca.crt
 hs_err_pid*
 yarn-error.log
 !.idea/runConfigurations
+sonarqube-companion-frontend/proxy.k8s.conf.json

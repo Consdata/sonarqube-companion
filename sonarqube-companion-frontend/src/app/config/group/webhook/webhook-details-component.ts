@@ -1,7 +1,7 @@
+import {Subject} from 'rxjs';
 import {SettingsListDetailsItem} from '../../common/settings-list/settings-list-item';
 import {RestWebhookTrigger, WebhookAction, WebhookCallback, WebhookDefinition} from '../../model/webhook-definition';
 import {Component, Type} from '@angular/core';
-import {Subject} from 'rxjs/index';
 import {ValidationResult} from '../../common/settings-list/settings-list-component';
 import {WebhookCallbackDetailComponent} from './callback/webhook-callback-detail-component';
 import {GroupSettingsService} from '../../service/group-settings-service';

@@ -11,10 +11,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "showCircularDependencies": false,
             "assets": [
               "src/assets",
-              "src/amcharts",
               "src/favicon.ico"
             ],
             "index": "src/index.html",
@@ -26,13 +26,16 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/amcharts3/amcharts/amcharts.js",
-              "node_modules/amcharts3/amcharts/lang/pl.js",
-              "node_modules/amcharts3/amcharts/serial.js"
             ]
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -94,9 +97,9 @@
   "schematics": {
     "@schematics/angular:component": {
       "inlineTemplate": true,
-      "spec": false,
+      "skipTests": true,
       "prefix": "sq",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "sq"

@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
-import {AmChartsModule} from '@amcharts/amcharts3-angular';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LineChartModule} from '@swimlane/ngx-charts';
 
 import {AppRoutingModule} from './app-routing.module';
 import {SonarQubeCompanionComponent} from './sonarqube-companion-component';
@@ -45,7 +45,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {EventComponent} from './config/group/event/event-component';
 import {ProjectLinkComponent} from './config/group/project-link/project-link-component';
 import {SubgroupsSettingsComponent} from './config/group/subgroups-settings-component';
-import {TreeModule} from 'angular-tree-component';
+import {TreeModule} from '@circlon/angular-tree-component';
 import {WebhooksListComponent} from './config/group/webhook/webhooks-list-component';
 import {SettingsListDetailsComponent} from './config/common/settings-list/settings-list-details-component';
 import {SettingsListComponent} from './config/common/settings-list/settings-list-component';
@@ -143,12 +143,13 @@ import {MemberSettingsRemoteUsersComponent} from './config/member/member-setting
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    AmChartsModule,
     FormsModule,
     DragDropModule,
-    TreeModule.forRoot()
+    TreeModule,
+    LineChartModule,
   ],
   providers: [
     OverviewService,
@@ -165,14 +166,6 @@ import {MemberSettingsRemoteUsersComponent} from './config/member/member-setting
     MemberConfigService,
     MemberService,
     LdapIntegrationService
-  ],
-  entryComponents: [
-    ServerComponent,
-    EventDetailsComponent,
-    WebhookDetailsComponent,
-    ProjectLinkComponent,
-    WebhookCallbackDetailComponent,
-    MemberComponent
   ],
   bootstrap: [
     SonarQubeCompanionComponent
