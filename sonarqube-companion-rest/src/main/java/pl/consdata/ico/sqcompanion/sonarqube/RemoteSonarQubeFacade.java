@@ -130,7 +130,9 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
 
     private SonarQubeUser sqUserToUser(SQUser sqUser) {
         return SonarQubeUser.builder()
-                .userId(sqUser.getEmail())
+                .login(sqUser.getLogin())
+                .userId(sqUser.getLogin())
+                .active(sqUser.isActive())
                 .build();
     }
 

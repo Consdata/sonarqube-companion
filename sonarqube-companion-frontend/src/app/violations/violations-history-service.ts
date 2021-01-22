@@ -36,12 +36,31 @@ export class ViolationsHistoryService {
       );
   }
 
-  getProjectHistoryDiff(uuid: string, projectKey: string, fromDate: string, toDate: string): Observable<ProjectViolationsHistoryDiff> {
+  //TODO rename
+  getProjectHistoryDiff(daysLimit: number,  projectKey: string): Observable<ViolationsHistory> {
     return this.http
-      .get<any>(`api/v1/violations/history/project/${uuid}/${encodeURIComponent(projectKey)}/${fromDate}/${toDate}`)
+      .get<any>(`api/v1/projects/diff/${encodeURIComponent(projectKey)}?daysLimit=${daysLimit}`)
       .pipe(
-        map(data => new ProjectViolationsHistoryDiff(data))
+        map(data => new ViolationsHistory(data))
       );
   }
 
+  //TODO rename
+  getProjectsHistory(fromDate: string, toDate: string): Observable<GroupViolationsHistoryDiff> {
+    return this.http
+      .get<any>(`api/v1/projects/diff/${fromDate}/${toDate}`)
+      .pipe(
+        map(data => new GroupViolationsHistoryDiff(data))
+      );
+  }
+
+
+  //TODO rename
+  getProjectHistory2(projectKey: string, fromDate: string, toDate: string): Observable<GroupViolationsHistoryDiff> {
+    return this.http
+      .get<any>(`api/v1/projects/diff2/${encodeURIComponent(projectKey)}/${fromDate}/${toDate}`)
+      .pipe(
+        map(data => new GroupViolationsHistoryDiff(data))
+      );
+  }
 }

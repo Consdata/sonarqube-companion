@@ -18,4 +18,13 @@ export class ProjectService {
       );
   }
 
+  // TODO refactor
+  getProject2(projectKey: string): Observable<ProjectSummary> {
+    return this.http
+      .get<any>(`api/v1/projects/${encodeURIComponent(projectKey)}`)
+      .pipe(
+        map(data => new ProjectSummary(data))
+      );
+  }
+
 }

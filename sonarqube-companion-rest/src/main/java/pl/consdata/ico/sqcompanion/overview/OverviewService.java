@@ -1,5 +1,6 @@
 package pl.consdata.ico.sqcompanion.overview;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import pl.consdata.ico.sqcompanion.health.HealthStatus;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
+import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,16 +20,12 @@ import static java.util.Optional.ofNullable;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class OverviewService {
 
     private final ProjectSummaryService projectSummaryService;
+    private final UserViolationSummaryHistoryService userViolationSummaryHistoryService;
     private final HealthCheckService healthCheckService;
-
-    public OverviewService(final ProjectSummaryService projectSummaryService,
-                           final HealthCheckService healthCheckService) {
-        this.projectSummaryService = projectSummaryService;
-        this.healthCheckService = healthCheckService;
-    }
 
     @Cacheable(value = Caches.GROUP_OVERVIEW_CACHE, sync = true, key = "#group.uuid")
     public GroupOverview getOverview(Group group) {
@@ -35,7 +33,7 @@ public class OverviewService {
     }
 
     private GroupOverview asGroupWithSubGroupsSummary(final Group group) {
-        final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
+        final List<ProjectSummary> projectSummaries = userViolationSummaryHistoryService.getProjectSummaries(group.getAllProjects(), group.getUuid());
         final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
         return GroupOverview
                 .builder()

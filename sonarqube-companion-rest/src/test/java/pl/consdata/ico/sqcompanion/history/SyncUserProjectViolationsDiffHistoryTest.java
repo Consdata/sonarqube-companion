@@ -27,6 +27,7 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
         addUserIssue(USER, PROJECT_KEY, NOW.minusDays(3), SonarQubeIssueSeverity.BLOCKER);
         addUserIssue(USER, PROJECT_KEY, NOW.minusDays(3), SonarQubeIssueSeverity.BLOCKER);
         addUserIssue(USER, PROJECT_KEY, NOW.minusDays(1), SonarQubeIssueSeverity.BLOCKER);
+        addUserIssue(USER, PROJECT_KEY, NOW, SonarQubeIssueSeverity.BLOCKER);
 
         // when
         tickSynchronization();
@@ -35,7 +36,7 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
         final List<UserProjectViolationDiffHistoryEntry> userHistory = userViolationDiffRepository.findByUserId(USER);
         assertThat(userHistory)
                 .extracting(UserProjectViolationDiffHistoryEntry::getBlockers)
-                .endsWith(2, 0, 1);
+                .endsWith(3);
     }
 
     @Test

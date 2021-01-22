@@ -15,8 +15,11 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang.StringUtils.*;
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 @Slf4j
@@ -24,6 +27,7 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 @RequiredArgsConstructor
 public class LdapMembersIntegration implements MembersProvider {
     public static final String TYPE = "LDAP";
+    private static final Pattern VAR_PATTERN = Pattern.compile("\\{(.*?)}");
     private final LdapService ldapService;
     private final AppConfig appConfig;
 
@@ -35,7 +39,7 @@ public class LdapMembersIntegration implements MembersProvider {
                 .stream()
                 .map(this::getLdapGroups)
                 .flatMap(List::stream)
-                .filter(ldapGroup -> StringUtils.isNotEmpty(ldapGroup.getSqcUuid()))
+                .filter(ldapGroup -> isNotEmpty(ldapGroup.getSqcUuid()))
                 .forEach(ldapGroup -> ldapGroup.getMembers().forEach(member -> {
                     if (membersMap.containsKey(member.getUuid())) {
                         membersMap.get(member.getUuid()).getGroups().add(ldapGroup.getSqcUuid());
@@ -48,7 +52,7 @@ public class LdapMembersIntegration implements MembersProvider {
         return membersMap.values().stream()
                 .map(this::getMemberInfo)
                 .flatMap(List::stream)
-                .filter(m -> StringUtils.isNotEmpty(m.getUuid()))
+                .filter(m -> isNotEmpty(m.getUuid()))
                 .collect(Collectors.toList());
     }
 
@@ -62,11 +66,11 @@ public class LdapMembersIntegration implements MembersProvider {
         try {
             return Member.builder()
                     .uuid(member.getUuid())
-                    .firstName(getAttributeOrDefault(config.getFirstNameAttribute(), StringUtils.EMPTY, attributes))
-                    .lastName(getAttributeOrDefault(config.getLastNameAttribute(), StringUtils.EMPTY, attributes))
-                    .mail(getAttributeOrDefault(config.getMailAttribute(), StringUtils.EMPTY, attributes))
+                    .firstName(getAttributeOrDefault(config.getFirstNameAttribute(), EMPTY, attributes))
+                    .lastName(getAttributeOrDefault(config.getLastNameAttribute(), EMPTY, attributes))
+                    .mail(getAttributeOrDefault(config.getMailAttribute(), EMPTY, attributes))
                     .groups(member.getGroups())
-                    .aliases(getAttributeOrDefault(config.getAliasesAttributes(), new HashSet<>(), attributes))
+                    .aliases(resolveVariables(config.getAliasesAttributes(), attributes))
                     .remote(true)
                     .remoteType(TYPE)
                     .build();
@@ -74,6 +78,21 @@ public class LdapMembersIntegration implements MembersProvider {
             log.warn("Unable to fetch member info for {}", member.getUuid(), e);
             return Member.builder().build();
         }
+    }
+
+    private Set<String> resolveVariables(List<String> aliasesAttributes, Attributes attributes) {
+        return aliasesAttributes.stream()
+                .map(str -> resolveVariables(str, attributes))
+                .collect(Collectors.toSet());
+    }
+
+    private String resolveVariables(String str, Attributes attributes) {
+        Matcher matcher = VAR_PATTERN.matcher(str);
+        if (matcher.find()) {
+            String value = getAttributeOrDefault(matcher.group(1), EMPTY, attributes);
+            return str.replace(matcher.group(0), value);
+        }
+        return str;
     }
 
     private String getAttributeOrDefault(String key, String defaultValue, Attributes attributes) {
@@ -86,7 +105,7 @@ public class LdapMembersIntegration implements MembersProvider {
 
     private Set<String> getAttributeOrDefault(List<String> keys, Set<String> defaultValue, Attributes attributes) {
         try {
-            return keys.stream().map(k -> getAttributeOrDefault(k, StringUtils.EMPTY, attributes))
+            return keys.stream().map(k -> getAttributeOrDefault(k, EMPTY, attributes))
                     .filter(StringUtils::isNotBlank).collect(Collectors.toSet());
         } catch (Exception e) {
             return defaultValue;

@@ -6,6 +6,7 @@ export class ServerDefinition {
   url: string;
   authentication: AuthenticationData;
   blacklistUsers: string[];
+  aliases: string[];
 
 
   constructor(data?: any) {
@@ -15,6 +16,7 @@ export class ServerDefinition {
       this.url = data.url;
       this.authentication = new AuthenticationData(data.authentication);
       this.blacklistUsers = data.blacklistUsers;
+      this.aliases = data.aliases;
     } else {
       this.authentication = new AuthenticationData();
     }

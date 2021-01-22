@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
+import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffHistoryEntry;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -49,4 +50,14 @@ public class UserProjectSummaryViolationHistoryEntry implements ViolationHistory
         );
     }
 
+    public static UserProjectSummaryViolationHistoryEntry empty() {
+        return UserProjectSummaryViolationHistoryEntry
+                .builder()
+                .blockers(0)
+                .criticals(0)
+                .majors(0)
+                .minors(0)
+                .infos(0)
+                .build();
+    }
 }

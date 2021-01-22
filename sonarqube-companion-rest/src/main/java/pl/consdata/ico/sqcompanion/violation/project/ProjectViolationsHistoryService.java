@@ -16,13 +16,11 @@ import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -63,7 +61,7 @@ public class ProjectViolationsHistoryService {
                 .build();
     }
 
-    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
+   // @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
     public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
         final List<ProjectViolationsHistoryDiff> projectDiffs = group
                 .getAllProjects()
@@ -86,6 +84,31 @@ public class ProjectViolationsHistoryService {
                 .projectDiffs(projectDiffs)
                 .build();
     }
+
+    // @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
+    public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, String prjectKey, final LocalDate fromDate, final LocalDate toDate) {
+        final List<ProjectViolationsHistoryDiff> projectDiffs =
+                repositoryService.getProject(prjectKey)
+                .filter(project -> projectHistoryRepository.existsByProjectKey(project.getKey()))
+                .map(getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate))
+                .map(Collections::singletonList)
+                .orElse(Collections.emptyList());
+
+        final Violations addedViolations = Violations.builder().build();
+        final Violations removedViolations = Violations.builder().build();
+        projectDiffs
+                .stream()
+                .map(ProjectViolationsHistoryDiff::getViolationsDiff)
+                .forEach(violations -> mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violations));
+        return GroupViolationsHistoryDiff
+                .builder()
+                .groupDiff(Violations.sumViolations(addedViolations, removedViolations))
+                .addedViolations(addedViolations)
+                .removedViolations(removedViolations)
+                .projectDiffs(projectDiffs)
+                .build();
+    }
+
 
     @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#project.getId() + #daysLimit")
     public ViolationsHistory getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit) {
@@ -175,14 +198,14 @@ public class ProjectViolationsHistoryService {
             final Optional<ProjectHistoryEntryEntity> toDateEntryOptional = projectHistoryRepository
                     .findByProjectKeyAndDateEquals(project.getKey(), toDate);
 
-            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
-                throw new SQCompanionException(
-                        String.format(
-                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
-                                project.getKey()
-                        )
-                );
-            }
+//            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
+//                throw new SQCompanionException(
+//                        String.format(
+//                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
+//                                project.getKey()
+//                        )
+//                );
+//            }
             final ProjectHistoryEntryEntity fromDateEntry = fromDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
             final ProjectHistoryEntryEntity toDateEntry = toDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
 

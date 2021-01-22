@@ -67,6 +67,10 @@ public class RepositoryService {
         }
     }
 
+    public Optional<Project> getProject(final String projectKey) {
+        return getRootGroup().getProject(projectKey);
+    }
+
     private Group buildGroup(final GroupDefinition group) {
         try {
             final List<Group> subGroups = ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::buildGroup).collect(Collectors.toList());

@@ -6,14 +6,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author gregorry
@@ -37,7 +41,7 @@ public class GroupController {
             notes = "<p>Returns root group details with current violations state, health status and sub groups and projects.</p>"
     )
     public GroupDetails getRootGroup() {
-        return groupService.getGroupDetails(repositoryService.getRootGroup());
+        return groupService.getRootGroupDetails(repositoryService.getRootGroup()); // TODO endporint ignoer members
     }
 
     @RequestMapping(
@@ -68,6 +72,15 @@ public class GroupController {
     )
     public List<Member> getMembers(@PathVariable final String uuid) {
         return memberService.groupMembers(uuid);
+    }
+
+
+    @ApiOperation(value = "Get all members aliases",
+            httpMethod = "GET",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/{uuid}/aliases", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<String> getMemberGroups(@PathVariable String uuid) {
+        return memberService.groupMembers(uuid).stream().map(Member::getAliases).flatMap(Set::stream).collect(Collectors.toList());
     }
 
     @GetMapping(

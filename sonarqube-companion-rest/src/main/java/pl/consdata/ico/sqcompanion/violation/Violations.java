@@ -31,6 +31,24 @@ public class Violations {
                 .build();
     }
 
+    public static Violations empty(){
+        return Violations.builder()
+                .blockers(0)
+                .criticals(0)
+                .majors(0)
+                .minors(0)
+                .infos(0)
+                .build();
+    }
+
+    public void addViolations(final Violations violations) {
+                setBlockers(getBlockers() + violations.getBlockers());
+                setCriticals(getCriticals() + violations.getCriticals());
+                setMajors(getMajors() + violations.getMajors());
+                setMinors(getMinors() + violations.getMinors());
+                setInfos(getInfos() + violations.getInfos());
+    }
+
     public void addBlockers(int blockers) {
         this.blockers += blockers;
     }

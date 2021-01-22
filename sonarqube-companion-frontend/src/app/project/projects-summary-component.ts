@@ -4,7 +4,7 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
 import {Violations} from '../violations/violations';
 
 @Component({
-  selector: 'sq-group-projects',
+  selector: 'sq-projects-summary',
   template: `
     <table class="projects-table">
       <tr class="project-header">
@@ -15,18 +15,18 @@ import {Violations} from '../violations/violations';
         <td>Other</td>
         <td>SonarQube</td>
       </tr>
-      <ng-container *ngFor="let project of projects" >
+      <ng-container *ngFor="let project of projects">
         <tr
           *ngIf="isVisibleViaFilter(project)"
           [attr.health-status]="project.healthStatusString"
           class="project-row">
           <td>
-            <a [routerLink]="['/project', uuid, project.key]">
+            <a [routerLink]="['/project', project.key]">
               {{project.name}}
             </a>
           </td>
           <td>
-            <a [routerLink]="['/project', uuid, project.key]">
+            <a [routerLink]="['/project', project.key]">
               {{project.key}}
             </a>
           </td>
@@ -69,12 +69,11 @@ import {Violations} from '../violations/violations';
     </table>
   `
 })
-export class GroupProjectsComponent {
+export class ProjectsSummaryComponent {
 
   @Input() uuid: string;
   @Input() projects: ProjectSummary[];
   @Input() violationsHistoryDiff: GroupViolationsHistoryDiff;
-  @Input() authors: string[];
   @Input() filter;
 
   isVisibleViaFilter(project: ProjectSummary): boolean {
@@ -88,7 +87,7 @@ export class GroupProjectsComponent {
   getViolationsDiffUrl(project: ProjectSummary, type: string) {
     const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}&statuses=OPEN&authors=${this.authors.join(',')}`;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
   }
 
   private getFilter(): (ProjectSummary) => boolean {

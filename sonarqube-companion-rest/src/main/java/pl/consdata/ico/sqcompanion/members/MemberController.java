@@ -27,4 +27,5 @@ public class MemberController {
         log.info("Get member groups");
         return memberService.memberGroups(uuid);
     }
+
 }

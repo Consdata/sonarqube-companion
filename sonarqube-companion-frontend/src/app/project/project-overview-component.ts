@@ -1,22 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {GroupDetails} from '../group/group-details';
 import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
+import {ActivatedRoute} from '@angular/router';
+import {GroupService} from '../group/group-service';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
-
-import {GroupDetails} from './group-details';
-import {GroupService} from './group-service';
-import {MemberService} from '../config/member/member-service';
+import {filter, map, switchMap} from 'rxjs/operators';
+import {ProjectService} from './project-service';
+import {ProjectSummary} from './project-summary';
 
 @Component({
-  selector: 'sq-group',
+  selector: 'sq-project',
   template: `
     <ng-template #spinner>
       <sq-spinner></sq-spinner>
     </ng-template>
     <div *ngIf="group$ | async as group; else spinner" class="group-sections">
-      <h1>{{group.name}}</h1>
+      <h1>{{project?.name}}</h1>
       <hr/>
       <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff">
         <sq-group-overview-cards
@@ -55,92 +55,48 @@ import {MemberService} from '../config/member/member-service';
              [class.active]="'infos' === historyFilter">infos</a>
         </div>
         <hr/>
-        <sq-violations-history
+        <sq-violations-history *ngIf="violationsHistoryProvider"
           [group]="group"
           [violationsFilter]="historyFilter"
           [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
       </div>
-      <div>
-        <h2>Groups</h2>
-        <div *ngFor="let subGroup of group.groups">
-          <a routerLink="/groups/{{subGroup.uuid}}">{{subGroup.name}}</a>
-        </div>
-      </div>
-      <div>
-        <h2>Members</h2>
-        <sq-group-members [group]="group" [zoom]="zoom"></sq-group-members>
-      </div>
-      <div>
-        <h2>Projects</h2>
-        <div class="group-projects-filter">
-          <a class="project-filter-item" [class.active]="'changed' === projectsFilter" [routerLink]
-             [queryParams]="{'projects.filter.severity': 'changed'}" queryParamsHandling="merge">changed</a>
-          | <a class="project-filter-item" [class.active]="'regression' === projectsFilter" [routerLink]
-               [queryParams]="{'projects.filter.severity': 'regression'}" queryParamsHandling="merge">regression</a>
-          | <a class="project-filter-item" [class.active]="'improvement' === projectsFilter" [routerLink]
-               [queryParams]="{'projects.filter.severity': 'improvement'}" queryParamsHandling="merge">improvement</a>
-          | <a class="project-filter-item" [class.active]="'all' === projectsFilter" [routerLink]
-               [queryParams]="{'projects.filter.severity': 'all'}" queryParamsHandling="merge">all</a>
-        </div>
-        <hr/>
-        <sq-group-projects
-          [projects]="group.projects"
-          [filter]="projectsFilter"
-          [authors]="memberAliases$ | async"
-          [violationsHistoryDiff]="violationsHistoryDiff$ | async"
-          [uuid]="group.uuid">
-        </sq-group-projects>
-      </div>
     </div>
   `
 })
-export class GroupComponent implements OnInit {
+export class ProjectOverviewComponent implements OnInit {
 
-  group$: BehaviorSubject<GroupDetails> = new BehaviorSubject<GroupDetails>(undefined);
+  project: ProjectSummary;
+  group$: Observable<GroupDetails>; //TODO refactor
   violationsHistoryDiff$: Observable<GroupViolationsHistoryDiff>;
-  memberAliases$: Observable<String[]>;
   projectsFilter: string = 'changed';
   historyFilter: string = 'relevant';
-  zoom: { fromDate: string, toDate: string };
+  violationsHistoryProvider;
   readonly daysLimit: number = 90;
 
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
+              private projectService: ProjectService,
               private violationsHistoryService: ViolationsHistoryService) {
+    this.group$ = groupService.getGroup();
     route
       .paramMap
-      .pipe(
-        switchMap(params => groupService.getGroup(params.get('uuid')))
-      )
-      .subscribe(group => this.group$.next(group));
-    route
-      .queryParamMap
-      .pipe(
-        filter(params => params.has('projects.filter.severity')),
-        map(params => params.get('projects.filter.severity'))
-      )
-      .subscribe(filterSeverity => this.projectsFilter = filterSeverity);
-    route
-      .queryParamMap
-      .pipe(
-        filter(params => params.has('history.filter.violations')),
-        map(params => params.get('history.filter.violations'))
-      )
-      .subscribe(historyFilter => this.historyFilter = historyFilter);
+      .subscribe(params => {
+        projectService.getProject2(params.get('projectKey')).subscribe(project => {
+          this.project = project;
+          this.violationsHistoryProvider = () =>  this.violationsHistoryService.getProjectHistoryDiff(this.daysLimit, this.project.key);
+          const to = this.dateMinusDays(1);
+          const from = this.dateMinusDays(this.daysLimit);
+          this.violationsHistoryDiff$ = this.group$.pipe(
+            switchMap(group => this.violationsHistoryService.getProjectHistory2(this.project.key, from, to))
+          );
+        });
+      });
   }
 
-  violationsHistoryProvider = () => this.violationsHistoryService.getGroupHistory(this.daysLimit, this.group$.value.uuid);
 
   ngOnInit(): void {
-    const to = this.dateMinusDays(1);
-    const from = this.dateMinusDays(this.daysLimit);
-    this.violationsHistoryDiff$ = this.group$.pipe(
-      switchMap(group => this.violationsHistoryService.getGroupHistoryDiff(group.uuid, from, to))
-    );
-    this.memberAliases$ = this.group$.pipe(
-      switchMap(group => this.groupService.getAliases(group.uuid))
-    );
+
   }
 
   private dateMinusDays(days: number): string {

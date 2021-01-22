@@ -28,4 +28,9 @@ export class GroupService {
     return this.http
       .get<Member[]>(`api/v1/groups/${uuid}/members/${from}/${to}`);
   }
+
+  getAliases(uuid: string): Observable<String[]> {
+    return this.http
+      .get<String[]>(`api/v1/groups/${uuid}/aliases`);
+  }
 }

@@ -1,4 +1,4 @@
-package pl.consdata.ico.sqcompanion.violation.project;
+package pl.consdata.ico.sqcompanion.violation.group;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -10,15 +10,18 @@ import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
+import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/violations/history")
+@RequestMapping("/api/v2/violations/history")
 @RequiredArgsConstructor
-public class ProjectViolationsHistoryController {
+public class GroupViolationsHistoryController {
 
     private final ProjectViolationsHistoryService projectViolationsHistoryService;
     private final RepositoryService repositoryService;
