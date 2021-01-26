@@ -258,7 +258,7 @@ public class MemberServiceTest extends BaseItTest {
         List<Member> members = memberService.groupMembers("group1");
 
         //then
-        assertThat(members).hasSize(1);
+        assertThat(members).hasSize(2);
     }
 
     @Test

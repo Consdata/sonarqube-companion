@@ -5,8 +5,10 @@ import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.DirectProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.*;
 
+import java.util.Collections;
 import java.util.Set;
 
+import static java.util.Collections.emptyList;
 import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
 
 
@@ -24,6 +26,7 @@ public class TestAppConfig {
                                 .uuid(Servers.Server1.UUID)
                                 .id(Servers.Server1.ID)
                                 .url(Servers.Server1.URL)
+                                .aliases(emptyList())
                                 .build()
                 )
                 .rootGroup(

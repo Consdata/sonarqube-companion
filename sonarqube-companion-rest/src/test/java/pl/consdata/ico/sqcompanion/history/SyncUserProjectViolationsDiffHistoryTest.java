@@ -36,7 +36,7 @@ public class SyncUserProjectViolationsDiffHistoryTest extends BaseItTest {
         final List<UserProjectViolationDiffHistoryEntry> userHistory = userViolationDiffRepository.findByUserId(USER);
         assertThat(userHistory)
                 .extracting(UserProjectViolationDiffHistoryEntry::getBlockers)
-                .endsWith(3);
+                .endsWith(2, 0, 1);
     }
 
     @Test
