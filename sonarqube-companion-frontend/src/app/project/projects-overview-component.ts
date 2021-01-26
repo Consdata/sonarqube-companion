@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {GroupDetails} from '../group/group-details';
 import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
 import {ActivatedRoute} from '@angular/router';
 import {GroupService} from '../group/group-service';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 
 @Component({
   selector: 'sq-projects',
@@ -27,10 +27,10 @@ import {filter, map, switchMap} from 'rxjs/operators';
                [queryParams]="{'projects.filter.severity': 'all'}" queryParamsHandling="merge">all</a>
         </div>
         <hr/>
-        <sq-projects-summary
+        <sq-projects-summary *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff"
           [projects]="group.projects"
           [filter]="projectsFilter"
-          [violationsHistoryDiff]="violationsHistoryDiff$ | async"
+          [violationsHistoryDiff]="violationsHistoryDiff"
           [uuid]="group.uuid">
         </sq-projects-summary>
       </div>
@@ -48,16 +48,28 @@ export class ProjectsOverviewComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private groupService: GroupService,
               private violationsHistoryService: ViolationsHistoryService) {
-    this.group$ = groupService.getGroup(); // TOOD ignore members
+    this.group$ = groupService.getGroup();
+    route
+      .queryParamMap
+      .pipe(
+        filter(params => params.has('projects.filter.severity')),
+        map(params => params.get('projects.filter.severity'))
+      )
+      .subscribe(filterSeverity => this.projectsFilter = filterSeverity);
+    route
+      .queryParamMap
+      .pipe(
+        filter(params => params.has('history.filter.violations')),
+        map(params => params.get('history.filter.violations'))
+      )
+      .subscribe(historyFilter => this.historyFilter = historyFilter);
   }
 
 
   ngOnInit(): void {
     const to = this.dateMinusDays(1);
     const from = this.dateMinusDays(this.daysLimit);
-    this.violationsHistoryDiff$ = this.group$.pipe(
-      switchMap(group => this.violationsHistoryService.getProjectsHistory(from, to))
-    );
+    this.violationsHistoryDiff$ = this.violationsHistoryService.getAllProjectsHistoryDiff(from, to);
   }
 
   private dateMinusDays(days: number): string {

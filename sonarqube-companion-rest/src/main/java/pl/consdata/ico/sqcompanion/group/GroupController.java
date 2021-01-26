@@ -41,7 +41,7 @@ public class GroupController {
             notes = "<p>Returns root group details with current violations state, health status and sub groups and projects.</p>"
     )
     public GroupDetails getRootGroup() {
-        return groupService.getRootGroupDetails(repositoryService.getRootGroup()); // TODO endporint ignoer members
+        return groupService.getRootGroupDetails(repositoryService.getRootGroup());
     }
 
     @RequestMapping(

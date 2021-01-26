@@ -8,6 +8,7 @@ import {ViolationsHistoryService} from '../violations/violations-history-service
 import {filter, map, switchMap} from 'rxjs/operators';
 import {ProjectService} from './project-service';
 import {ProjectSummary} from './project-summary';
+import {ProjectViolationsHistoryDiff} from '../violations/project-violations-history-diff';
 
 @Component({
   selector: 'sq-project',
@@ -15,17 +16,17 @@ import {ProjectSummary} from './project-summary';
     <ng-template #spinner>
       <sq-spinner></sq-spinner>
     </ng-template>
-    <div *ngIf="group$ | async as group; else spinner" class="group-sections">
+    <div *ngIf="project; else spinner" class="group-sections">
       <h1>{{project?.name}}</h1>
       <hr/>
       <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff">
-        <sq-group-overview-cards
-          [group]="group"
-          [violations]="group.violations"
-          [violationsDiff]="violationsHistoryDiff?.groupDiff"
+        <sq-project-overview-cards
+          [project]="project"
+          [violations]="project.violations"
+          [violationsDiff]="violationsHistoryDiff?.violations"
           [addedViolations]="violationsHistoryDiff?.addedViolations"
           [removedViolations]="violationsHistoryDiff?.removedViolations">
-        </sq-group-overview-cards>
+        </sq-project-overview-cards>
       </div>
       <div>
         <h2>Violations</h2>
@@ -56,7 +57,6 @@ import {ProjectSummary} from './project-summary';
         </div>
         <hr/>
         <sq-violations-history *ngIf="violationsHistoryProvider"
-          [group]="group"
           [violationsFilter]="historyFilter"
           [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
@@ -67,8 +67,7 @@ import {ProjectSummary} from './project-summary';
 export class ProjectOverviewComponent implements OnInit {
 
   project: ProjectSummary;
-  group$: Observable<GroupDetails>; //TODO refactor
-  violationsHistoryDiff$: Observable<GroupViolationsHistoryDiff>;
+  violationsHistoryDiff$: Observable<ProjectViolationsHistoryDiff>;
   projectsFilter: string = 'changed';
   historyFilter: string = 'relevant';
   violationsHistoryProvider;
@@ -78,20 +77,31 @@ export class ProjectOverviewComponent implements OnInit {
               private groupService: GroupService,
               private projectService: ProjectService,
               private violationsHistoryService: ViolationsHistoryService) {
-    this.group$ = groupService.getGroup();
     route
       .paramMap
       .subscribe(params => {
-        projectService.getProject2(params.get('projectKey')).subscribe(project => {
+        projectService.getProjectSummary(params.get('projectKey')).subscribe(project => {
           this.project = project;
-          this.violationsHistoryProvider = () =>  this.violationsHistoryService.getProjectHistoryDiff(this.daysLimit, this.project.key);
+          this.violationsHistoryProvider = () =>  this.violationsHistoryService.getProjectHistory(this.daysLimit, this.project.key);
           const to = this.dateMinusDays(1);
           const from = this.dateMinusDays(this.daysLimit);
-          this.violationsHistoryDiff$ = this.group$.pipe(
-            switchMap(group => this.violationsHistoryService.getProjectHistory2(this.project.key, from, to))
-          );
+          this.violationsHistoryDiff$ = this.violationsHistoryService.getProjectHistoryDiff(this.project.key, from, to);
         });
       });
+    route
+      .queryParamMap
+      .pipe(
+        filter(params => params.has('projects.filter.severity')),
+        map(params => params.get('projects.filter.severity'))
+      )
+      .subscribe(filterSeverity => this.projectsFilter = filterSeverity);
+    route
+      .queryParamMap
+      .pipe(
+        filter(params => params.has('history.filter.violations')),
+        map(params => params.get('history.filter.violations'))
+      )
+      .subscribe(historyFilter => this.historyFilter = historyFilter);
   }
 
 

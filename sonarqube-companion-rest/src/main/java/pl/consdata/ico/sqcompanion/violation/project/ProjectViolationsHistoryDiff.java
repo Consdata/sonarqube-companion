@@ -14,6 +14,8 @@ public class ProjectViolationsHistoryDiff {
     private String projectKey;
     private String projectId;
     private Violations violationsDiff;
+    private Violations addedViolations;
+    private Violations removedViolations;
     private LocalDate fromDate;
     private LocalDate toDate;
 

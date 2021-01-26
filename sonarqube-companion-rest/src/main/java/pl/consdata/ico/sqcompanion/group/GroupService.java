@@ -44,7 +44,7 @@ public class GroupService {
                 .build();
     }
 
-    //@Cacheable(value = Caches.GROUP_DETAILS_CACHE, sync = true, key = "#group.uuid")
+    @Cacheable(value = Caches.GROUP_DETAILS_CACHE, sync = true, key = "#group.uuid")
     public GroupDetails getRootGroupDetails(Group group) {
         final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
         final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);

@@ -1,11 +1,12 @@
 package pl.consdata.ico.sqcompanion.hook.action;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
+import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -15,16 +16,12 @@ import static pl.consdata.ico.sqcompanion.hook.action.NoImprovementWebhookAction
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWebhookActionData> {
 
     public static final String TYPE = "NO_IMPROVEMENT";
     private final RepositoryService repositoryService;
-    private final ProjectViolationsHistoryService projectViolationsHistoryService;
-
-    public NoImprovementWebhookAction(RepositoryService repositoryService, ProjectViolationsHistoryService projectViolationsHistoryService) {
-        this.repositoryService = repositoryService;
-        this.projectViolationsHistoryService = projectViolationsHistoryService;
-    }
+    private final UserViolationSummaryHistoryService userViolationSummaryHistoryService;
 
     @Override
     public ActionResponse call(String groupUUID, NoImprovementWebhookActionData actionData) {
@@ -39,21 +36,21 @@ public class NoImprovementWebhookAction implements WebhookAction<NoImprovementWe
         String ucPeriod = Optional.ofNullable(period).orElse(DAILY.name()).toUpperCase();
         LocalDate toDate = LocalDate.now().minusDays(1);
         if (DAILY.name().equals(ucPeriod)) {
-            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(2), toDate);
+            return userViolationSummaryHistoryService.getGroupsUserViolationsHistoryDiff(group, LocalDate.now().minusDays(2), toDate);
         } else if (WEEKLY.name().equals(ucPeriod)) {
-            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusWeeks(1).minusDays(1), toDate);
+            return userViolationSummaryHistoryService.getGroupsUserViolationsHistoryDiff(group, LocalDate.now().minusWeeks(1).minusDays(1), toDate);
         } else if (MONTHLY.name().equals(ucPeriod)) {
-            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusMonths(1).minusDays(1), toDate);
+            return userViolationSummaryHistoryService.getGroupsUserViolationsHistoryDiff(group, LocalDate.now().minusMonths(1).minusDays(1), toDate);
         } else if (ucPeriod.endsWith("D")) {
             Long days = Long.parseLong(ucPeriod.substring(0, ucPeriod.length() - 1));
-            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(days).minusDays(1), toDate);
+            return userViolationSummaryHistoryService.getGroupsUserViolationsHistoryDiff(group, LocalDate.now().minusDays(days).minusDays(1), toDate);
         } else {
-            return projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.now().minusDays(2), toDate);
+            return userViolationSummaryHistoryService.getGroupsUserViolationsHistoryDiff(group, LocalDate.now().minusDays(2), toDate);
         }
     }
 
     private boolean isGroupClean(Group group, NoImprovementWebhookActionData actionData) {
-        GroupViolationsHistoryDiff violationsHistoryDiff = projectViolationsHistoryService.getGroupViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now().minusDays(1));
+        GroupViolationsHistoryDiff violationsHistoryDiff = userViolationSummaryHistoryService.getGroupsUserViolationsHistoryDiff(group, LocalDate.ofEpochDay(0), LocalDate.now().minusDays(1));
         return countDiff(violationsHistoryDiff, actionData) == 0;
     }
 

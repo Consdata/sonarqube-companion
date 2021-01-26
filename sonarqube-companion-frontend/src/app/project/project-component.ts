@@ -6,6 +6,7 @@ import {ProjectViolationsHistoryDiff} from '../violations/project-violations-his
 import {ViolationsHistoryService} from '../violations/violations-history-service';
 import {ProjectService} from './project-service';
 import {ProjectSummary} from './project-summary';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'sq-project',
@@ -14,14 +15,16 @@ import {ProjectSummary} from './project-summary';
     <div *ngIf="loaded" class="group-sections">
       <h1>{{project.name}} ({{group.name}})</h1>
       <hr/>
-      <sq-project-overview-cards
-        [project]="project"
-        [violations]="project?.violations"
-        [violationsDiff]="projectViolationsDiff?.violations"></sq-project-overview-cards>
+      <sq-project-overview-cards *ngIf="projectViolationsDiff$ | async as projectViolationsDiff"
+                                 [project]="project"
+                                 [violations]="projectViolationsDiff?.violations"
+                                 [violationsDiff]="projectViolationsDiff?.violations"
+                                 [addedViolations]="projectViolationsDiff?.addedViolations"
+                                 [removedViolations]="projectViolationsDiff?.removedViolations"
+      ></sq-project-overview-cards>
       <div>
         <h2>Violations</h2>
         <sq-violations-history
-          [group]="group"
           [violationsFilter]="'all'"
           [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
@@ -33,7 +36,7 @@ export class ProjectComponent {
 
   project: ProjectSummary;
   group: GroupDetails;
-  projectViolationsDiff: ProjectViolationsHistoryDiff;
+  projectViolationsDiff$: Observable<ProjectViolationsHistoryDiff>;
   readonly daysLimit: number = 90;
 
   constructor(private route: ActivatedRoute,
@@ -43,8 +46,15 @@ export class ProjectComponent {
     route
       .paramMap
       .subscribe(params => {
-        groupService.getGroup(params.get('uuid')).subscribe(group => this.group = group);
-        projectService.getProject(params.get('uuid'), params.get('projectKey')).subscribe(project => this.project = project);
+        groupService.getGroup(params.get('uuid')).subscribe(group => {
+          this.group = group;
+        });
+        projectService.getGroupProjectSummary(params.get('uuid'), params.get('projectKey')).subscribe(project => {
+          this.project = project;
+          const to = this.dateMinusDays(1);
+          const from = this.dateMinusDays(this.daysLimit);
+          this.projectViolationsDiff$ = this.violationsHistoryService.getGroupProjectHistoryDiff(params.get('uuid'), this.project.key, from, to);
+        });
       });
   }
 
@@ -52,6 +62,12 @@ export class ProjectComponent {
     return !!this.project && !!this.group;
   }
 
-  violationsHistoryProvider = () => this.violationsHistoryService.getProjectHistory(this.daysLimit, this.group.uuid, this.project.key);
+  violationsHistoryProvider = () => this.violationsHistoryService.getGroupProjectHistory(this.daysLimit, this.group.uuid, this.project.key);
 
+  private dateMinusDays(days: number): string {
+    const date = new Date();
+    date.setDate(date.getDate() - days);
+    return date.toISOString().substring(0, 10);
+  }
 }
+

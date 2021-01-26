@@ -122,13 +122,12 @@ public class MemberService {
     }
 
     public List<Member> groupMembers(String groupId) {
-        //TODO replace 0 to 1
         if (appConfig.getMembers().isRecursive()) {
             return repositoryService.getGroup(groupId)
                     .map(Group::getAllGroups)
                     .orElse(Collections.emptyList())
                     .stream()
-                    .map(group -> getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(group.getUuid(), LocalDate.now().minusDays(0))))
+                    .map(group -> getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(group.getUuid(), LocalDate.now().minusDays(1))))
                     .flatMap(List::stream)
                     .collect(Collectors.toList());
         } else {

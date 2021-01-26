@@ -2,8 +2,10 @@ package pl.consdata.ico.sqcompanion.violation.user.summary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.health.HealthCheckService;
 import pl.consdata.ico.sqcompanion.members.MemberService;
@@ -14,15 +16,17 @@ import pl.consdata.ico.sqcompanion.violation.ViolationHistoryEntry;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectHistoryEntryEntity;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Slf4j
 @Service
@@ -44,16 +48,13 @@ public class UserViolationSummaryHistoryService {
     public List<ProjectSummary> getProjectSummaries(final List<Project> allProjects, String uuid) {
         return allProjects
                 .stream()
-                .map(p -> asProjectSummary(p, uuid))
+                .map(p -> getProjectSummary(p, uuid))
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = Caches.GROUP_PROJECT_SUMMARY_CACHE, sync = true, key = "#uuid  + #project.key")
     public ProjectSummary getProjectSummary(final Project project, String uuid) {
         return asProjectSummary(project, uuid);
-    }
-
-    public ProjectSummary getProjectSummary(final Project project) {
-        return asProjectSummary(project, appConfig.getRootGroup().getUuid());
     }
 
     private ProjectSummary asProjectSummary(final Project p, final String uuid) {
@@ -79,14 +80,14 @@ public class UserViolationSummaryHistoryService {
         return builder.build();
     }
 
-    //  @Cacheable(value = Caches.GROUP_USER_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #userId + #fromDate + #toDate")
+    @Cacheable(value = Caches.GROUP_USER_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
     public GroupViolationsHistoryDiff getGroupsUserViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
+        List<String> users = memberService.membersAliases(group.getUuid());
         final List<ProjectViolationsHistoryDiff> projectDiffs = group
                 .getAllProjects()
                 .stream()
-                // TODO verify
-                //.filter(project -> repository.existsByProjectKeyAndUserId(project.getKey(), userId))
-                .map(getProjectViolationsHistoryDiffMappingFunction(memberService.membersAliases(group.getUuid()), fromDate, toDate)) //TODO lista userów
+                .filter(project -> repository.existsByProjectKeyAndUserIdIsIn(project.getKey(), users))
+                .map(getProjectViolationsHistoryDiffMappingFunction(users, fromDate, toDate))
                 .collect(Collectors.toList());
 
         final Violations addedViolations = Violations.builder().build();
@@ -104,64 +105,31 @@ public class UserViolationSummaryHistoryService {
                 .build();
     }
 
-    private void projectViolationsHistoryDiffs(Map<String, ProjectViolationsHistoryDiff> base, List<ProjectViolationsHistoryDiff> diffs) {
-        diffs.stream().forEach(diff -> {
-            if (base.containsKey(diff.getProjectKey())) {
-                base.get(diff.getProjectKey()).setViolationsDiff(Violations.sumViolations(base.get(diff.getProjectKey()).getViolationsDiff(), diff.getViolationsDiff()));
-            } else {
-                base.put(diff.getProjectKey(), diff);
-            }
-        });
+    private LocalDate getToDate(LocalDate toDate) {
+        if (DAYS.between(LocalDate.now(), toDate) == 0L) {
+            return toDate.minusDays(1);
+        } else {
+            return toDate;
+        }
     }
-
-    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(String userId, LocalDate fromDate, LocalDate toDate) {
-        return project -> {
-            final Optional<UserProjectSummaryViolationHistoryEntry> fromDateEntryOptional =
-                    repository
-                            .findByProjectKeyAndUserIdAndDateEquals(project.getKey(), userId, fromDate);
-            final Optional<UserProjectSummaryViolationHistoryEntry> toDateEntryOptional = repository
-                    .findByProjectKeyAndUserIdAndDateEquals(project.getKey(), userId, toDate);
-
-            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
-                throw new SQCompanionException(
-                        String.format(
-                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
-                                project.getKey()
-                        )
-                );
-            }
-            final UserProjectSummaryViolationHistoryEntry fromDateEntry = fromDateEntryOptional.orElse(UserProjectSummaryViolationHistoryEntry.empty());
-            final UserProjectSummaryViolationHistoryEntry toDateEntry = toDateEntryOptional.orElse(UserProjectSummaryViolationHistoryEntry.empty());
-
-            final Violations violationsDiff = Violations
-                    .builder()
-                    .blockers(toDateEntry.getBlockers() - fromDateEntry.getBlockers())
-                    .criticals(toDateEntry.getCriticals() - fromDateEntry.getCriticals())
-                    .majors(toDateEntry.getMajors() - fromDateEntry.getMajors())
-                    .minors(toDateEntry.getMinors() - fromDateEntry.getMinors())
-                    .infos(toDateEntry.getInfos() - fromDateEntry.getInfos())
-                    .build();
-
-            // TODO replace by user diff
-            return ProjectViolationsHistoryDiff
-                    .builder()
-                    .projectId(project.getId())
-                    .fromDate(fromDate)
-                    .toDate(toDate)
-                    .projectKey(project.getKey())
-                    .violationsDiff(violationsDiff)
-                    .build();
-        };
-    }
-
 
     private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(List<String> users, LocalDate fromDate, LocalDate toDate) {
         return project -> {
+            LocalDate from = repository.findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(project.getKey(), users)
+                    .filter(entry -> fromDate.isBefore(entry.getDate()))
+                    .map(UserProjectSummaryViolationHistoryEntry::getDate)
+                    .orElse(fromDate);
+
+            LocalDate to = repository.findFirstByProjectKeyAndUserIdIsInOrderByDateDesc(project.getKey(), users)
+                    .filter(entry -> fromDate.isBefore(entry.getDate()))
+                    .map(UserProjectSummaryViolationHistoryEntry::getDate)
+                    .orElse(getToDate(toDate));
+
             final List<UserProjectSummaryViolationHistoryEntry> fromDateEntries =
                     repository
-                            .findByProjectKeyAndUserIdIsInAndDateEquals(project.getKey(), users, fromDate);
+                            .findByProjectKeyAndUserIdIsInAndDateEquals(project.getKey(), users, from);
             final List<UserProjectSummaryViolationHistoryEntry> toDateEntries = repository
-                    .findByProjectKeyAndUserIdIsInAndDateEquals(project.getKey(), users, toDate);
+                    .findByProjectKeyAndUserIdIsInAndDateEquals(project.getKey(), users, getToDate(to));
 
             if (!fromDateEntries.isEmpty() && toDateEntries.isEmpty()) {
                 throw new SQCompanionException(
@@ -187,14 +155,18 @@ public class UserViolationSummaryHistoryService {
                     .infos(toDateEntriesSum.getInfos() - fromDateEntriesSum.getInfos())
                     .build();
 
-            // TODO replace by user diff
+            final Violations addedViolations = Violations.builder().build();
+            final Violations removedViolations = Violations.builder().build();
+            mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violationsDiff);
             return ProjectViolationsHistoryDiff
                     .builder()
                     .projectId(project.getId())
-                    .fromDate(fromDate)
-                    .toDate(toDate)
+                    .fromDate(from)
+                    .toDate(to)
                     .projectKey(project.getKey())
                     .violationsDiff(violationsDiff)
+                    .addedViolations(addedViolations)
+                    .removedViolations(removedViolations)
                     .build();
         };
     }
@@ -231,7 +203,7 @@ public class UserViolationSummaryHistoryService {
         }
     }
 
-    //@Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #daysLimit")
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #daysLimit")
     public ViolationsHistory getGroupViolationsHistory(final Group group, Optional<Integer> daysLimit) {
         return ViolationsHistory
                 .builder()
@@ -246,15 +218,24 @@ public class UserViolationSummaryHistoryService {
                 .build();
     }
 
+    private long getDaysLimit(final Project project, Optional<Integer> daysLimit, List<String> users) {
+        Optional<UserProjectSummaryViolationHistoryEntry> entry = repository.findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(project.getKey(), users);
+        LocalDate localDate = LocalDate.now();
+        if (daysLimit.isPresent() && entry.isPresent()) {
+            return Long.min(DAYS.between(localDate.minusDays(daysLimit.get()), localDate), DAYS.between(entry.get().getDate(), localDate));
+        } else if (entry.isPresent()) {
+            return DAYS.between(localDate, entry.get().getDate());
+        }
+        return 0;
+    }
 
-    //@Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#project.getId() + #daysLimit")
     public ViolationsHistory getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit, List<String> users) {
         List<UserProjectSummaryViolationHistoryEntry> history;
         if (daysLimit.isPresent()) {
             history = repository.findAllByProjectKeyAndUserIdIsInAndDateGreaterThanEqual(
                     project.getKey(),
                     users,
-                    LocalDate.now().minusDays(daysLimit.get()));
+                    LocalDate.now().minusDays(getDaysLimit(project, daysLimit, users)));
         } else {
             history = repository.findAllByProjectKeyAndUserIdIsIn(project.getKey(), users);
         }
@@ -262,18 +243,33 @@ public class UserViolationSummaryHistoryService {
                 .builder()
                 .violationHistoryEntries(
                         history.stream()
+                                .collect(Collectors.groupingBy(UserProjectSummaryViolationHistoryEntry::getDate))
+                                .entrySet().stream()
+                                .map(entry ->
+                                        ProjectHistoryEntryEntity.builder()
+                                                .date(entry.getKey())
+                                                .projectKey(project.getKey())
+                                                .serverId(project.getServerId())
+                                                .id(project.getId())
+                                                .blockers(entry.getValue().stream().map(UserProjectSummaryViolationHistoryEntry::getBlockers).reduce(0, Integer::sum))
+                                                .criticals(entry.getValue().stream().map(UserProjectSummaryViolationHistoryEntry::getCriticals).reduce(0, Integer::sum))
+                                                .majors(entry.getValue().stream().map(UserProjectSummaryViolationHistoryEntry::getMajors).reduce(0, Integer::sum))
+                                                .minors(entry.getValue().stream().map(UserProjectSummaryViolationHistoryEntry::getMinors).reduce(0, Integer::sum))
+                                                .infos(entry.getValue().stream().map(UserProjectSummaryViolationHistoryEntry::getInfos).reduce(0, Integer::sum))
+                                                .build()
+                                )
                                 .map(ViolationHistoryEntry::of)
                                 .collect(Collectors.toList())
                 )
                 .build();
     }
 
-    //Cachable
+    @Cacheable(value = Caches.GROUP_PROJECT_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #project.key + #daysLimit")
     public ViolationsHistory getProjectViolationsHistory(Group group, Project project, Optional<Integer> daysLimit) {
         return getProjectViolationsHistory(project, daysLimit, memberService.membersAliases(group.getUuid()));
     }
 
-    //Cacheble
+    @Cacheable(value = Caches.GROUP_PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid  + #project.key + #fromDate + #toDate")
     public ProjectViolationsHistoryDiff getProjectViolationsHistoryDiff(Group group, Project project, LocalDate fromDate, LocalDate toDate) {
         return getProjectViolationsHistoryDiffMappingFunction(memberService.membersAliases(group.getUuid()), fromDate, toDate).apply(project);
     }

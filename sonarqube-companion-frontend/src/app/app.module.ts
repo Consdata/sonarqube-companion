@@ -145,7 +145,8 @@ import {ProjectOverviewComponent} from './project/project-overview-component';
     MemberSettingsRemoteUsersComponent,
     ProjectsOverviewComponent,
     ProjectsSummaryComponent,
-    ProjectOverviewComponent
+    ProjectOverviewComponent,
+    ProjectOverviewCardsComponent
   ],
   imports: [
     BrowserModule,

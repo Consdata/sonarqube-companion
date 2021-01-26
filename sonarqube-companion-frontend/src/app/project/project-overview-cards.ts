@@ -23,7 +23,9 @@ import {ProjectSummary} from './project-summary';
         <sq-project-violations
           [violations]="violations"
           [violationsDiff]="violationsDiff"
-          [detailedDiff]="false"
+          [addedViolations]="addedViolations"
+          [removedViolations]="removedViolations"
+          [detailedDiff]="true"
           [type]="'blockers'">
         </sq-project-violations>
       </div>
@@ -39,7 +41,9 @@ import {ProjectSummary} from './project-summary';
         <sq-project-violations
           [violations]="violations"
           [violationsDiff]="violationsDiff"
-          [detailedDiff]="false"
+          [addedViolations]="addedViolations"
+          [removedViolations]="removedViolations"
+          [detailedDiff]="true"
           [type]="'criticals'">
         </sq-project-violations>
       </div>
@@ -54,7 +58,9 @@ import {ProjectSummary} from './project-summary';
         <sq-project-violations
           [violations]="violations"
           [violationsDiff]="violationsDiff"
-          [detailedDiff]="false"
+          [addedViolations]="addedViolations"
+          [removedViolations]="removedViolations"
+          [detailedDiff]="true"
           [type]="'nonRelevant'">
         </sq-project-violations>
       </div>
@@ -69,5 +75,7 @@ export class ProjectOverviewCardsComponent {
   @Input() project: ProjectSummary;
   @Input() violations: Violations;
   @Input() violationsDiff: Violations;
+  @Input() addedViolations: Violations;
+  @Input() removedViolations: Violations;
 
 }

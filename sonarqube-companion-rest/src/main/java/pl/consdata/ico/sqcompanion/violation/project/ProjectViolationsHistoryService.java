@@ -20,7 +20,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Slf4j
 @Service
@@ -47,21 +48,7 @@ public class ProjectViolationsHistoryService {
                 );
     }
 
-    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #daysLimit")
-    public ViolationsHistory getGroupViolationsHistory(final Group group, Optional<Integer> daysLimit) {
-        return ViolationsHistory
-                .builder()
-                .violationHistoryEntries(
-                        ViolationHistoryEntry.groupByDate(
-                                group.getAllProjects()
-                                        .stream()
-                                        .flatMap(project -> getProjectViolationsHistory(project, daysLimit).getViolationHistoryEntries().stream())
-                        )
-                )
-                .build();
-    }
-
-   // @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
+    @Cacheable(value = Caches.ALL_PROJECTS_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
     public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
         final List<ProjectViolationsHistoryDiff> projectDiffs = group
                 .getAllProjects()
@@ -85,30 +72,16 @@ public class ProjectViolationsHistoryService {
                 .build();
     }
 
-    // @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
-    public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, String prjectKey, final LocalDate fromDate, final LocalDate toDate) {
-        final List<ProjectViolationsHistoryDiff> projectDiffs =
-                repositoryService.getProject(prjectKey)
-                .filter(project -> projectHistoryRepository.existsByProjectKey(project.getKey()))
-                .map(getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate))
-                .map(Collections::singletonList)
-                .orElse(Collections.emptyList());
-
-        final Violations addedViolations = Violations.builder().build();
-        final Violations removedViolations = Violations.builder().build();
-        projectDiffs
-                .stream()
-                .map(ProjectViolationsHistoryDiff::getViolationsDiff)
-                .forEach(violations -> mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violations));
-        return GroupViolationsHistoryDiff
-                .builder()
-                .groupDiff(Violations.sumViolations(addedViolations, removedViolations))
-                .addedViolations(addedViolations)
-                .removedViolations(removedViolations)
-                .projectDiffs(projectDiffs)
-                .build();
+    private long getDaysLimit(final Project project, Optional<Integer> daysLimit) {
+        Optional<ProjectHistoryEntryEntity> entry = projectHistoryRepository.findFirstByProjectKeyOrderByDateAsc(project.getKey());
+        LocalDate localDate = LocalDate.now();
+        if (daysLimit.isPresent() && entry.isPresent()) {
+            return Long.min(DAYS.between(localDate.minusDays(daysLimit.get()), localDate), DAYS.between(entry.get().getDate(), localDate));
+        } else if (entry.isPresent()) {
+            return DAYS.between(localDate, entry.get().getDate());
+        }
+        return 0;
     }
-
 
     @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#project.getId() + #daysLimit")
     public ViolationsHistory getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit) {
@@ -116,7 +89,7 @@ public class ProjectViolationsHistoryService {
         if (daysLimit.isPresent()) {
             history = projectHistoryRepository.findAllByProjectKeyAndDateGreaterThanEqual(
                     project.getKey(),
-                    LocalDate.now().minusDays(daysLimit.get()));
+                    LocalDate.now().minusDays(getDaysLimit(project, daysLimit)));
         } else {
             history = projectHistoryRepository.findAllByProjectKey(project.getKey());
         }
@@ -190,24 +163,45 @@ public class ProjectViolationsHistoryService {
                 .collect(mapOptionalValuesToValues());
     }
 
+    private LocalDate getToDate(LocalDate toDate) {
+        if (DAYS.between(LocalDate.now(), toDate) == 0L) {
+            return toDate.minusDays(1);
+        } else {
+            return toDate;
+        }
+    }
+
     private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(LocalDate fromDate, LocalDate toDate) {
         return project -> {
+            LocalDate from = projectHistoryRepository.findFirstByProjectKeyOrderByDateAsc(project.getKey())
+                    .filter(entry -> fromDate.isBefore(entry.getDate()))
+                    .map(ProjectHistoryEntryEntity::getDate)
+                    .orElse(fromDate);
+
+            LocalDate to = projectHistoryRepository.findFirstByProjectKeyOrderByDateDesc(project.getKey())
+                    .filter(entry -> fromDate.isBefore(entry.getDate()))
+                    .map(ProjectHistoryEntryEntity::getDate)
+                    .orElse(getToDate(toDate));
+
             final Optional<ProjectHistoryEntryEntity> fromDateEntryOptional =
                     projectHistoryRepository
-                            .findByProjectKeyAndDateEquals(project.getKey(), fromDate);
+                            .findByProjectKeyAndDateEquals(project.getKey(), from);
             final Optional<ProjectHistoryEntryEntity> toDateEntryOptional = projectHistoryRepository
-                    .findByProjectKeyAndDateEquals(project.getKey(), toDate);
+                    .findByProjectKeyAndDateEquals(project.getKey(), getToDate(to));
 
-//            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
-//                throw new SQCompanionException(
-//                        String.format(
-//                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
-//                                project.getKey()
-//                        )
-//                );
-//            }
+            if (fromDateEntryOptional.isPresent() && !toDateEntryOptional.isPresent()) {
+                throw new SQCompanionException(
+                        String.format(
+                                "Can't get diff for project with history and without to date analyses [projectKey=%s]",
+                                project.getKey()
+                        )
+                );
+            }
             final ProjectHistoryEntryEntity fromDateEntry = fromDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
             final ProjectHistoryEntryEntity toDateEntry = toDateEntryOptional.orElse(ProjectHistoryEntryEntity.empty());
+
+            final Violations addedViolations = Violations.builder().build();
+            final Violations removedViolations = Violations.builder().build();
 
             final Violations violationsDiff = Violations
                     .builder()
@@ -217,11 +211,14 @@ public class ProjectViolationsHistoryService {
                     .minors(toDateEntry.getMinors() - fromDateEntry.getMinors())
                     .infos(toDateEntry.getInfos() - fromDateEntry.getInfos())
                     .build();
+            mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violationsDiff);
             return ProjectViolationsHistoryDiff
                     .builder()
                     .projectId(project.getId())
-                    .fromDate(fromDate)
-                    .toDate(toDate)
+                    .fromDate(from)
+                    .toDate(to)
+                    .addedViolations(addedViolations)
+                    .removedViolations(removedViolations)
                     .projectKey(project.getKey())
                     .violationsDiff(violationsDiff)
                     .build();
@@ -297,5 +294,6 @@ public class ProjectViolationsHistoryService {
             removedViolations.addInfos(Math.abs(violations.getInfos()));
         }
     }
+
 
 }

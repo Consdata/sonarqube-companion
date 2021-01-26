@@ -12,23 +12,21 @@ import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v2/violations/history")
+@RequestMapping("/api/v1/violations/history/group")
 @RequiredArgsConstructor
 public class GroupViolationsHistoryController {
 
-    private final ProjectViolationsHistoryService projectViolationsHistoryService;
     private final RepositoryService repositoryService;
     private final UserViolationSummaryHistoryService userViolationsHistoryService;
 
     @RequestMapping(
-            value = "/group",
+            value = "/",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -36,11 +34,11 @@ public class GroupViolationsHistoryController {
             value = "Returns group violations history"
     )
     public ViolationsHistory getRootGroupViolationsHistory(@RequestParam Optional<Integer> daysLimit) {
-        return projectViolationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
+        return userViolationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
     }
 
     @RequestMapping(
-            value = "/group/{uuid}",
+            value = "/{uuid}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -57,7 +55,7 @@ public class GroupViolationsHistoryController {
     }
 
     @RequestMapping(
-            value = "/group/{uuid}/{fromDate}/{toDate}",
+            value = "/{uuid}/{fromDate}/{toDate}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -70,8 +68,6 @@ public class GroupViolationsHistoryController {
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            //TODO refacotr
-
             return userViolationsHistoryService.getGroupsUserViolationsHistoryDiff(group.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
@@ -99,7 +95,7 @@ public class GroupViolationsHistoryController {
     }
 
     @RequestMapping(
-            value = "/project/{uuid}/{projectKey:.+}/{fromDate}/{toDate}",
+            value = "/{uuid}/project/{projectKey:.+}/{fromDate}/{toDate}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -118,5 +114,6 @@ public class GroupViolationsHistoryController {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
     }
+
 
 }

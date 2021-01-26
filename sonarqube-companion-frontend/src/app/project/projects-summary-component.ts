@@ -32,38 +32,39 @@ import {Violations} from '../violations/violations';
           </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
-              <a [href]="getViolationsDiffUrl(project, 'blockers')">
-                <sq-project-violations
-                  [violations]="project.violations"
-                  [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
-                  [type]="'blockers'">
-                </sq-project-violations>
-              </a>
+              <sq-project-violations
+                [violationsDiffLink]="getViolationsDiffUrl(project, 'blockers')"
+                [violationsLink]="getViolationsUrl(project, 'blockers')"
+                [violations]="project.violations"
+                [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
+                [type]="'blockers'">
+              </sq-project-violations>
             </ng-container>
           </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
-              <a [href]="getViolationsDiffUrl(project, 'criticals')">
-                <sq-project-violations
-                  [violations]="project.violations"
-                  [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
-                  [type]="'criticals'">
-                </sq-project-violations>
-              </a>
+              <sq-project-violations
+                [violationsDiffLink]="getViolationsDiffUrl(project, 'criticals')"
+                [violationsLink]="getViolationsUrl(project, 'criticals')"
+                [violations]="project.violations"
+                [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
+                [type]="'criticals'">
+              </sq-project-violations>
             </ng-container>
           </td>
           <td class="project-violations-cell">
             <ng-container *ngIf="violationsHistoryDiff?.projects[project.key]">
-              <a [href]="getViolationsDiffUrl(project, 'nonRelevant')">
-                <sq-project-violations
-                  [violations]="project.violations"
-                  [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
-                  [type]="'nonRelevant'">
-                </sq-project-violations>
-              </a>
+              <sq-project-violations
+                [violationsDiffLink]="getViolationsDiffUrl(project, 'nonRelevant')"
+                [violationsLink]="getViolationsUrl(project, 'nonRelevant')"
+                [violations]="project.violations"
+                [violationsDiff]="violationsHistoryDiff.projects[project.key].violations"
+                [type]="'nonRelevant'">
+              </sq-project-violations>
             </ng-container>
           </td>
-          <td><a [href]="getProjectDashboardUrl(project)">{{project.serverId}}</a></td>
+          <td><a target="_blank" rel="noopener noreferrer"
+                 [href]="getProjectDashboardUrl(project)">{{project.serverId}}</a></td>
         </tr>
       </ng-container>
     </table>
@@ -84,11 +85,18 @@ export class ProjectsSummaryComponent {
     return `${project.serverUrl}dashboard?id=${encodeURI(project.key)}`;
   }
 
-  getViolationsDiffUrl(project: ProjectSummary, type: string) {
+  getViolationsDiffUrl(project: ProjectSummary, type: string): string {
     const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
     return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
   }
+
+  getViolationsUrl(project: ProjectSummary, type: string): string {
+    const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
+    const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}`;
+  }
+
 
   private getFilter(): (ProjectSummary) => boolean {
     if (this.filter === 'regression') {

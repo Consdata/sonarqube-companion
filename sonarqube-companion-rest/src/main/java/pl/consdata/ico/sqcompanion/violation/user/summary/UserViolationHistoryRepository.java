@@ -11,9 +11,9 @@ public interface UserViolationHistoryRepository extends JpaRepository<UserProjec
 
     List<UserProjectSummaryViolationHistoryEntry> findByUserId(String user);
 
-    Optional<UserProjectSummaryViolationHistoryEntry> findFirstByUserIdAndProjectKeyOrderByDateDesc(String user, String project);
+    boolean existsByProjectKeyAndUserIdIsIn(String project, List<String> users);
 
-    Optional<UserProjectSummaryViolationHistoryEntry> findByProjectKeyAndUserIdAndDateEquals(String key, String userId, LocalDate fromDate);
+    Optional<UserProjectSummaryViolationHistoryEntry> findFirstByUserIdAndProjectKeyOrderByDateDesc(String user, String project);
 
     List<UserProjectSummaryViolationHistoryEntry> findByProjectKeyAndUserIdIsInAndDateEquals(String key, List<String> users, LocalDate fromDate);
 
@@ -22,4 +22,7 @@ public interface UserViolationHistoryRepository extends JpaRepository<UserProjec
     List<UserProjectSummaryViolationHistoryEntry> findAllByProjectKeyAndUserIdIsInAndDateGreaterThanEqual(String key, List<String> users, LocalDate minusDays);
 
     UserProjectSummaryViolationHistoryEntry findFirstByProjectKeyAndUserIdOrderByDateDesc(String key, String user);
+
+    Optional<UserProjectSummaryViolationHistoryEntry> findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(String key, List<String> users);
+    Optional<UserProjectSummaryViolationHistoryEntry> findFirstByProjectKeyAndUserIdIsInOrderByDateDesc(String key, List<String> users);
 }

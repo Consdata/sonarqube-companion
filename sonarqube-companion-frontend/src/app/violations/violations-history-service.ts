@@ -28,39 +28,45 @@ export class ViolationsHistoryService {
       );
   }
 
-  getProjectHistory(daysLimit: number, uuid: string, projectKey: string): Observable<ViolationsHistory> {
+  getGroupProjectHistory(daysLimit: number, uuid: string, projectKey: string): Observable<ViolationsHistory> {
     return this.http
-      .get<any>(`api/v1/violations/history/project/${uuid}/${encodeURIComponent(projectKey)}?daysLimit=${daysLimit}`)
+      .get<ViolationsHistory>(`api/v1/violations/history/group/project/${uuid}/${encodeURIComponent(projectKey)}?daysLimit=${daysLimit}`)
       .pipe(
         map(data => new ViolationsHistory(data))
       );
   }
 
-  //TODO rename
-  getProjectHistoryDiff(daysLimit: number,  projectKey: string): Observable<ViolationsHistory> {
+  getProjectHistory(daysLimit: number, projectKey: string): Observable<ViolationsHistory> {
     return this.http
-      .get<any>(`api/v1/projects/diff/${encodeURIComponent(projectKey)}?daysLimit=${daysLimit}`)
+      .get<ViolationsHistory>(`api/v1/violations/history/project/${encodeURIComponent(projectKey)}?daysLimit=${daysLimit}`)
       .pipe(
         map(data => new ViolationsHistory(data))
       );
   }
 
-  //TODO rename
-  getProjectsHistory(fromDate: string, toDate: string): Observable<GroupViolationsHistoryDiff> {
+
+  getGroupProjectHistoryDiff(group: string, project: string, fromDate: string, toDate: string): Observable<ProjectViolationsHistoryDiff> {
     return this.http
-      .get<any>(`api/v1/projects/diff/${fromDate}/${toDate}`)
+      .get<ProjectViolationsHistoryDiff>(`api/v1/violations/history/group/${group}/project/${project}/${fromDate}/${toDate}`)
+      .pipe(
+        map(data => new ProjectViolationsHistoryDiff(data))
+      );
+  }
+
+  getAllProjectsHistoryDiff(fromDate: string, toDate: string): Observable<GroupViolationsHistoryDiff> {
+    return this.http
+      .get<GroupViolationsHistoryDiff>(`api/v1/violations/history/project/${fromDate}/${toDate}`)
       .pipe(
         map(data => new GroupViolationsHistoryDiff(data))
       );
   }
 
 
-  //TODO rename
-  getProjectHistory2(projectKey: string, fromDate: string, toDate: string): Observable<GroupViolationsHistoryDiff> {
+  getProjectHistoryDiff(projectKey: string, fromDate: string, toDate: string): Observable<ProjectViolationsHistoryDiff> {
     return this.http
-      .get<any>(`api/v1/projects/diff2/${encodeURIComponent(projectKey)}/${fromDate}/${toDate}`)
+      .get<ProjectViolationsHistoryDiff>(`api/v1/violations/history/project/${encodeURIComponent(projectKey)}/${fromDate}/${toDate}`)
       .pipe(
-        map(data => new GroupViolationsHistoryDiff(data))
+        map(data => new ProjectViolationsHistoryDiff(data))
       );
   }
 }

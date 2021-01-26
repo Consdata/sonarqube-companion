@@ -7,7 +7,6 @@ import {ViolationsHistoryService} from '../violations/violations-history-service
 
 import {GroupDetails} from './group-details';
 import {GroupService} from './group-service';
-import {MemberService} from '../config/member/member-service';
 
 @Component({
   selector: 'sq-group',
@@ -18,7 +17,7 @@ import {MemberService} from '../config/member/member-service';
     <div *ngIf="group$ | async as group; else spinner" class="group-sections">
       <h1>{{group.name}}</h1>
       <hr/>
-      <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff">
+      <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff; else spinner">
         <sq-group-overview-cards
           [group]="group"
           [violations]="group.violations"
@@ -56,7 +55,6 @@ import {MemberService} from '../config/member/member-service';
         </div>
         <hr/>
         <sq-violations-history
-          [group]="group"
           [violationsFilter]="historyFilter"
           [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
@@ -84,11 +82,11 @@ import {MemberService} from '../config/member/member-service';
                [queryParams]="{'projects.filter.severity': 'all'}" queryParamsHandling="merge">all</a>
         </div>
         <hr/>
-        <sq-group-projects
+        <sq-group-projects *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff; else spinner"
           [projects]="group.projects"
           [filter]="projectsFilter"
           [authors]="memberAliases$ | async"
-          [violationsHistoryDiff]="violationsHistoryDiff$ | async"
+          [violationsHistoryDiff]="violationsHistoryDiff"
           [uuid]="group.uuid">
         </sq-group-projects>
       </div>

@@ -10,6 +10,8 @@ public interface ProjectHistoryRepository extends JpaRepository<ProjectHistoryEn
 
     Optional<ProjectHistoryEntryEntity> findFirstByProjectKeyOrderByDateDesc(String projectKey);
 
+    Optional<ProjectHistoryEntryEntity> findFirstByProjectKeyOrderByDateAsc(String projectKey);
+
     List<ProjectHistoryEntryEntity> findAllByProjectKey(final String projectKey);
 
     List<ProjectHistoryEntryEntity> findAllByProjectKeyAndDateGreaterThanEqual(final String projectKey, final LocalDate date);
