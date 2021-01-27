@@ -76,7 +76,7 @@ export class GroupProjectsComponent {
   @Input() projects: ProjectSummary[];
   @Input() violationsHistoryDiff: GroupViolationsHistoryDiff;
   @Input() authors: string[];
-  @Input() filter;
+  @Input() filter: string;
 
   isVisibleViaFilter(project: ProjectSummary): boolean {
     return this.getFilter()(project);
@@ -97,7 +97,7 @@ export class GroupProjectsComponent {
     return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}&statuses=OPEN&authors=${this.authors.join(',')}`;
   }
 
-  private getFilter(): (ProjectSummary) => boolean {
+  private getFilter(): (project: ProjectSummary) => boolean {
     if (this.filter === 'regression') {
       return (project: ProjectSummary) => this.getProjectDiff(project.key) && this.hasAnyAddedViolations(this.getProjectDiff(project.key));
     } else if (this.filter === 'improvement') {

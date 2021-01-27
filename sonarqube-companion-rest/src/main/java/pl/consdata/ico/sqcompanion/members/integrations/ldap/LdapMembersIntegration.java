@@ -103,15 +103,6 @@ public class LdapMembersIntegration implements MembersProvider {
         }
     }
 
-    private Set<String> getAttributeOrDefault(List<String> keys, Set<String> defaultValue, Attributes attributes) {
-        try {
-            return keys.stream().map(k -> getAttributeOrDefault(k, EMPTY, attributes))
-                    .filter(StringUtils::isNotBlank).collect(Collectors.toSet());
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
     private List<LdapGroup> getLdapGroups(String name) {
         log.info("[LDAP] >Get members for group {}", name);
         LdapGroupsConfig config = appConfig.getIntegrations().getLdap().getGroups();

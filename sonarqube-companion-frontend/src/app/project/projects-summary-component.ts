@@ -75,7 +75,7 @@ export class ProjectsSummaryComponent {
   @Input() uuid: string;
   @Input() projects: ProjectSummary[];
   @Input() violationsHistoryDiff: GroupViolationsHistoryDiff;
-  @Input() filter;
+  @Input() filter: string;
 
   isVisibleViaFilter(project: ProjectSummary): boolean {
     return this.getFilter()(project);
@@ -92,13 +92,12 @@ export class ProjectsSummaryComponent {
   }
 
   getViolationsUrl(project: ProjectSummary, type: string): string {
-    const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
     return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}`;
   }
 
 
-  private getFilter(): (ProjectSummary) => boolean {
+  private getFilter(): (project: ProjectSummary) => boolean {
     if (this.filter === 'regression') {
       return (project: ProjectSummary) => this.getProjectDiff(project.key) && this.hasAnyAddedViolations(this.getProjectDiff(project.key));
     } else if (this.filter === 'improvement') {

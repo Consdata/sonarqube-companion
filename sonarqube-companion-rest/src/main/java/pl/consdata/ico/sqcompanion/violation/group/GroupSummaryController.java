@@ -3,10 +3,7 @@ package pl.consdata.ico.sqcompanion.violation.group;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.repository.Project;
@@ -24,9 +21,8 @@ public class GroupSummaryController {
     private final UserViolationSummaryHistoryService userViolationsHistoryService;
 
 
-    @RequestMapping(
+    @GetMapping(
             value = "{uuid}/summary/project/{projectKey:.+}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
