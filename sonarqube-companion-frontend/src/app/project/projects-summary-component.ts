@@ -125,7 +125,7 @@ export class ProjectsSummaryComponent {
   }
 
   private hasChangedViolations(projectDiff: Violations): boolean {
-    return projectDiff.blockers != 0 || projectDiff.criticals != 0 || projectDiff.nonRelevant != 0;
+    return projectDiff.blockers !== 0 || projectDiff.criticals !== 0 || projectDiff.nonRelevant !== 0;
   }
 
   private mapAsSeverities(type: string): string {

@@ -97,7 +97,7 @@ export class GroupComponent implements OnInit {
 
   group$: BehaviorSubject<GroupDetails> = new BehaviorSubject<GroupDetails>(undefined);
   violationsHistoryDiff$: Observable<GroupViolationsHistoryDiff>;
-  memberAliases$: Observable<String[]>;
+  memberAliases$: Observable<string[]>;
   projectsFilter: string = 'changed';
   historyFilter: string = 'relevant';
   zoom: { fromDate: string, toDate: string };

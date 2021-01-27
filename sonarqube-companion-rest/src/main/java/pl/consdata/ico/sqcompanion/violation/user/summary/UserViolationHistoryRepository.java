@@ -1,7 +1,6 @@
 package pl.consdata.ico.sqcompanion.violation.user.summary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffHistoryEntry;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,5 +23,6 @@ public interface UserViolationHistoryRepository extends JpaRepository<UserProjec
     UserProjectSummaryViolationHistoryEntry findFirstByProjectKeyAndUserIdOrderByDateDesc(String key, String user);
 
     Optional<UserProjectSummaryViolationHistoryEntry> findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(String key, List<String> users);
+
     Optional<UserProjectSummaryViolationHistoryEntry> findFirstByProjectKeyAndUserIdIsInOrderByDateDesc(String key, List<String> users);
 }

@@ -6,14 +6,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
-import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -91,7 +89,7 @@ public class GroupController {
             value = "Returns group members between given period.",
             notes = "<p>Returns group members</p>"
     )
-    public List<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate to) {
+    public List<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         return memberService.groupMembers(uuid, from, to);
     }
 }

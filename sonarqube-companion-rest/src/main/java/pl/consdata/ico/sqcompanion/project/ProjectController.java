@@ -2,19 +2,16 @@ package pl.consdata.ico.sqcompanion.project;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
-import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
-import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController

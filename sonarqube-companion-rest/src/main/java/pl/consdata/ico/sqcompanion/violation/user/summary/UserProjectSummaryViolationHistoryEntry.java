@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
-import pl.consdata.ico.sqcompanion.violation.user.diff.UserProjectViolationDiffHistoryEntry;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {GroupDetails} from '../group/group-details';
-import {GroupViolationsHistoryDiff} from '../violations/group-violations-history-diff';
+import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {GroupService} from '../group/group-service';
 import {ViolationsHistoryService} from '../violations/violations-history-service';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {ProjectService} from './project-service';
 import {ProjectSummary} from './project-summary';
 import {ProjectViolationsHistoryDiff} from '../violations/project-violations-history-diff';
+import {ViolationsHistory} from '../violations/violations-history';
 
 @Component({
   selector: 'sq-project',
@@ -57,8 +56,8 @@ import {ProjectViolationsHistoryDiff} from '../violations/project-violations-his
         </div>
         <hr/>
         <sq-violations-history *ngIf="violationsHistoryProvider"
-          [violationsFilter]="historyFilter"
-          [violationsHistoryProvider]="violationsHistoryProvider">
+                               [violationsFilter]="historyFilter"
+                               [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
       </div>
     </div>
@@ -70,7 +69,7 @@ export class ProjectOverviewComponent implements OnInit {
   violationsHistoryDiff$: Observable<ProjectViolationsHistoryDiff>;
   projectsFilter: string = 'changed';
   historyFilter: string = 'relevant';
-  violationsHistoryProvider;
+  violationsHistoryProvider: () => Observable<ViolationsHistory>;
   readonly daysLimit: number = 90;
 
   constructor(private route: ActivatedRoute,
@@ -82,7 +81,7 @@ export class ProjectOverviewComponent implements OnInit {
       .subscribe(params => {
         projectService.getProjectSummary(params.get('projectKey')).subscribe(project => {
           this.project = project;
-          this.violationsHistoryProvider = () =>  this.violationsHistoryService.getProjectHistory(this.daysLimit, this.project.key);
+          this.violationsHistoryProvider = () => this.violationsHistoryService.getProjectHistory(this.daysLimit, this.project.key);
           const to = this.dateMinusDays(1);
           const from = this.dateMinusDays(this.daysLimit);
           this.violationsHistoryDiff$ = this.violationsHistoryService.getProjectHistoryDiff(this.project.key, from, to);

@@ -25,9 +25,8 @@ public class GroupViolationsHistoryController {
     private final RepositoryService repositoryService;
     private final UserViolationSummaryHistoryService userViolationsHistoryService;
 
-    @RequestMapping(
+    @GetMapping(
             value = "/",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
@@ -37,9 +36,8 @@ public class GroupViolationsHistoryController {
         return userViolationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/{uuid}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
@@ -54,9 +52,8 @@ public class GroupViolationsHistoryController {
         }
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/{uuid}/{fromDate}/{toDate}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
@@ -74,9 +71,8 @@ public class GroupViolationsHistoryController {
         }
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/project/{uuid}/{projectKey:.+}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
@@ -86,17 +82,17 @@ public class GroupViolationsHistoryController {
             @PathVariable final String uuid,
             @PathVariable final String projectKey,
             @RequestParam Optional<Integer> daysLimit) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
-        if (project.isPresent()) {
-            return userViolationsHistoryService.getProjectViolationsHistory(repositoryService.getGroup(uuid).get(), project.get(), daysLimit);
+        if (project.isPresent() && group.isPresent()) {
+            return userViolationsHistoryService.getProjectViolationsHistory(group.get(), project.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/{uuid}/project/{projectKey:.+}/{fromDate}/{toDate}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     @ApiOperation(
@@ -107,9 +103,10 @@ public class GroupViolationsHistoryController {
             @PathVariable final String projectKey,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
-        if (project.isPresent()) {
-            return userViolationsHistoryService.getProjectViolationsHistoryDiff(repositoryService.getGroup(uuid).get(), project.get(), fromDate, toDate);
+        if (project.isPresent() && group.isPresent()) {
+            return userViolationsHistoryService.getProjectViolationsHistoryDiff(group.get(), project.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
