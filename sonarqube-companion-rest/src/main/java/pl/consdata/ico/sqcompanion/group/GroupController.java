@@ -32,7 +32,7 @@ public class GroupController {
     @RequestMapping(
             value = "",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns root group details.",
@@ -45,7 +45,7 @@ public class GroupController {
     @RequestMapping(
             value = "/{uuid}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns group details.",
@@ -62,7 +62,7 @@ public class GroupController {
 
     @GetMapping(
             value = "/{uuid}/members",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns group members.",
@@ -75,15 +75,15 @@ public class GroupController {
 
     @ApiOperation(value = "Get all members aliases",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/{uuid}/aliases", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}/aliases", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> getMemberGroups(@PathVariable String uuid) {
         return memberService.groupMembers(uuid).stream().map(Member::getAliases).flatMap(Set::stream).collect(Collectors.toList());
     }
 
     @GetMapping(
             value = "/{uuid}/members/{from}/{to}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns group members between given period.",

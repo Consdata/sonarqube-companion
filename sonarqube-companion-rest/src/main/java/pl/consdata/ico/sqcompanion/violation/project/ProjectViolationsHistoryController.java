@@ -26,7 +26,7 @@ public class ProjectViolationsHistoryController {
     @RequestMapping(
             value = "/{fromDate}/{toDate}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project violations history"
@@ -41,7 +41,7 @@ public class ProjectViolationsHistoryController {
     @RequestMapping(
             value = "/{projectKey:.+}/{fromDate}/{toDate}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project violations history"
@@ -62,7 +62,7 @@ public class ProjectViolationsHistoryController {
     @RequestMapping(
             value = "/{projectKey:.+}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project violations history"

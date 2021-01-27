@@ -21,8 +21,8 @@ public class MemberController {
 
     @ApiOperation(value = "Get all members",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<GroupLightModel> getMemberGroups(@PathVariable String uuid) {
         log.info("Get member groups");
         return memberService.memberGroups(uuid);

@@ -23,8 +23,8 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Get group webhooks",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/{uuid}/webhooks", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}/webhooks", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WebhookDefinition> getWebhooks(@PathVariable String uuid) {
         log.info("Get group webhooks {}", uuid);
         return service.getWebhooks(uuid);
@@ -32,9 +32,9 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Create group webhook",
             httpMethod = "POST",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/{uuid}/webhooks/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{uuid}/webhooks/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult createWebhook(@PathVariable String uuid, @RequestBody WebhookDefinition webhookDefinition) {
         log.info("Create group webhook [{}] {}", uuid, webhookDefinition);
         return service.createWebhook(uuid, webhookDefinition);
@@ -42,9 +42,9 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Update group webhook",
             httpMethod = "POST",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/{uuid}/webhooks/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{uuid}/webhooks/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult updateWebhook(@PathVariable String uuid, @RequestBody WebhookDefinition webhookDefinition) {
         log.info("Update group webhook [{}] {}", uuid, webhookDefinition);
         return service.updateWebhook(uuid, webhookDefinition);
@@ -52,8 +52,8 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Delete group webhook",
             httpMethod = "DELETE",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @DeleteMapping(value = "/{uuid}/webhooks/{webhookUuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{uuid}/webhooks/{webhookUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult deleteWebhook(@PathVariable String uuid, @PathVariable String webhookUuid) {
         log.info("Delete group webhook [{}/{}]", uuid, webhookUuid);
         return service.deleteWebhook(uuid, webhookUuid);
@@ -61,8 +61,8 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Get webook callbacks",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WebhookCallback> getCallbacks(@PathVariable String groupUuid, @PathVariable String webhookUuid) {
         log.info("Get callbacks for {}/{}", groupUuid, webhookUuid);
         return service.getCallbacks(groupUuid, webhookUuid);
@@ -70,9 +70,9 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Create callback",
             httpMethod = "POST",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult createCallback(@PathVariable String groupUuid, @PathVariable String webhookUuid, @RequestBody WebhookCallback callback) {
         log.info("Create callback for {}/{}", groupUuid, webhookUuid);
         return service.createCallback(groupUuid, webhookUuid, callback);
@@ -80,9 +80,9 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Update callback",
             httpMethod = "POST",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult updateCallback(@PathVariable String groupUuid, @PathVariable String webhookUuid, @RequestBody WebhookCallback callback) {
         log.info("Update callback for {}/{}", groupUuid, webhookUuid);
         return service.updateCallback(groupUuid, webhookUuid, callback);
@@ -90,8 +90,8 @@ public class WebhookConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Delete callback",
             httpMethod = "DELETE",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @DeleteMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks/{callbackUuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{groupUuid}/webhooks/{webhookUuid}/callbacks/{callbackUuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult getCallbacks(@PathVariable String groupUuid, @PathVariable String webhookUuid, @PathVariable String callbackUuid) {
         log.info("Delete callback {}/{}/{}", groupUuid, webhookUuid, callbackUuid);
         return service.deleteCallback(groupUuid, webhookUuid, callbackUuid);

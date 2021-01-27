@@ -24,7 +24,7 @@ public class VersionController {
     @RequestMapping(
             value = "",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns application version and info about commit",

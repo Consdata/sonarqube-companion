@@ -27,7 +27,7 @@ public class GroupViolationsHistoryController {
 
     @GetMapping(
             value = "/",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns group violations history"
@@ -38,7 +38,7 @@ public class GroupViolationsHistoryController {
 
     @GetMapping(
             value = "/{uuid}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns group violations history"
@@ -54,7 +54,7 @@ public class GroupViolationsHistoryController {
 
     @GetMapping(
             value = "/{uuid}/{fromDate}/{toDate}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns group violations history change in time"
@@ -73,7 +73,7 @@ public class GroupViolationsHistoryController {
 
     @GetMapping(
             value = "/project/{uuid}/{projectKey:.+}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project violations history"
@@ -93,7 +93,7 @@ public class GroupViolationsHistoryController {
 
     @GetMapping(
             value = "/{uuid}/project/{projectKey:.+}/{fromDate}/{toDate}",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project violations history change in time"

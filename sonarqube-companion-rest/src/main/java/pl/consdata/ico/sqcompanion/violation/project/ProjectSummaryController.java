@@ -3,10 +3,7 @@ package pl.consdata.ico.sqcompanion.violation.project;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
@@ -22,10 +19,9 @@ public class ProjectSummaryController {
     private final RepositoryService repositoryService;
     private final ProjectSummaryService projectSummaryService;
 
-    @RequestMapping(
+    @GetMapping(
             value = "/summary/{projectKey:.+}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project summary.",

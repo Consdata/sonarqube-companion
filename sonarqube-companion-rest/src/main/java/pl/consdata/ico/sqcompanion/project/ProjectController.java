@@ -25,7 +25,7 @@ public class ProjectController {
     @RequestMapping(
             value = "/{uuid}/{projectKey:.+}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project summary.",
