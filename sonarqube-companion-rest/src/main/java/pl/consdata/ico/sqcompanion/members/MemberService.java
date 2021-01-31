@@ -121,31 +121,31 @@ public class MemberService {
         }
     }
 
-    public List<Member> groupMembers(String groupId) {
+    public Set<Member> groupMembers(String groupId) {
         if (appConfig.getMembers().isRecursive()) {
             return repositoryService.getGroup(groupId)
                     .map(Group::getAllGroups)
                     .orElse(Collections.emptyList())
                     .stream()
                     .map(group -> getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(group.getUuid(), LocalDate.now().minusDays(1))))
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList());
+                    .flatMap(Set::stream)
+                    .collect(Collectors.toSet());
         } else {
-            return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now().minusDays(0)));
+            return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now().minusDays(1)));
         }
     }
 
-    public List<String> membersAliases(String groupId) {
+    public Set<String> membersAliases(String groupId) {
         return groupMembers(groupId)
                 .stream()
                 .map(Member::getAliases)
                 .filter(Objects::nonNull)
                 .flatMap(Set::stream)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
 
-    public List<Member> groupMembers(String groupId, LocalDate form, LocalDate to) {
+    public Set<Member> groupMembers(String groupId, LocalDate form, LocalDate to) {
         return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsBetweenOrderByDateDesc(groupId, form, to));
     }
 
@@ -178,7 +178,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    private List<Member> getAttachedMembers(Set<MembershipEntryEntity> entries) {
+    private Set<Member> getAttachedMembers(Set<MembershipEntryEntity> entries) {
         return entries.stream()
                 .collect(
                         HashMap<String, MembershipEntryEntity>::new,
@@ -194,7 +194,7 @@ public class MemberService {
                         .remoteType(entry.getMember().getRemoteType())
                         .remote(entry.getMember().isRemote())
                         .aliases(entry.getMember().getAliases())
-                        .build()).collect(Collectors.toList());
+                        .build()).collect(Collectors.toSet());
     }
 
     private boolean isAttached(MembershipEntryEntity entryEntity) {

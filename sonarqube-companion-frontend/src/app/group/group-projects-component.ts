@@ -89,12 +89,12 @@ export class GroupProjectsComponent {
   getViolationsDiffUrl(project: ProjectSummary, type: string): string {
     const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}&statuses=OPEN&authors=${this.authors.join(',')}`;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}&authors=${this.authors.join(',')}`;
   }
 
   getViolationsUrl(project: ProjectSummary, type: string): string {
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}&statuses=OPEN&authors=${this.authors.join(',')}`;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}&authors=${this.authors.join(',')}`;
   }
 
   private getFilter(): (project: ProjectSummary) => boolean {

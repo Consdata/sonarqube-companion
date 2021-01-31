@@ -48,7 +48,7 @@ public class ProjectViolationsHistoryService {
                 );
     }
 
-    @Cacheable(value = Caches.ALL_PROJECTS_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
+    @Cacheable(value = Caches.ALL_PROJECTS_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "'projects' + #group.uuid + #fromDate + #toDate")
     public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
         final List<ProjectViolationsHistoryDiff> projectDiffs = group
                 .getAllProjects()

@@ -8,6 +8,7 @@ import pl.consdata.ico.sqcompanion.config.model.Member;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -255,7 +256,7 @@ public class MemberServiceTest extends BaseItTest {
         memberService.syncMembers();
 
         //when
-        List<Member> members = memberService.groupMembers("group1");
+        Set<Member> members = memberService.groupMembers("group1");
 
         //then
         assertThat(members).hasSize(2);
@@ -274,7 +275,7 @@ public class MemberServiceTest extends BaseItTest {
         memberService.syncMembers();
 
         //when
-        List<Member> members = memberService.groupMembers("group1", LocalDate.now().minusDays(4), LocalDate.now().minusDays(2));
+        Set<Member> members = memberService.groupMembers("group1", LocalDate.now().minusDays(4), LocalDate.now().minusDays(2));
 
         //then
         assertThat(members).hasSize(1);

@@ -10,6 +10,7 @@ import pl.consdata.ico.sqcompanion.health.HealthStatus;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
+import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class GroupService {
     private final ProjectSummaryService projectSummaryService;
     private final UserViolationSummaryHistoryService userViolationSummaryHistoryService;
     private final HealthCheckService healthCheckService;
+    private final RepositoryService repositoryService;
 
     @Cacheable(value = Caches.GROUP_DETAILS_CACHE, sync = true, key = "#group.uuid")
     public GroupDetails getGroupDetails(Group group) {
@@ -44,8 +46,9 @@ public class GroupService {
                 .build();
     }
 
-    @Cacheable(value = Caches.GROUP_DETAILS_CACHE, sync = true, key = "#group.uuid")
-    public GroupDetails getRootGroupDetails(Group group) {
+    @Cacheable(value = Caches.ALL_PROJECTS_DETAILS_CACHE, sync = true)
+    public GroupDetails getRootGroupDetails() {
+        Group group = repositoryService.getRootGroup();
         final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
         final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
 
@@ -60,7 +63,6 @@ public class GroupService {
                 .events(group.getEvents())
                 .build();
     }
-
 
 
     private GroupSummary asGroupSummary(final Group group) {

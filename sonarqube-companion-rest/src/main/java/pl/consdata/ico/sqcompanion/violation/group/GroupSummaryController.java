@@ -26,7 +26,7 @@ public class GroupSummaryController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
-            value = "Returns project summary.",
+            value = "Returns groups project summary.",
             notes = "<p>Returns project summary with current violations state and health status.</p>"
     )
     public ProjectSummary getProject(@PathVariable final String projectKey, @PathVariable String uuid) {

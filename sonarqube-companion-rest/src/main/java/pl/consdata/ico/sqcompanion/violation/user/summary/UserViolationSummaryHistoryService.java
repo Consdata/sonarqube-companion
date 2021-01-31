@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -82,7 +83,7 @@ public class UserViolationSummaryHistoryService {
 
     @Cacheable(value = Caches.GROUP_USER_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#group.uuid + #fromDate + #toDate")
     public GroupViolationsHistoryDiff getGroupsUserViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
-        List<String> users = memberService.membersAliases(group.getUuid());
+        Set<String> users = memberService.membersAliases(group.getUuid());
         final List<ProjectViolationsHistoryDiff> projectDiffs = group
                 .getAllProjects()
                 .stream()
@@ -113,7 +114,7 @@ public class UserViolationSummaryHistoryService {
         }
     }
 
-    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(List<String> users, LocalDate fromDate, LocalDate toDate) {
+    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(Set<String> users, LocalDate fromDate, LocalDate toDate) {
         return project -> {
             LocalDate from = repository.findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(project.getKey(), users)
                     .filter(entry -> fromDate.isBefore(entry.getDate()))
@@ -218,7 +219,7 @@ public class UserViolationSummaryHistoryService {
                 .build();
     }
 
-    private long getDaysLimit(final Project project, Optional<Integer> daysLimit, List<String> users) {
+    private long getDaysLimit(final Project project, Optional<Integer> daysLimit, Set<String> users) {
         Optional<UserProjectSummaryViolationHistoryEntry> entry = repository.findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(project.getKey(), users);
         LocalDate localDate = LocalDate.now();
         if (daysLimit.isPresent() && entry.isPresent()) {
@@ -229,7 +230,7 @@ public class UserViolationSummaryHistoryService {
         return 0;
     }
 
-    public ViolationsHistory getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit, List<String> users) {
+    public ViolationsHistory getProjectViolationsHistory(final Project project, Optional<Integer> daysLimit, Set<String> users) {
         List<UserProjectSummaryViolationHistoryEntry> history;
         if (daysLimit.isPresent()) {
             history = repository.findAllByProjectKeyAndUserIdIsInAndDateGreaterThanEqual(

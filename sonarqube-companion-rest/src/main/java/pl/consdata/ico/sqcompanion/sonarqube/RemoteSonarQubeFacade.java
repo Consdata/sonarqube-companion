@@ -150,13 +150,13 @@ public class RemoteSonarQubeFacade implements SonarQubeFacade {
                 .key(sqIssue.getKey())
                 .creationDate(sqIssue.getCreationDate())
                 .message(sqIssue.getMessage())
-                .severity(asSeveriyt(sqIssue))
+                .severity(asSeverity(sqIssue))
                 .author(sqIssue.getAuthor())
                 .updateDate(sqIssue.getUpdateDate())
                 .build();
     }
 
-    private SonarQubeIssueSeverity asSeveriyt(SQIssue sqIssue) {
+    private SonarQubeIssueSeverity asSeverity(SQIssue sqIssue) {
         return ofNullable(sqIssue.getSeverity())
                 .map(SonarQubeIssueSeverity::valueOf)
                 .orElse(SonarQubeIssueSeverity.UNKNOWN);

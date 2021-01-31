@@ -39,7 +39,7 @@ public class GroupController {
             notes = "<p>Returns root group details with current violations state, health status and sub groups and projects.</p>"
     )
     public GroupDetails getRootGroup() {
-        return groupService.getRootGroupDetails(repositoryService.getRootGroup());
+        return groupService.getRootGroupDetails();
     }
 
     @RequestMapping(
@@ -68,7 +68,7 @@ public class GroupController {
             value = "Returns group members.",
             notes = "<p>Returns group members</p>"
     )
-    public List<Member> getMembers(@PathVariable final String uuid) {
+    public Set<Member> getMembers(@PathVariable final String uuid) {
         return memberService.groupMembers(uuid);
     }
 
@@ -89,7 +89,7 @@ public class GroupController {
             value = "Returns group members between given period.",
             notes = "<p>Returns group members</p>"
     )
-    public List<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+    public Set<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         return memberService.groupMembers(uuid, from, to);
     }
 }
