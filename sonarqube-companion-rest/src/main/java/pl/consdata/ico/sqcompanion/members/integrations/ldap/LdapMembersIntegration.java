@@ -133,5 +133,4 @@ public class LdapMembersIntegration implements MembersProvider {
         }
         return output;
     }
-
 }
