@@ -24,7 +24,7 @@ public class SynchronizationController {
         this.synchronizationTrigger = synchronizationTrigger;
     }
 
-    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
             value = "Returns state of current synchronization of projects history"
     )
@@ -46,7 +46,7 @@ public class SynchronizationController {
                 .build();
     }
 
-    @RequestMapping(value = "/start", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/start", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
             value = "Starting new synchronization of projects history"
     )

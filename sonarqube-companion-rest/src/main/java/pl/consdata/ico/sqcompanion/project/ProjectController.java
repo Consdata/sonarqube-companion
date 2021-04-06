@@ -1,6 +1,7 @@
 package pl.consdata.ico.sqcompanion.project;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,25 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/projects")
+@RequiredArgsConstructor
 public class ProjectController {
 
-    private final ProjectSummaryService projectSummaryService;
     private final RepositoryService repositoryService;
-
-    public ProjectController(ProjectSummaryService projectSummaryService, RepositoryService repositoryService) {
-        this.projectSummaryService = projectSummaryService;
-        this.repositoryService = repositoryService;
-    }
+    private final UserViolationSummaryHistoryService userViolationSummaryHistoryService;
 
     @RequestMapping(
             value = "/{uuid}/{projectKey:.+}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns project summary.",
@@ -36,7 +34,7 @@ public class ProjectController {
     public ProjectSummary getGroup(@PathVariable final String uuid, @PathVariable final String projectKey) {
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent()) {
-            return projectSummaryService.getProjectSummary(project.get());
+            return userViolationSummaryHistoryService.getProjectSummary(project.get(), uuid);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }

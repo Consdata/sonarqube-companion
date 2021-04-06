@@ -13,4 +13,6 @@ export class MemberService {
     return this.http
       .get<GroupLightModel[]>(`api/v1/members/${uuid}/groups`);
   }
+
+
 }

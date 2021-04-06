@@ -4,8 +4,11 @@ import {Violations} from '../violations/violations';
 @Component({
   selector: 'sq-project-violations',
   template: `
-    <span>{{violations[type]}}</span>
-    <span>
+    <ng-template #violationsTpl>
+      <span>{{violations[type]}}</span>
+    </ng-template>
+    <ng-template #violationsDiffTpl>
+   <span>
       (
         <span
           *ngIf="isLoaded()"
@@ -20,6 +23,14 @@ import {Violations} from '../violations/violations';
         </span>
       )
     </span>
+    </ng-template>
+
+    <a target="_blank" rel="noopener noreferrer" [href]="violationsLink" *ngIf="violationsLink; else violationsTpl">
+      <ng-container *ngTemplateOutlet="violationsTpl"></ng-container>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" [href]="violationsDiffLink" *ngIf="violationsDiffLink; else violationsDiffTpl">
+      <ng-container *ngTemplateOutlet="violationsDiffTpl"></ng-container>
+    </a>
   `
 })
 export class ProjectViolationsComponent {
@@ -30,6 +41,9 @@ export class ProjectViolationsComponent {
   @Input() addedViolations: Violations;
   @Input() removedViolations: Violations;
   @Input() detailedDiff = false;
+  @Input() violationsLink: string;
+  @Input() violationsDiffLink: string;
+
 
   isLoaded(): boolean {
     if (this.detailedDiff) {

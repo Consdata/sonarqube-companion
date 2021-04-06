@@ -29,6 +29,7 @@ public class ServerConfigService {
             server.setUrl(serverDefinition.getUrl());
             server.setAuthentication(serverDefinition.getAuthentication());
             server.setBlacklistUsers(serverDefinition.getBlacklistUsers());
+            server.setAliases(serverDefinition.getAliases());
             return settingsService.save();
         } else {
             log.info("Invalid server definition {} reason: {}", serverDefinition, validationResult);

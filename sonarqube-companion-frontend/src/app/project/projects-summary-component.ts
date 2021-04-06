@@ -4,9 +4,9 @@ import {GroupViolationsHistoryDiff} from '../violations/group-violations-history
 import {Violations} from '../violations/violations';
 
 @Component({
-  selector: 'sq-group-projects',
+  selector: 'sq-projects-summary',
   template: `
-    <table class="projects-table" *ngIf="authors">
+    <table class="projects-table">
       <tr class="project-header">
         <td>Name</td>
         <td>Key</td>
@@ -21,12 +21,12 @@ import {Violations} from '../violations/violations';
           [attr.health-status]="project.healthStatusString"
           class="project-row">
           <td>
-            <a [routerLink]="['/project', uuid, project.key]">
+            <a [routerLink]="['/project', project.key]">
               {{project.name}}
             </a>
           </td>
           <td>
-            <a [routerLink]="['/project', uuid, project.key]">
+            <a [routerLink]="['/project', project.key]">
               {{project.key}}
             </a>
           </td>
@@ -70,12 +70,11 @@ import {Violations} from '../violations/violations';
     </table>
   `
 })
-export class GroupProjectsComponent {
+export class ProjectsSummaryComponent {
 
   @Input() uuid: string;
   @Input() projects: ProjectSummary[];
   @Input() violationsHistoryDiff: GroupViolationsHistoryDiff;
-  @Input() authors: string[];
   @Input() filter: string;
 
   isVisibleViaFilter(project: ProjectSummary): boolean {
@@ -89,13 +88,14 @@ export class GroupProjectsComponent {
   getViolationsDiffUrl(project: ProjectSummary, type: string): string {
     const fromDate = this.violationsHistoryDiff.projects[project.key].fromDate;
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}&authors=${this.authors.join(',')}`;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdAfter=${fromDate}&createdBefore=${toDate}`;
   }
 
   getViolationsUrl(project: ProjectSummary, type: string): string {
     const toDate = this.violationsHistoryDiff.projects[project.key].toDate;
-    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}&authors=${this.authors.join(',')}`;
+    return `${project.serverUrl}project/issues?resolved=false&id=${encodeURI(project.key)}&severities=${this.mapAsSeverities(type)}&createdBefore=${toDate}`;
   }
+
 
   private getFilter(): (project: ProjectSummary) => boolean {
     if (this.filter === 'regression') {
@@ -124,7 +124,7 @@ export class GroupProjectsComponent {
   }
 
   private hasChangedViolations(projectDiff: Violations): boolean {
-    return projectDiff.blockers != 0 || projectDiff.criticals != 0 || projectDiff.nonRelevant != 0;
+    return projectDiff.blockers !== 0 || projectDiff.criticals !== 0 || projectDiff.nonRelevant !== 0;
   }
 
   private mapAsSeverities(type: string): string {

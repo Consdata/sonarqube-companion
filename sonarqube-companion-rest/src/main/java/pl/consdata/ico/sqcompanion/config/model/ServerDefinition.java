@@ -19,6 +19,7 @@ public class ServerDefinition {
     private String url;
     private ServerAuthentication authentication;
     private List<String> blacklistUsers;
+    private List<String> aliases;
 
     public boolean hasAuthentication() {
         return authentication != null

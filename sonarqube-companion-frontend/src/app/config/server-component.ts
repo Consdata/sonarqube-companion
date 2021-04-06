@@ -37,6 +37,10 @@ import * as uuid from 'uuid';
         <sq-settings-badge [(items)]="server.blacklistUsers"
                            [title]="'Users blackList'"></sq-settings-badge>
       </div>
+      <div class="element">
+        <sq-settings-badge [(items)]="server.aliases"
+                           [title]="'Users alieses'"></sq-settings-badge>
+      </div>
     </div>
   `
 })

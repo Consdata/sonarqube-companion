@@ -24,7 +24,7 @@ public class UserViolationDiffHistoryController {
     @RequestMapping(
             value = "/{user}",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns user violations history"

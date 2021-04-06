@@ -113,7 +113,7 @@ public class UserViolationSummaryHistorySyncService {
                 project.getServerId(),
                 IssueFilter.builder()
                         .componentKey(project.getKey())
-                        .author(user.getUserId())
+                        .authors(user.getAliases())
                         .createdBefore(dateToSync)
                         .resolved(false)
                         .facet(IssueFilterFacet.SEVERITIES)

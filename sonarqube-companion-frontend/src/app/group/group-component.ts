@@ -17,7 +17,7 @@ import {GroupService} from './group-service';
     <div *ngIf="group$ | async as group; else spinner" class="group-sections">
       <h1>{{group.name}}</h1>
       <hr/>
-      <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff">
+      <div class="overview-cards" *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff; else spinner">
         <sq-group-overview-cards
           [group]="group"
           [violations]="group.violations"
@@ -55,7 +55,6 @@ import {GroupService} from './group-service';
         </div>
         <hr/>
         <sq-violations-history
-          [group]="group"
           [violationsFilter]="historyFilter"
           [violationsHistoryProvider]="violationsHistoryProvider">
         </sq-violations-history>
@@ -83,10 +82,11 @@ import {GroupService} from './group-service';
                [queryParams]="{'projects.filter.severity': 'all'}" queryParamsHandling="merge">all</a>
         </div>
         <hr/>
-        <sq-group-projects
+        <sq-group-projects *ngIf="violationsHistoryDiff$ | async as violationsHistoryDiff; else spinner"
           [projects]="group.projects"
           [filter]="projectsFilter"
-          [violationsHistoryDiff]="violationsHistoryDiff$ | async"
+          [authors]="memberAliases$ | async"
+          [violationsHistoryDiff]="violationsHistoryDiff"
           [uuid]="group.uuid">
         </sq-group-projects>
       </div>
@@ -97,6 +97,7 @@ export class GroupComponent implements OnInit {
 
   group$: BehaviorSubject<GroupDetails> = new BehaviorSubject<GroupDetails>(undefined);
   violationsHistoryDiff$: Observable<GroupViolationsHistoryDiff>;
+  memberAliases$: Observable<string[]>;
   projectsFilter: string = 'changed';
   historyFilter: string = 'relevant';
   zoom: { fromDate: string, toDate: string };
@@ -134,6 +135,9 @@ export class GroupComponent implements OnInit {
     const from = this.dateMinusDays(this.daysLimit);
     this.violationsHistoryDiff$ = this.group$.pipe(
       switchMap(group => this.violationsHistoryService.getGroupHistoryDiff(group.uuid, from, to))
+    );
+    this.memberAliases$ = this.group$.pipe(
+      switchMap(group => this.groupService.getAliases(group.uuid))
     );
   }
 

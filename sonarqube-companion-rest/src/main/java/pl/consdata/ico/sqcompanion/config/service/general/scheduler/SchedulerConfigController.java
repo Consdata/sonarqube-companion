@@ -19,8 +19,8 @@ public class SchedulerConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Get scheduler config",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/scheduler", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/scheduler", produces = MediaType.APPLICATION_JSON_VALUE)
     public SchedulerConfig get() {
         log.info("Get scheduler config");
         return schedulerConfigService.get();
@@ -29,10 +29,10 @@ public class SchedulerConfigController extends SettingsExceptionHandler {
     @ApiOperation(
             value = "Update scheduler config",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    @PostMapping(value = "/scheduler", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/scheduler", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult update(@RequestBody SchedulerConfig schedulerConfig) {
         log.info("Update scheduler config {}", schedulerConfig);
         return schedulerConfigService.update(schedulerConfig);

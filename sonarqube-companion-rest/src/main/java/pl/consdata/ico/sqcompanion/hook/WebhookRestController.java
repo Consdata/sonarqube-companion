@@ -38,7 +38,7 @@ public class WebhookRestController {
         }
     }
 
-    @RequestMapping(value = "/trigger", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/trigger", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, CallbackResponse> get(@RequestParam String endpoint) {
         log.info("Webhook REST trigger request[endpoint={}]", endpoint);
         Webhook endpointWebhook = service.getAllWebhooksWithTrigger(RestWebhookTrigger.class).stream().filter(webhook -> ((RestWebhookTrigger) webhook.getTrigger()).getMethod().equals("GET")

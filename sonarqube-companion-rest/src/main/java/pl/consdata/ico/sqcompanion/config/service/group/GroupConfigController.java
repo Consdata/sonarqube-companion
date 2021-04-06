@@ -26,9 +26,9 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Create new group definition",
             httpMethod = "POST",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/{parentUuid}/create", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{parentUuid}/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult create(@PathVariable String parentUuid, @RequestBody GroupDefinition groupDefinition) {
         log.info("Create new group {}/{}", parentUuid, groupDefinition);
         return groupConfigService.create(parentUuid, groupDefinition);
@@ -36,9 +36,9 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Update group definition",
             httpMethod = "POST",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult update(@RequestBody GroupDefinition groupDefinition) {
         log.info("Update group definition {}", groupDefinition);
         return groupConfigService.update(groupDefinition);
@@ -46,8 +46,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Delete group definition",
             httpMethod = "DELETE",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @DeleteMapping(value = "/{parentUuid}/{uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{parentUuid}/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult delete(@PathVariable String parentUuid, @PathVariable String uuid) {
         log.info("Delete group definition {}/{}", parentUuid, uuid);
         return groupConfigService.delete(parentUuid, uuid);
@@ -55,8 +55,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Get group definition",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupDefinition get(@PathVariable String uuid) {
         log.info("Get group definition {}", uuid);
         return groupConfigService.get(uuid);
@@ -64,8 +64,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Get root group definition",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupDefinition getRootGroup() {
         log.info("Get root group definition");
         return groupConfigService.getRootGroup();
@@ -73,8 +73,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Update root group definition",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult updateRootGroup(@RequestBody GroupDefinition groupDefinition) {
         log.info("Update root group definition");
         return groupConfigService.updateRootGroup(groupDefinition);
@@ -82,8 +82,8 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Get subgroups",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @GetMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GroupDefinition> getSubgroups(@PathVariable String uuid) {
         log.info("Get subgroups for {}", uuid);
         return groupConfigService.getSubgroups(uuid);
@@ -91,9 +91,9 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @ApiOperation(value = "Update subgroups",
             httpMethod = "POST",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PostMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{uuid}/groups", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult getSubgroups(@PathVariable String uuid, @RequestBody List<GroupDefinition> groupDefinitions) {
         log.info("Update subgroups for {}", uuid);
         return groupConfigService.updateSubgroups(uuid, groupDefinitions);
@@ -117,7 +117,7 @@ public class GroupConfigController extends SettingsExceptionHandler {
 
     @GetMapping(
             value = "/all",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
             value = "Returns light groups list",

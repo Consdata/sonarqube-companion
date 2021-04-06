@@ -10,9 +10,17 @@ export class ProjectService {
   constructor(private http: HttpClient) {
   }
 
-  getProject(uuid: string, projectKey: string): Observable<ProjectSummary> {
+  getGroupProjectSummary(uuid: string, projectKey: string): Observable<ProjectSummary> {
     return this.http
-      .get<any>(`api/v1/projects/${uuid}/${encodeURIComponent(projectKey)}`)
+      .get<ProjectSummary>(`/api/v1/violations/group/${uuid}/summary/project/${encodeURIComponent(projectKey)}`)
+      .pipe(
+        map(data => new ProjectSummary(data))
+      );
+  }
+
+  getProjectSummary(projectKey: string): Observable<ProjectSummary> {
+    return this.http
+      .get<ProjectSummary>(`/api/v1/violations/project/summary/${encodeURIComponent(projectKey)}`)
       .pipe(
         map(data => new ProjectSummary(data))
       );

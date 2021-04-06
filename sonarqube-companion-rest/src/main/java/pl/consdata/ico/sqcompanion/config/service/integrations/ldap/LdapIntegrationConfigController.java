@@ -18,7 +18,7 @@ public class LdapIntegrationConfigController {
     @GetMapping
     @ApiOperation(value = "Get ldap integration config",
             httpMethod = "GET",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public LdapIntegrationConfig getConfig() {
         log.info("Get ldap integration config");
         return service.get();
@@ -28,8 +28,8 @@ public class LdapIntegrationConfigController {
     @PostMapping
     @ApiOperation(value = "Update ldap integration config",
             httpMethod = "POST",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationResult updateConfig(@RequestBody LdapIntegrationConfig config) {
         log.info("Update ldap integration config");
         return service.update(config);

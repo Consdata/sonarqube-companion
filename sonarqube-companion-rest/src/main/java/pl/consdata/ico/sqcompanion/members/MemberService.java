@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.Member;
+import pl.consdata.ico.sqcompanion.repository.Group;
+import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -21,6 +23,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MembershipRepository membershipRepository;
     private final MembersIntegrations membersIntegrations;
+    private final RepositoryService repositoryService;
 
     public void syncMembers() {
         log.info("> Sync members");
@@ -53,6 +56,7 @@ public class MemberService {
                 .stream().map(definition -> MemberEntryEntity.builder()
                         .firstName(definition.getFirstName())
                         .lastName(definition.getLastName())
+                        .mail(definition.getMail())
                         .id(definition.getUuid())
                         .aliases(definition.getAliases())
                         .mail(definition.getMail())
@@ -117,11 +121,31 @@ public class MemberService {
         }
     }
 
-    public List<Member> groupMembers(String groupId) {
-        return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now().minusDays(1)));
+    public Set<Member> groupMembers(String groupId) {
+        if (appConfig.getMembers().isRecursive()) {
+            return repositoryService.getGroup(groupId)
+                    .map(Group::getAllGroups)
+                    .orElse(Collections.emptyList())
+                    .stream()
+                    .map(group -> getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(group.getUuid(), LocalDate.now().minusDays(1))))
+                    .flatMap(Set::stream)
+                    .collect(Collectors.toSet());
+        } else {
+            return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now().minusDays(1)));
+        }
     }
 
-    public List<Member> groupMembers(String groupId, LocalDate form, LocalDate to) {
+    public Set<String> membersAliases(String groupId) {
+        return groupMembers(groupId)
+                .stream()
+                .map(Member::getAliases)
+                .filter(Objects::nonNull)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+    }
+
+
+    public Set<Member> groupMembers(String groupId, LocalDate form, LocalDate to) {
         return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsBetweenOrderByDateDesc(groupId, form, to));
     }
 
@@ -154,7 +178,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    private List<Member> getAttachedMembers(Set<MembershipEntryEntity> entries) {
+    private Set<Member> getAttachedMembers(Set<MembershipEntryEntity> entries) {
         return entries.stream()
                 .collect(
                         HashMap<String, MembershipEntryEntity>::new,
@@ -166,7 +190,11 @@ public class MemberService {
                         .uuid(entry.getMember().getId())
                         .firstName(entry.getMember().getFirstName())
                         .lastName(entry.getMember().getLastName())
-                        .build()).collect(Collectors.toList());
+                        .mail(entry.getMember().getMail())
+                        .remoteType(entry.getMember().getRemoteType())
+                        .remote(entry.getMember().isRemote())
+                        .aliases(entry.getMember().getAliases())
+                        .build()).collect(Collectors.toSet());
     }
 
     private boolean isAttached(MembershipEntryEntity entryEntity) {
