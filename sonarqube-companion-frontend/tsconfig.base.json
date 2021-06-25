@@ -1,0 +1,41 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@sonarqube-companion-frontend/overview": ["libs/overview/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/sidebar": [
+        "libs/ui-components/sidebar/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/groups-tree": [
+        "libs/ui-components/groups-tree/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/group-overview": [
+        "libs/ui-components/group-overview/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-theme": ["libs/ui-theme/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/value-badge": [
+        "libs/ui-components/value-badge/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/timeline": [
+        "libs/ui-components/timeline/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/heatmap": [
+        "libs/ui-components/heatmap/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

@@ -1,0 +1,16 @@
+@import "libs/ui-theme/src/palette";
+
+.item {
+  background-color: map-get($primary-palette, 200);
+  width: 100%;
+  padding: 10px 0 10px 10px;
+  border-radius: 5px;
+}
+
+.UNHEALTHY {
+  background-color: #f4c8c8;
+}
+
+.HEALTHY {
+  background-color: #c8f4d9;
+}

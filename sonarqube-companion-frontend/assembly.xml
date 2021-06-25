@@ -6,7 +6,7 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>target/webapp</directory>
+      <directory>dist/apps/sonarqube-companion</directory>
       <outputDirectory></outputDirectory>
       <includes>
         <include>**</include>
