@@ -19,11 +19,8 @@
       "@sonarqube-companion-frontend/ui-components/sidebar": [
         "libs/ui-components/sidebar/src/index.ts"
       ],
-      "@sonarqube-companion-frontend/ui-components/groups-tree": [
-        "libs/ui-components/groups-tree/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/group-overview": [
-        "libs/ui-components/group-overview/src/index.ts"
+      "@sonarqube-companion-frontend/group-overview": [
+        "libs/group-overview/src/index.ts"
       ],
       "@sonarqube-companion-frontend/ui-theme": ["libs/ui-theme/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/value-badge": [
@@ -34,6 +31,11 @@
       ],
       "@sonarqube-companion-frontend/ui-components/heatmap": [
         "libs/ui-components/heatmap/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/group": ["libs/group/src/index.ts"],
+      "@sonarqube-companion-frontend/sidenav": ["libs/sidenav/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/side-groups-tree": [
+        "libs/ui-components/side-groups-tree/src/index.ts"
       ]
     }
   },

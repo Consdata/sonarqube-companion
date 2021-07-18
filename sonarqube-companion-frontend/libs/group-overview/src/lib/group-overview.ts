@@ -4,6 +4,7 @@ export interface GroupOverview {
   groups: GroupOverview[];
   violations: Violations;
   projectCount: number;
+  membersCount: number;
   healthStatus: string;
 }
 

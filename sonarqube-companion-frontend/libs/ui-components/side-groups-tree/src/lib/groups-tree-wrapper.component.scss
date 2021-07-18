@@ -1,0 +1,20 @@
+@import "libs/ui-theme/src/palette";
+
+.wrapper {
+  background-color: map-get($primary-palette, 900);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  padding-left: 36px;
+  padding-right: 36px;
+  height: 48px;
+
+  .label {
+    margin-left: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    flex-grow: 1;
+  }
+}

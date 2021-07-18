@@ -1,21 +1,16 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {SidebarItem} from '../../../../libs/ui-components/sidebar/src/lib/sidebar/sidebar.component';
 
 @Component({
   selector: 'sqc-root',
   template: `
-    <sqc-sidebar name="sqcompoanion" shortName="sqc" [items]="sidebarItems">
+    <sqc-group-sidenav name="sqcompoanion">
       <router-outlet></router-outlet>
-    </sqc-sidebar>
+    </sqc-group-sidenav>
   `,
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  title = 'sonarqube-companion';
 
-  sidebarItems: SidebarItem[] = [
-    {icon: 'home', label: 'Overview', path: '/overview'},
-    {icon: 'group_work', label: 'Groups', path: '/groups'},
-    {icon: 'code', label: 'Projects', path: '/projects'},
-  ];
 }

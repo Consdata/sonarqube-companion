@@ -1,17 +1,19 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { TimelineComponent } from './timeline/timeline.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TimelineComponent} from './timeline.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([
-      /* {path: '', pathMatch: 'full', component: InsertYourComponentHere} */
-    ]),
+    NgxChartsModule
   ],
   declarations: [
     TimelineComponent
   ],
+  exports: [
+    TimelineComponent
+  ]
 })
-export class UiComponentsTimelineModule {}
+export class UiComponentsTimelineModule {
+}

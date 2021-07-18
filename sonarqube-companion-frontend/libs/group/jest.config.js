@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'ui-components-groups-tree',
-  preset: '../../../jest.preset.js',
+  displayName: 'group',
+  preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -14,7 +14,7 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../../coverage/libs/ui-components/groups-tree',
+  coverageDirectory: '../../coverage/libs/group',
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

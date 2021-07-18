@@ -32,9 +32,6 @@
     "ui-components-sidebar": {
       "tags": []
     },
-    "ui-components-groups-tree": {
-      "tags": []
-    },
     "group-overview": {
       "tags": []
     },
@@ -48,6 +45,15 @@
       "tags": []
     },
     "ui-components-heatmap": {
+      "tags": []
+    },
+    "group": {
+      "tags": []
+    },
+    "sidenav": {
+      "tags": []
+    },
+    "ui-components-side-groups-tree": {
       "tags": []
     }
   }

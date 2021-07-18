@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {GroupOverview} from '@sonarqube-companion-frontend/ui-components/group-overview';
+import {GroupOverview} from '@sonarqube-companion-frontend/group-overview';
 
 @Injectable({
   providedIn: 'root'

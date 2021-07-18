@@ -1,0 +1,34 @@
+@import "libs/ui-theme/src/palette";
+
+.content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.badge {
+  background-color: map-get($primary-palette, 200);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+
+.value {
+  font-size: 24px;
+}
+
+.label {
+  font-size: 10px;
+}
+
+.urgent {
+  background-color: #f3c5c5;
+}
+
+.warning {
+  background-color: #f3edc5;
+}

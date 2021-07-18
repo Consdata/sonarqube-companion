@@ -204,31 +204,6 @@
         }
       }
     },
-    "ui-components-groups-tree": {
-      "projectType": "library",
-      "root": "libs/ui-components/groups-tree",
-      "sourceRoot": "libs/ui-components/groups-tree/src",
-      "prefix": "sonarqube-companion-frontend",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/ui-components/groups-tree"],
-          "options": {
-            "jestConfig": "libs/ui-components/groups-tree/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/ui-components/groups-tree/src/**/*.ts",
-              "libs/ui-components/groups-tree/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
     "group-overview": {
       "projectType": "library",
       "root": "libs/group-overview",
@@ -349,6 +324,81 @@
             "lintFilePatterns": [
               "libs/ui-components/heatmap/src/**/*.ts",
               "libs/ui-components/heatmap/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "group": {
+      "projectType": "library",
+      "root": "libs/group",
+      "sourceRoot": "libs/group/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/group"],
+          "options": {
+            "jestConfig": "libs/group/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/group/src/**/*.ts",
+              "libs/group/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "sidenav": {
+      "projectType": "library",
+      "root": "libs/sidenav",
+      "sourceRoot": "libs/sidenav/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sidenav"],
+          "options": {
+            "jestConfig": "libs/sidenav/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/sidenav/src/**/*.ts",
+              "libs/sidenav/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-components-side-groups-tree": {
+      "projectType": "library",
+      "root": "libs/ui-components/side-groups-tree",
+      "sourceRoot": "libs/ui-components/side-groups-tree/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/side-groups-tree"],
+          "options": {
+            "jestConfig": "libs/ui-components/side-groups-tree/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/side-groups-tree/src/**/*.ts",
+              "libs/ui-components/side-groups-tree/src/**/*.html"
             ]
           }
         }

@@ -29,6 +29,8 @@ public class GroupOverview {
     private Violations violations;
     @ApiModelProperty(value = "Project in group count", example = "42", required = true)
     private Integer projectCount;
+    @ApiModelProperty(value = "Members in group count", example = "42", required = true)
+    private Integer membersCount;
     private List<GroupOverview> groups;
 
 }

@@ -20,18 +20,26 @@
 }
 
 .tree {
-  background-color: map-get($primary-palette, 50);
+  background-color: map-get($primary-palette, 900);
   margin-right: 10px;
-
+  padding: 10px;
 }
 
 sqc-groups-tree-item {
   width: 100%;
   margin: 10px;
-  background-color: map-get($primary-palette, 200);
   border-radius: 5px;
 }
 
 .mat-tree-node {
   cursor: pointer;
 }
+
+.expander {
+  color: map-get($primary-palette, 200);
+}
+
+sqc-side-groups-tree-item {
+  width: 100%;
+}
+

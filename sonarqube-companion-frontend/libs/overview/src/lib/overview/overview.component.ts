@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {Observable} from 'rxjs';
 import {OverviewService} from '../overview.service';
-import {GroupOverview} from '@sonarqube-companion-frontend/ui-components/group-overview';
+import {GroupOverview} from '@sonarqube-companion-frontend/group-overview';
+import {GroupsTreeItem} from '../../../../ui-components/groups-tree/src/lib/groups-tree-item';
 
 @Component({
   selector: 'sqc-overview',
@@ -10,20 +11,16 @@ import {GroupOverview} from '@sonarqube-companion-frontend/ui-components/group-o
       <div class="top-bar">
         <span>overview</span>
       </div>
+      <mat-divider></mat-divider>
       <div class="wrapper">
-        <sqc-groups-tree-wrapper [rootGroup]="rootGroup$"></sqc-groups-tree-wrapper>
-        <mat-divider [vertical]="true"></mat-divider>
-        <sqc-group-overview></sqc-group-overview>
+        <sqc-group-overview [group]="selectedGroup"></sqc-group-overview>
       </div>
     </div>
   `,
-  styleUrls: ['./overview.component.scss']
+  styleUrls: ['./overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OverviewComponent {
-  rootGroup$: Observable<GroupOverview> = this.overviewService.overview();
-
-  constructor(private overviewService: OverviewService) {
-  }
-
-
+  @Input()
+  selectedGroup!: GroupOverview;
 }

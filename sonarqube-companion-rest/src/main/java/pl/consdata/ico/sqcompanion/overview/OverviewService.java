@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.health.HealthCheckService;
 import pl.consdata.ico.sqcompanion.health.HealthStatus;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
 import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
@@ -23,7 +24,7 @@ import static java.util.Optional.ofNullable;
 @RequiredArgsConstructor
 public class OverviewService {
 
-    private final ProjectSummaryService projectSummaryService;
+    private final MemberService memberService;
     private final UserViolationSummaryHistoryService userViolationSummaryHistoryService;
     private final HealthCheckService healthCheckService;
 
@@ -42,6 +43,7 @@ public class OverviewService {
                 .name(group.getName())
                 .violations(ProjectSummary.summarizedViolations(projectSummaries))
                 .projectCount(projectSummaries.size())
+                .membersCount(memberService.groupMembers(group.getUuid()).size())
                 .groups(ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::asGroupWithSubGroupsSummary).collect(Collectors.toList()))
                 .build();
     }

@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {UiComponentsSidebarModule} from '@sonarqube-companion-frontend/ui-components/sidebar';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {HttpClientModule} from '@angular/common/http';
+import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
@@ -16,7 +17,8 @@ import {HttpClientModule} from '@angular/common/http';
     RouterModule.forRoot(appRoutes),
     UiComponentsSidebarModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    SidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent],
