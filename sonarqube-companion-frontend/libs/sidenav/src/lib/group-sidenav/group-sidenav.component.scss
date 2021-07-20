@@ -1,0 +1,97 @@
+@import "libs/ui-theme/src/palette";
+@import "libs/ui-theme/src/guidline";
+
+.section {
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+}
+
+mat-selection-list {
+  padding-top: 0;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+
+mat-sidenav {
+  width: 300px;
+}
+
+.expander {
+  flex-grow: 1;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: map-get($primary-palette, 900);
+  color: map-get($primary-palette, 300);
+}
+
+.mat-list-item {
+  color: map-get($primary-palette, 300);
+}
+
+.mat-list-item.fold-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+mat-divider {
+  border-top-color: map-get($primary-palette, 800);
+}
+
+.title {
+  font-weight: 600;
+  font-size: 14px;
+  min-height: $top-bar-height;
+  height: $top-bar-height;
+  background-color: map-get($primary-palette, 900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.mat-list-single-selected-option, .mat-list-single-selected-option:hover, .mat-list-single-selected-option:focus {
+  background-color: map-get($primary-palette, 1000);
+}
+
+.git {
+  background: url("/assets/github-icon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-drawer-content {
+  overflow-x: hidden;
+}
+
+
+.section {
+  padding: 20px;
+  .icon {
+    margin-right: 5px;
+  }
+  .label {
+
+  }
+}
+
+.mat-list-base {
+  padding-top: 0;
+}

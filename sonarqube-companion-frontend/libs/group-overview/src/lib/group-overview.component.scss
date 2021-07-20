@@ -1,0 +1,41 @@
+.group {
+  padding: 20px;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.violations {
+  display: flex;
+  justify-content: center;
+}
+
+.structure {
+  display: flex;
+  justify-content: center;
+}
+
+sqc-value-badge {
+  margin: 10px;
+}
+
+.header {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.stats {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.activity {
+  width: 100%;
+}
+
+.timeline {
+  margin-bottom: 30px;
+  width: 100%;
+}

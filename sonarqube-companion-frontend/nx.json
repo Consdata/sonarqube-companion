@@ -1,0 +1,60 @@
+{
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "affected": {
+    "defaultBase": "master"
+  },
+  "npmScope": "sonarqube-companion-frontend",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "sonarqube-companion": {
+      "tags": []
+    },
+    "sonarqube-companion-e2e": {
+      "tags": [],
+      "implicitDependencies": ["sonarqube-companion"]
+    },
+    "overview": {
+      "tags": []
+    },
+    "ui-components-sidebar": {
+      "tags": []
+    },
+    "group-overview": {
+      "tags": []
+    },
+    "ui-theme": {
+      "tags": []
+    },
+    "ui-components-value-badge": {
+      "tags": []
+    },
+    "ui-components-timeline": {
+      "tags": []
+    },
+    "ui-components-heatmap": {
+      "tags": []
+    },
+    "group": {
+      "tags": []
+    },
+    "sidenav": {
+      "tags": []
+    },
+    "ui-components-side-groups-tree": {
+      "tags": []
+    }
+  }
+}

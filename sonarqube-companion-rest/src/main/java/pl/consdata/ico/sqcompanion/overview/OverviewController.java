@@ -2,8 +2,8 @@ package pl.consdata.ico.sqcompanion.overview;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
@@ -19,11 +19,7 @@ public class OverviewController {
         this.overviewService = overviewService;
     }
 
-    @RequestMapping(
-            value = "",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
             value = "Returns system overview.",
             notes = "<p>Returns groups tree with names, hierarchy and health status.</p>"

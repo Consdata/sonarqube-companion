@@ -1,0 +1,45 @@
+@import "libs/ui-theme/src/palette";
+
+.tree-invisible {
+  display: none;
+}
+
+.tree ul,
+.tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.tree .mat-nested-tree-node div[role=group] {
+  padding-left: 20px;
+}
+
+.tree div[role=group] > .mat-tree-node {
+  padding-left: 20px;
+}
+
+.tree {
+  background-color: map-get($primary-palette, 900);
+  margin-right: 10px;
+  padding: 10px;
+}
+
+sqc-groups-tree-item {
+  width: 100%;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.mat-tree-node {
+  cursor: pointer;
+}
+
+.expander {
+  color: map-get($primary-palette, 200);
+}
+
+sqc-side-groups-tree-item {
+  width: 100%;
+}
+
