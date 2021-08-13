@@ -55,9 +55,7 @@
               "apps/sonarqube-companion/src/favicon.ico",
               "apps/sonarqube-companion/src/assets"
             ],
-            "styles": [
-              "apps/sonarqube-companion/src/styles.scss"
-            ],
+            "styles": ["apps/sonarqube-companion/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -501,6 +499,31 @@
             "lintFilePatterns": [
               "libs/ui-components/select/src/**/*.ts",
               "libs/ui-components/select/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "settings": {
+      "projectType": "library",
+      "root": "libs/settings",
+      "sourceRoot": "libs/settings/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/settings"],
+          "options": {
+            "jestConfig": "libs/settings/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/settings/src/**/*.ts",
+              "libs/settings/src/**/*.html"
             ]
           }
         }

@@ -36,7 +36,7 @@ import {Router} from '@angular/router';
           <div class="expander"></div>
           <mat-nav-list class="bottom-list">
             <mat-list-item>
-              <div class="item">
+              <div class="item" (click)="goToSettings()">
                 <mat-icon>settings</mat-icon>
               </div>
             </mat-list-item>
@@ -69,5 +69,9 @@ export class GroupSidenavComponent {
 
   onSelect(event: GroupLightModel) {
     this.router.navigate(['group', event.uuid])
+  }
+
+  goToSettings() {
+    this.router.navigate(['settings'])
   }
 }

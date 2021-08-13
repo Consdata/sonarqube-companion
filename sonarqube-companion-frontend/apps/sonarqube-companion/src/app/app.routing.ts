@@ -10,6 +10,13 @@ export const appRoutes = [
       ),
   },
   {
+    path: 'settings',
+    loadChildren: () =>
+      import('@sonarqube-companion-frontend/settings').then(
+        (module) => module.SettingsModule
+      ),
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }
