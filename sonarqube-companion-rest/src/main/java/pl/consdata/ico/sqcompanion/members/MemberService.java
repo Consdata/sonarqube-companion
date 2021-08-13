@@ -122,17 +122,13 @@ public class MemberService {
     }
 
     public Set<Member> groupMembers(String groupId) {
-        if (appConfig.getMembers().isRecursive()) {
-            return repositoryService.getGroup(groupId)
-                    .map(Group::getAllGroups)
-                    .orElse(Collections.emptyList())
-                    .stream()
-                    .map(group -> getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(group.getUuid(), LocalDate.now().minusDays(1))))
-                    .flatMap(Set::stream)
-                    .collect(Collectors.toSet());
-        } else {
-            return getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(groupId, LocalDate.now().minusDays(1)));
-        }
+        return repositoryService.getGroup(groupId)
+                .map(Group::getAllGroups)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(group -> getAttachedMembers(membershipRepository.findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(group.getUuid(), LocalDate.now().minusDays(1))))
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> membersAliases(String groupId) {

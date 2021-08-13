@@ -44,28 +44,10 @@ public class IndexHtmlController {
             final Document template = Jsoup.parse(indexInputStream, "UTF-8", "");
 
             baseHrefParam.ifPresent(baseHref -> appendBaseHref(template, baseHref));
-            appendAppConfig(template);
-
             return template.toString();
         } catch (IOException exception) {
             throw new SQCompanionException("Can't load index.html template", exception);
         }
-    }
-
-    private void appendAppConfig(Document template) throws JsonProcessingException {
-        final Map<String, Object> config = new HashMap<>();
-        config.put("random", 4);
-        template.getElementById("appServerDefaultConfig")
-                .after(
-                        new StringBuilder()
-                                .append("<script type=\"text/javascript\">")
-                                .append("window.serverAppConfig = window.serverAppConfig || {};")
-                                .append("Object.assign(window.serverAppConfig, ")
-                                .append(objectMapper.writeValueAsString(config))
-                                .append(");")
-                                .append("</script>")
-                                .toString()
-                );
     }
 
     private void appendBaseHref(final Document template, final String baseHref) {

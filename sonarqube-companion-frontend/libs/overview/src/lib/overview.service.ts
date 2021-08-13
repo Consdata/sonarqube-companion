@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {GroupOverview} from '@sonarqube-companion-frontend/group-overview';
+import {GroupLightModel, GroupOverview} from '@sonarqube-companion-frontend/group-overview';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +14,9 @@ export class OverviewService {
 
   public overview(): Observable<GroupOverview> {
     return this.http.get<GroupOverview>(this.url);
+  }
+
+  public list(): Observable<GroupLightModel> {
+    return this.http.get<GroupLightModel>(`${this.url}/list`);
   }
 }

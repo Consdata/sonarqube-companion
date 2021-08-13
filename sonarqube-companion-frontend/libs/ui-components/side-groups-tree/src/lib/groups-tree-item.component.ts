@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {GroupsTreeItem} from './groups-tree-item';
+import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
 
 @Component({
   selector: 'sqc-side-groups-tree-item',
@@ -8,7 +8,6 @@ import {GroupsTreeItem} from './groups-tree-item';
       <div class="item">
         {{item.name}}
       </div>
-      <div class="status-indicator" [ngClass]="item.healthStatus"></div>
     </mat-list-item>
   `,
   styleUrls: ['./groups-tree-item.component.scss'],
@@ -17,6 +16,6 @@ import {GroupsTreeItem} from './groups-tree-item';
 export class GroupsTreeItemComponent {
 
   @Input()
-  item!: GroupsTreeItem;
+  item!: GroupLightModel;
 
 }

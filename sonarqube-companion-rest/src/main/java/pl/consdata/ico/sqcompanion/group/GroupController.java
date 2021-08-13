@@ -6,10 +6,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.Member;
 import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
+import pl.consdata.ico.sqcompanion.violation.Violations;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,6 +43,24 @@ public class GroupController {
     public GroupDetails getRootGroup() {
         return groupService.getRootGroupDetails();
     }
+
+    @GetMapping(
+            value = "/{uuid}/info",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group basic data",
+            notes = "<p>Returns group basic data</p>"
+    )
+    public GroupLightModel info(@PathVariable final String uuid) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return GroupLightModel.of(group.get());
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
 
     @RequestMapping(
             value = "/{uuid}",
@@ -92,4 +112,24 @@ public class GroupController {
     public Set<Member> getMembers(@PathVariable final String uuid, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         return memberService.groupMembers(uuid, from, to);
     }
+
+
+    @GetMapping(
+            value = "/{uuid}/violations",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group members between given period.",
+            notes = "<p>Returns group members</p>"
+    )
+    public Violations getViolations(@PathVariable final String uuid) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return groupService.getViolations(group.get());
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
+
 }

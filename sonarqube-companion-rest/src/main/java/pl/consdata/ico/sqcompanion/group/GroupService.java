@@ -5,76 +5,47 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
-import pl.consdata.ico.sqcompanion.health.HealthCheckService;
-import pl.consdata.ico.sqcompanion.health.HealthStatus;
-import pl.consdata.ico.sqcompanion.project.ProjectSummary;
-import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
+import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
-import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.emptyList;
-import static java.util.Optional.ofNullable;
+import pl.consdata.ico.sqcompanion.violation.Violations;
+import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistoryService;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class GroupService {
-
-    private final ProjectSummaryService projectSummaryService;
-    private final UserViolationSummaryHistoryService userViolationSummaryHistoryService;
-    private final HealthCheckService healthCheckService;
     private final RepositoryService repositoryService;
+    private final MemberService memberService;
+    private final GroupViolationsHistoryService groupViolationsHistoryService;
 
     @Cacheable(value = Caches.GROUP_DETAILS_CACHE, sync = true, key = "#group.uuid")
     public GroupDetails getGroupDetails(Group group) {
-        final List<ProjectSummary> projectSummaries = userViolationSummaryHistoryService.getProjectSummaries(group.getAllProjects(), group.getUuid());
-        final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
-
         return GroupDetails
                 .builder()
-                .groups(ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::asGroupSummary).collect(Collectors.toList()))
                 .uuid(group.getUuid())
                 .name(group.getName())
-                .projects(projectSummaries)
-                .healthStatus(healthStatus)
-                .violations(ProjectSummary.summarizedViolations(projectSummaries))
-                .events(group.getEvents())
+                .projects(group.getAllProjects().size())
+                .members(memberService.groupMembers(group.getUuid()).size())
+                .events(0)
                 .build();
     }
 
     @Cacheable(value = Caches.ALL_PROJECTS_DETAILS_CACHE, sync = true)
     public GroupDetails getRootGroupDetails() {
         Group group = repositoryService.getRootGroup();
-        final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-        final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
 
         return GroupDetails
                 .builder()
-                .groups(ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::asGroupSummary).collect(Collectors.toList()))
                 .uuid(group.getUuid())
                 .name(group.getName())
-                .projects(projectSummaries)
-                .healthStatus(healthStatus)
-                .violations(ProjectSummary.summarizedViolations(projectSummaries))
-                .events(group.getEvents())
+                .projects(group.getAllProjects().size())
+                .members(memberService.groupMembers(group.getUuid()).size())
+                .events(0)
                 .build();
     }
 
-
-    private GroupSummary asGroupSummary(final Group group) {
-        final List<ProjectSummary> projectSummaries = projectSummaryService.getProjectSummaries(group.getAllProjects());
-        final HealthStatus healthStatus = healthCheckService.getCombinedProjectsHealth(projectSummaries);
-        return GroupSummary
-                .builder()
-                .healthStatus(healthStatus)
-                .uuid(group.getUuid())
-                .name(group.getName())
-                .violations(ProjectSummary.summarizedViolations(projectSummaries))
-                .build();
+    public Violations getViolations(Group group) {
+        return groupViolationsHistoryService.getViolations(group.getUuid());
     }
-
 }

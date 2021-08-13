@@ -55,7 +55,9 @@
               "apps/sonarqube-companion/src/favicon.ico",
               "apps/sonarqube-companion/src/assets"
             ],
-            "styles": ["apps/sonarqube-companion/src/styles.scss"],
+            "styles": [
+              "apps/sonarqube-companion/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -399,6 +401,106 @@
             "lintFilePatterns": [
               "libs/ui-components/side-groups-tree/src/**/*.ts",
               "libs/ui-components/side-groups-tree/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-components-table": {
+      "projectType": "library",
+      "root": "libs/ui-components/table",
+      "sourceRoot": "libs/ui-components/table/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/table"],
+          "options": {
+            "jestConfig": "libs/ui-components/table/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/table/src/**/*.ts",
+              "libs/ui-components/table/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "project": {
+      "projectType": "library",
+      "root": "libs/project",
+      "sourceRoot": "libs/project/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/project"],
+          "options": {
+            "jestConfig": "libs/project/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/project/src/**/*.ts",
+              "libs/project/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "member": {
+      "projectType": "library",
+      "root": "libs/member",
+      "sourceRoot": "libs/member/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/member"],
+          "options": {
+            "jestConfig": "libs/member/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/member/src/**/*.ts",
+              "libs/member/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-components-select": {
+      "projectType": "library",
+      "root": "libs/ui-components/select",
+      "sourceRoot": "libs/ui-components/select/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/select"],
+          "options": {
+            "jestConfig": "libs/ui-components/select/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/select/src/**/*.ts",
+              "libs/ui-components/select/src/**/*.html"
             ]
           }
         }

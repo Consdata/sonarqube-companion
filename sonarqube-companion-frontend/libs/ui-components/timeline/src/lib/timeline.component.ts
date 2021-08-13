@@ -5,10 +5,10 @@ import {curveBasis, CurveFactory} from 'd3-shape';
 @Component({
   selector: 'sqc-timeline',
   template: `
-    <div class="wrapper">
+    <div class="wrapper" *ngIf="data">
       <ngx-charts-line-chart
         [results]="data"
-        [timeline]="false"
+        [timeline]="true"
         [xAxis]="true"
         [yAxis]="true"
         [autoScale]="true"
@@ -23,12 +23,12 @@ import {curveBasis, CurveFactory} from 'd3-shape';
 export class TimelineComponent {
 
   @Input()
-  data!: Series[];
+  data?: Series[];
 
   curve: CurveFactory = curveBasis;
 
   onSelect(data: any): void {
-    //  console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+
   }
 
   onActivate(data: any): void {

@@ -2,6 +2,7 @@ package pl.consdata.ico.sqcompanion.sync;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
@@ -68,11 +69,10 @@ public class SynchronizationService {
         userViolationDiffSyncService.sync();
         userViolationSummaryHistorySyncService.sync();
         synchronizationStateService.finishSynchronization();
-
         Caches.LIST
                 .stream()
                 .map(cacheManager::getCache)
-                .forEach(cache -> cache.clear());
+                .forEach(Cache::clear);
 
         log.info("Synchronization finished in {}ms", (System.currentTimeMillis() - startTime));
     }

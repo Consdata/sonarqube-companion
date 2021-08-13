@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Observable} from 'rxjs';
-import {GroupOverview} from '@sonarqube-companion-frontend/group-overview';
+import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
 import {OverviewService} from '../../../../overview/src/lib/overview.service';
-import {GroupsTreeItem} from '../../../../ui-components/side-groups-tree/src/lib/groups-tree-item';
 import {Router} from '@angular/router';
 
 @Component({
@@ -35,7 +34,12 @@ import {Router} from '@angular/router';
             </mat-list-item>
           </mat-nav-list>
           <div class="expander"></div>
-          <mat-nav-list>
+          <mat-nav-list class="bottom-list">
+            <mat-list-item>
+              <div class="item">
+                <mat-icon>settings</mat-icon>
+              </div>
+            </mat-list-item>
             <mat-list-item>
               <div class="item"><a class="git" href="https://github.com/Consdata/sonarqube-companion"
                                    target="_blank"></a></div>
@@ -58,12 +62,12 @@ import {Router} from '@angular/router';
 })
 export class GroupSidenavComponent {
 
-  rootGroup$: Observable<GroupOverview> = this.overviewService.overview();
+  rootGroup$: Observable<GroupLightModel> = this.overviewService.list();
 
   constructor(private overviewService: OverviewService, private router: Router) { // TODO rename to list service and add server impl
   }
 
-  onSelect(event: GroupsTreeItem) {
+  onSelect(event: GroupLightModel) {
     this.router.navigate(['group', event.uuid])
   }
 }

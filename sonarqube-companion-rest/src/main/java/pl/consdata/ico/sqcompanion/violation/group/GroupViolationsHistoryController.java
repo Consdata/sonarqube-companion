@@ -6,15 +6,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
+import pl.consdata.ico.sqcompanion.members.MembersViolationsHistoryDiff;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
+import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
 import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,7 +25,7 @@ import java.util.Optional;
 public class GroupViolationsHistoryController {
 
     private final RepositoryService repositoryService;
-    private final UserViolationSummaryHistoryService userViolationsHistoryService;
+    private final GroupViolationsHistoryService groupViolationsHistoryService;
 
     @GetMapping(
             value = "/",
@@ -33,7 +35,7 @@ public class GroupViolationsHistoryController {
             value = "Returns group violations history"
     )
     public ViolationsHistory getRootGroupViolationsHistory(@RequestParam Optional<Integer> daysLimit) {
-        return userViolationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
+        return groupViolationsHistoryService.getGroupViolationsHistory(repositoryService.getRootGroup(), daysLimit);
     }
 
     @GetMapping(
@@ -46,7 +48,7 @@ public class GroupViolationsHistoryController {
     public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid, @RequestParam Optional<Integer> daysLimit) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return userViolationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
+            return this.groupViolationsHistoryService.getGroupViolationsHistory(group.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
@@ -65,7 +67,7 @@ public class GroupViolationsHistoryController {
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return userViolationsHistoryService.getGroupsUserViolationsHistoryDiff(group.get(), fromDate, toDate);
+            return this.groupViolationsHistoryService.getGroupsUserViolationsHistoryDiff(group.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
@@ -85,7 +87,7 @@ public class GroupViolationsHistoryController {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent() && group.isPresent()) {
-            return userViolationsHistoryService.getProjectViolationsHistory(group.get(), project.get(), daysLimit);
+            return this.groupViolationsHistoryService.getProjectViolationsHistory(group.get(), project.get(), daysLimit);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
@@ -106,11 +108,71 @@ public class GroupViolationsHistoryController {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         final Optional<Project> project = repositoryService.getProject(uuid, projectKey);
         if (project.isPresent() && group.isPresent()) {
-            return userViolationsHistoryService.getProjectViolationsHistoryDiff(group.get(), project.get(), fromDate, toDate);
+            return this.groupViolationsHistoryService.getProjectViolationsHistoryDiff(group.get(), project.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find project: " + projectKey + " in group: " + uuid);
         }
     }
 
+
+    @GetMapping(
+            value = "/{uuid}/projects/{fromDate}/{toDate}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Returns project violations history change in time" //TODO
+    )
+    public List<ProjectViolationsHistoryDiff> get(
+            @PathVariable final String uuid,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate,
+            @RequestParam Optional<List<String>> members) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return this.groupViolationsHistoryService.getGroupProjectsViolationsHistoryDiff(group.get(), fromDate, toDate, members);
+        } else {
+            throw new SQCompanionException("Can't find group: " + uuid);
+        }
+    }
+
+
+    @GetMapping(
+            value = "/{uuid}/projects",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Returns project violations history change in time" //TODO
+    )
+    public List<ProjectViolationsHistoryDiff> get(
+            @PathVariable final String uuid,
+            @RequestParam Optional<Integer> daysLimit,
+            @RequestParam Optional<List<String>> members) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return this.groupViolationsHistoryService.getGroupProjectsViolationsHistoryDiff(group.get(), members, daysLimit);
+        } else {
+            throw new SQCompanionException("Can't find group: " + uuid);
+        }
+    }
+
+
+    @GetMapping(
+            value = "/{uuid}/members",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Returns project violations history change in time" //TODO
+    )
+    public List<MembersViolationsHistoryDiff> getByMemebers(
+            @PathVariable final String uuid,
+            @RequestParam Optional<Integer> daysLimit,
+            @RequestParam Optional<List<String>> projects) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return this.groupViolationsHistoryService.getGroupMembersViolationsHistoryDiff(group.get(), projects, daysLimit);
+        } else {
+            throw new SQCompanionException("Can't find group: " + uuid);
+        }
+    }
 
 }

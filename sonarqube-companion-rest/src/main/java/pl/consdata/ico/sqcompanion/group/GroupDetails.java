@@ -24,10 +24,8 @@ public class GroupDetails {
     private String uuid;
     private String name;
     private HealthStatus healthStatus;
-    private Violations violations;
-    private List<GroupSummary> groups;
-    private List<ProjectSummary> projects;
-    private List<IssueSummary> issues;
-    private List<GroupEvent> events;
+    private Integer projects;
+    private Integer members;
+    private Integer events;
 
 }

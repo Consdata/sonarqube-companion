@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
-import {GroupsTreeItem} from './groups-tree-item';
+import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
 
 @Component({
   selector: 'sqc-side-groups-tree',
@@ -31,19 +31,19 @@ import {GroupsTreeItem} from './groups-tree-item';
 })
 export class GroupsTreeComponent {
 
-  treeControl = new NestedTreeControl<GroupsTreeItem>(node => node.groups);
-  dataSource = new MatTreeNestedDataSource<GroupsTreeItem>();
+  treeControl = new NestedTreeControl<GroupLightModel>(node => node.groups);
+  dataSource = new MatTreeNestedDataSource<GroupLightModel>();
 
   @Output()
-  groupSelect: EventEmitter<GroupsTreeItem> = new EventEmitter<GroupsTreeItem>();
+  groupSelect: EventEmitter<GroupLightModel> = new EventEmitter<GroupLightModel>();
 
   constructor() {
   }
 
   @Input()
-  set rootGroup(rootGroup: GroupsTreeItem) {
+  set rootGroup(rootGroup: GroupLightModel) {
     this.dataSource.data = [rootGroup];
   }
 
-  hasChild = (_: number, node: GroupsTreeItem) => !!node.groups && node.groups.length > 0;
+  hasChild = (_: number, node: GroupLightModel) => !!node.groups && node.groups.length > 0;
 }

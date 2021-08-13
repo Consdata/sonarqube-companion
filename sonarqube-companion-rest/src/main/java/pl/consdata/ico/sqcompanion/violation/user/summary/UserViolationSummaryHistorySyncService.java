@@ -15,6 +15,7 @@ import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeUser;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilter;
 import pl.consdata.ico.sqcompanion.sonarqube.issues.IssueFilterFacet;
 import pl.consdata.ico.sqcompanion.users.UsersService;
+import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistoryService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +31,7 @@ public class UserViolationSummaryHistorySyncService {
     private final SonarQubeFacade sonarQubeFacade;
     private final AppConfig appConfig;
     private final Timer syncUserProjectTimer;
+    private final GroupViolationsHistoryService groupViolationsHistoryService;
 
     public UserViolationSummaryHistorySyncService(
             final UsersService usersService,
@@ -37,13 +39,14 @@ public class UserViolationSummaryHistorySyncService {
             final SonarQubeFacade sonarQubeFacade,
             final RepositoryService repositoryService,
             final AppConfig appConfig,
-            final MeterRegistry meterRegistry) {
+            final MeterRegistry meterRegistry, GroupViolationsHistoryService groupViolationsHistoryService) {
         this.usersService = usersService;
         this.repository = repository;
         this.sonarQubeFacade = sonarQubeFacade;
         this.repositoryService = repositoryService;
         this.appConfig = appConfig;
         this.syncUserProjectTimer = meterRegistry.timer("UserProjectViolationsSummaryHistoryService.syncUserProject");
+        this.groupViolationsHistoryService = groupViolationsHistoryService;
     }
 
     public void sync() {
@@ -84,27 +87,27 @@ public class UserViolationSummaryHistorySyncService {
             }
 
             final SonarQubeIssuesFacet severities = userIssues(project, user, dateToSync);
-            repository.save(
-                    UserProjectSummaryViolationHistoryEntry.builder()
-                            .id(
-                                    UserProjectSummaryViolationHistoryEntry.combineId(
-                                            project.getServerId(),
-                                            user.getUserId(),
-                                            project.getKey(),
-                                            dateToSync
-                                    )
+            UserProjectSummaryViolationHistoryEntry entry = UserProjectSummaryViolationHistoryEntry.builder()
+                    .id(
+                            UserProjectSummaryViolationHistoryEntry.combineId(
+                                    project.getServerId(),
+                                    user.getUserId(),
+                                    project.getKey(),
+                                    dateToSync
                             )
-                            .date(dateToSync)
-                            .serverId(project.getServerId())
-                            .userId(user.getUserId())
-                            .projectKey(project.getKey())
-                            .blockers(facetSeverityCount(severities, "BLOCKER"))
-                            .criticals(facetSeverityCount(severities, "CRITICAL"))
-                            .majors(facetSeverityCount(severities, "MAJOR"))
-                            .minors(facetSeverityCount(severities, "MINOR"))
-                            .infos(facetSeverityCount(severities, "INFO"))
-                            .build()
-            );
+                    )
+                    .date(dateToSync)
+                    .serverId(project.getServerId())
+                    .userId(user.getUserId())
+                    .projectKey(project.getKey())
+                    .blockers(facetSeverityCount(severities, "BLOCKER"))
+                    .criticals(facetSeverityCount(severities, "CRITICAL"))
+                    .majors(facetSeverityCount(severities, "MAJOR"))
+                    .minors(facetSeverityCount(severities, "MINOR"))
+                    .infos(facetSeverityCount(severities, "INFO"))
+                    .build();
+            repository.save(entry);
+            groupViolationsHistoryService.addToGroupHistory(entry);
         });
     }
 
@@ -125,28 +128,28 @@ public class UserViolationSummaryHistorySyncService {
     }
 
     private void useLastKnownMeasureForMissingDates(Project project, SonarQubeUser user, Optional<UserProjectSummaryViolationHistoryEntry> lastMeasure, Optional<LocalDate> lastMeasureDate, LocalDate dateToSync) {
-        for (LocalDate syncMissingDate = lastMeasureDate.get(); syncMissingDate.isBefore(dateToSync); syncMissingDate = syncMissingDate.plusDays(1)) {
-            repository.save(
-                    UserProjectSummaryViolationHistoryEntry.builder()
-                            .id(
-                                    UserProjectSummaryViolationHistoryEntry.combineId(
-                                            project.getServerId(),
-                                            user.getUserId(),
-                                            project.getKey(),
-                                            syncMissingDate
-                                    )
+        for (LocalDate syncMissingDate = lastMeasureDate.get().plusDays(1); syncMissingDate.isBefore(dateToSync); syncMissingDate = syncMissingDate.plusDays(1)) {
+            UserProjectSummaryViolationHistoryEntry entry = UserProjectSummaryViolationHistoryEntry.builder()
+                    .id(
+                            UserProjectSummaryViolationHistoryEntry.combineId(
+                                    project.getServerId(),
+                                    user.getUserId(),
+                                    project.getKey(),
+                                    syncMissingDate
                             )
-                            .date(syncMissingDate)
-                            .serverId(project.getServerId())
-                            .userId(user.getUserId())
-                            .projectKey(project.getKey())
-                            .blockers(lastMeasure.get().getBlockers())
-                            .criticals(lastMeasure.get().getCriticals())
-                            .majors(lastMeasure.get().getMajors())
-                            .minors(lastMeasure.get().getMinors())
-                            .infos(lastMeasure.get().getInfos())
-                            .build()
-            );
+                    )
+                    .date(syncMissingDate)
+                    .serverId(project.getServerId())
+                    .userId(user.getUserId())
+                    .projectKey(project.getKey())
+                    .blockers(lastMeasure.get().getBlockers())
+                    .criticals(lastMeasure.get().getCriticals())
+                    .majors(lastMeasure.get().getMajors())
+                    .minors(lastMeasure.get().getMinors())
+                    .infos(lastMeasure.get().getInfos())
+                    .build();
+            repository.save(entry);
+            groupViolationsHistoryService.addToGroupHistory(entry);
         }
     }
 

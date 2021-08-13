@@ -9,8 +9,8 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
           <ng-content></ng-content>
         </div>
         <span class="label">{{label}}</span>
+        <mat-icon *ngIf="icon">{{icon}}</mat-icon>
       </div>
-      <mat-icon *ngIf="icon">{{icon}}</mat-icon>
     </div>
   `,
   styleUrls: ['./value-badge.component.scss'],
