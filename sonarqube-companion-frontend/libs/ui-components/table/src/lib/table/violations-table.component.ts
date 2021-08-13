@@ -20,14 +20,6 @@ export interface ViolationsTableItem {
 @Component({
   selector: 'sqc-violations-table',
   template: `
-
-    <div class="search">
-      <mat-icon class="icon">search</mat-icon>
-      <mat-form-field appearance="standard">
-        <input matInput (keyup)="applyFilter($event)" #input>
-      </mat-form-field>
-    </div>
-
     <table mat-table [dataSource]="dataSource" class="sqc-table" *ngIf="_data" matSort>
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{nameAlias ? nameAlias : 'Name'}} </th>
@@ -67,10 +59,6 @@ export interface ViolationsTableItem {
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;">
       </tr>
-
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-      </tr>
     </table>
   `,
   styleUrls: ['./violations-table.component.scss']
@@ -90,13 +78,5 @@ export class ViolationsTableComponent {
     this._data = violations;
     this.dataSource = new MatTableDataSource<ViolationsTableItem>(violations);
     this.dataSource.sort = this.sort;
-    this.dataSource.filterPredicate = (data: ViolationsTableItem, filter: string) => {
-      return data.name.includes(filter);
-    };
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

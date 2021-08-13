@@ -67,6 +67,9 @@
     },
     "ui-components-select": {
       "tags": []
+    },
+    "settings": {
+      "tags": []
     }
   }
 }

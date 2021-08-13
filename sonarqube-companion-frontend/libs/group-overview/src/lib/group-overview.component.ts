@@ -31,21 +31,21 @@ interface GroupOverviewModel {
           <div class="more" *ngIf="!drawer.opened">
             <mat-divider vertical></mat-divider>
             <button mat-button (click)="drawerSelector='projects'; drawer.toggle()" matTooltip="Projects">
-              <div class="projects-button">
+              <div class="item">
                 <span class="label">{{vm.details.projects}}</span>
                 <mat-icon class="settings">code</mat-icon>
               </div>
             </button>
             <mat-divider vertical></mat-divider>
             <button mat-button (click)="drawerSelector='members'; drawer.toggle()" matTooltip="Members">
-              <div class="projects-button">
+              <div class="item">
                 <span class="label">{{vm.details.members}}</span>
                 <mat-icon class="settings">group</mat-icon>
               </div>
             </button>
             <mat-divider vertical></mat-divider>
             <button mat-button (click)="drawerSelector='events'; drawer.toggle()" matTooltip="Events">
-              <div class="projects-button">
+              <div class="item">
                 <span class="label">{{vm.details.events}}</span>
                 <mat-icon class="settings">event</mat-icon>
               </div>
@@ -54,7 +54,7 @@ interface GroupOverviewModel {
           <div class="more" *ngIf="drawer.opened">
             <mat-divider vertical></mat-divider>
             <button mat-button (click)="drawerSelector=''; drawer.toggle()">
-              <div class="projects-button">
+              <div class="item">
                 <mat-icon class="settings">close</mat-icon>
               </div>
             </button>

@@ -52,6 +52,8 @@ sqc-value-badge {
     position: absolute;
     cursor: pointer;
     display: flex;
+    height: $top-bar-height;
+    min-height: $top-bar-height;
   }
 }
 
@@ -105,7 +107,7 @@ sqc-value-badge {
   }
 }
 
-.projects-button {
+.item {
   display: flex;
   align-items: center;
   justify-content: center;

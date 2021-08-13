@@ -44,7 +44,8 @@
       "@sonarqube-companion-frontend/member": ["libs/member/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/select": [
         "libs/ui-components/select/src/index.ts"
-      ]
+      ],
+      "@sonarqube-companion-frontend/settings": ["libs/settings/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

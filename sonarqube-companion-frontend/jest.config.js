@@ -15,5 +15,6 @@ module.exports = {
     '<rootDir>/libs/project',
     '<rootDir>/libs/member',
     '<rootDir>/libs/ui-components/select',
+    '<rootDir>/libs/settings',
   ],
 };
