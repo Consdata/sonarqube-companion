@@ -11,5 +11,9 @@ module.exports = {
     '<rootDir>/libs/group',
     '<rootDir>/libs/sidenav',
     '<rootDir>/libs/ui-components/side-groups-tree',
+    '<rootDir>/libs/ui-components/table',
+    '<rootDir>/libs/project',
+    '<rootDir>/libs/member',
+    '<rootDir>/libs/ui-components/select',
   ],
 };

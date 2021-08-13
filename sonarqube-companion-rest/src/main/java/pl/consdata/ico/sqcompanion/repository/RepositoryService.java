@@ -4,9 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.model.GroupDefinition;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.ProjectLink;
 import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,7 +42,7 @@ public class RepositoryService {
     public void syncGroups() {
         final GroupDefinition rootGroupConfig = appConfig.getRootGroup();
         if (Objects.nonNull(rootGroupConfig)) {
-            this.rootGroup = buildGroup(rootGroupConfig);
+            this.rootGroup = buildGroup(rootGroupConfig, new ArrayList<>());
         } else {
             log.info("Root group not synced due to empty configuration");
         }
@@ -71,15 +73,18 @@ public class RepositoryService {
         return getRootGroup().getProject(projectKey);
     }
 
-    private Group buildGroup(final GroupDefinition group) {
+    private Group buildGroup(final GroupDefinition group, final List<GroupLightModel> parents) {
         try {
-            final List<Group> subGroups = ofNullable(group.getGroups()).orElse(emptyList()).stream().map(this::buildGroup).collect(Collectors.toList());
+            List<GroupLightModel> parentGroups = new ArrayList<>(parents);
+            parentGroups.add(GroupLightModel.of(group));
+            final List<Group> subGroups = ofNullable(group.getGroups()).orElse(emptyList()).stream().map(g -> buildGroup(g, parentGroups)).collect(Collectors.toList());
             final List<Project> projects = ofNullable(group.getProjectLinks()).orElse(emptyList())
                     .stream()
                     .flatMap(this::linkProjects)
                     .collect(Collectors.toList());
             return Group.builder()
                     .uuid(group.getUuid())
+                    .parentGroups(parents)
                     .name(group.getName())
                     .groups(subGroups)
                     .projects(projects)

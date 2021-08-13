@@ -55,6 +55,18 @@
     },
     "ui-components-side-groups-tree": {
       "tags": []
+    },
+    "ui-components-table": {
+      "tags": []
+    },
+    "project": {
+      "tags": []
+    },
+    "member": {
+      "tags": []
+    },
+    "ui-components-select": {
+      "tags": []
     }
   }
 }

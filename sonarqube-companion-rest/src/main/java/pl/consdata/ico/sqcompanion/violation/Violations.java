@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.consdata.ico.sqcompanion.violation.user.ViolationHistorySource;
+import pl.consdata.ico.sqcompanion.violation.user.ViolationSource;
 
 /**
  * @author gregorry
@@ -12,15 +14,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Violations {
+public class Violations implements ViolationSource {
 
-    private int blockers;
-    private int criticals;
-    private int majors;
-    private int minors;
-    private int infos;
+    private Integer blockers;
+    private Integer criticals;
+    private Integer majors;
+    private Integer minors;
+    private Integer infos;
 
-    public static Violations sumViolations(final Violations a, final Violations b) {
+    public static Violations sumViolations(final ViolationSource a, final ViolationSource b) {
         return Violations
                 .builder()
                 .blockers(a.getBlockers() + b.getBlockers())
@@ -41,7 +43,7 @@ public class Violations {
                 .build();
     }
 
-    public void addViolations(final Violations violations) {
+    public void addViolations(final ViolationSource violations) {
                 setBlockers(getBlockers() + violations.getBlockers());
                 setCriticals(getCriticals() + violations.getCriticals());
                 setMajors(getMajors() + violations.getMajors());

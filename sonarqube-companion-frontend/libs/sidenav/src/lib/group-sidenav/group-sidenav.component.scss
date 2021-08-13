@@ -55,7 +55,6 @@ mat-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
 
 }
 
@@ -95,3 +94,12 @@ mat-divider {
 .mat-list-base {
   padding-top: 0;
 }
+
+mat-sidenav-content {
+  overflow: hidden;
+}
+
+.bottom-list {
+  display: flex;
+}
+

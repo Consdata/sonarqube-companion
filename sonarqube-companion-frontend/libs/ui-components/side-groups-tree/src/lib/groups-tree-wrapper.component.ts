@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
-import {GroupsTreeItem} from './groups-tree-item';
+import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
 
 @Component({
   selector: 'sqc-side-groups-tree-wrapper',
@@ -22,9 +22,9 @@ import {GroupsTreeItem} from './groups-tree-item';
 export class GroupsTreeWrapperComponent {
 
   @Input('rootGroup')
-  rootGroup$!: Observable<GroupsTreeItem>;
+  rootGroup$!: Observable<GroupLightModel>;
 
   @Output()
-  groupSelect: EventEmitter<GroupsTreeItem> = new EventEmitter<GroupsTreeItem>();
+  groupSelect: EventEmitter<GroupLightModel> = new EventEmitter<GroupLightModel>();
 
 }

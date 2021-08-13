@@ -2,18 +2,7 @@ package pl.consdata.ico.sqcompanion.violation.user;
 
 import java.time.LocalDate;
 
-public interface ViolationHistorySource {
+public interface ViolationHistorySource extends ViolationSource {
 
     LocalDate getDate();
-
-    Integer getBlockers();
-
-    Integer getCriticals();
-
-    Integer getMajors();
-
-    Integer getMinors();
-
-    Integer getInfos();
-
 }

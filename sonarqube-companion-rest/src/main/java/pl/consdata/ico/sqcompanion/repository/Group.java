@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.consdata.ico.sqcompanion.config.model.GroupEvent;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ public class Group {
 
     private String uuid;
     private String name;
+    private List<GroupLightModel> parentGroups;
     private List<Group> groups;
     private List<Project> projects;
     private List<GroupEvent> events;

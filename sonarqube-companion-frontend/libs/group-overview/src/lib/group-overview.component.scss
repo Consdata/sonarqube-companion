@@ -1,9 +1,21 @@
+@import "libs/ui-theme/src/palette";
+@import "libs/ui-theme/src/guidline";
+
 .group {
-  padding: 20px;
-  width: 90%;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.overview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-direction: column;
 }
 
@@ -21,9 +33,26 @@ sqc-value-badge {
   margin: 10px;
 }
 
+.header-container {
+  width: 100%;
+}
+
 .header {
-  font-size: 30px;
-  margin-bottom: 20px;
+  height: $top-bar-height;
+  min-height: $top-bar-height;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 20px;
+
+  .more {
+    right: 0;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+  }
 }
 
 .stats {
@@ -38,4 +67,84 @@ sqc-value-badge {
 .timeline {
   margin-bottom: 30px;
   width: 100%;
+}
+
+.values {
+  display: flex;
+  justify-content: center;
+  max-height: 20%;
+}
+
+.top-bar-divider {
+  width: 100%;
+}
+
+.timeline {
+  width: 100%;
+  min-height: 60%;
+  margin-bottom: 20px;
+}
+
+.tables {
+  display: flex;
+  width: 100%;
+  max-height: 40%;
+
+  .members {
+    width: 50%;
+    overflow: auto;
+    margin: 10px;
+  }
+
+  .projects {
+    width: 50%;
+    overflow: auto;
+    margin: 10px;
+    height: 100%;
+
+  }
+}
+
+.projects-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .label {
+    margin-right: 10px;
+  }
+}
+
+.example-sidenav {
+  width: 100%;
+  background-color: map-get($primary-palette, 50);
+}
+
+.mat-drawer-content {
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+mat-drawer-container{
+  width: 100%;
+  height: 100%;
+}
+
+.filters {
+  margin-left: 20px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > * {
+    margin-right: 20px;
+  }
+}
+
+.footer {
+  height: 100px;
 }

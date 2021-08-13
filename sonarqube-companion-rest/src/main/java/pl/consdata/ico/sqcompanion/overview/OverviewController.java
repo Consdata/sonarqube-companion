@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
 @RestController
@@ -28,4 +29,12 @@ public class OverviewController {
         return overviewService.getOverview(repositoryService.getRootGroup());
     }
 
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Returns organization structure",
+            notes = "<p>Returns groups tree with names.</p>"
+    )
+    public GroupLightModel getGroups() {
+        return overviewService.list(repositoryService.getRootGroup());
+    }
 }

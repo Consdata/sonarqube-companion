@@ -7,6 +7,12 @@ import {UiComponentsHeatmapModule} from '@sonarqube-companion-frontend/ui-compon
 import {UiComponentsTimelineModule} from '@sonarqube-companion-frontend/ui-components/timeline';
 import {groupOverviewRouting} from './group-overview.routing';
 import {RouterModule} from '@angular/router';
+import {MatIconModule} from '@angular/material/icon';
+import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-components/table';
+import {MatButtonModule} from '@angular/material/button';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {UiComponentsSelectModule} from '@sonarqube-companion-frontend/ui-components/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -16,7 +22,13 @@ import {RouterModule} from '@angular/router';
     MatDividerModule,
     UiComponentsValueBadgeModule,
     UiComponentsHeatmapModule,
-    UiComponentsTimelineModule
+    UiComponentsTimelineModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSidenavModule,
+    UiComponentsTableModule,
+    UiComponentsSelectModule,
+    MatTooltipModule
   ],
   declarations: [
     GroupOverviewComponent

@@ -1,6 +1,7 @@
 package pl.consdata.ico.sqcompanion.sync;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/sync")
+@RequiredArgsConstructor
 public class SynchronizationController {
 
     private final SynchronizationStateService synchronizationStateService;
     private final SynchronizationTrigger synchronizationTrigger;
 
-    public SynchronizationController(final SynchronizationStateService synchronizationStateService,
-                                     final SynchronizationTrigger synchronizationTrigger) {
-        this.synchronizationStateService = synchronizationStateService;
-        this.synchronizationTrigger = synchronizationTrigger;
-    }
 
     @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(

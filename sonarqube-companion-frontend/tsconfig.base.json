@@ -36,6 +36,14 @@
       "@sonarqube-companion-frontend/sidenav": ["libs/sidenav/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/side-groups-tree": [
         "libs/ui-components/side-groups-tree/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/table": [
+        "libs/ui-components/table/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/project": ["libs/project/src/index.ts"],
+      "@sonarqube-companion-frontend/member": ["libs/member/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/select": [
+        "libs/ui-components/select/src/index.ts"
       ]
     }
   },

@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
+import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.health.HealthCheckService;
 import pl.consdata.ico.sqcompanion.health.HealthStatus;
 import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.project.ProjectSummary;
-import pl.consdata.ico.sqcompanion.project.ProjectSummaryService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHistoryService;
 
@@ -48,4 +48,7 @@ public class OverviewService {
                 .build();
     }
 
+    public GroupLightModel list(Group rootGroup) {
+        return GroupLightModel.of(rootGroup);
+    }
 }
