@@ -48,6 +48,15 @@ sqc-value-badge {
   font-size: 20px;
 
   .more {
+    left: 0;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    height: $top-bar-height;
+    min-height: $top-bar-height;
+  }
+
+  .filters {
     right: 0;
     position: absolute;
     cursor: pointer;
@@ -55,6 +64,7 @@ sqc-value-badge {
     height: $top-bar-height;
     min-height: $top-bar-height;
   }
+
 }
 
 .stats {
@@ -69,6 +79,7 @@ sqc-value-badge {
 .timeline {
   margin-bottom: 30px;
   width: 100%;
+  height: 100%;
 }
 
 .values {
@@ -81,11 +92,6 @@ sqc-value-badge {
   width: 100%;
 }
 
-.timeline {
-  width: 100%;
-  min-height: 60%;
-  margin-bottom: 20px;
-}
 
 .tables {
   display: flex;
@@ -135,14 +141,3 @@ mat-drawer-container{
   height: 100%;
 }
 
-.filters {
-  margin-left: 20px;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > * {
-    margin-right: 20px;
-  }
-}

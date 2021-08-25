@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, ViewChild} from '@angular/core';
 import {Timeline, TimelineSeries} from './timeline';
 
 
@@ -11,6 +11,7 @@ import {Timeline, TimelineSeries} from './timeline';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineComponent {
+  data?: TimelineSeries;
   private timeline?: Timeline;
 
   @ViewChild('timeline')
@@ -20,8 +21,17 @@ export class TimelineComponent {
 
   @Input()
   set series(_series: TimelineSeries) {
-    this.redraw(_series);
-    window.addEventListener('resize', () => this.redraw(_series));
+    this.data = _series;
+    if (this.data) {
+      this.redraw(this.data);
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (this.data) {
+      this.redraw(this.data)
+    }
   }
 
   private redraw(series: TimelineSeries): void {

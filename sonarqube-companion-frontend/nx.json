@@ -73,6 +73,9 @@
     },
     "event": {
       "tags": []
+    },
+    "ui-components-filters": {
+      "tags": []
     }
   }
 }

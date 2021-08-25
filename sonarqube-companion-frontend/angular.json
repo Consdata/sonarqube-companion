@@ -533,7 +533,7 @@
       "projectType": "library",
       "root": "libs/event",
       "sourceRoot": "libs/event/src",
-      "prefix": "sonarqube-companion-frontend",
+      "prefix": "sqc",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -549,6 +549,31 @@
             "lintFilePatterns": [
               "libs/event/src/**/*.ts",
               "libs/event/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-components-filters": {
+      "projectType": "library",
+      "root": "libs/ui-components/filters",
+      "sourceRoot": "libs/ui-components/filters/src",
+      "prefix": "sqc",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/filters"],
+          "options": {
+            "jestConfig": "libs/ui-components/filters/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/filters/src/**/*.ts",
+              "libs/ui-components/filters/src/**/*.html"
             ]
           }
         }

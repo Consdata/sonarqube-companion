@@ -1,9 +1,11 @@
 package pl.consdata.ico.sqcompanion.members;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import pl.consdata.ico.sqcompanion.BaseItTest;
 import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.Member;
+import pl.consdata.ico.sqcompanion.sync.SynchronizationException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,14 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class MemberServiceTest extends BaseItTest {
-
     @Test
-    public void shouldAddLocalUsersToDb() {
+    public void shouldAddLocalUsersToDb() throws SynchronizationException {
         //given
         //TestAppConfig
-
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         List<MemberEntryEntity> entries = memberRepository.findAll();
@@ -32,12 +32,12 @@ public class MemberServiceTest extends BaseItTest {
 
 
     @Test
-    public void shouldSetAttachedForNewEntries() {
+    public void shouldSetAttachedForNewEntries() throws SynchronizationException {
         //given
         //TestAppConfig
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll();
@@ -49,7 +49,7 @@ public class MemberServiceTest extends BaseItTest {
 
 
     @Test
-    public void shouldChangeStatusIfDetached() {
+    public void shouldChangeStatusIfDetached() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -61,7 +61,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         Optional<MembershipEntryEntity> entry = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc("member1", "group1");
@@ -74,7 +74,7 @@ public class MemberServiceTest extends BaseItTest {
 
 
     @Test
-    public void shouldSetAttachedOnExistingEntryIfLocalDateIsEqual() {
+    public void shouldSetAttachedOnExistingEntryIfLocalDateIsEqual() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -85,7 +85,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll();
@@ -97,7 +97,7 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldNotCreateNewEntryIfAlreadyAttached() {
+    public void shouldNotCreateNewEntryIfAlreadyAttached() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -108,7 +108,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll();
@@ -121,12 +121,12 @@ public class MemberServiceTest extends BaseItTest {
 
 
     @Test
-    public void shouldNotSetDetachedForNewEntries() {
+    public void shouldNotSetDetachedForNewEntries() throws SynchronizationException {
         //given
         //TestAppConfig
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         Optional<MembershipEntryEntity> entry = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc("member1", "group1");
@@ -137,7 +137,7 @@ public class MemberServiceTest extends BaseItTest {
 
 
     @Test
-    public void shouldChangeStatusIfAttached() {
+    public void shouldChangeStatusIfAttached() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -148,7 +148,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         Optional<MembershipEntryEntity> entry = membershipRepository.findFirstByMemberIdAndGroupIdOrderByDateDesc("member1", "group2");
@@ -159,7 +159,7 @@ public class MemberServiceTest extends BaseItTest {
 
 
     @Test
-    public void shouldSetDetachedOnExistingEntryIfLocalDateIsEqual() {
+    public void shouldSetDetachedOnExistingEntryIfLocalDateIsEqual() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -170,7 +170,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll().stream().filter(e -> "group2".equals(e.getGroupId())).collect(Collectors.toList());
@@ -182,7 +182,7 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldNotCreateNewEntryIfAlreadyDetached() {
+    public void shouldNotCreateNewEntryIfAlreadyDetached() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -193,7 +193,7 @@ public class MemberServiceTest extends BaseItTest {
                 .build());
 
         //when
-        memberService.syncMembers();
+        tickSynchronization();
 
         //then
         List<MembershipEntryEntity> entries = membershipRepository.findAll().stream().filter(e -> "group2".equals(e.getGroupId())).collect(Collectors.toList());
@@ -205,10 +205,10 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldReturnGroupsForMemberInGivenPeriod() {
+    public void shouldReturnGroupsForMemberInGivenPeriod() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
-        memberService.syncMembers();
+        tickSynchronization();
         membershipRepository.save(MembershipEntryEntity.builder()
                 .groupId("group2")
                 .event(MembershipEntryEntity.Event.ATTACHED)
@@ -224,10 +224,10 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldReturnCurrentGroupsForMember() {
+    public void shouldReturnCurrentGroupsForMember() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member1").build());
-        memberService.syncMembers();
+        tickSynchronization();
         membershipRepository.save(MembershipEntryEntity.builder()
                 .groupId("group2")
                 .event(MembershipEntryEntity.Event.ATTACHED)
@@ -244,7 +244,7 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldReturnLatestAttachedMembersOnlyForCompletedDays() {
+    public void shouldReturnLatestAttachedMembersOnlyForCompletedDays() throws SynchronizationException {
         //given`
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member2").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -253,7 +253,7 @@ public class MemberServiceTest extends BaseItTest {
                 .date(LocalDate.now().minusDays(3))
                 .member(member)
                 .build());
-        memberService.syncMembers();
+        tickSynchronization();
 
         //when
         Set<Member> members = memberService.groupMembers("group1");
@@ -263,7 +263,7 @@ public class MemberServiceTest extends BaseItTest {
     }
 
     @Test
-    public void shouldReturnAttachedMembersInGivenPeriod() {
+    public void shouldReturnAttachedMembersInGivenPeriod() throws SynchronizationException {
         //given
         MemberEntryEntity member = memberRepository.save(MemberEntryEntity.builder().id("member2").build());
         membershipRepository.save(MembershipEntryEntity.builder()
@@ -272,7 +272,7 @@ public class MemberServiceTest extends BaseItTest {
                 .date(LocalDate.now().minusDays(3))
                 .member(member)
                 .build());
-        memberService.syncMembers();
+        tickSynchronization();
 
         //when
         Set<Member> members = memberService.groupMembers("group1", LocalDate.now().minusDays(4), LocalDate.now().minusDays(2));

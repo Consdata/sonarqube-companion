@@ -14,6 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
+import pl.consdata.ico.sqcompanion.event.EventService;
+import pl.consdata.ico.sqcompanion.event.EventsFactory;
 import pl.consdata.ico.sqcompanion.history.SyncUserProjectViolationsDiffHistoryTest;
 import pl.consdata.ico.sqcompanion.hook.WebhookScheduler;
 import pl.consdata.ico.sqcompanion.members.MemberRepository;
@@ -71,6 +73,10 @@ public abstract class BaseItTest {
     protected MembershipRepository membershipRepository;
     @Autowired
     protected MemberService memberService;
+    @Autowired
+    protected EventService eventService;
+    @Autowired
+    protected EventsFactory eventsFactory;
 
     @Before
     public void setUpBaseItTest() {

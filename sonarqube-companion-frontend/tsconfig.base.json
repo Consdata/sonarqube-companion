@@ -46,7 +46,10 @@
         "libs/ui-components/select/src/index.ts"
       ],
       "@sonarqube-companion-frontend/settings": ["libs/settings/src/index.ts"],
-      "@sonarqube-companion-frontend/event": ["libs/event/src/index.ts"]
+      "@sonarqube-companion-frontend/event": ["libs/event/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/filters": [
+        "libs/ui-components/filters/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

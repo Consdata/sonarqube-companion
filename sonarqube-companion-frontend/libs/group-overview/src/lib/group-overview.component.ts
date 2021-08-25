@@ -29,9 +29,7 @@ interface GroupOverviewModel {
     <div class="wrapper" *ngIf="vm$ | async as vm">
       <div class="header-container">
         <div class="header">
-          <div class="label">{{vm.details.name}}</div>
           <div class="more" *ngIf="!drawer.opened">
-            <mat-divider vertical></mat-divider>
             <button mat-button (click)="drawerSelector='projects'; drawer.toggle()" matTooltip="Projects">
               <div class="item">
                 <span class="label">{{vm.details.projects}}</span>
@@ -52,8 +50,24 @@ interface GroupOverviewModel {
                 <mat-icon class="settings">event</mat-icon>
               </div>
             </button>
+            <mat-divider vertical></mat-divider>
           </div>
-          <div class="more" *ngIf="drawer.opened">
+          <div class="label">{{vm.details.name}}</div>
+          <div class="filters" *ngIf="!drawer.opened">
+            <mat-divider vertical></mat-divider>
+            <button mat-button matTooltip="Filters">
+              <div class="item">
+                <mat-icon class="settings">filter_alt</mat-icon>
+              </div>
+            </button>
+            <mat-divider vertical></mat-divider>
+            <button mat-button matTooltip="Period">
+              <div class="item">
+                <mat-icon class="settings">schedule</mat-icon>
+              </div>
+            </button>
+          </div>
+          <div class="filters" *ngIf="drawer.opened">
             <mat-divider vertical></mat-divider>
             <button mat-button (click)="drawerSelector=''; drawer.toggle()">
               <div class="item">
@@ -66,8 +80,7 @@ interface GroupOverviewModel {
       </div>
       <div class="group">
         <mat-drawer-container autosize [hasBackdrop]="false">
-          <mat-drawer #drawer class="example-sidenav" mode="over" position="end">
-
+          <mat-drawer #drawer class="example-sidenav" mode="over" position="start">
             <div class="projects" *ngIf="drawerSelector === 'projects'">
               <sqc-violations-table [nameAlias]="'Project'"
                                     [data]="asViolationsTableItems(vm.projectsDiff)"></sqc-violations-table>
@@ -92,11 +105,6 @@ interface GroupOverviewModel {
             </div>
             <div class="timeline">
               <mat-divider></mat-divider>
-              <div class="filters">
-                <sqc-select [text]="'severity'" [items]="[]"></sqc-select>
-                <sqc-select [text]="'project'" [items]="[]"></sqc-select>
-                <sqc-select [text]="'member'" [items]="membersAsSelectItems(vm.members)"></sqc-select>
-              </div>
               <sqc-timeline [series]="asSeries(vm.violationsHistory, vm.events || [])"></sqc-timeline>
             </div>
           </div>

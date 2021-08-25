@@ -61,9 +61,9 @@ public class SynchronizationService {
         long startTime = System.currentTimeMillis();
 
         synchronizationStateService.initSynchronization();
-        memberService.syncMembers();
         projectService.syncProjects();
         repositoryService.syncGroups();
+        memberService.syncMembers();
         usersService.sync();
         projectViolationsHistoryService.syncProjectsHistory();
         userViolationDiffSyncService.sync();

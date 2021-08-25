@@ -17,5 +17,6 @@ module.exports = {
     '<rootDir>/libs/ui-components/select',
     '<rootDir>/libs/settings',
     '<rootDir>/libs/event',
+    '<rootDir>/libs/ui-components/filters',
   ],
 };
