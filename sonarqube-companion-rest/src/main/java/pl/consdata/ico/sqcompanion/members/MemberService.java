@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.config.model.Member;
+import pl.consdata.ico.sqcompanion.event.EventService;
+import pl.consdata.ico.sqcompanion.event.EventsFactory;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 
@@ -24,6 +26,8 @@ public class MemberService {
     private final MembershipRepository membershipRepository;
     private final MembersIntegrations membersIntegrations;
     private final RepositoryService repositoryService;
+    private final EventService eventService;
+    private final EventsFactory eventsFactory;
 
     public void syncMembers() {
         log.info("> Sync members");
@@ -91,6 +95,7 @@ public class MemberService {
                     .member(memberEntryEntity)
                     .groupId(groupId)
                     .build());
+            this.eventService.addEvent(eventsFactory.memberAttachedToGroup(memberEntryEntity, groupId));
 
         }
     }
@@ -117,7 +122,7 @@ public class MemberService {
                     .member(memberEntryEntity)
                     .groupId(groupId)
                     .build());
-
+            this.eventService.addEvent(eventsFactory.memberDetachedFromGroup(memberEntryEntity, groupId));
         }
     }
 
