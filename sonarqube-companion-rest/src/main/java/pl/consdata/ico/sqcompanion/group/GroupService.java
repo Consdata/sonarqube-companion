@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.cache.Caches;
+import pl.consdata.ico.sqcompanion.event.EventService;
 import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistoryService;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -18,6 +21,7 @@ public class GroupService {
     private final RepositoryService repositoryService;
     private final MemberService memberService;
     private final GroupViolationsHistoryService groupViolationsHistoryService;
+    private final EventService eventService;
 
     @Cacheable(value = Caches.GROUP_DETAILS_CACHE, sync = true, key = "#group.uuid")
     public GroupDetails getGroupDetails(Group group) {
@@ -27,7 +31,7 @@ public class GroupService {
                 .name(group.getName())
                 .projects(group.getAllProjects().size())
                 .members(memberService.groupMembers(group.getUuid()).size())
-                .events(0)
+                .events(eventService.getByGroup(group.getUuid(), Optional.of(30)).size()) //TODO limit
                 .build();
     }
 
@@ -41,7 +45,7 @@ public class GroupService {
                 .name(group.getName())
                 .projects(group.getAllProjects().size())
                 .members(memberService.groupMembers(group.getUuid()).size())
-                .events(0)
+                .events(eventService.getByGroup(group.getUuid(), Optional.of(30)).size())
                 .build();
     }
 

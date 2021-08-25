@@ -70,6 +70,9 @@
     },
     "settings": {
       "tags": []
+    },
+    "event": {
+      "tags": []
     }
   }
 }

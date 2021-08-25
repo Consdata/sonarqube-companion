@@ -4,12 +4,13 @@ import {GroupDetails, GroupService} from '@sonarqube-companion-frontend/group';
 import {ActivatedRoute} from '@angular/router';
 import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
 import {GroupViolationsHistory} from '../../../group/src/lib/group-violations-history';
-import {Series} from '@swimlane/ngx-charts';
 import {ProjectViolationsHistoryDiff} from '@sonarqube-companion-frontend/project';
 import {ViolationsTableItem} from '../../../ui-components/table/src/lib/table/violations-table.component';
 import {Member, MemberViolationsHistoryDiff} from '@sonarqube-companion-frontend/member';
 import {SelectItem} from '@sonarqube-companion-frontend/ui-components/select';
 import {Violations} from '@sonarqube-companion-frontend/group-overview';
+import {TimelineSeries} from '../../../ui-components/timeline/src/lib/timeline';
+import {Event, EventService} from '@sonarqube-companion-frontend/event';
 
 interface GroupOverviewModel {
   details: GroupDetails;
@@ -18,6 +19,7 @@ interface GroupOverviewModel {
   membersDiff: MemberViolationsHistoryDiff[];
   members: Member[];
   violations: Violations;
+  events: Event[];
 }
 
 // TODO pociąć ###################SDJLADSJDLKASJLKDJASLDJLKASJDLAKJSDLKSAJKLDJASLDJLAKSJDLKASJDLASJDLJAS <+++++++++++++++++++++++++++++++
@@ -81,7 +83,7 @@ interface GroupOverviewModel {
           </mat-drawer>
           <div class="overview">
             <div class="values">
-              <sqc-value-badge [priority]="'urgent'" [label]="'blockers'" >{{vm.violations.blockers}}</sqc-value-badge>
+              <sqc-value-badge [priority]="'urgent'" [label]="'blockers'">{{vm.violations.blockers}}</sqc-value-badge>
               <sqc-value-badge [priority]="'warning'"
                                [label]="'criticals'">{{vm.violations.criticals}}</sqc-value-badge>
               <sqc-value-badge [priority]="''" [label]="'majors'">{{vm.violations.majors}}</sqc-value-badge>
@@ -95,11 +97,9 @@ interface GroupOverviewModel {
                 <sqc-select [text]="'project'" [items]="[]"></sqc-select>
                 <sqc-select [text]="'member'" [items]="membersAsSelectItems(vm.members)"></sqc-select>
               </div>
-              <sqc-timeline [data]="asSeries(vm.violationsHistory)"></sqc-timeline>
+              <sqc-timeline [series]="asSeries(vm.violationsHistory, vm.events || [])"></sqc-timeline>
             </div>
-            <div class="footer"></div>
           </div>
-
         </mat-drawer-container>
       </div>
     </div>
@@ -109,6 +109,7 @@ interface GroupOverviewModel {
 })
 export class GroupOverviewComponent {
   drawerSelector: string = ''
+  //@ts-ignore //TODO fix
   vm$: Observable<GroupOverviewModel> = this.route.params.pipe(
     map(params => params['groupId']),
     distinctUntilChanged(),
@@ -120,26 +121,30 @@ export class GroupOverviewComponent {
         this.groupService.groupMembersHistoryDiff(id, 30),
         this.groupService.members(id),
         this.groupService.violations(id),
+        this.eventService.getByGroup(id, 30)
       ]).pipe(
-        map(([details,
+        map(([
+               details,
                violationsHistory,
                projectsDiff,
                membersDiff,
                members,
-               violations
+               violations,
+               events
              ]) => ({
           details: details,
           violationsHistory: violationsHistory,
           projectsDiff: projectsDiff,
           membersDiff: membersDiff,
           members: members,
-          violations: violations
+          violations: violations,
+          events: events
         }))
       )
     )
   );
 
-  constructor(private groupService: GroupService, private route: ActivatedRoute) {
+  constructor(private groupService: GroupService, private route: ActivatedRoute, private eventService: EventService) {
   }
 
   membersAsSelectItems(members: Member[]): SelectItem[] {
@@ -174,19 +179,16 @@ export class GroupOverviewComponent {
     }));
   }
 
-  asSeries(violationsHistory: GroupViolationsHistory): Series[] {
+  asSeries(violationsHistory: GroupViolationsHistory, events: Event[]): TimelineSeries {
     if (violationsHistory) {
-      return [{
-        name: 'terst',
-        series: violationsHistory.violationHistoryEntries.map(entry => ({
-          name: new Date(entry.dateString),
+      return {
+        events: events.map(item => ({name: item.name, fromDate: new Date(item.dateString)})),
+        data: violationsHistory.violationHistoryEntries.map(entry => ({
+          date: new Date(entry.dateString),
           value: entry.violations.blockers + entry.violations.criticals + entry.violations.majors + entry.violations.minors + entry.violations.infos
         }))
-      }]
+      }
     }
-    return [{
-      name: 'terst',
-      series: []
-    }]
+    return {};
   }
 }

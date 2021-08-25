@@ -1,42 +1,34 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {Series} from '@swimlane/ngx-charts';
-import {curveBasis, CurveFactory} from 'd3-shape';
+import {ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Timeline, TimelineSeries} from './timeline';
+
 
 @Component({
   selector: 'sqc-timeline',
   template: `
-    <div class="wrapper" *ngIf="data">
-      <ngx-charts-line-chart
-        [results]="data"
-        [timeline]="true"
-        [xAxis]="true"
-        [yAxis]="true"
-        [autoScale]="true"
-        [curve]="curve"
-      >
-      </ngx-charts-line-chart>
-    </div>
+    <div class="wrapper" #timeline></div>
   `,
   styleUrls: ['./timeline.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineComponent {
+  private timeline?: Timeline;
+
+  @ViewChild('timeline')
+  set timelineElement(element: ElementRef) {
+    this.timeline = new Timeline(element);
+  }
 
   @Input()
-  data?: Series[];
-
-  curve: CurveFactory = curveBasis;
-
-  onSelect(data: any): void {
-
+  set series(_series: TimelineSeries) {
+    this.redraw(_series);
+    window.addEventListener('resize', () => this.redraw(_series));
   }
 
-  onActivate(data: any): void {
-    //  console.log('Activate', JSON.parse(JSON.stringify(data)));
+  private redraw(series: TimelineSeries): void {
+    if (this.timeline) {
+      this.timeline.clear();
+      this.timeline.update(series);
+    }
   }
-
-  onDeactivate(data: any): void {
-    //  console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  }
-
 }
+
