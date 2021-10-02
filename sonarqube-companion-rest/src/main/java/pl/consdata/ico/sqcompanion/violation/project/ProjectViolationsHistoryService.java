@@ -50,7 +50,7 @@ public class ProjectViolationsHistoryService {
 
     @Cacheable(value = Caches.ALL_PROJECTS_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "'projects' + #group.uuid + #fromDate + #toDate")
     public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(final Group group, final LocalDate fromDate, final LocalDate toDate) {
-        final List<ProjectViolationsHistoryDiff> projectDiffs = group
+        final List<ProjectViolationsSummary> projectDiffs = group
                 .getAllProjects()
                 .stream()
                 .filter(project -> projectHistoryRepository.existsByProjectKey(project.getKey()))
@@ -61,7 +61,7 @@ public class ProjectViolationsHistoryService {
         final Violations removedViolations = Violations.builder().build();
         projectDiffs
                 .stream()
-                .map(ProjectViolationsHistoryDiff::getViolationsDiff)
+                .map(ProjectViolationsSummary::getViolationsDiff)
                 .forEach(violations -> mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violations));
         return GroupViolationsHistoryDiff
                 .builder()
@@ -104,7 +104,7 @@ public class ProjectViolationsHistoryService {
     }
 
     @Cacheable(value = Caches.PROJECT_VIOLATIONS_HISTORY_DIFF_CACHE, sync = true, key = "#project.getId() + #fromDate + #toDate")
-    public ProjectViolationsHistoryDiff getProjectViolationsHistoryDiff(final Project project, final LocalDate fromDate, final LocalDate toDate) {
+    public ProjectViolationsSummary getProjectViolationsHistoryDiff(final Project project, final LocalDate fromDate, final LocalDate toDate) {
         return getProjectViolationsHistoryDiffMappingFunction(fromDate, toDate).apply(project);
     }
 
@@ -171,7 +171,7 @@ public class ProjectViolationsHistoryService {
         }
     }
 
-    private Function<Project, ProjectViolationsHistoryDiff> getProjectViolationsHistoryDiffMappingFunction(LocalDate fromDate, LocalDate toDate) {
+    private Function<Project, ProjectViolationsSummary> getProjectViolationsHistoryDiffMappingFunction(LocalDate fromDate, LocalDate toDate) {
         return project -> {
             LocalDate from = projectHistoryRepository.findFirstByProjectKeyOrderByDateAsc(project.getKey())
                     .filter(entry -> fromDate.isBefore(entry.getDate()))
@@ -212,7 +212,7 @@ public class ProjectViolationsHistoryService {
                     .infos(toDateEntry.getInfos() - fromDateEntry.getInfos())
                     .build();
             mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violationsDiff);
-            return ProjectViolationsHistoryDiff
+            return ProjectViolationsSummary
                     .builder()
                     .projectId(project.getId())
                     .fromDate(from)

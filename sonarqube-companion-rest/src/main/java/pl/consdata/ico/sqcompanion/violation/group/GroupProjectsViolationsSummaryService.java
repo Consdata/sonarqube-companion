@@ -3,12 +3,12 @@ package pl.consdata.ico.sqcompanion.violation.group;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.consdata.ico.sqcompanion.members.MembersViolationsSummary;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.violation.Violations;
-import pl.consdata.ico.sqcompanion.violation.group.summary.EmptyGroupMemberSummaryProjection;
-import pl.consdata.ico.sqcompanion.violation.group.summary.GroupMemberSummaryProjection;
+import pl.consdata.ico.sqcompanion.violation.group.summary.EmptyGroupProjectSummaryProjection;
+import pl.consdata.ico.sqcompanion.violation.group.summary.GroupProjectSummaryProjection;
 import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationSummaryHistoryRepository;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsSummary;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,26 +22,26 @@ import static java.util.Optional.ofNullable;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GroupMembersViolationsSummaryService {
+public class GroupProjectsViolationsSummaryService {
     private final GroupViolationSummaryHistoryRepository repository;
 
-    public List<MembersViolationsSummary> getGroupMembersViolationsSummary(Group group, LocalDate fromDate, LocalDate toDate) {
-        Map<String, List<GroupMemberSummaryProjection>> fromViolations = repository.groupByMembers(group.getUuid(), fromDate).stream().collect(Collectors.groupingBy(GroupMemberSummaryProjection::userId));
-        Map<String, List<GroupMemberSummaryProjection>> toViolations = repository.groupByMembers(group.getUuid(), toDate).stream().collect(Collectors.groupingBy(GroupMemberSummaryProjection::userId));
+    public List<ProjectViolationsSummary> getGroupProjectsViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate) {
+        Map<String, List<GroupProjectSummaryProjection>> fromViolations = repository.groupByProjects(group.getUuid(), fromDate).stream().collect(Collectors.groupingBy(GroupProjectSummaryProjection::projectKey));
+        Map<String, List<GroupProjectSummaryProjection>> toViolations = repository.groupByProjects(group.getUuid(), toDate).stream().collect(Collectors.groupingBy(GroupProjectSummaryProjection::projectKey));
 
         return toViolations.entrySet()
                 .stream()
                 .map(entry -> {
-                    GroupMemberSummaryProjection toDateEntry = entry.getValue().get(0); // TODO if project removed
-                    GroupMemberSummaryProjection fromDateEntry = ofNullable(fromViolations.get(entry.getKey())).orElse(singletonList(new EmptyGroupMemberSummaryProjection(fromDate, entry.getKey()))).get(0);
-                    return createMemberViolationsHistoryDiff(fromDateEntry, toDateEntry, fromDate, toDate);
+                    GroupProjectSummaryProjection toDateEntry = entry.getValue().get(0); // TODO if project removed
+                    GroupProjectSummaryProjection fromDateEntry = ofNullable(fromViolations.get(entry.getKey())).orElse(singletonList(new EmptyGroupProjectSummaryProjection(fromDate, entry.getKey()))).get(0);
+                    return createProjectViolationsHistoryDiff(fromDateEntry, toDateEntry, fromDate, toDate);
                 })
                 .collect(Collectors.toList());
 
 
     }
 
-    private MembersViolationsSummary createMemberViolationsHistoryDiff(GroupMemberSummaryProjection fromDateEntry, GroupMemberSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
+    private ProjectViolationsSummary createProjectViolationsHistoryDiff(GroupProjectSummaryProjection fromDateEntry, GroupProjectSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
         final Violations addedViolations = Violations.empty();
         final Violations removedViolations = Violations.empty();
 
@@ -54,14 +54,13 @@ public class GroupMembersViolationsSummaryService {
                 .infos(toDateEntry.infos() - fromDateEntry.infos())
                 .build();
         mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violationsDiff);
-        return MembersViolationsSummary
+        return ProjectViolationsSummary
                 .builder()
                 .fromDate(fromDate)
                 .toDate(toDate)
                 .addedViolations(addedViolations)
                 .removedViolations(removedViolations)
-                .uuid(toDateEntry.userId())
-                .name(toDateEntry.userId())
+                .projectKey(toDateEntry.projectKey())
                 .violationsDiff(violationsDiff)
                 .build();
     }

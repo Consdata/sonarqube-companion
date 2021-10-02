@@ -115,17 +115,36 @@ public class GroupController {
 
 
     @GetMapping(
-            value = "/{uuid}/violations",
+            value = "/{uuid}/violations/{date}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
-            value = "Returns group members between given period.",
-            notes = "<p>Returns group members</p>"
+            value = "Violations for given date.",
+            notes = "<p>Violations for given date</p>"
     )
-    public Violations getViolations(@PathVariable final String uuid) {
+    public Violations getViolations(@PathVariable final String uuid, @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return groupService.getViolations(group.get());
+            return groupService.getViolations(group.get(), date);
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
+    @GetMapping(
+            value = "/{uuid}/violations/{from}/{to}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Violations diff for given range",
+            notes = "<p>Violations diff for given range</p>"
+    )
+    public Violations getViolationsRange(@PathVariable final String uuid
+            , @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate from
+            , @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate to) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return groupService.getViolationsDiff(group.get(), from, to);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }

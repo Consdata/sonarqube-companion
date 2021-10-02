@@ -69,7 +69,6 @@ export class GroupOverviewComponent {
   range: DateRange = DEFAULT_DATE_RANGE;
   drawerSelector: string = ''
   items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-  //@ts-ignore //TODO fix
   uuid$: Observable<string> = this.route.params.pipe(map(params => params['groupId']));
 
   constructor(private groupService: GroupService, private route: ActivatedRoute, private eventService: EventService) {

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MembersViolationsHistoryDiff {
+public class MembersViolationsSummary {
 
     private String uuid;
     private String name;

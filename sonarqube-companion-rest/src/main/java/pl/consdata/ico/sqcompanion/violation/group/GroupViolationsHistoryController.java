@@ -6,14 +6,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.consdata.ico.sqcompanion.SQCompanionException;
-import pl.consdata.ico.sqcompanion.members.MembersViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.members.MembersViolationsSummary;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistoryService;
 import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsSummary;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -59,6 +59,24 @@ public class GroupViolationsHistoryController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
+            value = "Returns group violations history"
+    )
+    public ViolationsHistory getGroupViolationsHistory(@PathVariable final String uuid,
+                                                       @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") final LocalDate fromDate,
+                                                       @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") final LocalDate toDate) {
+        final Optional<Group> group = repositoryService.getGroup(uuid);
+        if (group.isPresent()) {
+            return this.groupViolationsHistoryService.getGroupViolationsHistory(group.get(), fromDate, toDate);
+        } else {
+            throw new SQCompanionException("Can't find requested group uuid: " + uuid);
+        }
+    }
+
+    @GetMapping(
+            value = "/{uuid}/{fromDate}/{toDate}/diff",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
             value = "Returns group violations history change in time"
     )
     public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(
@@ -67,7 +85,7 @@ public class GroupViolationsHistoryController {
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {
         final Optional<Group> group = repositoryService.getGroup(uuid);
         if (group.isPresent()) {
-            return this.groupViolationsHistoryService.getGroupsUserViolationsHistoryDiff(group.get(), fromDate, toDate);
+            return this.groupViolationsHistoryService.getGroupViolationsHistoryDiff(group.get(), fromDate, toDate);
         } else {
             throw new SQCompanionException("Can't find requested group uuid: " + uuid);
         }
@@ -100,7 +118,7 @@ public class GroupViolationsHistoryController {
     @ApiOperation(
             value = "Returns project violations history change in time"
     )
-    public ProjectViolationsHistoryDiff geProjectViolationsHistoryDiff(
+    public ProjectViolationsSummary geProjectViolationsHistoryDiff(
             @PathVariable final String uuid,
             @PathVariable final String projectKey,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
@@ -122,7 +140,7 @@ public class GroupViolationsHistoryController {
     @ApiOperation(
             value = "Returns project violations history change in time" //TODO
     )
-    public List<ProjectViolationsHistoryDiff> get(
+    public List<ProjectViolationsSummary> get(
             @PathVariable final String uuid,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate,
@@ -143,7 +161,7 @@ public class GroupViolationsHistoryController {
     @ApiOperation(
             value = "Returns project violations history change in time" //TODO
     )
-    public List<ProjectViolationsHistoryDiff> get(
+    public List<ProjectViolationsSummary> get(
             @PathVariable final String uuid,
             @RequestParam Optional<Integer> daysLimit,
             @RequestParam Optional<List<String>> members) {
@@ -163,7 +181,7 @@ public class GroupViolationsHistoryController {
     @ApiOperation(
             value = "Returns project violations history change in time" //TODO
     )
-    public List<MembersViolationsHistoryDiff> getByMemebers(
+    public List<MembersViolationsSummary> getByMemebers(
             @PathVariable final String uuid,
             @RequestParam Optional<Integer> daysLimit,
             @RequestParam Optional<List<String>> projects) {

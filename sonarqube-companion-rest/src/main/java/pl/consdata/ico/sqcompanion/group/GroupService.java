@@ -12,6 +12,7 @@ import pl.consdata.ico.sqcompanion.repository.RepositoryService;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistoryService;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -49,7 +50,12 @@ public class GroupService {
                 .build();
     }
 
-    public Violations getViolations(Group group) {
-        return groupViolationsHistoryService.getViolations(group.getUuid());
+    public Violations getViolations(Group group, LocalDate localDate) {
+        return groupViolationsHistoryService.getViolations(group.getUuid(), localDate);
     }
+
+    public Violations getViolationsDiff(Group group, LocalDate from, LocalDate to) {
+        return groupViolationsHistoryService.getViolationsDiff(group.getUuid(), from ,to);
+    }
+
 }

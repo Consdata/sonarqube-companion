@@ -15,7 +15,7 @@ public class GroupViolationsHistoryDiff {
     private Violations groupDiff;
     private Violations addedViolations;
     private Violations removedViolations;
-    private List<ProjectViolationsHistoryDiff> projectDiffs;
+    private List<ProjectViolationsSummary> projectDiffs;
 
     public static GroupViolationsHistoryDiff empty() {
         return GroupViolationsHistoryDiff.builder()

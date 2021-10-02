@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.members.MemberService;
-import pl.consdata.ico.sqcompanion.members.MembersViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.members.MembersViolationsSummary;
 import pl.consdata.ico.sqcompanion.repository.Group;
 import pl.consdata.ico.sqcompanion.repository.Project;
 import pl.consdata.ico.sqcompanion.repository.RepositoryService;
@@ -13,7 +13,7 @@ import pl.consdata.ico.sqcompanion.violation.ViolationHistoryEntry;
 import pl.consdata.ico.sqcompanion.violation.Violations;
 import pl.consdata.ico.sqcompanion.violation.ViolationsHistory;
 import pl.consdata.ico.sqcompanion.violation.project.GroupViolationsHistoryDiff;
-import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsHistoryDiff;
+import pl.consdata.ico.sqcompanion.violation.project.ProjectViolationsSummary;
 import pl.consdata.ico.sqcompanion.violation.user.summary.UserProjectSummaryViolationHistoryEntry;
 
 import java.time.LocalDate;
@@ -78,8 +78,12 @@ public class GroupViolationsHistoryService {
     }
 
     public ViolationsHistory getGroupViolationsHistory(Group group, Optional<Integer> daysLimit) {
+        return getGroupViolationsHistory(group, LocalDate.now().minusDays(daysLimit.orElse(30)), LocalDate.now().minusDays(1));
+    }
+
+    public ViolationsHistory getGroupViolationsHistory(Group group, LocalDate from, LocalDate to) {
         List<String> projects = group.getAllProjects().stream().map(Project::getKey).collect(Collectors.toList());
-        return new ViolationsHistory(repository.findAllByGroupIdAndProjectKeyInAndDateBetween(group.getUuid(), projects, LocalDate.now().minusDays(daysLimit.orElse(30)), LocalDate.now().minusDays(1))
+        return new ViolationsHistory(repository.findAllByGroupIdAndProjectKeyInAndDateBetween(group.getUuid(), projects, from, to)
                 .stream()
                 .collect(Collectors.groupingBy(GroupViolationSummaryHistoryEntry::getDate))
                 .entrySet()
@@ -91,7 +95,8 @@ public class GroupViolationsHistoryService {
                 .collect(Collectors.toList()));
     }
 
-    public GroupViolationsHistoryDiff getGroupsUserViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate) {
+
+    public GroupViolationsHistoryDiff getGroupViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate) {
         return null;
     }
 
@@ -109,16 +114,16 @@ public class GroupViolationsHistoryService {
                 .collect(Collectors.toList()));
     }
 
-    public ProjectViolationsHistoryDiff getProjectViolationsHistoryDiff(Group group, Project project, LocalDate fromDate, LocalDate toDate) {
+    public ProjectViolationsSummary getProjectViolationsHistoryDiff(Group group, Project project, LocalDate fromDate, LocalDate toDate) {
         return null;
     }
 
 
-    public List<ProjectViolationsHistoryDiff> getGroupProjectsViolationsHistoryDiff(Group group, Optional<List<String>> membersIds, Optional<Integer> daysLimit) {
+    public List<ProjectViolationsSummary> getGroupProjectsViolationsHistoryDiff(Group group, Optional<List<String>> membersIds, Optional<Integer> daysLimit) {
         return getGroupProjectsViolationsHistoryDiff(group, LocalDate.now().minusDays(daysLimit.orElse(30)), LocalDate.now().minusDays(1), membersIds);
     }
 
-    public List<ProjectViolationsHistoryDiff> getGroupProjectsViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate, Optional<List<String>> membersIds) {
+    public List<ProjectViolationsSummary> getGroupProjectsViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate, Optional<List<String>> membersIds) {
         if (membersIds.isPresent()) {
             return emptyList();
         } else {
@@ -137,7 +142,7 @@ public class GroupViolationsHistoryService {
         }
     }
 
-    private ProjectViolationsHistoryDiff createProjectViolationsHistoryDiff(GroupProjectSummaryProjection fromDateEntry, GroupProjectSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
+    private ProjectViolationsSummary createProjectViolationsHistoryDiff(GroupProjectSummaryProjection fromDateEntry, GroupProjectSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
         final Violations addedViolations = Violations.empty();
         final Violations removedViolations = Violations.empty();
 
@@ -150,7 +155,7 @@ public class GroupViolationsHistoryService {
                 .infos(toDateEntry.infos() - fromDateEntry.infos())
                 .build();
         mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violationsDiff);
-        return ProjectViolationsHistoryDiff
+        return ProjectViolationsSummary
                 .builder()
                 .fromDate(fromDate)
                 .toDate(toDate)
@@ -192,11 +197,11 @@ public class GroupViolationsHistoryService {
         }
     }
 
-    public List<MembersViolationsHistoryDiff> getGroupMembersViolationsHistoryDiff(Group group, Optional<List<String>> projects, Optional<Integer> daysLimit) {
+    public List<MembersViolationsSummary> getGroupMembersViolationsHistoryDiff(Group group, Optional<List<String>> projects, Optional<Integer> daysLimit) {
         return getGroupMembersViolationsHistoryDiff(group, LocalDate.now().minusDays(daysLimit.orElse(30)), LocalDate.now().minusDays(1), projects);
     }
 
-    public List<MembersViolationsHistoryDiff> getGroupMembersViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate, Optional<List<String>> projects) {
+    public List<MembersViolationsSummary> getGroupMembersViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate, Optional<List<String>> projects) {
         if (projects.isPresent()) {
             return emptyList();
         } else {
@@ -215,8 +220,8 @@ public class GroupViolationsHistoryService {
         }
     }
 
-    public Violations getViolations(String groupId) {
-        return repository.groupViolations(groupId, LocalDate.now().minusDays(1)).map(projection -> Violations.builder()
+    public Violations getViolations(String groupId, LocalDate localDate) {
+        return repository.groupViolations(groupId, localDate).map(projection -> Violations.builder()
                 .blockers(projection.blockers())
                 .criticals(projection.criticals())
                 .majors(projection.majors())
@@ -225,7 +230,7 @@ public class GroupViolationsHistoryService {
                 .build()).orElse(Violations.empty());
     }
 
-    private MembersViolationsHistoryDiff createMemberViolationsHistoryDiff(GroupMemberSummaryProjection fromDateEntry, GroupMemberSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
+    private MembersViolationsSummary createMemberViolationsHistoryDiff(GroupMemberSummaryProjection fromDateEntry, GroupMemberSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
         final Violations addedViolations = Violations.empty();
         final Violations removedViolations = Violations.empty();
 
@@ -238,7 +243,7 @@ public class GroupViolationsHistoryService {
                 .infos(toDateEntry.infos() - fromDateEntry.infos())
                 .build();
         mergeProjectViolationsToAddedOrRemovedGroupViolations(addedViolations, removedViolations, violationsDiff);
-        return MembersViolationsHistoryDiff
+        return MembersViolationsSummary
                 .builder()
                 .fromDate(fromDate)
                 .toDate(toDate)
@@ -250,5 +255,16 @@ public class GroupViolationsHistoryService {
                 .build();
     }
 
-    //TODO DIFF
+    public Violations getViolationsDiff(String uuid, LocalDate from, LocalDate to) {
+        Violations violationsFrom = getViolations(uuid, from);
+        Violations violationsTo = getViolations(uuid, to);
+        return Violations.builder()
+                .blockers(violationsTo.getBlockers() - violationsFrom.getBlockers())
+                .criticals(violationsTo.getCriticals() - violationsFrom.getCriticals())
+                .majors(violationsTo.getMajors() - violationsFrom.getMajors())
+                .minors(violationsTo.getMinors() - violationsFrom.getMinors())
+                .infos(violationsTo.getInfos() - violationsFrom.getInfos())
+                .build();
+    }
+
 }

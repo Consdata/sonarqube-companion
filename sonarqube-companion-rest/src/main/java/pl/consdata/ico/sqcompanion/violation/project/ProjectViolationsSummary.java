@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectViolationsHistoryDiff {
+public class ProjectViolationsSummary {
 
     private String projectKey;
     private String projectId;

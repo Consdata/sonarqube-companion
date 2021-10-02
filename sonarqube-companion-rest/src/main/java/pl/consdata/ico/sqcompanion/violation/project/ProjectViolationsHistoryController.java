@@ -46,7 +46,7 @@ public class ProjectViolationsHistoryController {
     @ApiOperation(
             value = "Returns project violations history"
     )
-    public ProjectViolationsHistoryDiff getAllProjectsViolationsHistory(
+    public ProjectViolationsSummary getAllProjectsViolationsHistory(
             @PathVariable final String projectKey,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate fromDate,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate toDate) {

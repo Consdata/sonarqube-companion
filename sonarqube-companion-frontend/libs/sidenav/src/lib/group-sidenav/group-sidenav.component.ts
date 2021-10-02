@@ -64,7 +64,7 @@ export class GroupSidenavComponent {
 
   rootGroup$: Observable<GroupLightModel> = this.overviewService.list();
 
-  constructor(private overviewService: OverviewService, private router: Router) { // TODO rename to list service and add server impl
+  constructor(private overviewService: OverviewService, private router: Router) {
   }
 
   onSelect(event: GroupLightModel) {

@@ -14,12 +14,15 @@ export class GroupService {
   constructor(private http: HttpClient) {
   }
 
+  public getRootGroup(): Observable<GroupDetails> {
+    return this.http.get<GroupDetails>('/api/v1/groups');
+  }
+
   public groupViolationsHistory(uuid: string, daysLimit: number): Observable<GroupViolationsHistory> {
     return this.http.get<GroupViolationsHistory>(`/api/v1/violations/history/group/${uuid}`);
   }
 
   public groupViolationsHistoryRange(uuid: string, range: DateRange): Observable<GroupViolationsHistory> {
-    console.log('#### ', uuid)
     return this.http.get<GroupViolationsHistory>(`/api/v1/violations/history/group/${uuid}/${range.fromString}/${range.toString}`);
   }
 

@@ -52,7 +52,6 @@ export class GroupTimelineComponent {
   }
 
   // TODO spinnery
-  // TODO inicjalny obiekt lepszy zeby nie trzeba było sprawdzać czy jest ''
   @Input()
   set range(data: DateRange) {
     if (data && this.filter.uuid !== '') {

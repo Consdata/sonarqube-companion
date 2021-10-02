@@ -13,10 +13,8 @@ import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationSummary
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.ofNullable;
 
@@ -24,30 +22,23 @@ import static java.util.Optional.ofNullable;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GroupViolationsSummaryService {
+public class GroupMembersViolationsSummaryService {
     private final GroupViolationSummaryHistoryRepository repository;
 
-    public List<MembersViolationsSummary> getGroupMembersViolationsHistoryDiff(Group group, Optional<List<String>> projects, Optional<Integer> daysLimit) {
-        return getGroupMembersViolationsHistoryDiff(group, LocalDate.now().minusDays(daysLimit.orElse(30)), LocalDate.now().minusDays(1), projects);
-    }
+    public List<MembersViolationsSummary> getGroupMembersViolationsSummary(Group group, LocalDate fromDate, LocalDate toDate) {
+        Map<String, List<GroupMemberSummaryProjection>> fromViolations = repository.groupByMembers(group.getUuid(), fromDate).stream().collect(Collectors.groupingBy(GroupMemberSummaryProjection::userId));
+        Map<String, List<GroupMemberSummaryProjection>> toViolations = repository.groupByMembers(group.getUuid(), toDate).stream().collect(Collectors.groupingBy(GroupMemberSummaryProjection::userId));
 
-    public List<MembersViolationsSummary> getGroupMembersViolationsHistoryDiff(Group group, LocalDate fromDate, LocalDate toDate, Optional<List<String>> projects) {
-        if (projects.isPresent()) {
-            return emptyList();
-        } else {
-            Map<String, List<GroupMemberSummaryProjection>> fromViolations = repository.groupByMembers(group.getUuid(), fromDate).stream().collect(Collectors.groupingBy(GroupMemberSummaryProjection::userId));
-            Map<String, List<GroupMemberSummaryProjection>> toViolations = repository.groupByMembers(group.getUuid(), toDate).stream().collect(Collectors.groupingBy(GroupMemberSummaryProjection::userId));
+        return toViolations.entrySet()
+                .stream()
+                .map(entry -> {
+                    GroupMemberSummaryProjection toDateEntry = entry.getValue().get(0); // TODO if project removed
+                    GroupMemberSummaryProjection fromDateEntry = ofNullable(fromViolations.get(entry.getKey())).orElse(singletonList(new EmptyGroupMemberSummaryProjection(fromDate, entry.getKey()))).get(0);
+                    return createMemberViolationsHistoryDiff(fromDateEntry, toDateEntry, fromDate, toDate);
+                })
+                .collect(Collectors.toList());
 
-            return toViolations.entrySet()
-                    .stream()
-                    .map(entry -> {
-                        GroupMemberSummaryProjection toDateEntry = entry.getValue().get(0); // TODO if project removed
-                        GroupMemberSummaryProjection fromDateEntry = ofNullable(fromViolations.get(entry.getKey())).orElse(singletonList(new EmptyGroupMemberSummaryProjection(fromDate, entry.getKey()))).get(0);
-                        return createMemberViolationsHistoryDiff(fromDateEntry, toDateEntry, fromDate, toDate);
-                    })
-                    .collect(Collectors.toList());
 
-        }
     }
 
     private MembersViolationsSummary createMemberViolationsHistoryDiff(GroupMemberSummaryProjection fromDateEntry, GroupMemberSummaryProjection toDateEntry, LocalDate fromDate, LocalDate toDate) {
