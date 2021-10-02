@@ -148,8 +148,8 @@ export class Timeline {
       .append('path')
       .attr('id', 'line')
       .style('fill', 'none')
-      .style('stroke', 'red')
-      .style('stroke-width', '2px')
+      .style('stroke', '#757575')
+      .style('stroke-width', '3px')
       .attr('d', line(points));
 
 
@@ -172,7 +172,7 @@ export class Timeline {
       .data(data)
       .enter()
       .append('circle')
-      .attr('fill', 'red')
+      .attr('fill', '#757575')
       .attr('stroke', 'none')
       .attr('cx', function (d: any) {
         return xScale(d.date)
@@ -180,7 +180,7 @@ export class Timeline {
       .attr('cy', function (d: any) {
         return yScale(d.value)
       })
-      .attr('r', 3)
+      .attr('r', 5)
       .style('opacity', 0)
       .style('cursor', 'pointer')
       .on('mouseover', (event: any) => {
@@ -203,13 +203,14 @@ export class Timeline {
 
   private drawEvent(xScale: any, yScale: any, plot: any, event: TimelineEvent, data: TimelineSeriesItem[]): void {
     const a = plot.append('g');
+    const date = this.normalizeDate(event.fromDate);
     a.append('line')
-      .style('stroke', 'lightgreen')
-      .style('stroke-width', 1)
-      .attr('x1', xScale(event.fromDate))
+      .style('stroke', '#9e9e9e')
+      .style('stroke-width', 2)
+      .attr('x1', xScale(date))
       // @ts-ignore
       .attr('y1', yScale(d3.max(data, d => d.value) + 1))
-      .attr('x2', xScale(event.fromDate))
+      .attr('x2', xScale(date))
       // @ts-ignore
       .attr('y2', yScale(d3.min(data, d => d.value) - 1));
 

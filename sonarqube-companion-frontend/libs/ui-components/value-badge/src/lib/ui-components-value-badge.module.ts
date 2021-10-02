@@ -7,7 +7,8 @@ import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   imports: [
     CommonModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule
   ],
   declarations: [
     ValueBadgeComponent

@@ -13,6 +13,17 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {UiComponentsSelectModule} from '@sonarqube-companion-frontend/ui-components/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
+import {MatChipsModule} from '@angular/material/chips';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {UiComponentsTimeSelectModule} from '@sonarqube-companion-frontend/ui-components/time-select';
+import { GroupStructureButtonsComponent } from './group-structure-buttons/group-structure-buttons.component';
+import { GroupNameComponent } from './group-name/group-name.component';
+import { GroupSeveritiesComponent } from './group-severities/group-severities.component';
+import { GroupTimelineComponent } from './group-timeline/group-timeline.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { GroupProjectsSummaryComponent } from './group-projects-summary/group-projects-summary.component';
+import { GroupMembersSummaryComponent } from './group-members-summary/group-members-summary.component';
 
 
 @NgModule({
@@ -28,10 +39,20 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatSidenavModule,
     UiComponentsTableModule,
     UiComponentsSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CdkAccordionModule,
+    MatChipsModule,
+    UiComponentsTimeSelectModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
-    GroupOverviewComponent
+    GroupOverviewComponent,
+    GroupStructureButtonsComponent,
+    GroupNameComponent,
+    GroupSeveritiesComponent,
+    GroupTimelineComponent,
+    GroupProjectsSummaryComponent,
+    GroupMembersSummaryComponent
   ],
   exports: [
     GroupOverviewComponent

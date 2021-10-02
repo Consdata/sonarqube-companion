@@ -554,17 +554,17 @@
         }
       }
     },
-    "ui-components-filters": {
+    "ui-components-time-select": {
       "projectType": "library",
-      "root": "libs/ui-components/filters",
-      "sourceRoot": "libs/ui-components/filters/src",
-      "prefix": "sqc",
+      "root": "libs/ui-components/time-select",
+      "sourceRoot": "libs/ui-components/time-select/src",
+      "prefix": "sonarqube-companion-frontend",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/ui-components/filters"],
+          "outputs": ["coverage/libs/ui-components/time-select"],
           "options": {
-            "jestConfig": "libs/ui-components/filters/jest.config.js",
+            "jestConfig": "libs/ui-components/time-select/jest.config.js",
             "passWithNoTests": true
           }
         },
@@ -572,8 +572,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/ui-components/filters/src/**/*.ts",
-              "libs/ui-components/filters/src/**/*.html"
+              "libs/ui-components/time-select/src/**/*.ts",
+              "libs/ui-components/time-select/src/**/*.html"
             ]
           }
         }

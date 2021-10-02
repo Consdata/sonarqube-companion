@@ -50,8 +50,6 @@ sqc-value-badge {
   .more {
     left: 0;
     position: absolute;
-    cursor: pointer;
-    display: flex;
     height: $top-bar-height;
     min-height: $top-bar-height;
   }
@@ -122,13 +120,19 @@ sqc-value-badge {
   }
 }
 
-.example-sidenav {
+
+.left-drawer {
   width: 100%;
   background-color: map-get($primary-palette, 50);
+
+  .mat-drawer-content {
+    width: 100%;
+  }
 }
 
-.mat-drawer-content {
-  width: 100%;
+.right-drawer {
+  width: 20%;
+  background-color: map-get($primary-palette, 50);
 }
 
 .wrapper {
@@ -140,4 +144,12 @@ mat-drawer-container{
   width: 100%;
   height: 100%;
 }
+
+
+
+
+
+
+
+
 

@@ -1,0 +1,19 @@
+@import "libs/ui-theme/src/palette";
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.date {
+  width: 0;
+  padding: 0;
+  border: none;
+}
+
+.dateBtn {
+  background-color: map-get($primary-palette, 50);
+}

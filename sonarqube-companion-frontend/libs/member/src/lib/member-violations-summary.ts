@@ -1,5 +1,6 @@
-export interface ProjectViolationsHistoryDiff {
-  projectKey: string;
+export interface MemberViolationsSummary {
+  uuid: string;
+  name: string;
   violationsDiff: Violations;
   addedViolations: Violations;
   removedViolation: Violations;

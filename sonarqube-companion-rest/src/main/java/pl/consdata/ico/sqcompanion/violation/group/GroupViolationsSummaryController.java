@@ -13,7 +13,7 @@ import pl.consdata.ico.sqcompanion.violation.user.summary.UserViolationSummaryHi
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/violations/group")
+@RequestMapping("/api/v1/violations/summary/group")
 @RequiredArgsConstructor
 public class GroupSummaryController {
 

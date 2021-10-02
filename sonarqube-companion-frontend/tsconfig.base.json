@@ -47,8 +47,8 @@
       ],
       "@sonarqube-companion-frontend/settings": ["libs/settings/src/index.ts"],
       "@sonarqube-companion-frontend/event": ["libs/event/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/filters": [
-        "libs/ui-components/filters/src/index.ts"
+      "@sonarqube-companion-frontend/ui-components/time-select": [
+        "libs/ui-components/time-select/src/index.ts"
       ]
     }
   },

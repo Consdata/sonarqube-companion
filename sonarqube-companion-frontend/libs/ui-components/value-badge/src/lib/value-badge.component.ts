@@ -11,6 +11,8 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
         <span class="label">{{label}}</span>
         <mat-icon *ngIf="icon">{{icon}}</mat-icon>
       </div>
+      <mat-divider vertical *ngIf="suffix"></mat-divider>
+      <div class="suffix" *ngIf="suffix">{{suffix}}</div>
     </div>
   `,
   styleUrls: ['./value-badge.component.scss'],
@@ -23,4 +25,6 @@ export class ValueBadgeComponent {
   priority: string = '';
   @Input()
   icon?: string;
+  @Input()
+  suffix?: string;
 }

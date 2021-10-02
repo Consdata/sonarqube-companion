@@ -18,20 +18,20 @@ import {Router} from '@angular/router';
             <sqc-side-groups-tree-wrapper [rootGroup]="rootGroup$"
                                           (groupSelect)="onSelect($event)"></sqc-side-groups-tree-wrapper>
             <mat-divider></mat-divider>
-            <mat-list-item>
-              <div class="section">
-                <mat-icon class="icon">code</mat-icon>
-                <div class="label">Projects</div>
-                <mat-divider></mat-divider>
-              </div>
-            </mat-list-item>
-            <mat-list-item>
-              <div class="section">
-                <mat-icon class="icon">people</mat-icon>
-                <div class="label">People</div>
-                <mat-divider></mat-divider>
-              </div>
-            </mat-list-item>
+<!--            <mat-list-item>-->
+<!--              <div class="section">-->
+<!--                <mat-icon class="icon">code</mat-icon>-->
+<!--                <div class="label">Projects</div>-->
+<!--                <mat-divider></mat-divider>-->
+<!--              </div>-->
+<!--            </mat-list-item>-->
+<!--            <mat-list-item>-->
+<!--              <div class="section">-->
+<!--                <mat-icon class="icon">people</mat-icon>-->
+<!--                <div class="label">People</div>-->
+<!--                <mat-divider></mat-divider>-->
+<!--              </div>-->
+<!--            </mat-list-item>-->
           </mat-nav-list>
           <div class="expander"></div>
           <mat-nav-list class="bottom-list">

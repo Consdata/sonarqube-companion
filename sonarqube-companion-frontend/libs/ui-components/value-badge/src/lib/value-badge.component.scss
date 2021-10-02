@@ -1,24 +1,29 @@
 @import "libs/ui-theme/src/palette";
 
 .content {
-  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: auto 10px auto auto;
 }
 
 
 .badge {
-  border-color: map-get($primary-palette, 400);
-  border-width: 5px;
+  border-color: map-get($primary-palette, 300);
+  border-width: 1px;
   border-style: solid;
-  border-radius: 50%;
+  border-radius: 5px;
   display: flex;
-  align-items: center;
   min-width: 50px;
   min-height: 50px;
   padding: 10px;
+}
+
+.suffix {
+  margin: auto auto auto 10px;
+  font-weight: 500;
+  font-size: 16px;
 }
 
 
@@ -28,12 +33,4 @@
 
 .label {
   font-size: 14px;
-}
-
-.urgent {
-  border-color: #f3b0b0;
-}
-
-.warning {
-  border-color: #f3e9a4;
 }

@@ -10,6 +10,13 @@ th.mat-sort-header-sorted {
   color: black;
 }
 
+tr {
+  cursor: pointer;
+  &.selected {
+    background-color: blue;
+  }
+}
+
 .table-container {
   position: relative;
   overflow: auto;

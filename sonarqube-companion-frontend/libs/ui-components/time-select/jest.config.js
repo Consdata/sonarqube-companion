@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'ui-components-filters',
+  displayName: 'ui-components-time-select',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -14,7 +14,7 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../../coverage/libs/ui-components/filters',
+  coverageDirectory: '../../../coverage/libs/ui-components/time-select',
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

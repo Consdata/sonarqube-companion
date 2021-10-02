@@ -1,0 +1,18 @@
+@import "libs/ui-theme/src/guidline";
+
+:host {
+  cursor: pointer;
+  height: $top-bar-height;
+  min-height: $top-bar-height;
+  display: flex;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .label {
+    margin-right: 10px;
+  }
+}

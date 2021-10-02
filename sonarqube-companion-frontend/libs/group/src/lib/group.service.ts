@@ -3,9 +3,10 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {GroupViolationsHistory} from './group-violations-history';
 import {GroupDetails} from './group-details';
-import {ProjectViolationsHistoryDiff} from '@sonarqube-companion-frontend/project';
-import {Member, MemberViolationsHistoryDiff} from '@sonarqube-companion-frontend/member';
+import {ProjectViolationsSummary} from '@sonarqube-companion-frontend/project';
+import {Member, MemberViolationsSummary} from '@sonarqube-companion-frontend/member';
 import {Violations} from '@sonarqube-companion-frontend/group-overview';
+import {DateRange} from '@sonarqube-companion-frontend/ui-components/time-select';
 
 
 @Injectable({providedIn: 'root'})
@@ -17,27 +18,33 @@ export class GroupService {
     return this.http.get<GroupViolationsHistory>(`/api/v1/violations/history/group/${uuid}`);
   }
 
-  public groupDetails(uuid: string): Observable<GroupDetails> {
+  public groupViolationsHistoryRange(uuid: string, range: DateRange): Observable<GroupViolationsHistory> {
+    console.log('#### ', uuid)
+    return this.http.get<GroupViolationsHistory>(`/api/v1/violations/history/group/${uuid}/${range.fromString}/${range.toString}`);
+  }
+
+
+  public groupDetails(uuid: string, range: DateRange): Observable<GroupDetails> {
     return this.http.get<GroupDetails>(`/api/v1/groups/${uuid}`);
   }
 
-  public groupProjectsHistoryDiffRange(uuid: string, fromDate: Date, toDate: Date): Observable<ProjectViolationsHistoryDiff[]> {
-    return this.http.get<ProjectViolationsHistoryDiff[]>(`/api/v1/groups/${uuid}/projects/${fromDate}/${toDate}`);
+  public groupProjectsViolationsSummary(uuid: string, range: DateRange): Observable<ProjectViolationsSummary[]> {
+    return this.http.get<ProjectViolationsSummary[]>(`/api/v1/violations/summary/group/${uuid}/projects/${range.fromString}/${range.toString}`);
   }
 
-  public groupProjectsHistoryDiff(uuid: string, daysLimit: number): Observable<ProjectViolationsHistoryDiff[]> {
-    return this.http.get<ProjectViolationsHistoryDiff[]>(`/api/v1/violations/history/group/${uuid}/projects`, {params: {daysLimit: daysLimit}});
-  }
-
-  public groupMembersHistoryDiff(uuid: string, daysLimit: number): Observable<MemberViolationsHistoryDiff[]> {
-    return this.http.get<MemberViolationsHistoryDiff[]>(`/api/v1/violations/history/group/${uuid}/members`, {params: {daysLimit: daysLimit}});
+  public groupMembersViolationsSummary(uuid: string, range: DateRange): Observable<MemberViolationsSummary[]> {
+    return this.http.get<MemberViolationsSummary[]>(`/api/v1/violations/summary/group/${uuid}/members/${range.fromString}/${range.toString}`);
   }
 
   public members(uuid: string): Observable<Member[]> {
     return this.http.get<Member[]>(`/api/v1/groups/${uuid}/members`);
   }
 
-  public violations(uuid: string): Observable<Violations> {
-    return this.http.get<Violations>(`/api/v1/groups/${uuid}/violations`);
+  public violations(uuid: string, range: DateRange): Observable<Violations> {
+    return this.http.get<Violations>(`/api/v1/groups/${uuid}/violations/${range.toString}`);
+  }
+
+  public violationsDiff(uuid: string, range: DateRange): Observable<Violations> {
+    return this.http.get<Violations>(`/api/v1/groups/${uuid}/violations/${range.fromString}/${range.toString}`);
   }
 }
