@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.consdata.ico.sqcompanion.config.AppConfig;
+import pl.consdata.ico.sqcompanion.config.model.ServerAuthentication;
 import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 import pl.consdata.ico.sqcompanion.config.service.SettingsService;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
@@ -11,7 +12,11 @@ import pl.consdata.ico.sqcompanion.config.validation.general.server.ServerConfig
 import pl.consdata.ico.sqcompanion.event.EventService;
 import pl.consdata.ico.sqcompanion.event.EventsFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import static java.util.Collections.emptyMap;
 
 @Service
 @RequiredArgsConstructor
@@ -41,22 +46,24 @@ public class ServerConfigService {
             log.info("Invalid server definition {} reason: {}", serverDefinition, validationResult);
         }
 
-        if(validationResult.isValid()){
+        if (validationResult.isValid()) {
             eventService.addEvent(eventsFactory.serverUpdate(serverDefinition, oldDefinition));
         }
         return validationResult;
     }
 
-    public ValidationResult create(final ServerDefinition serverDefinition) {
-        log.info("Create server with {}", serverDefinition);
-        ValidationResult validationResult = validator.validate(serverDefinition);
-        if (validationResult.isValid()) {
-            appConfig.getServers().add(serverDefinition);
-            return settingsService.save();
-        } else {
-            log.info("Invalid server definition {} reason: {}", serverDefinition, validationResult);
-        }
-        return validationResult;
+    public void create() {
+        log.info("Create server");
+        String uuid = UUID.randomUUID().toString();
+        appConfig.getServers().add(ServerDefinition.builder()
+                .uuid(uuid)
+                .id(uuid)
+                .aliases(new ArrayList<>())
+                .blacklistUsers(new ArrayList<>())
+                .url("http://localhost:9000")
+                .authentication(new ServerAuthentication("none", emptyMap()))
+                .build());
+        settingsService.save();
     }
 
 
@@ -74,6 +81,5 @@ public class ServerConfigService {
         log.info("Get servers list");
         return appConfig.getServers();
     }
-
 }
 

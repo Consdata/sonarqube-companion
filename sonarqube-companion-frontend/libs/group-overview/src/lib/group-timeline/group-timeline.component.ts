@@ -13,9 +13,12 @@ import {GroupFilter} from '../group-filter';
   selector: 'sqc-group-timeline',
   template: `
     <ng-container *ngIf="vm$ | async as vm">
-      <sqc-timeline [series]="asSeries(vm.violationsHistory, vm.events )"></sqc-timeline>
+      <sqc-timeline [series]="asSeries(vm.violationsHistory, vm.events )"
+                    *ngIf="!noData(vm.violationsHistory); else noDataMsg"></sqc-timeline>
+      <ng-template #noDataMsg>
+        <div class="noData">No data :(</div>
+      </ng-template>
     </ng-container>
-    <ng-template #spinner>sdasd</ng-template>
   `,
   styleUrls: ['./group-timeline.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -60,6 +63,9 @@ export class GroupTimelineComponent {
     }
   }
 
+  noData(history: GroupViolationsHistory): boolean {
+    return !history || !history.violationHistoryEntries || history.violationHistoryEntries.length == 0;
+  }
 
   asSeries(violationsHistory: GroupViolationsHistory | null, events: Event[] | null): TimelineSeries {
     if (violationsHistory && events) {

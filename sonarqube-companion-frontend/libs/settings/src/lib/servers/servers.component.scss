@@ -1,0 +1,30 @@
+:host {
+  margin-top: 25px;
+}
+
+
+.add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  color: #9e9e9e;
+
+  span {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+}
+
+.sep {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.list {
+  padding-right: 50px;
+  padding-left: 50px;
+}
+

@@ -76,6 +76,18 @@
     },
     "ui-components-time-select": {
       "tags": []
+    },
+    "ui-components-chips": {
+      "tags": []
+    },
+    "ui-components-input": {
+      "tags": []
+    },
+    "ui-components-toggle": {
+      "tags": []
+    },
+    "utils": {
+      "tags": []
     }
   }
 }

@@ -5,18 +5,17 @@ import {Component} from '@angular/core';
   template: `
     <div class="header">
       <div class="navigation">
-        <div class="item" mat-ripple>Groups</div>
+        <div class="item" mat-ripple [routerLink]="'/settings/groups'" *ngIf="false">Groups</div>
         <mat-divider vertical></mat-divider>
-        <div class="item" mat-ripple>Members</div>
+        <div class="item" mat-ripple [routerLink]="'/settings/members'" *ngIf="false">Members</div>
         <mat-divider vertical></mat-divider>
-        <div class="item" mat-ripple>Servers</div>
+        <div class="item" mat-ripple [routerLink]="'/settings/servers'">Servers</div>
         <mat-divider vertical></mat-divider>
-        <div class="item" mat-ripple>Integrations</div>
-        <mat-divider vertical></mat-divider>
-        <div class="item" mat-ripple>Synchronization</div>
+        <div class="item" mat-ripple [routerLink]="'/settings/integrations'" *ngIf="false">Integrations</div>
         <mat-divider vertical></mat-divider>
       </div>
       <mat-divider></mat-divider>
+      <router-outlet></router-outlet>
     </div>
   `,
   styleUrls: ['./settings.component.scss']

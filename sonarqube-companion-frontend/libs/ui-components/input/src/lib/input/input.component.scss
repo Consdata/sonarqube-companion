@@ -1,0 +1,14 @@
+@import "libs/ui-theme/src/palette";
+@import "libs/ui-theme/src/mixins";
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  @include sqc-input;
+}
+
+label {
+  color: map-get($primary-palette, 600);
+}

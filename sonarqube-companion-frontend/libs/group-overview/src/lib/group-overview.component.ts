@@ -4,7 +4,6 @@ import {GroupService} from '@sonarqube-companion-frontend/group';
 import {ActivatedRoute} from '@angular/router';
 import {map} from 'rxjs/operators';
 import {Member} from '@sonarqube-companion-frontend/member';
-import {SelectItem} from '@sonarqube-companion-frontend/ui-components/select';
 import {EventService} from '@sonarqube-companion-frontend/event';
 import {DateRange} from '@sonarqube-companion-frontend/ui-components/time-select';
 import {MatDrawer} from '@angular/material/sidenav';
@@ -72,14 +71,6 @@ export class GroupOverviewComponent {
   uuid$: Observable<string> = this.route.params.pipe(map(params => params['groupId']));
 
   constructor(private groupService: GroupService, private route: ActivatedRoute, private eventService: EventService) {
-  }
-
-  membersAsSelectItems(members: Member[]): SelectItem[] {
-    if (members) {
-      return members.map(item => ({id: item.uuid, text: `${item.firstName} ${item.lastName}`}));
-    } else {
-      return [];
-    }
   }
 
 

@@ -49,7 +49,17 @@
       "@sonarqube-companion-frontend/event": ["libs/event/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/time-select": [
         "libs/ui-components/time-select/src/index.ts"
-      ]
+      ],
+      "@sonarqube-companion-frontend/ui-components/chips": [
+        "libs/ui-components/chips/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/input": [
+        "libs/ui-components/input/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/toggle": [
+        "libs/ui-components/toggle/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

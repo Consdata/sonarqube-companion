@@ -1,0 +1,69 @@
+@import "libs/ui-theme/src/palette";
+
+
+.item {
+  display: flex;
+  width: 100%;
+  margin: 20px;
+}
+
+.value {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.container {
+  border: 1px solid map-get($primary-palette, 300);
+  margin-bottom: 10px;
+
+  &.error {
+    border-color: map-get($warn-palette, 100);
+  }
+}
+
+.error-msg {
+  color: map-get($warn-palette, 100);
+}
+
+.preview {
+  border: 1px solid map-get($primary-palette, 300);
+  margin-bottom: 10px;
+  cursor: pointer;
+
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.actions-spinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.action {
+  margin: 5px;
+  color: map-get($primary-palette, 600);
+}
+
+.auth {
+
+}

@@ -30,13 +30,12 @@ public class ServerConfigController extends SettingsExceptionHandler {
     }
 
     @ApiOperation(value = "Create server definition",
-            httpMethod = "POST",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ValidationResult create(@RequestBody ServerDefinition serverDefinition) {
-        log.info("Create server definition {}", serverDefinition);
-        return serverConfigService.create(serverDefinition);
+            httpMethod = "POST"
+    )
+    @PostMapping(value = "/create")
+    public void create() {
+        log.info("Create server");
+        serverConfigService.create();
     }
 
     @ApiOperation(value = "Delete server definition",

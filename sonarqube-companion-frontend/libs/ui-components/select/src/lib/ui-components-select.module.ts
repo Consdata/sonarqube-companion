@@ -1,27 +1,27 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SelectComponent} from './select/select.component';
-import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatBadgeModule} from '@angular/material/badge';
-import {FormsModule} from '@angular/forms';
+import {OverlayModule} from '@angular/cdk/overlay';
+import { SelectItemComponent } from './select-item/select-item.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    MatSelectModule,
     MatIconModule,
     MatButtonModule,
     MatBadgeModule,
-    FormsModule
+    OverlayModule
   ],
   declarations: [
-    SelectComponent
-
+    SelectComponent,
+    SelectItemComponent
   ],
   exports: [
-    SelectComponent
+    SelectComponent,
+    SelectItemComponent
   ]
 })
 export class UiComponentsSelectModule {

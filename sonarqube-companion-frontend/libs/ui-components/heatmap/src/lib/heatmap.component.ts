@@ -23,7 +23,6 @@ import {Series} from '@swimlane/ngx-charts';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeatmapComponent {
-// TODO kupa zrobić samemu
   multi: Series[] = [
     {
       'name': 'Jun',

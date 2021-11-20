@@ -1,0 +1,15 @@
+@import "libs/ui-theme/src/palette";
+@import "libs/ui-theme/src/mixins";
+
+
+input {
+  @include sqc-input;
+}
+
+.chips {
+  padding: 10px 10px 5px 0;
+}
+
+label {
+  color: map-get($primary-palette, 600);
+}

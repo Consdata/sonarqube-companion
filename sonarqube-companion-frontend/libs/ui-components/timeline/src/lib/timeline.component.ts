@@ -17,6 +17,9 @@ export class TimelineComponent {
   @ViewChild('timeline')
   set timelineElement(element: ElementRef) {
     this.timeline = new Timeline(element);
+    if (this.data) {
+      this.redraw(this.data)
+    }
   }
 
   @Input()

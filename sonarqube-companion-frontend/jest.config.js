@@ -18,5 +18,9 @@ module.exports = {
     '<rootDir>/libs/settings',
     '<rootDir>/libs/event',
     '<rootDir>/libs/ui-components/time-select',
+    '<rootDir>/libs/ui-components/chips',
+    '<rootDir>/libs/ui-components/input',
+    '<rootDir>/libs/ui-components/toggle',
+    '<rootDir>/libs/utils',
   ],
 };

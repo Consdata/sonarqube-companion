@@ -56,7 +56,7 @@ export class Timeline {
       this.createLine(xScale, yScale, plot, series.data);
 
       if (series.events) {
-        this.drawEvents(xScale, yScale, plot, series.events, series.data)
+       // this.drawEvents(xScale, yScale, plot, series.events, series.data)
       }
     }
   }

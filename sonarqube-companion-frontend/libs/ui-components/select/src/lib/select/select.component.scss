@@ -1,29 +1,32 @@
 @import "libs/ui-theme/src/palette";
 
-.select-button .mat-select {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .select-button {
   position: relative;
-  border: 2px solid map-get($primary-palette, 300);
-  border-radius: 15px;
-  background-color: map-get($primary-palette, 100);
+  border: 1px solid map-get($primary-palette, 300);
+  background-color: map-get($primary-palette, 50);
   display: flex;
+  outline: none;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu {
+  .select-button {
+    border: none;
+  }
+}
+
+.items {
+  background-color: map-get($primary-palette, 50);
+  padding: 5px
+}
+
+.select {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-
-.dropdown-list {
-  width: auto;
-}
-
-.list-area {
-  display: flex;
-  flex-direction: column;
+button {
+  margin-left: 10px;
 }

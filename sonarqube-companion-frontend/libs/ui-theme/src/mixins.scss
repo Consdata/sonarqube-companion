@@ -1,0 +1,12 @@
+@import "libs/ui-theme/src/palette";
+@mixin sqc-input() {
+  border: none;
+  background-color: inherit;
+  border-bottom: 1px solid map-get($primary-palette, 400);
+  outline: none;
+  padding: 10px 10px 5px 0;
+  &:focus {
+    border-bottom: 2px solid map-get($primary-palette, 700);
+  }
+  font-size: 16px;
+}
