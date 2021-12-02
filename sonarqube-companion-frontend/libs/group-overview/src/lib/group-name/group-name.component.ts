@@ -7,7 +7,12 @@ import {switchMap} from 'rxjs/operators';
 @Component({
   selector: 'sqc-group-name',
   template: `
-    <div class="label" *ngIf="vm$ | async as vm">{{vm.name}}</div>
+    <div class="label" *ngIf="vm$ | async as vm ; else spinner">{{vm.name}}</div>
+    <ng-template #spinner>
+      <div class="label" #spinner>
+        <mat-spinner diameter="20"></mat-spinner>
+      </div>
+    </ng-template>
   `,
   styleUrls: ['./group-name.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

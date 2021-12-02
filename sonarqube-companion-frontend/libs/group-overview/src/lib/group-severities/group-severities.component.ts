@@ -11,7 +11,7 @@ import {GroupService} from '@sonarqube-companion-frontend/group';
 @Component({
   selector: 'sqc-group-severities',
   template: `
-    <ng-container *ngIf="vm$ | async as vm">
+    <ng-container *ngIf="vm$ | async as vm ; else spinner">
       <sqc-value-badge [label]="'blockers'"
                        [suffix]="formatSuffix(vm.violationsDiff.blockers)">{{vm.violations.blockers}}</sqc-value-badge>
       <sqc-value-badge [label]="'criticals'"
@@ -23,6 +23,11 @@ import {GroupService} from '@sonarqube-companion-frontend/group';
       <sqc-value-badge [priority]="''" [label]="'infos'"
                        [suffix]="formatSuffix(vm.violationsDiff.infos)">{{vm.violations.infos}}</sqc-value-badge>
     </ng-container>
+    <ng-template #spinner>
+      <div class="spinner">
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+    </ng-template>
   `,
   styleUrls: ['./group-severities.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

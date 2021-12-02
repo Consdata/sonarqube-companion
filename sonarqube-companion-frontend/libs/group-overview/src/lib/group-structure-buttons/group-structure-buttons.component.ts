@@ -25,6 +25,20 @@ import {GroupDetails, GroupService} from '@sonarqube-companion-frontend/group';
     </ng-container>
 
     <ng-template #spinner>
+      <button mat-button matTooltip="Projects">
+        <div class="item">
+          <mat-spinner diameter="20"></mat-spinner>
+          <mat-icon class="settings">code</mat-icon>
+        </div>
+      </button>
+      <mat-divider vertical></mat-divider>
+      <button mat-button matTooltip="Members">
+        <div class="item">
+          <mat-spinner diameter="20"></mat-spinner>
+          <mat-icon class="settings">group</mat-icon>
+        </div>
+      </button>
+      <mat-divider vertical></mat-divider>
     </ng-template>
   `,
   styleUrls: ['./group-structure-buttons.component.scss'],

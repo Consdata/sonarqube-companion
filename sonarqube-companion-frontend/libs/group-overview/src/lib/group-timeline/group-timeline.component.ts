@@ -12,13 +12,18 @@ import {GroupFilter} from '../group-filter';
 @Component({
   selector: 'sqc-group-timeline',
   template: `
-    <ng-container *ngIf="vm$ | async as vm">
+    <ng-container *ngIf="vm$ | async as vm ; else spinner">
       <sqc-timeline [series]="asSeries(vm.violationsHistory, vm.events )"
                     *ngIf="!noData(vm.violationsHistory); else noDataMsg"></sqc-timeline>
       <ng-template #noDataMsg>
         <div class="noData">No data :(</div>
       </ng-template>
     </ng-container>
+    <ng-template #spinner>
+      <div class="spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    </ng-template>
   `,
   styleUrls: ['./group-timeline.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
