@@ -5,38 +5,41 @@ import {
   DateRange,
   DEFAULT_DATE_RANGE
 } from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {GroupService} from '@sonarqube-companion-frontend/group';
 
 @Component({
   selector: 'sqc-group-severities',
   template: `
-    <ng-container *ngIf="vm$ | async as vm ; else spinner">
-      <sqc-value-badge [label]="'blockers'"
-                       [suffix]="formatSuffix(vm.violationsDiff.blockers)">{{vm.violations.blockers}}</sqc-value-badge>
-      <sqc-value-badge [label]="'criticals'"
-                       [suffix]="formatSuffix(vm.violationsDiff.criticals)">{{vm.violations.criticals}}</sqc-value-badge>
-      <sqc-value-badge [priority]="''" [label]="'majors'"
-                       [suffix]="formatSuffix(vm.violationsDiff.majors)">{{vm.violations.majors}}</sqc-value-badge>
-      <sqc-value-badge [priority]="''" [label]="'minors'"
-                       [suffix]="formatSuffix(vm.violationsDiff.minors)">{{vm.violations.minors}}</sqc-value-badge>
-      <sqc-value-badge [priority]="''" [label]="'infos'"
-                       [suffix]="formatSuffix(vm.violationsDiff.infos)">{{vm.violations.infos}}</sqc-value-badge>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="!loading">
+        <sqc-value-badge [label]="'blockers'"
+                         [suffix]="formatSuffix(vm.violationsDiff.blockers)">{{vm.violations.blockers}}</sqc-value-badge>
+        <sqc-value-badge [label]="'criticals'"
+                         [suffix]="formatSuffix(vm.violationsDiff.criticals)">{{vm.violations.criticals}}</sqc-value-badge>
+        <sqc-value-badge [priority]="''" [label]="'majors'"
+                         [suffix]="formatSuffix(vm.violationsDiff.majors)">{{vm.violations.majors}}</sqc-value-badge>
+        <sqc-value-badge [priority]="''" [label]="'minors'"
+                         [suffix]="formatSuffix(vm.violationsDiff.minors)">{{vm.violations.minors}}</sqc-value-badge>
+        <sqc-value-badge [priority]="''" [label]="'infos'"
+                         [suffix]="formatSuffix(vm.violationsDiff.infos)">{{vm.violations.infos}}</sqc-value-badge>
+      </ng-container>
     </ng-container>
-    <ng-template #spinner>
+    <ng-container *ngIf="loading">
       <div class="spinner">
         <mat-spinner [diameter]="40"></mat-spinner>
       </div>
-    </ng-template>
+    </ng-container>
   `,
   styleUrls: ['./group-severities.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupSeveritiesComponent {
-
+  loading: boolean = false;
   filterSubject: ReplaySubject<GroupFilter> = new ReplaySubject<GroupFilter>();
   filter: GroupFilter = {uuid: '', range: DEFAULT_DATE_RANGE};
   vm$ = this.filterSubject.asObservable().pipe(
+    tap(_ => this.loading = true),
     switchMap(filter =>
       combineLatest([
         this.groupService.violations(filter.uuid, filter.range),
@@ -50,7 +53,8 @@ export class GroupSeveritiesComponent {
           violationsDiff: violationsDiff
         }))
       )
-    )
+    ),
+    tap(_ => this.loading = false)
   )
 
   constructor(private groupService: GroupService) {

@@ -1,0 +1,6 @@
+@import "libs/ui-theme/src/palette";
+
+:host {
+  font-size: 14px;
+  color: map-get($primary-palette,  500);
+}

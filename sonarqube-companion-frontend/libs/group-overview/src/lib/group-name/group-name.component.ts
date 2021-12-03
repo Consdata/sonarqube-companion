@@ -2,26 +2,28 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {GroupService} from '@sonarqube-companion-frontend/group';
 import {ReplaySubject} from 'rxjs';
 import {DEFAULT_DATE_RANGE} from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'sqc-group-name',
   template: `
-    <div class="label" *ngIf="vm$ | async as vm ; else spinner">{{vm.name}}</div>
-    <ng-template #spinner>
-      <div class="label" #spinner>
-        <mat-spinner diameter="20"></mat-spinner>
-      </div>
-    </ng-template>
+    <ng-container *ngIf="vm$ | async as vm">
+      <div class="label" *ngIf="!loading">{{vm.name}}</div>
+    </ng-container>
+    <div class="label" *ngIf="loading">
+      <mat-spinner diameter="20"></mat-spinner>
+    </div>
   `,
   styleUrls: ['./group-name.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupNameComponent {
-
+  loading: boolean = false;
   uuidSubject: ReplaySubject<string> = new ReplaySubject<string>();
   vm$ = this.uuidSubject.asObservable().pipe(
-    switchMap(uuid => this.groupService.groupDetails(uuid, DEFAULT_DATE_RANGE))
+    tap(_ => this.loading = true),
+    switchMap(uuid => this.groupService.groupDetails(uuid, DEFAULT_DATE_RANGE)),
+    tap(_ => this.loading = false)
   );
 
   constructor(private groupService: GroupService) {
