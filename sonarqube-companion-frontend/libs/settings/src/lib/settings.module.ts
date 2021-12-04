@@ -18,6 +18,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {UiComponentsSelectModule} from '@sonarqube-companion-frontend/ui-components/select';
 import {UtilsModule} from '@sonarqube-companion-frontend/utils';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { GroupsComponent } from './groups/groups.component';
+import { GroupComponent } from './group/group.component';
+import { MembersComponent } from './members/members.component';
+import { MemberComponent } from './member/member.component';
+import { IntegrationsComponent } from './integrations/integrations.component';
+import { WebhooksComponent } from './webhooks/webhooks.component';
+import { WebhookComponent } from './webhook/webhook.component';
 
 @NgModule({
   imports: [
@@ -40,7 +47,14 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ServersComponent,
     ServerComponent,
     BasicAuthComponent,
-    TokenAuthComponent
+    TokenAuthComponent,
+    GroupsComponent,
+    GroupComponent,
+    MembersComponent,
+    MemberComponent,
+    IntegrationsComponent,
+    WebhooksComponent,
+    WebhookComponent
   ],
   exports: [
     SettingsComponent

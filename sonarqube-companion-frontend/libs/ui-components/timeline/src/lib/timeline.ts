@@ -56,7 +56,7 @@ export class Timeline {
       this.createLine(xScale, yScale, plot, series.data);
 
       if (series.events) {
-       // this.drawEvents(xScale, yScale, plot, series.events, series.data)
+        // this.drawEvents(xScale, yScale, plot, series.events, series.data)
       }
     }
   }
@@ -126,6 +126,8 @@ export class Timeline {
     let output = date;
     output.setHours(0);
     output.setMinutes(0);
+    output.setSeconds(0);
+    output.setMilliseconds(0);
     return output;
   }
 
@@ -184,7 +186,7 @@ export class Timeline {
       .style('opacity', 0)
       .style('cursor', 'pointer')
       .on('mouseover', (event: any) => {
-        this.tooltip.html(Math.round(yScale.invert(event.layerY)))
+        this.tooltip.html(() => this.value(data, yScale, xScale, event))
           .style('top', (event.pageY - 25) + 'px').style('left', (event.pageX - 275) + 'px')
           .transition()
           .duration(200)
@@ -195,6 +197,14 @@ export class Timeline {
         .transition()
         .duration(200)
         .style('opacity', 0));
+  }
+
+  private value(data: TimelineSeriesItem[], yScale: any, xScale: any, event: any): number {
+    const filtered = data.filter(item => this.normalizeDate(item.date).getTime() === this.normalizeDate(xScale.invert(event.layerX)).getTime());
+    if (filtered && filtered.length > 0) {
+      return filtered[0].value;
+    }
+    return yScale.invert(event.layerY);
   }
 
   private drawEvents(xScale: any, yScale: any, plot: any, events: TimelineEvent[], data: TimelineSeriesItem[]): void {
