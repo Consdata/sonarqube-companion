@@ -29,7 +29,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <jacoco.version>0.8.5</jacoco.version>
-        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
+        <springfox-swagger2.version>2.10.0</springfox-swagger2.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>
 
