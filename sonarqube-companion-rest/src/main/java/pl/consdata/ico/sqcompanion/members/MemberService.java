@@ -158,6 +158,10 @@ public class MemberService {
         return getMemberGroups(membershipRepository.findByMemberIdAndDateIsBetweenOrderByDateDesc(memberId, form, to));
     }
 
+    public List<GroupLightModel> memberGroups(String memberId, LocalDate to) {
+        return getMemberGroups(membershipRepository.findByMemberIdAndDateBeforeOrderByDateDesc(memberId, to));
+    }
+
     private void putIfLatestOrSkip(Map<String, MembershipEntryEntity> map, MembershipEntryEntity entryEntity, String key) {
         if (!map.containsKey(key) || entryEntity.getDate().isAfter(map.get(key).getDate())) {
             map.put(key, entryEntity);

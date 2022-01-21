@@ -88,6 +88,15 @@
     },
     "utils": {
       "tags": []
+    },
+    "ui-components-crumbs": {
+      "tags": []
+    },
+    "ui-components-projects": {
+      "tags": []
+    },
+    "ui-components-events": {
+      "tags": []
     }
   }
 }

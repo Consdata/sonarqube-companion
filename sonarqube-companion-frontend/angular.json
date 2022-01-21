@@ -678,6 +678,81 @@
           }
         }
       }
+    },
+    "ui-components-crumbs": {
+      "projectType": "library",
+      "root": "libs/ui-components/crumbs",
+      "sourceRoot": "libs/ui-components/crumbs/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/crumbs"],
+          "options": {
+            "jestConfig": "libs/ui-components/crumbs/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/crumbs/src/**/*.ts",
+              "libs/ui-components/crumbs/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-components-projects": {
+      "projectType": "library",
+      "root": "libs/ui-components/projects",
+      "sourceRoot": "libs/ui-components/projects/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/projects"],
+          "options": {
+            "jestConfig": "libs/ui-components/projects/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/projects/src/**/*.ts",
+              "libs/ui-components/projects/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "ui-components-events": {
+      "projectType": "library",
+      "root": "libs/ui-components/events",
+      "sourceRoot": "libs/ui-components/events/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/events"],
+          "options": {
+            "jestConfig": "libs/ui-components/events/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/events/src/**/*.ts",
+              "libs/ui-components/events/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

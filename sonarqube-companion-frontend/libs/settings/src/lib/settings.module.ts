@@ -25,6 +25,11 @@ import { MemberComponent } from './member/member.component';
 import { IntegrationsComponent } from './integrations/integrations.component';
 import { WebhooksComponent } from './webhooks/webhooks.component';
 import { WebhookComponent } from './webhook/webhook.component';
+import {UiComponentsSideGroupsTreeModule} from '@sonarqube-companion-frontend/ui-components/side-groups-tree';
+import { GroupPreviewComponent } from './group-preview/group-preview.component';
+import {UiComponentsCrumbsModule} from '@sonarqube-companion-frontend/ui-components/crumbs';
+import { GroupProjectsComponent } from './group-projects/group-projects.component';
+import { GroupEventsComponent } from './group-events/group-events.component';
 
 @NgModule({
   imports: [
@@ -40,7 +45,9 @@ import { WebhookComponent } from './webhook/webhook.component';
     MatButtonModule,
     UiComponentsSelectModule,
     UtilsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    UiComponentsSideGroupsTreeModule,
+    UiComponentsCrumbsModule
   ],
   declarations: [
     SettingsComponent,
@@ -54,7 +61,10 @@ import { WebhookComponent } from './webhook/webhook.component';
     MemberComponent,
     IntegrationsComponent,
     WebhooksComponent,
-    WebhookComponent
+    WebhookComponent,
+    GroupPreviewComponent,
+    GroupProjectsComponent,
+    GroupEventsComponent
   ],
   exports: [
     SettingsComponent

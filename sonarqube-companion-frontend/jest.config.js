@@ -22,5 +22,8 @@ module.exports = {
     '<rootDir>/libs/ui-components/input',
     '<rootDir>/libs/ui-components/toggle',
     '<rootDir>/libs/utils',
+    '<rootDir>/libs/ui-components/crumbs',
+    '<rootDir>/libs/ui-components/projects',
+    '<rootDir>/libs/ui-components/events',
   ],
 };

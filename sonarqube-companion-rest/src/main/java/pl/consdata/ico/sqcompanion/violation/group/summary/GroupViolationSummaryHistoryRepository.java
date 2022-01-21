@@ -30,4 +30,6 @@ public interface GroupViolationSummaryHistoryRepository extends JpaRepository<Gr
 
     @Query(value = "select SUM(BLOCKERS) as blockers, SUM(CRITICALS) as criticals, SUM(MAJORS) as majors, SUM(MINORS) as minors, SUM(INFOS) as infos from GROUP_VIOLATIONS_SUMMARY_HISTORY_ENTRIES where GROUP_ID = :groupId and DATE = :date group by GROUP_ID ", nativeQuery = true)
     Optional<GroupViolationsSummaryProjection> groupViolations(@Param("groupId") String groupId, @Param("date")  LocalDate date);
+
+    void deleteByDate(LocalDate date);
 }

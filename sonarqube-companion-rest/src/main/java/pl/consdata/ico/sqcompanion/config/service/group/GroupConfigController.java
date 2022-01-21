@@ -13,6 +13,7 @@ import pl.consdata.ico.sqcompanion.config.validation.SettingsExceptionHandler;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.apache.commons.lang.StringUtils.EMPTY;
 
@@ -125,6 +126,18 @@ public class GroupConfigController extends SettingsExceptionHandler {
     )
     public List<GroupLightModel> getAll() {
         return groupConfigService.getAll();
+    }
+
+    @GetMapping(
+            value = "/crumbs/{uuid}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(
+            value = "Returns group parents",
+            notes = "<p>Returns group parents</p>"
+    )
+    public List<GroupLightModel> getCrumbs(@PathVariable Optional<String> uuid) {
+        return groupConfigService.crumbs(uuid);
     }
 
 

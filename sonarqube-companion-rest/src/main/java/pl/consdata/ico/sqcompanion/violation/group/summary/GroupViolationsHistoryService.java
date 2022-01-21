@@ -35,6 +35,15 @@ public class GroupViolationsHistoryService {
 
     public void addToGroupHistory(UserProjectSummaryViolationHistoryEntry userEntry) {
         final List<String> groups = memberService.memberGroups(userEntry.getUserId()).stream().map(GroupLightModel::getUuid).collect(Collectors.toList());
+        addToGroupHistory(userEntry, groups);
+    }
+
+    public void addToGroupHistory(UserProjectSummaryViolationHistoryEntry userEntry, LocalDate date) {
+        final List<String> groups = memberService.memberGroups(userEntry.getUserId(), date.plusDays(1)).stream().map(GroupLightModel::getUuid).collect(Collectors.toList());
+        addToGroupHistory(userEntry, groups);
+    }
+
+    public void addToGroupHistory(UserProjectSummaryViolationHistoryEntry userEntry, List<String> groups) {
         repositoryService.getRootGroup().getAllGroups().stream().filter(group -> group.getProject(userEntry.getProjectKey()).isPresent())
                 .map(Group::getUuid)
                 .filter(groups::contains)

@@ -15,6 +15,8 @@ public interface MembershipRepository extends JpaRepository<MembershipEntryEntit
 
     Set<MembershipEntryEntity> findByMemberIdAndDateIsBetweenOrderByDateDesc(String memberId, LocalDate from, LocalDate to);
 
+    Set<MembershipEntryEntity> findByMemberIdAndDateBeforeOrderByDateDesc(String memberId, LocalDate to);
+
     Set<MembershipEntryEntity> findByGroupIdAndDateIsLessThanEqualOrderByDateDesc(String groupId, LocalDate to);
 
     Set<MembershipEntryEntity> findByMemberIdAndDateIsLessThanEqualOrderByDateDesc(String memberId, LocalDate to);

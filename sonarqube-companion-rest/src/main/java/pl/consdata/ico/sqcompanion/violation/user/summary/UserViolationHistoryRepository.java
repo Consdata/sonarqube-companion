@@ -26,4 +26,6 @@ public interface UserViolationHistoryRepository extends JpaRepository<UserProjec
     Optional<UserProjectSummaryViolationHistoryEntry> findFirstByProjectKeyAndUserIdIsInOrderByDateAsc(String key, Set<String> users);
 
     Optional<UserProjectSummaryViolationHistoryEntry> findFirstByProjectKeyAndUserIdIsInOrderByDateDesc(String key, Set<String> users);
+
+    List<UserProjectSummaryViolationHistoryEntry> findAllByDate(LocalDate date);
 }

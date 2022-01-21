@@ -12,9 +12,11 @@ import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.config.validation.group.GroupValidator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -111,6 +113,13 @@ public class GroupConfigService {
     }
 
     public List<GroupLightModel> getAll() {
-        return appConfig.getGroupList(appConfig.getRootGroup().getUuid(), appConfig.getRootGroup().getGroups());
+        List<GroupLightModel> list = new ArrayList<>();
+        list.add(GroupLightModel.of(appConfig.getRootGroup()));
+        list.addAll(appConfig.getGroupList(appConfig.getRootGroup().getUuid(), appConfig.getRootGroup().getGroups()));
+        return list;
+    }
+
+    public List<GroupLightModel> crumbs(Optional<String> uuid) {
+        return uuid.map(appConfig::getGroupParents).orElse(emptyList());
     }
 }

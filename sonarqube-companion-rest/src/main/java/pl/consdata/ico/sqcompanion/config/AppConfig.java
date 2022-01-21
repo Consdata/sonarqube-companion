@@ -1,5 +1,6 @@
 package pl.consdata.ico.sqcompanion.config;
 
+import com.google.common.collect.Lists;
 import lombok.*;
 import org.springframework.util.CollectionUtils;
 import pl.consdata.ico.sqcompanion.config.model.*;
@@ -99,7 +100,7 @@ public class AppConfig {
         return getGroup(uuid, Collections.singletonList(groupDefinition));
     }
 
-    public Member getMember(String uuid){
+    public Member getMember(String uuid) {
         return ofNullable(members).orElse(new MembersDefinition()).getLocal().stream().filter(m -> uuid.equals(m.getUuid())).findFirst().orElse(null);
     }
 
@@ -111,4 +112,17 @@ public class AppConfig {
         return getGroupParent(uuid, Collections.singletonList(getRootGroup()));
     }
 
+    public List<GroupLightModel> getGroupParents(String uuid) {
+        List<GroupLightModel> output = new ArrayList<>();
+        if (getRootGroup().getUuid().equals(uuid)) {
+            return emptyList();
+        }
+        String currentUuid = uuid;
+        GroupDefinition parent;
+        while ((parent = getGroupParent(currentUuid)) != null) {
+            output.add(GroupLightModel.of(parent));
+            currentUuid = parent.getUuid();
+        }
+        return Lists.reverse(output);
+    }
 }

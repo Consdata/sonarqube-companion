@@ -59,7 +59,16 @@
       "@sonarqube-companion-frontend/ui-components/toggle": [
         "libs/ui-components/toggle/src/index.ts"
       ],
-      "@sonarqube-companion-frontend/utils": ["libs/utils/src/index.ts"]
+      "@sonarqube-companion-frontend/utils": ["libs/utils/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/crumbs": [
+        "libs/ui-components/crumbs/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/projects": [
+        "libs/ui-components/projects/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/events": [
+        "libs/ui-components/events/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
