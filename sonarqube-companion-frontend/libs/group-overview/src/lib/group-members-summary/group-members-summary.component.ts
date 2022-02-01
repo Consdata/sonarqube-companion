@@ -5,7 +5,7 @@ import {
   DateRange,
   DEFAULT_DATE_RANGE
 } from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {GroupService} from '@sonarqube-companion-frontend/group';
 import {ViolationsTableItem} from '../../../../ui-components/table/src/lib/table/violations-table.component';
 import {MemberViolationsSummary} from '@sonarqube-companion-frontend/member';
@@ -13,15 +13,26 @@ import {MemberViolationsSummary} from '@sonarqube-companion-frontend/member';
 @Component({
   selector: 'sqc-group-members-summary',
   template: `
-    <sqc-violations-table *ngIf="vm$ | async as vm" [nameAlias]="'Member'"
-                          [data]="membersDiffAsViolationsTableItems(vm.summary)"></sqc-violations-table>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="!loading">
+        <sqc-violations-table [nameAlias]="'Member'"
+                              [data]="membersDiffAsViolationsTableItems(vm.summary)"></sqc-violations-table>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="loading">
+      <div class="spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    </ng-container>
   `,
   styleUrls: ['./group-members-summary.component.scss']
 })
 export class GroupMembersSummaryComponent {
   filterSubject: ReplaySubject<GroupFilter> = new ReplaySubject<GroupFilter>();
   filter: GroupFilter = {uuid: '', range: DEFAULT_DATE_RANGE};
+  loading: boolean = false;
   vm$ = this.filterSubject.asObservable().pipe(
+    tap(_ => this.loading = true),
     switchMap(filter =>
       combineLatest([
         this.groupService.groupMembersViolationsSummary(filter.uuid, filter.range),
@@ -32,7 +43,8 @@ export class GroupMembersSummaryComponent {
           summary: summary
         }))
       )
-    )
+    ),
+    tap(_ => this.loading = false)
   )
 
   constructor(private groupService: GroupService) {

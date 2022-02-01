@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
   selector: 'sqc-group-sidenav',
   template: `
     <mat-sidenav-container>
-      <mat-sidenav opened mode="side">
+      <mat-sidenav opened mode="side" [disableClose]="true">
         <div class="wrapper">
           <div class="title">
             <span>SQCompanion</span>

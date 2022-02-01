@@ -14,24 +14,23 @@ import {DEFAULT_DATE_RANGE} from '../../../ui-components/time-select/src/lib/tim
   selector: 'sqc-group-overview',
   template: `
     <ng-container *ngIf="(uuid$ | async) as uuid">
-      <div class="wrapper">
-        <div class="header-container">
-          <div class="header">
-            <div class="more">
-              <button mat-button *ngIf="drawer.opened">
-                <mat-icon class="settings" (click)="drawer.close()">arrow_back</mat-icon>
-              </button>
-              <sqc-group-structure-buttons *ngIf="!drawer.opened" [uuid]="(uuid$ | async) || ''" [range]="range"
-                                           (select)="structureButtonClicked($event)"></sqc-group-structure-buttons>
-            </div>
-            <sqc-group-name [uuid]="uuid"></sqc-group-name>
-            <div class="filters">
-              <sqc-time-select (rangeChanged)="onRangeChanged($event)"></sqc-time-select>
-            </div>
-          </div>
-          <mat-divider class="top-bar-divider"></mat-divider>
-        </div>
         <div class="group">
+          <div class="header-container">
+            <div class="header">
+              <div class="more">
+                <button mat-button *ngIf="drawer.opened">
+                  <mat-icon class="settings" (click)="drawer.close()">arrow_back</mat-icon>
+                </button>
+                <sqc-group-structure-buttons *ngIf="!drawer.opened" [uuid]="(uuid$ | async) || ''" [range]="range"
+                                             (select)="structureButtonClicked($event)"></sqc-group-structure-buttons>
+              </div>
+              <sqc-group-name [uuid]="uuid"></sqc-group-name>
+              <div class="filters">
+                <sqc-time-select (rangeChanged)="onRangeChanged($event)"></sqc-time-select>
+              </div>
+            </div>
+            <mat-divider class="top-bar-divider"></mat-divider>
+          </div>
           <mat-drawer-container [hasBackdrop]="false">
             <mat-drawer #drawer class="left-drawer" mode="over" position="start">
               <div class="projects" *ngIf="drawerSelector === 'projects'">
@@ -53,7 +52,6 @@ import {DEFAULT_DATE_RANGE} from '../../../ui-components/time-select/src/lib/tim
             </div>
           </mat-drawer-container>
         </div>
-      </div>
     </ng-container>
 
 

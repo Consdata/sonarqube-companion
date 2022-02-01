@@ -8,20 +8,32 @@ import {
   DateRange,
   DEFAULT_DATE_RANGE
 } from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'sqc-group-projects-summary',
   template: `
-    <sqc-violations-table *ngIf="vm$ | async as vm" [nameAlias]="'Project'"
-                          [data]="asViolationsTableItems(vm.summary)"></sqc-violations-table>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="!loading">
+        <sqc-violations-table [nameAlias]="'Project'"
+                              [data]="asViolationsTableItems(vm.summary)"></sqc-violations-table>
+
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="loading">
+      <div class="spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    </ng-container>
   `,
   styleUrls: ['./group-projects-summary.component.scss']
 })
 export class GroupProjectsSummaryComponent {
   filterSubject: ReplaySubject<GroupFilter> = new ReplaySubject<GroupFilter>();
   filter: GroupFilter = {uuid: '', range: DEFAULT_DATE_RANGE};
+  loading: boolean = false;
   vm$ = this.filterSubject.asObservable().pipe(
+    tap(_ => this.loading = true),
     switchMap(filter =>
       combineLatest([
         this.groupService.groupProjectsViolationsSummary(filter.uuid, filter.range),
@@ -32,7 +44,8 @@ export class GroupProjectsSummaryComponent {
           summary: summary
         }))
       )
-    )
+    ),
+    tap(_ => this.loading = false)
   )
 
   constructor(private groupService: GroupService) {

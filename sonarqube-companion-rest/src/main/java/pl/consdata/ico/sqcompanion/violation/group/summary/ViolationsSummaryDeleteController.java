@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v1/violations/summary/resync")
+@RequestMapping("/api/v1/violations/summary/delete")
 @RequiredArgsConstructor
-public class ViolationsSummaryResyncController {
-    private final SummaryResyncService summaryResyncService;
+public class ViolationsSummaryDeleteController {
+    private final RemoveSummariesService removeSummariesService;
 
     @GetMapping(
             value = "{date}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(
-            value = "Resyncs summaries for given date",
-            notes = "<p>Resyncs summaries for given date.</p>"
+            value = "Deletes summaries for given date",
+            notes = "<p>Deletes summaries for given date.</p>"
     )
-    public void resync(@PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date) {
-        summaryResyncService.resync(date);
+    public void delete(@PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date) {
+        removeSummariesService.delete(date);
     }
 }
