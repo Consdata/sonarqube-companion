@@ -14,6 +14,9 @@ import pl.consdata.ico.sqcompanion.violation.group.summary.GroupViolationsHistor
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 @Service
 @Slf4j
@@ -30,7 +33,9 @@ public class GroupService {
                 .builder()
                 .uuid(group.getUuid())
                 .name(group.getName())
+                .parentUuid(ofNullable(group.getParentGroups()).filter(list -> !list.isEmpty()).map(list -> list.get(list.size() - 1).getUuid()).orElse("root"))
                 .projects(group.getAllProjects().size())
+                .groups(group.getGroups().stream().map(this::getGroupDetails).collect(Collectors.toList()))
                 .members(memberService.groupMembers(group.getUuid()).size())
                 .events(eventService.getByGroup(group.getUuid(), Optional.of(30)).size()) //TODO limit
                 .build();
@@ -43,8 +48,11 @@ public class GroupService {
         return GroupDetails
                 .builder()
                 .uuid(group.getUuid())
+                .parentUuid("root")
                 .name(group.getName())
+                .description(group.getDescription())
                 .projects(group.getAllProjects().size())
+                .groups(group.getGroups().stream().map(this::getGroupDetails).collect(Collectors.toList()))
                 .members(memberService.groupMembers(group.getUuid()).size())
                 .events(eventService.getByGroup(group.getUuid(), Optional.of(30)).size())
                 .build();
@@ -55,7 +63,7 @@ public class GroupService {
     }
 
     public Violations getViolationsDiff(Group group, LocalDate from, LocalDate to) {
-        return groupViolationsHistoryService.getViolationsDiff(group.getUuid(), from ,to);
+        return groupViolationsHistoryService.getViolationsDiff(group.getUuid(), from, to);
     }
 
 }

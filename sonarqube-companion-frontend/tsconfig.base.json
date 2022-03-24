@@ -68,7 +68,8 @@
       ],
       "@sonarqube-companion-frontend/ui-components/events": [
         "libs/ui-components/events/src/index.ts"
-      ]
+      ],
+      "@environment": ["apps/sonarqube-companion/src/environments/environment.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

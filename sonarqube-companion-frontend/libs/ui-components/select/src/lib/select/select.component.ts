@@ -18,7 +18,7 @@ import {Subscription} from 'rxjs';
   template: `
     <div class="select" [class.menu]="menu">
       <span class="label">{{ text }}</span>
-      <button class="select-button" (click)="open = !open" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+      <button class="select-button" (click)="click($event)" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
         <span *ngIf="selected && !menu" [innerHTML]="selected.content.nativeElement.innerHTML"></span>
         <mat-icon>{{ icon ? icon : 'expand_more'}}</mat-icon>
       </button>
@@ -88,4 +88,8 @@ export class SelectComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+  click(event: MouseEvent) {
+    event.preventDefault();
+    this.open = !this.open
+  }
 }

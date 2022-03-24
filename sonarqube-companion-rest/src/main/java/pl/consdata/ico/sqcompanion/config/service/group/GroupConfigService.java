@@ -12,9 +12,9 @@ import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.config.validation.group.GroupValidator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
@@ -28,7 +28,12 @@ public class GroupConfigService {
     private final GroupValidator validator;
     private final SettingsService settingsService;
 
-    public ValidationResult create(String parentUuid, GroupDefinition groupDefinition) {
+    public ValidationResult create(String parentUuid) {
+        String uuid = UUID.randomUUID().toString();
+        GroupDefinition groupDefinition = GroupDefinition.builder()
+                .uuid(uuid)
+                .name("New group")
+                .build();
         ValidationResult validationResult = validator.validate(groupDefinition).and(validator.groupExists(parentUuid));
         if (validationResult.isValid()) {
             GroupDefinition parentGroup = this.appConfig.getGroup(parentUuid);
@@ -120,6 +125,6 @@ public class GroupConfigService {
     }
 
     public List<GroupLightModel> crumbs(Optional<String> uuid) {
-        return uuid.map(appConfig::getGroupParents).orElse(emptyList());
+        return uuid.map(appConfig::getGroupPath).orElse(emptyList());
     }
 }

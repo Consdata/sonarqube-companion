@@ -1,5 +1,6 @@
 @import "libs/ui-theme/src/palette";
 @import "libs/ui-theme/src/mixins";
+
 :host {
   display: flex;
   flex-direction: column;
@@ -7,6 +8,15 @@
 
 input {
   @include sqc-input;
+}
+
+
+input.center {
+  text-align: center;
+}
+
+input.nounderline {
+  border: none;
 }
 
 label {

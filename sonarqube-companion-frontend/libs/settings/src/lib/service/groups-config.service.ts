@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {GroupConfig} from '../model/group-config';
 import {Observable} from 'rxjs';
 import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
+import {ValidationResult} from '../model/validation-result';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,6 +13,15 @@ export class GroupsConfigService {
 
   public get(uuid: string): Observable<GroupConfig> {
     return this.http.get<GroupConfig>(`/api/v1/settings/group/${uuid ? uuid : ''}`);
+  }
+
+  public create(parentUuid: string): Observable<ValidationResult> {
+    return this.http.post<ValidationResult>(`/api/v1/settings/group/${parentUuid}/create`, {});
+  }
+
+
+  public root(): Observable<GroupConfig> {
+    return this.http.get<GroupConfig>(`/api/v1/settings/group/`);
   }
 
   public all(): Observable<GroupLightModel[]> {
@@ -31,5 +41,9 @@ export class GroupsConfigService {
   // }
   public crumbs(uuid: string): Observable<GroupLightModel[]> {
     return this.http.get<GroupLightModel[]>(`/api/v1/settings/group/crumbs/${uuid ? uuid : ''}`);
+  }
+
+  delete(parentUuid: string, uuid: string): Observable<ValidationResult> {
+    return this.http.delete<ValidationResult>(`/api/v1/settings/group/${parentUuid}/${uuid}`);
   }
 }

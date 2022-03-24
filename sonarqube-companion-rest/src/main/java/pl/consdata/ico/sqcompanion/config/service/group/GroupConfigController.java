@@ -30,9 +30,9 @@ public class GroupConfigController extends SettingsExceptionHandler {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(value = "/{parentUuid}/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ValidationResult create(@PathVariable String parentUuid, @RequestBody GroupDefinition groupDefinition) {
-        log.info("Create new group {}/{}", parentUuid, groupDefinition);
-        return groupConfigService.create(parentUuid, groupDefinition);
+    public ValidationResult create(@PathVariable String parentUuid) {
+        log.info("Create new child for {}", parentUuid);
+        return groupConfigService.create(parentUuid);
     }
 
     @ApiOperation(value = "Update group definition",

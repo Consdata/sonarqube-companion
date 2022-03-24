@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
   template: `
     <div class="header">
       <div class="navigation">
-        <div class="item" mat-ripple [routerLink]="'/settings/groups'"  *ngIf="false">Groups</div>
+        <div class="item" mat-ripple [routerLink]="'/settings/groups'" *ngIf="false">Groups</div>
         <div class="item" mat-ripple [routerLink]="'/settings/members'" *ngIf="false">Members</div>
         <mat-divider vertical></mat-divider>
         <div class="item" mat-ripple [routerLink]="'/settings/servers'">Servers</div>

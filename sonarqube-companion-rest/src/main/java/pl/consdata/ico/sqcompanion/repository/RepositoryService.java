@@ -84,6 +84,7 @@ public class RepositoryService {
                     .collect(Collectors.toList());
             return Group.builder()
                     .uuid(group.getUuid())
+                    .description(group.getDescription())
                     .parentGroups(parents)
                     .name(group.getName())
                     .groups(subGroups)

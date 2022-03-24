@@ -1,44 +1,140 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {GroupConfig} from '../model/group-config';
+import {Select, Store} from '@ngxs/store';
+import {ActionsExecuting, actionsExecuting} from '@ngxs-labs/actions-executing';
+import {DeleteGroup, GroupSettingsState, LoadGroup} from '../state/group-settings-state';
 import {GroupsConfigService} from '../service/groups-config.service';
 
 @Component({
   selector: 'sqc-group',
   template: `
-    <ng-container *ngIf="group$ | async as group">
-      <div class="crumbs">
-        <div class="span">Path: </div>
-        <sqc-crumbs [uuid]="group.uuid"></sqc-crumbs>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="group">
-        <div class="name">
-          <sqc-input [value]="group.name"></sqc-input>
+    <div *ngIf="actionsExecuting$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
+    <ng-container *ngIf="!(actionsExecuting$ | async)">
+      <ng-container *ngIf="group$ | async as group">
+        <div class="crumbs" *ngIf="parentUuid">
+          <sqc-crumbs [uuid]="group.uuid"></sqc-crumbs>
+          <div class="delete">
+            <mat-divider [vertical]="true"></mat-divider>
+            <mat-icon class="icon" (click)="delete(group)">delete</mat-icon>
+          </div>
         </div>
-        <div class="description">
-          <sqc-input [value]="group.description"></sqc-input>
+        <mat-divider></mat-divider>
+        <div class="group">
+          <div class="name">
+            <input [value]="group.name" [placeholder]="'name'"/>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="description">
+            <textarea [value]="group.description" [placeholder]="'description'"></textarea>
+          </div>
+          <mat-divider></mat-divider>
         </div>
-        <div class="projects">
-        </div>
-        <div class="members"></div>
-        <div class="events"></div>
-        <div class="subgroups"></div>
-      </div>
+        <cdk-accordion class="example-accordion">
+          <cdk-accordion-item
+            #projects="cdkAccordionItem"
+            class="example-accordion-item"
+            role="button"
+            tabindex="0"
+            [attr.id]="'projects-header'"
+            [attr.aria-expanded]="projects.expanded"
+            [attr.aria-controls]="'projects-body'">
+            <div class="example-accordion-item-header" (click)="projects.toggle()">
+              Projects
+              <span class="example-accordion-item-description">
+        Click to {{ projects.expanded ? 'close' : 'open' }}
+      </span>
+            </div>
+            <div
+              class="example-accordion-item-body"
+              role="region"
+              [style.display]="projects.expanded ? '' : 'none'"
+              [attr.id]="'projects-body'"
+              [attr.aria-labelledby]="'projects-header'">
+              <sqc-group-projects></sqc-group-projects>
+            </div>
+          </cdk-accordion-item>
+
+          <cdk-accordion-item
+            #members="cdkAccordionItem"
+            class="example-accordion-item"
+            role="button"
+            tabindex="0"
+            [attr.id]="'members-header'"
+            [attr.aria-expanded]="members.expanded"
+            [attr.aria-controls]="'members-body'">
+            <div class="example-accordion-item-header" (click)="members.toggle()">
+              Members
+              <span class="example-accordion-item-description">
+        Click to {{ members.expanded ? 'close' : 'open' }}
+      </span>
+            </div>
+            <div
+              class="example-accordion-item-body"
+              role="region"
+              [style.display]="members.expanded ? '' : 'none'"
+              [attr.id]="'members-body'"
+              [attr.aria-labelledby]="'members-header'">
+              <sqc-group-members></sqc-group-members>
+            </div>
+          </cdk-accordion-item>
+
+<!--          <cdk-accordion-item-->
+<!--            #events="cdkAccordionItem"-->
+<!--            class="example-accordion-item"-->
+<!--            role="button"-->
+<!--            tabindex="0"-->
+<!--            [attr.id]="'events-header'"-->
+<!--            [attr.aria-expanded]="events.expanded"-->
+<!--            [attr.aria-controls]="'events-body'">-->
+<!--            <div class="example-accordion-item-header" (click)="events.toggle()">-->
+<!--              Events-->
+<!--              <span class="example-accordion-item-description">-->
+<!--        Click to {{ events.expanded ? 'close' : 'open' }}-->
+<!--      </span>-->
+<!--            </div>-->
+<!--            <div-->
+<!--              class="example-accordion-item-body"-->
+<!--              role="region"-->
+<!--              [style.display]="events.expanded ? '' : 'none'"-->
+<!--              [attr.id]="'events-body'"-->
+<!--              [attr.aria-labelledby]="'events-header'">-->
+<!--              <sqc-group-events></sqc-group-events>-->
+<!--            </div>-->
+<!--          </cdk-accordion-item>-->
+
+        </cdk-accordion>
+      </ng-container>
     </ng-container>
   `,
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent {
-  group$: Observable<GroupConfig> = this.route.params.pipe(
-    map(params => params['groupId']),
-    switchMap(uuid => this.groupService.get(uuid))
-  );
+export class GroupComponent implements AfterViewInit {
+  items = ['Projects', 'Members', 'Events'];
 
-  constructor(private route: ActivatedRoute, private groupService: GroupsConfigService) {
+  @Select(GroupSettingsState.group)
+  group$!: Observable<GroupConfig>;
+
+  @Select(actionsExecuting([DeleteGroup, LoadGroup]))
+  actionsExecuting$!: Observable<ActionsExecuting>;
+
+  parentUuid: string = '';
+
+  constructor(private route: ActivatedRoute, private store: Store, private groupService: GroupsConfigService, private router: Router) {
   }
 
+  ngAfterViewInit(): void {
+    this.route.params.subscribe(params => {
+      this.parentUuid = params['parentId'];
+      this.store.dispatch(new LoadGroup(params['groupId']))
+    });
+  }
 
+  delete(group: GroupConfig): void {
+    this.store.dispatch(new DeleteGroup(this.parentUuid, group.uuid)).subscribe(() =>
+      this.router.navigate(['settings', 'groups']))
+  }
 }

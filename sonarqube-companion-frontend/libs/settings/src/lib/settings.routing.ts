@@ -17,10 +17,10 @@ export const settingsRouting: Route[] = [
       },
       {
         path: 'groups',
-        component: GroupComponent
+        component: GroupsComponent
       },
       {
-        path: 'groups/:groupId',
+        path: 'group/:parentId/:groupId',
         component: GroupComponent
       },
       {

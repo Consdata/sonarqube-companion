@@ -4,15 +4,17 @@ import {combineLatest, ReplaySubject} from 'rxjs';
 import {GroupFilter} from '../../../../../group-overview/src/lib/group-filter';
 import {map, switchMap} from 'rxjs/operators';
 import {DEFAULT_DATE_RANGE} from '../../../../time-select/src/lib/time-select/time-select.component';
+import {Router} from '@angular/router';
+import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
 
 @Component({
   selector: 'sqc-crumbs',
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <div class="crumbs">
-        <div class="crumb" *ngFor="let crumb of vm.crumbs">
-          <div class="name">{{crumb.name}}</div>
-          <div class="span">></div>
+        <div class="crumb" *ngFor="let crumb of vm.crumbs; let last = last">
+          <div class="name" (click)="navigateToGroup(crumb)">{{crumb.name}}</div>
+          <div class="span" *ngIf="!last">></div>
         </div>
       </div>
     </ng-container>
@@ -36,13 +38,20 @@ export class CrumbsComponent {
     )
   )
 
-  constructor(private groupService: GroupsConfigService) {
+  constructor(private groupService: GroupsConfigService, private router: Router) {
   }
 
   @Input()
   set uuid(id: string) {
-    this.filter.uuid = id;
-    this.filterSubject.next(this.filter);
+    if (id) {
+      this.filter.uuid = id;
+      this.filterSubject.next(this.filter);
+    }
   }
+
+  navigateToGroup(crumb: GroupLightModel): void {
+    this.router.navigate(['settings', 'group', crumb.uuid])
+  }
+
 
 }

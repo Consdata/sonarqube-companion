@@ -17,6 +17,7 @@ public class Group {
 
     private String uuid;
     private String name;
+    private String description;
     private List<GroupLightModel> parentGroups;
     private List<Group> groups;
     private List<Project> projects;

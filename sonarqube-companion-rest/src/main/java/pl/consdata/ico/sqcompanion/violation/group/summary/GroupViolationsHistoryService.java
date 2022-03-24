@@ -91,8 +91,7 @@ public class GroupViolationsHistoryService {
     }
 
     public ViolationsHistory getGroupViolationsHistory(Group group, LocalDate from, LocalDate to) {
-        List<String> projects = group.getAllProjects().stream().map(Project::getKey).collect(Collectors.toList());
-        return new ViolationsHistory(repository.findAllByGroupIdAndProjectKeyInAndDateBetween(group.getUuid(), projects, from, to)
+        return new ViolationsHistory(repository.findAllByGroupIdAndDateBetween(group.getUuid(),from, to)
                 .stream()
                 .collect(Collectors.groupingBy(GroupViolationSummaryHistoryEntry::getDate))
                 .entrySet()

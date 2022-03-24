@@ -18,23 +18,39 @@ import {MatButtonModule} from '@angular/material/button';
 import {UiComponentsSelectModule} from '@sonarqube-companion-frontend/ui-components/select';
 import {UtilsModule} from '@sonarqube-companion-frontend/utils';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { GroupsComponent } from './groups/groups.component';
-import { GroupComponent } from './group/group.component';
-import { MembersComponent } from './members/members.component';
-import { MemberComponent } from './member/member.component';
-import { IntegrationsComponent } from './integrations/integrations.component';
-import { WebhooksComponent } from './webhooks/webhooks.component';
-import { WebhookComponent } from './webhook/webhook.component';
+import {GroupsComponent} from './groups/groups.component';
+import {GroupComponent} from './group/group.component';
+import {MembersComponent} from './members/members.component';
+import {MemberComponent} from './member/member.component';
+import {IntegrationsComponent} from './integrations/integrations.component';
+import {WebhooksComponent} from './webhooks/webhooks.component';
+import {WebhookComponent} from './webhook/webhook.component';
 import {UiComponentsSideGroupsTreeModule} from '@sonarqube-companion-frontend/ui-components/side-groups-tree';
-import { GroupPreviewComponent } from './group-preview/group-preview.component';
+import {GroupPreviewComponent} from './group-preview/group-preview.component';
 import {UiComponentsCrumbsModule} from '@sonarqube-companion-frontend/ui-components/crumbs';
-import { GroupProjectsComponent } from './group-projects/group-projects.component';
-import { GroupEventsComponent } from './group-events/group-events.component';
+import {GroupProjectsComponent} from './group-projects/group-projects.component';
+import {GroupEventsComponent} from './group-events/group-events.component';
+import {NgxsModule} from '@ngxs/store';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {SettingsState} from './state/settings-state';
+import {GroupsSettingsState} from './state/groups-settings-state';
+import {MatTreeModule} from '@angular/material/tree';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {HoverClassDirective} from './utils/hover.directive';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {NgxsActionsExecutingModule} from '@ngxs-labs/actions-executing';
+import {GroupSettingsState} from './state/group-settings-state';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
+import {GroupMembersComponent} from './group-members/group-members.component';
+import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(settingsRouting),
+    NgxsModule.forRoot([SettingsState, GroupsSettingsState, GroupSettingsState], {developmentMode: true}),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsActionsExecutingModule.forRoot(),
     MatDividerModule,
     MatRippleModule,
     HttpClientModule,
@@ -47,7 +63,12 @@ import { GroupEventsComponent } from './group-events/group-events.component';
     UtilsModule,
     MatProgressSpinnerModule,
     UiComponentsSideGroupsTreeModule,
-    UiComponentsCrumbsModule
+    UiComponentsCrumbsModule,
+    MatTreeModule,
+    DragDropModule,
+    MatTooltipModule,
+    CdkAccordionModule,
+    CdkTableModule
   ],
   declarations: [
     SettingsComponent,
@@ -64,7 +85,9 @@ import { GroupEventsComponent } from './group-events/group-events.component';
     WebhookComponent,
     GroupPreviewComponent,
     GroupProjectsComponent,
-    GroupEventsComponent
+    GroupEventsComponent,
+    HoverClassDirective,
+    GroupMembersComponent
   ],
   exports: [
     SettingsComponent

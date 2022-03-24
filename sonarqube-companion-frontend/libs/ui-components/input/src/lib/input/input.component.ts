@@ -5,7 +5,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
   template: `
     <ng-container *ngIf="!disabled">
       <label *ngIf="label">{{label}}</label>
-      <input [value]="value" (change)="onValueChange($event)"/>
+      <input [value]="value" (change)="onValueChange($event)" [class.center]="center" [class.nounderline]="nounderline"/>
     </ng-container>
     <ng-container *ngIf="disabled">
       <label *ngIf="label">{{label}}</label>
@@ -20,6 +20,10 @@ export class InputComponent {
   value: string = '';
   @Input()
   label: string = '';
+  @Input()
+  center: boolean = false;
+  @Input()
+  nounderline: boolean = false;
   @Input()
   disabled: boolean = false;
   @Output()
