@@ -204,7 +204,6 @@ public class UserViolationSummaryHistoryService {
         }
     }
 
-    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #daysLimit")
     public ViolationsHistory getGroupViolationsHistory(final Group group, Optional<Integer> daysLimit) {
         return ViolationsHistory
                 .builder()

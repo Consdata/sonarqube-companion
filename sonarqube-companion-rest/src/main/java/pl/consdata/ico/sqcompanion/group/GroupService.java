@@ -58,10 +58,12 @@ public class GroupService {
                 .build();
     }
 
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_CACHE, sync = true, key = "#group.uuid + #localDate")
     public Violations getViolations(Group group, LocalDate localDate) {
         return groupViolationsHistoryService.getViolations(group.getUuid(), localDate);
     }
 
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_DIFF_CACHE, sync = true, key = "#group.uuid + #from + #to")
     public Violations getViolationsDiff(Group group, LocalDate from, LocalDate to) {
         return groupViolationsHistoryService.getViolationsDiff(group.getUuid(), from, to);
     }

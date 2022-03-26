@@ -33,6 +33,7 @@ public class SynchronizationService {
     private final SynchronizationStateService synchronizationStateService;
     private final CacheManager cacheManager;
     private final MemberService memberService;
+    private final PrepopulateCacheService prepopulateCacheService;
     private final Semaphore semaphore = new Semaphore(1);
 
     public void acquireAndStartSynchronization() throws SynchronizationException {
@@ -73,6 +74,7 @@ public class SynchronizationService {
                 .stream()
                 .map(cacheManager::getCache)
                 .forEach(Cache::clear);
+        prepopulateCacheService.prepopulate();
 
         log.info("Synchronization finished in {}ms", (System.currentTimeMillis() - startTime));
     }

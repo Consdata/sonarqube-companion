@@ -2,7 +2,9 @@ package pl.consdata.ico.sqcompanion.violation.group.summary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import pl.consdata.ico.sqcompanion.cache.Caches;
 import pl.consdata.ico.sqcompanion.config.model.GroupLightModel;
 import pl.consdata.ico.sqcompanion.members.MemberService;
 import pl.consdata.ico.sqcompanion.members.MembersViolationsSummary;
@@ -90,6 +92,7 @@ public class GroupViolationsHistoryService {
         return getGroupViolationsHistory(group, LocalDate.now().minusDays(daysLimit.orElse(30)), LocalDate.now().minusDays(1));
     }
 
+    @Cacheable(value = Caches.GROUP_VIOLATIONS_HISTORY_CACHE, sync = true, key = "#group.uuid + #from + #to")
     public ViolationsHistory getGroupViolationsHistory(Group group, LocalDate from, LocalDate to) {
         return new ViolationsHistory(repository.findAllByGroupIdAndDateBetween(group.getUuid(),from, to)
                 .stream()
