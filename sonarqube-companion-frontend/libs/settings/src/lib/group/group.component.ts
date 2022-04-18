@@ -57,55 +57,6 @@ import {GroupsConfigService} from '../service/groups-config.service';
               <sqc-group-projects></sqc-group-projects>
             </div>
           </cdk-accordion-item>
-
-          <cdk-accordion-item
-            #members="cdkAccordionItem"
-            class="example-accordion-item"
-            role="button"
-            tabindex="0"
-            [attr.id]="'members-header'"
-            [attr.aria-expanded]="members.expanded"
-            [attr.aria-controls]="'members-body'">
-            <div class="example-accordion-item-header" (click)="members.toggle()">
-              Members
-              <span class="example-accordion-item-description">
-        Click to {{ members.expanded ? 'close' : 'open' }}
-      </span>
-            </div>
-            <div
-              class="example-accordion-item-body"
-              role="region"
-              [style.display]="members.expanded ? '' : 'none'"
-              [attr.id]="'members-body'"
-              [attr.aria-labelledby]="'members-header'">
-              <sqc-group-members></sqc-group-members>
-            </div>
-          </cdk-accordion-item>
-
-<!--          <cdk-accordion-item-->
-<!--            #events="cdkAccordionItem"-->
-<!--            class="example-accordion-item"-->
-<!--            role="button"-->
-<!--            tabindex="0"-->
-<!--            [attr.id]="'events-header'"-->
-<!--            [attr.aria-expanded]="events.expanded"-->
-<!--            [attr.aria-controls]="'events-body'">-->
-<!--            <div class="example-accordion-item-header" (click)="events.toggle()">-->
-<!--              Events-->
-<!--              <span class="example-accordion-item-description">-->
-<!--        Click to {{ events.expanded ? 'close' : 'open' }}-->
-<!--      </span>-->
-<!--            </div>-->
-<!--            <div-->
-<!--              class="example-accordion-item-body"-->
-<!--              role="region"-->
-<!--              [style.display]="events.expanded ? '' : 'none'"-->
-<!--              [attr.id]="'events-body'"-->
-<!--              [attr.aria-labelledby]="'events-header'">-->
-<!--              <sqc-group-events></sqc-group-events>-->
-<!--            </div>-->
-<!--          </cdk-accordion-item>-->
-
         </cdk-accordion>
       </ng-container>
     </ng-container>

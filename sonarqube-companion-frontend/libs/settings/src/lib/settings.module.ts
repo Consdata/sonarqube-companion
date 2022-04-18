@@ -43,33 +43,35 @@ import {GroupSettingsState} from './state/group-settings-state';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {GroupMembersComponent} from './group-members/group-members.component';
 import {CdkTableModule} from '@angular/cdk/table';
+import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-components/table';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(settingsRouting),
-    NgxsModule.forRoot([SettingsState, GroupsSettingsState, GroupSettingsState], {developmentMode: true}),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsActionsExecutingModule.forRoot(),
-    MatDividerModule,
-    MatRippleModule,
-    HttpClientModule,
-    UiComponentsInputModule,
-    UiComponentsChipsModule,
-    UiComponentsToggleModule,
-    MatIconModule,
-    MatButtonModule,
-    UiComponentsSelectModule,
-    UtilsModule,
-    MatProgressSpinnerModule,
-    UiComponentsSideGroupsTreeModule,
-    UiComponentsCrumbsModule,
-    MatTreeModule,
-    DragDropModule,
-    MatTooltipModule,
-    CdkAccordionModule,
-    CdkTableModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(settingsRouting),
+        NgxsModule.forRoot([SettingsState, GroupsSettingsState, GroupSettingsState], {developmentMode: true}),
+        NgxsReduxDevtoolsPluginModule.forRoot(),
+        NgxsActionsExecutingModule.forRoot(),
+        MatDividerModule,
+        MatRippleModule,
+        HttpClientModule,
+        UiComponentsInputModule,
+        UiComponentsChipsModule,
+        UiComponentsToggleModule,
+        MatIconModule,
+        MatButtonModule,
+        UiComponentsSelectModule,
+        UtilsModule,
+        MatProgressSpinnerModule,
+        UiComponentsSideGroupsTreeModule,
+        UiComponentsCrumbsModule,
+        MatTreeModule,
+        DragDropModule,
+        MatTooltipModule,
+        CdkAccordionModule,
+        CdkTableModule,
+        UiComponentsTableModule
+    ],
   declarations: [
     SettingsComponent,
     ServersComponent,

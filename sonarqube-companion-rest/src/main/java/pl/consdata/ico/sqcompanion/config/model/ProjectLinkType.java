@@ -9,12 +9,6 @@ public enum ProjectLinkType {
     DIRECT,
 
     /**
-     * Project configured via Companion project alias.
-     * Project name and details based on Companion alias definition.
-     */
-    ALIAS,
-
-    /**
      * One or more projects configured based on regex match from SonarQube server projects.
      * Project name and details same as with Direct link.
      */

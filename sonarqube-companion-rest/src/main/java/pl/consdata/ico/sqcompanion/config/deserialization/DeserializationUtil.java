@@ -33,6 +33,10 @@ public class DeserializationUtil {
         }
     }
 
+    public static boolean  booleanOf(JsonNode node){
+        return Boolean.parseBoolean(textOfBlankNode(node, "false"));
+    }
+
     public static List<String> listOfNullable(JsonNode node, ObjectMapper objectMapper) {
         if (node == null) {
             return new ArrayList<>();
