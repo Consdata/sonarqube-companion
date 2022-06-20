@@ -12,6 +12,14 @@ import {MatTableModule} from '@angular/material/table';
 import {TableCellComponent} from './table/cell/table-cell.component';
 import {TableTextCellComponent} from './table/cell/table-text-cell.component';
 import {TableInputCellComponent} from './table/cell/table-input-cell.component';
+import {TableCheckboxCellComponent} from './table/cell/table-checkbox-cell.component';
+import {TableComboCellComponent} from './table/cell/table-combo-cell.component';
+import {TableDateCellComponent} from './table/cell/table-date-cell.component';
+import {TableLinkCellComponent} from './table/cell/table-link-cell.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatButtonModule} from '@angular/material/button';
+import {MatNativeDateModule} from '@angular/material/core';
+import {TableActionsCellComponent} from './table/cell/table-actions-cell.component';
 
 @NgModule({
   imports: [
@@ -22,14 +30,22 @@ import {TableInputCellComponent} from './table/cell/table-input-cell.component';
     MatSortModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatNativeDateModule
   ],
   declarations: [
     ViolationsTableComponent,
     TableComponent,
     TableCellComponent,
     TableTextCellComponent,
-    TableInputCellComponent
+    TableInputCellComponent,
+    TableCheckboxCellComponent,
+    TableComboCellComponent,
+    TableDateCellComponent,
+    TableLinkCellComponent,
+    TableActionsCellComponent
   ],
   exports: [
     ViolationsTableComponent,

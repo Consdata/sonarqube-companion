@@ -1,4 +1,5 @@
 @import "libs/ui-theme/src/guidline";
+@import "libs/ui-theme/src/palette";
 
 .header {
   display: flex;
@@ -19,3 +20,16 @@
   }
 }
 
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .item {
+    border: 1px solid map-get($primary-palette, 300);
+    padding: 10px;
+    width: 50%;
+    margin-top: 20px;
+  }
+}

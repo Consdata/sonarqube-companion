@@ -20,7 +20,7 @@
 }
 
 .tree {
-  background-color: map-get($primary-palette, 900);
+  background-color: map-get($primary-palette, 200);
   margin-right: 10px;
   padding: 10px;
 }
@@ -36,7 +36,7 @@ sqc-groups-tree-item {
 }
 
 .expander {
-  color: map-get($primary-palette, 200);
+  color: map-get($primary-palette, 800);
 }
 
 sqc-side-groups-tree-item {

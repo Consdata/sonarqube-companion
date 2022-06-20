@@ -753,6 +753,31 @@
           }
         }
       }
+    },
+    "groups": {
+      "projectType": "library",
+      "root": "libs/groups",
+      "sourceRoot": "libs/groups/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/groups"],
+          "options": {
+            "jestConfig": "libs/groups/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/groups/src/**/*.ts",
+              "libs/groups/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

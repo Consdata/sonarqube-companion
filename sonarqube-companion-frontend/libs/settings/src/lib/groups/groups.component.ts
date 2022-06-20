@@ -1,24 +1,23 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs';
 import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
-import {Select, Store} from '@ngxs/store';
-import {AddChild, GroupsSettingsState, LoadRootGroup} from '../state/groups-settings-state';
+import {Store} from '@ngxs/store';
 import {Router} from '@angular/router';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {GroupDetails} from '@sonarqube-companion-frontend/group';
-import {ActionsExecuting, actionsExecuting} from '@ngxs-labs/actions-executing';
+import {GROUPS_SETTINGS_SERVICE_TOKEN, GroupsSettingsService} from './groups-settings.service';
 
 @Component({
   selector: 'sqc-groups',
   template: `
-    <div *ngIf="actionsExecuting$ | async">
+    <div *ngIf="loading$ | async">
       asddasasdasdadsdas
       <mat-spinner></mat-spinner>
     </div>
-    <ng-container *ngIf="!(actionsExecuting$ | async)">
-      <ng-container *ngIf="vm$ | async as vm">
+    <ng-container *ngIf="!(loading$ | async)">
+      <ng-container *ngIf="rootGroup$ | async as vm">
         <mat-tree [dataSource]="getDataSource(vm)" [treeControl]="treeControl" class="example-tree" cdkDropList
                   (cdkDropListDropped)="drop($event)">
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle cdkDrag [cdkDragData]="node"
@@ -80,26 +79,19 @@ import {ActionsExecuting, actionsExecuting} from '@ngxs-labs/actions-executing';
   `,
   styleUrls: ['./groups.component.scss']
 })
-export class GroupsComponent implements AfterViewInit {
+export class GroupsComponent {
   subject: ReplaySubject<void> = new ReplaySubject<void>();
-
-  @Select(GroupsSettingsState.rootGroup)
-  vm$!: Observable<GroupDetails>;
-
-  @Select(actionsExecuting([AddChild, LoadRootGroup])) actionsExecuting$!: Observable<ActionsExecuting>;
-
 
   treeControl = new NestedTreeControl<GroupDetails>(node => node.groups);
   dataSource = new MatTreeNestedDataSource<GroupDetails>();
 
-  constructor(private store: Store, private router: Router) {
+  rootGroup$: Observable<GroupDetails> = this.groupsSettingsService.loadRootGroup();
+  loading$: Observable<any> = this.groupsSettingsService.groupsSettingsIsLoading();
+
+  constructor(private store: Store, private router: Router, @Inject(GROUPS_SETTINGS_SERVICE_TOKEN) private groupsSettingsService: GroupsSettingsService) {
   }
 
   hasChild = (_: number, node: GroupDetails) => !!node.groups && node.groups.length > 0;
-
-  ngAfterViewInit(): void {
-    this.store.dispatch(new LoadRootGroup());
-  }
 
   getDataSource(config: GroupDetails): MatTreeNestedDataSource<GroupDetails> {
     this.dataSource.data = [config];
@@ -111,7 +103,7 @@ export class GroupsComponent implements AfterViewInit {
   }
 
   addChild(parent: GroupDetails): void {
-    this.store.dispatch(new AddChild(parent.uuid));
+    this.groupsSettingsService.addChild(parent);
   }
 
   save(): void {

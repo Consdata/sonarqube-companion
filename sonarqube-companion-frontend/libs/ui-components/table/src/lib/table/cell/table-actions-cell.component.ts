@@ -6,13 +6,11 @@ import {Cell} from '../table-model';
   selector: 'sqc-table-date-cell',
   template: `
     <ng-container *ngIf="_cell">
-      <button class="dateBtn" (click)="datepicker.open()">asdasd</button>
-      <input [matDatepicker]="datepicker" class="date">
-      <mat-datepicker #datepicker></mat-datepicker>
+      <mat-icon>delete</mat-icon>
     </ng-container>
   `
 })
-export class TableDateCellComponent implements TableCell {
+export class TableActionsCellComponent implements TableCell {
   _cell?: Cell;
 
   setCell(cell: Cell): void {

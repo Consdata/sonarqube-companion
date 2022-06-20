@@ -10,9 +10,6 @@ import {Router} from '@angular/router';
     <mat-sidenav-container>
       <mat-sidenav opened mode="side" [disableClose]="true">
         <div class="wrapper">
-          <div class="title">
-            <span>SQCompanion</span>
-          </div>
           <mat-divider></mat-divider>
           <mat-nav-list>
             <sqc-side-groups-tree-wrapper [rootGroup]="rootGroup$"
@@ -33,30 +30,6 @@ import {Router} from '@angular/router';
             <!--              </div>-->
             <!--            </mat-list-item>-->
           </mat-nav-list>
-          <div class="expander"></div>
-          <mat-nav-list class="bottom-list">
-            <mat-list-item>
-              <div class="item" (click)="goToSettings()">
-                <mat-icon>settings</mat-icon>
-              </div>
-            </mat-list-item>
-            <mat-list-item>
-              <div class="item"><a class="git" href="https://github.com/Consdata/sonarqube-companion"
-                                   target="_blank"></a></div>
-            </mat-list-item>
-            <mat-list-item>
-              <div class="item">
-                <mat-icon>sync</mat-icon>
-              </div>
-            </mat-list-item>
-          </mat-nav-list>
-          <mat-nav-list class="version">
-            <mat-list-item>
-              <div class="item">
-                <sqc-version></sqc-version>
-              </div>
-            </mat-list-item>
-          </mat-nav-list>
         </div>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -76,9 +49,5 @@ export class GroupSidenavComponent {
 
   onSelect(event: GroupLightModel) {
     this.router.navigate(['group', event.uuid])
-  }
-
-  goToSettings() {
-    this.router.navigate(['settings'])
   }
 }

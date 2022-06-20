@@ -25,5 +25,6 @@ module.exports = {
     '<rootDir>/libs/ui-components/crumbs',
     '<rootDir>/libs/ui-components/projects',
     '<rootDir>/libs/ui-components/events',
+    '<rootDir>/libs/groups',
   ],
 };

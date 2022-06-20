@@ -15,10 +15,11 @@ import {GroupsConfigService} from '../service/groups-config.service';
     </div>
     <ng-container *ngIf="!(actionsExecuting$ | async)">
       <ng-container *ngIf="group$ | async as group">
-        <div class="crumbs" *ngIf="parentUuid">
-          <sqc-crumbs [uuid]="group.uuid"></sqc-crumbs>
+        <div class="crumbs">
+          <span>{{group.name}}</span>
           <div class="delete">
             <mat-divider [vertical]="true"></mat-divider>
+            <mat-icon class="icon" (click)="delete(group)">save</mat-icon>
             <mat-icon class="icon" (click)="delete(group)">delete</mat-icon>
           </div>
         </div>

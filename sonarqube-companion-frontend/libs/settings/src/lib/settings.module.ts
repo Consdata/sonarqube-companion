@@ -44,6 +44,9 @@ import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {GroupMembersComponent} from './group-members/group-members.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-components/table';
+import {GROUPS_SETTINGS_SERVICE_TOKEN} from './groups/groups-settings.service';
+import {GroupsSettingsStateService} from './state/services/groups-settings-state.service';
+import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
 
 @NgModule({
     imports: [
@@ -70,7 +73,8 @@ import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-componen
         MatTooltipModule,
         CdkAccordionModule,
         CdkTableModule,
-        UiComponentsTableModule
+        UiComponentsTableModule,
+        SidenavModule
     ],
   declarations: [
     SettingsComponent,
@@ -93,7 +97,11 @@ import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-componen
   ],
   exports: [
     SettingsComponent
+  ],
+  providers: [
+    {provide: GROUPS_SETTINGS_SERVICE_TOKEN, useClass: GroupsSettingsStateService}
   ]
 })
+
 export class SettingsModule {
 }

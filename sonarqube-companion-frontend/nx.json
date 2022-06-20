@@ -97,6 +97,9 @@
     },
     "ui-components-events": {
       "tags": []
+    },
+    "groups": {
+      "tags": []
     }
   }
 }

@@ -9,9 +9,10 @@ import {UiComponentsSidebarModule} from '@sonarqube-companion-frontend/ui-compon
 import { NotFoundComponent } from './not-found/not-found.component';
 import {HttpClientModule} from '@angular/common/http';
 import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
+import {TopbarComponent} from './topbar.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
+  declarations: [AppComponent, NotFoundComponent, TopbarComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),

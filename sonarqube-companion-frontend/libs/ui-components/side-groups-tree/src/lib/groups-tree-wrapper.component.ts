@@ -28,3 +28,4 @@ export class GroupsTreeWrapperComponent {
   groupSelect: EventEmitter<GroupLightModel> = new EventEmitter<GroupLightModel>();
 
 }
+/// TODO GroupDetails use parent unfied with settings

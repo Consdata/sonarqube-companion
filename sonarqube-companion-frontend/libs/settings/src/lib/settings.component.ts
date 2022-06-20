@@ -3,19 +3,9 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'sqc-settings',
   template: `
-    <div class="header">
-      <div class="navigation">
-        <div class="item" mat-ripple [routerLink]="'/settings/groups'">Groups</div>
-        <div class="item" mat-ripple [routerLink]="'/settings/members'" *ngIf="false">Members</div>
-        <mat-divider vertical></mat-divider>
-        <div class="item" mat-ripple [routerLink]="'/settings/servers'">Servers</div>
-        <mat-divider vertical></mat-divider>
-        <div class="item" mat-ripple [routerLink]="'/settings/integrations'" *ngIf="false">Integrations</div>
-        <mat-divider vertical></mat-divider>
-      </div>
-      <mat-divider></mat-divider>
+    <sqc-settings-sidenav>
       <router-outlet></router-outlet>
-    </div>
+    </sqc-settings-sidenav>
   `,
   styleUrls: ['./settings.component.scss']
 })

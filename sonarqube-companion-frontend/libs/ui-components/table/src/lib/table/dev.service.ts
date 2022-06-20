@@ -25,6 +25,14 @@ export class DevService {
           name: 'exclude',
           id: 'exclude'
         },
+        'eee': {
+          name: 'eee',
+          id: 'eee'
+        },
+        'actions': {
+          name: 'actions',
+          id: 'actions'
+        },
       },
       rows: [{
         cells: {
@@ -37,15 +45,42 @@ export class DevService {
           },
           'server': {
             column: 'server',
-            value: 'elo'
+            value: 'true',
+            type: {
+              name: 'checkbox'
+            }
           },
           'regexp': {
             column: 'regexp',
-            value: 'elo'
+            value: 'elo',
+            type: {
+              name: 'combo',
+              domain: {
+                '1': 'Test1',
+                '2': 'Test2'
+              }
+            }
           },
           'exclude': {
             column: 'exclude',
-            value: 'elo'
+            value: '',
+            type: {
+              name: 'date'
+            }
+          },
+          'eee': {
+            column: 'exclude',
+            value: 'https://www.google.pl',
+            type: {
+              name: 'link'
+            }
+          },
+          'actions': {
+            column: 'actions',
+            value: '',
+            type: {
+              name: 'actions'
+            }
           }
         }
       }]

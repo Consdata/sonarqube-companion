@@ -1,4 +1,5 @@
 import {NotFoundComponent} from './not-found/not-found.component';
+import {GroupsModule} from '@sonarqube-companion-frontend/groups';
 
 export const appRoutes = [
   {
@@ -12,10 +13,10 @@ export const appRoutes = [
       ),
   },
   {
-    path: 'group/:groupId',
+    path: 'group',
     loadChildren: () =>
-      import('@sonarqube-companion-frontend/group-overview').then(
-        (module) => module.GroupOverviewModule
+      import('@sonarqube-companion-frontend/groups').then(
+        (module) => module.GroupsModule
       ),
   },
   {

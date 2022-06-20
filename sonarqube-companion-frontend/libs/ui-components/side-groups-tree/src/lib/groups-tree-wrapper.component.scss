@@ -1,7 +1,7 @@
 @import "libs/ui-theme/src/palette";
 
 .wrapper {
-  background-color: map-get($primary-palette, 900);
+  background-color: map-get($primary-palette, 200);
 }
 
 .loading {
