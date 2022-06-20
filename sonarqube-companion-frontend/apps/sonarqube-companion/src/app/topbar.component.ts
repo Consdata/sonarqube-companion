@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {VersionService} from '../../../../libs/sidenav/src/lib/version/version.service';
+import {VersionService} from './version/version.service';
 
 @Component({
   selector: 'sqc-topbar',

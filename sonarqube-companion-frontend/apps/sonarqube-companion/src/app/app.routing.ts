@@ -1,5 +1,4 @@
 import {NotFoundComponent} from './not-found/not-found.component';
-import {GroupsModule} from '@sonarqube-companion-frontend/groups';
 
 export const appRoutes = [
   {
