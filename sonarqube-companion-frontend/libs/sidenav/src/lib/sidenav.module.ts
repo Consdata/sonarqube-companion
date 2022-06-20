@@ -5,7 +5,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import {UiComponentsSideGroupsTreeModule} from '@sonarqube-companion-frontend/ui-components/side-groups-tree';
-import { VersionComponent } from './version/version.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MainSidenavComponent} from './main-sidenav/main-sidenav.component';
 import {SettingsSidenavComponent} from './settings-sidenav/settings-sidenav.component';
@@ -21,7 +20,6 @@ import {SettingsSidenavComponent} from './settings-sidenav/settings-sidenav.comp
   ],
   declarations: [
     GroupSidenavComponent,
-    VersionComponent,
     MainSidenavComponent,
     SettingsSidenavComponent
   ],
