@@ -5,7 +5,6 @@ import {settingsRouting} from './settings.routing';
 import {SettingsComponent} from './settings.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatRippleModule} from '@angular/material/core';
-import {ServerComponent} from './server/server.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BasicAuthComponent} from './basic-auth/basic-auth.component';
 import {TokenAuthComponent} from './token-auth/token-auth.component';
@@ -46,7 +45,11 @@ import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-componen
 import {GROUPS_SETTINGS_SERVICE_TOKEN} from './groups/groups-settings.service';
 import {GroupsSettingsStateService} from './state/services/groups-settings-state.service';
 import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
-import {ServersModule} from './servers';
+import {ServersComponent} from './servers/servers.component';
+import {ServersSidenavComponent} from './servers/servers-sidenav.component';
+import {ServerComponent} from './servers/server/server.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -75,11 +78,11 @@ import {ServersModule} from './servers';
     CdkTableModule,
     UiComponentsTableModule,
     SidenavModule,
-    ServersModule
+    MatSidenavModule,
+    MatListModule
   ],
   declarations: [
     SettingsComponent,
-    ServerComponent,
     BasicAuthComponent,
     TokenAuthComponent,
     GroupsComponent,
@@ -93,10 +96,10 @@ import {ServersModule} from './servers';
     GroupProjectsComponent,
     GroupEventsComponent,
     HoverClassDirective,
-    GroupMembersComponent
-  ],
-  exports: [
-    SettingsComponent
+    GroupMembersComponent,
+    ServersComponent,
+    ServersSidenavComponent,
+    ServerComponent
   ],
   providers: [
     {provide: GROUPS_SETTINGS_SERVICE_TOKEN, useClass: GroupsSettingsStateService}

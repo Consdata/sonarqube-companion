@@ -26,5 +26,6 @@ module.exports = {
     '<rootDir>/libs/ui-components/projects',
     '<rootDir>/libs/ui-components/events',
     '<rootDir>/libs/groups',
+    '<rootDir>/libs/ui-components/list-side-nav',
   ],
 };

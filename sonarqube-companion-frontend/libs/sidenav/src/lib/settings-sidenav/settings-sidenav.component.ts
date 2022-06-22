@@ -24,8 +24,26 @@ import {OverviewService} from '../../../../overview/src/lib/overview.service';
 <!--            </mat-list-item>-->
             <mat-list-item>
               <div class="item" (click)="goToServers()">
+                <div class="title">Groups</div>
+                <div class="description">Organizations groups</div>
+              </div>
+            </mat-list-item>
+            <mat-list-item>
+              <div class="item" (click)="goToServers()">
+                <div class="title">Members</div>
+                <div class="description">Organizations members</div>
+              </div>
+            </mat-list-item>
+            <mat-list-item>
+              <div class="item" (click)="goToServers()">
                 <div class="title">Servers</div>
                 <div class="description">Data sources</div>
+              </div>
+            </mat-list-item>
+            <mat-list-item>
+              <div class="item" (click)="goToServers()">
+                <div class="title">Integrations</div>
+                <div class="description">Integrations with thirdparty systems</div>
               </div>
             </mat-list-item>
           </mat-nav-list>

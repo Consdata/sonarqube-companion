@@ -1,17 +1,21 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {combineLatest, ReplaySubject} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
-import {ServersConfigService} from '../service/servers-config.service';
-import {ServerConfig} from '../model/server-config';
 import {SpinnerService} from '../../../../utils/src/lib/spinner.service';
 import {Locks} from '@sonarqube-companion-frontend/utils';
+import {ServersConfigService} from './servers-config.service';
+import {ServerConfig} from './server/server-config';
 
+
+// TODO common side nav with list
 @Component({
   selector: 'sqc-settings-servers',
   template: `
-      <sqc-settings-servers-sidenav>
+    <ng-container>
+      <sqc-settings-servers-sidenav (add)="addServer()">
         <router-outlet></router-outlet>
       </sqc-settings-servers-sidenav>
+    </ng-container>
   `,
   styleUrls: ['./servers.component.scss']
 })

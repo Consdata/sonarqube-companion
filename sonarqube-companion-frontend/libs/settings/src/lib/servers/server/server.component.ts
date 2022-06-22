@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
-import {ServerConfig} from '../model/server-config';
-import {ServersConfigService} from '../service/servers-config.service';
-import {ValidationResult} from '../model/validation-result';
-import {SpinnerService} from '../../../../utils/src/lib/spinner.service';
+import {ValidationResult} from '../../model/validation-result';
+import {SpinnerService} from '../../../../../utils/src/lib/spinner.service';
 import {Locks} from '@sonarqube-companion-frontend/utils';
+import {ServerConfig} from './server-config';
+import {ServersConfigService} from '../servers-config.service';
 
 @Component({
   selector: 'sqc-settings-server',

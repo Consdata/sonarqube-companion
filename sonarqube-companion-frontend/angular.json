@@ -778,6 +778,31 @@
           }
         }
       }
+    },
+    "ui-components-list-side-nav": {
+      "projectType": "library",
+      "root": "libs/ui-components/list-side-nav",
+      "sourceRoot": "libs/ui-components/list-side-nav/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components/list-side-nav"],
+          "options": {
+            "jestConfig": "libs/ui-components/list-side-nav/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-components/list-side-nav/src/**/*.ts",
+              "libs/ui-components/list-side-nav/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

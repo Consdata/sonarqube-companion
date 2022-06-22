@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ServerConfig} from '../model/server-config';
 import {ValidationResult} from '../model/validation-result';
+import {ServerConfig} from './server/server-config';
 
 
 @Injectable({providedIn: 'root'})
