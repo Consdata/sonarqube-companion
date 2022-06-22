@@ -5,7 +5,6 @@ import {settingsRouting} from './settings.routing';
 import {SettingsComponent} from './settings.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatRippleModule} from '@angular/material/core';
-import {ServersComponent} from './servers/servers.component';
 import {ServerComponent} from './server/server.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BasicAuthComponent} from './basic-auth/basic-auth.component';
@@ -47,38 +46,39 @@ import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-componen
 import {GROUPS_SETTINGS_SERVICE_TOKEN} from './groups/groups-settings.service';
 import {GroupsSettingsStateService} from './state/services/groups-settings-state.service';
 import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
+import {ServersModule} from './servers';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule.forChild(settingsRouting),
-        NgxsModule.forRoot([SettingsState, GroupsSettingsState, GroupSettingsState], {developmentMode: true}),
-        NgxsReduxDevtoolsPluginModule.forRoot(),
-        NgxsActionsExecutingModule.forRoot(),
-        MatDividerModule,
-        MatRippleModule,
-        HttpClientModule,
-        UiComponentsInputModule,
-        UiComponentsChipsModule,
-        UiComponentsToggleModule,
-        MatIconModule,
-        MatButtonModule,
-        UiComponentsSelectModule,
-        UtilsModule,
-        MatProgressSpinnerModule,
-        UiComponentsSideGroupsTreeModule,
-        UiComponentsCrumbsModule,
-        MatTreeModule,
-        DragDropModule,
-        MatTooltipModule,
-        CdkAccordionModule,
-        CdkTableModule,
-        UiComponentsTableModule,
-        SidenavModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(settingsRouting),
+    NgxsModule.forRoot([SettingsState, GroupsSettingsState, GroupSettingsState], {developmentMode: true}),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsActionsExecutingModule.forRoot(),
+    MatDividerModule,
+    MatRippleModule,
+    HttpClientModule,
+    UiComponentsInputModule,
+    UiComponentsChipsModule,
+    UiComponentsToggleModule,
+    MatIconModule,
+    MatButtonModule,
+    UiComponentsSelectModule,
+    UtilsModule,
+    MatProgressSpinnerModule,
+    UiComponentsSideGroupsTreeModule,
+    UiComponentsCrumbsModule,
+    MatTreeModule,
+    DragDropModule,
+    MatTooltipModule,
+    CdkAccordionModule,
+    CdkTableModule,
+    UiComponentsTableModule,
+    SidenavModule,
+    ServersModule
+  ],
   declarations: [
     SettingsComponent,
-    ServersComponent,
     ServerComponent,
     BasicAuthComponent,
     TokenAuthComponent,

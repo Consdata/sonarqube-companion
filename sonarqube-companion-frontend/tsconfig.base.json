@@ -22,6 +22,9 @@
       "@sonarqube-companion-frontend/group-overview": [
         "libs/group-overview/src/index.ts"
       ],
+      "@sonarqube-companion-frontend/servers": [
+        "libs/settings/servers/index.ts"
+      ],
       "@sonarqube-companion-frontend/ui-theme": ["libs/ui-theme/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/value-badge": [
         "libs/ui-components/value-badge/src/index.ts"

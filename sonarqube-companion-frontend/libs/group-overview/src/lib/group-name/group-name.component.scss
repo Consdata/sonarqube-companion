@@ -1,4 +1,14 @@
+@import "libs/ui-theme/src/palette";
+
 .label {
   font-weight: 600;
   font-size: 20px;
+  color: map-get($primary-palette, 900);
+}
+
+.description {
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 5px;
+  color: map-get($primary-palette, 500);
 }

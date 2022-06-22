@@ -24,6 +24,7 @@ import { GroupTimelineComponent } from './group-timeline/group-timeline.componen
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { GroupProjectsSummaryComponent } from './group-projects-summary/group-projects-summary.component';
 import { GroupMembersSummaryComponent } from './group-members-summary/group-members-summary.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { GroupMembersSummaryComponent } from './group-members-summary/group-memb
     CdkAccordionModule,
     MatChipsModule,
     UiComponentsTimeSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule
   ],
   declarations: [
     GroupOverviewComponent,

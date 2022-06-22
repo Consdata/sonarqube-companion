@@ -10,6 +10,7 @@ import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
     CommonModule,
     RouterModule.forChild(groupsRouting),
     SidenavModule
+
   ],
   declarations: [
     GroupsComponent

@@ -12,8 +12,17 @@ export const settingsRouting: Route[] = [
     component: SettingsComponent,
     children: [
       {
-        path: 'servers',
-        component: ServersComponent
+        path: ``,
+        component: ServersComponent,
+        children: [
+          {
+            path: `servers`,
+            loadChildren: () =>
+              import('@sonarqube-companion-frontend/servers').then(
+                (module) => module.ServersModule
+              ),
+          }
+        ]
       },
       {
         path: 'groups',

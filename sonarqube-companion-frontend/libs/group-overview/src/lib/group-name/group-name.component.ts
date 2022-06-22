@@ -9,6 +9,7 @@ import {switchMap, tap} from 'rxjs/operators';
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <div class="label" *ngIf="!loading">{{vm.name}}</div>
+      <div class="description" *ngIf="!loading">{{vm.description}}</div>
     </ng-container>
     <div class="label" *ngIf="loading">
       <mat-spinner diameter="20"></mat-spinner>

@@ -3,7 +3,6 @@ import {Observable} from 'rxjs';
 import {GroupService} from '@sonarqube-companion-frontend/group';
 import {ActivatedRoute} from '@angular/router';
 import {map} from 'rxjs/operators';
-import {Member} from '@sonarqube-companion-frontend/member';
 import {EventService} from '@sonarqube-companion-frontend/event';
 import {DateRange} from '@sonarqube-companion-frontend/ui-components/time-select';
 import {MatDrawer} from '@angular/material/sidenav';
@@ -14,44 +13,36 @@ import {DEFAULT_DATE_RANGE} from '../../../ui-components/time-select/src/lib/tim
   selector: 'sqc-group-overview',
   template: `
     <ng-container *ngIf="(uuid$ | async) as uuid">
-        <div class="group">
-          <div class="header-container">
-            <div class="header">
-              <div class="more">
-                <button mat-button *ngIf="drawer.opened">
-                  <mat-icon class="settings" (click)="drawer.close()">arrow_back</mat-icon>
-                </button>
-                <sqc-group-structure-buttons *ngIf="!drawer.opened" [uuid]="(uuid$ | async) || ''" [range]="range"
-                                             (select)="structureButtonClicked($event)"></sqc-group-structure-buttons>
-              </div>
-              <sqc-group-name [uuid]="uuid"></sqc-group-name>
-              <div class="filters">
-                <sqc-time-select (rangeChanged)="onRangeChanged($event)"></sqc-time-select>
-              </div>
+      <div class="group">
+        <div class="header-container">
+          <div class="header">
+            <sqc-group-name [uuid]="uuid"></sqc-group-name>
+            <div class="filters">
+              <sqc-time-select (rangeChanged)="onRangeChanged($event)"></sqc-time-select>
             </div>
-            <mat-divider class="top-bar-divider"></mat-divider>
           </div>
-          <mat-drawer-container [hasBackdrop]="false">
-            <mat-drawer #drawer class="left-drawer" mode="over" position="start">
-              <div class="projects" *ngIf="drawerSelector === 'projects'">
-                <sqc-group-projects-summary [uuid]="uuid" [range]="range"></sqc-group-projects-summary>
-              </div>
-              <div class="members" *ngIf="drawerSelector === 'members'">
-                <sqc-group-members-summary [uuid]="uuid" [range]="range"></sqc-group-members-summary>
-              </div>
-            </mat-drawer>
-            <div class="overview">
-              <div class="values">
-                <sqc-group-severities [uuid]="uuid" [range]="range"></sqc-group-severities>
-              </div>
-              <div class="timeline">
-                <mat-divider></mat-divider>
-                <sqc-group-timeline [uuid]="uuid" [range]="range"></sqc-group-timeline>
-
-              </div>
-            </div>
-          </mat-drawer-container>
         </div>
+        <div class="tabs">
+          <mat-tab-group>
+            <mat-tab label="Overview">
+              <div class="overview">
+                <div class="values">
+                  <sqc-group-severities [uuid]="uuid" [range]="range"></sqc-group-severities>
+                </div>
+                <div class="timeline">
+                  <sqc-group-timeline [uuid]="uuid" [range]="range"></sqc-group-timeline>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Members">
+              <sqc-group-members-summary [uuid]="uuid" [range]="range"></sqc-group-members-summary>
+            </mat-tab>
+            <mat-tab label="Projects">
+              <sqc-group-projects-summary [uuid]="uuid" [range]="range"></sqc-group-projects-summary>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
     </ng-container>
 
 
@@ -65,7 +56,6 @@ export class GroupOverviewComponent {
 
   range: DateRange = DEFAULT_DATE_RANGE;
   drawerSelector: string = ''
-  items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   uuid$: Observable<string> = this.route.params.pipe(map(params => params['groupId']));
 
   constructor(private groupService: GroupService, private route: ActivatedRoute, private eventService: EventService) {

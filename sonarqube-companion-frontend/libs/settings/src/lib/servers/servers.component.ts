@@ -9,23 +9,9 @@ import {Locks} from '@sonarqube-companion-frontend/utils';
 @Component({
   selector: 'sqc-settings-servers',
   template: `
-    <ng-container *ngIf="vm$ | async as vm">
-      <div class="list" *ngFor="let server of vm.servers; trackBy:serverUid">
-        <sqc-settings-server
-          [server]="server"
-          class="item"
-          (onSave)="save()"
-          (onDelete)="delete()"
-        ></sqc-settings-server>
-      </div>
-      <div class="add">
-        <span mat-ripple (click)="addServer()"
-              *ngIf="isAddServerAllowed(); else spinner">+ new server</span>
-      </div>
-      <ng-template #spinner>
-        <mat-spinner diameter="20"></mat-spinner>
-      </ng-template>
-    </ng-container>
+      <sqc-settings-servers-sidenav>
+        <router-outlet></router-outlet>
+      </sqc-settings-servers-sidenav>
   `,
   styleUrls: ['./servers.component.scss']
 })
