@@ -42,14 +42,16 @@ import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {GroupMembersComponent} from './group-members/group-members.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {UiComponentsTableModule} from '@sonarqube-companion-frontend/ui-components/table';
-import {GROUPS_SETTINGS_SERVICE_TOKEN} from './groups/groups-settings.service';
-import {GroupsSettingsStateService} from './state/services/groups-settings-state.service';
+import {GroupsSettingsStateProviderService} from './state/services/groups-settings-state-provider.service';
 import {SidenavModule} from '@sonarqube-companion-frontend/sidenav';
 import {ServersComponent} from './servers/servers.component';
 import {ServersSidenavComponent} from './servers/servers-sidenav.component';
 import {ServerComponent} from './servers/server/server.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
+import {GROUPS_SETTINGS_PROVIDER_TOKEN} from './groups/groups-settings-provider.service';
+import {GROUPS_SETTINGS_EMITTER_TOKEN} from './groups/groups-settings-emitter.service';
+import {GroupsSettingsStateEmitterService} from './state/services/groups-settings-state-emitter.service';
 
 @NgModule({
   imports: [
@@ -102,7 +104,8 @@ import {MatListModule} from '@angular/material/list';
     ServerComponent
   ],
   providers: [
-    {provide: GROUPS_SETTINGS_SERVICE_TOKEN, useClass: GroupsSettingsStateService}
+    {provide: GROUPS_SETTINGS_PROVIDER_TOKEN, useClass: GroupsSettingsStateProviderService},
+    {provide: GROUPS_SETTINGS_EMITTER_TOKEN, useClass: GroupsSettingsStateEmitterService}
   ]
 })
 

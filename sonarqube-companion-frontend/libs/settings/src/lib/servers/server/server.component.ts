@@ -157,6 +157,7 @@ export class ServerComponent {
   constructor(private configService: ServersConfigService, private changeDetector: ChangeDetectorRef, private spinnerService: SpinnerService) {
   }
 
+
   delete(): void {
     if (this.server) {
       this.spinnerService.lock(Locks.SERVER_ACTION + this.server.uuid)

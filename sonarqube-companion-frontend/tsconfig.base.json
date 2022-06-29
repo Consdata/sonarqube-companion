@@ -75,6 +75,22 @@
       "@sonarqube-companion-frontend/groups": ["libs/groups/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/list-side-nav": [
         "libs/ui-components/list-side-nav/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/state": ["libs/state/src/index.ts"],
+      "@sonarqube-companion-frontend/data-access-server-settings": [
+        "libs/data-access-server-settings/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/data-access-state": [
+        "libs/data-access-state/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/shared-servers": [
+        "libs/shared-servers/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/shared-settings-servers": [
+        "libs/shared-settings-servers/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/data-access-state-settings": [
+        "libs/data-access-state-settings/src/index.ts"
       ]
     }
   },

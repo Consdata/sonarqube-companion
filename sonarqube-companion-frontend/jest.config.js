@@ -27,5 +27,11 @@ module.exports = {
     '<rootDir>/libs/ui-components/events',
     '<rootDir>/libs/groups',
     '<rootDir>/libs/ui-components/list-side-nav',
+    '<rootDir>/libs/state',
+    '<rootDir>/libs/data-access-server-settings',
+    '<rootDir>/libs/data-access-state',
+    '<rootDir>/libs/shared-servers',
+    '<rootDir>/libs/shared-settings-servers',
+    '<rootDir>/libs/data-access-state-settings',
   ],
 };

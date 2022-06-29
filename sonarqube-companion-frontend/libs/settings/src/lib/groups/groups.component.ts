@@ -7,7 +7,8 @@ import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {GroupDetails} from '@sonarqube-companion-frontend/group';
-import {GROUPS_SETTINGS_SERVICE_TOKEN, GroupsSettingsService} from './groups-settings.service';
+import {GROUPS_SETTINGS_PROVIDER_TOKEN, GroupsSettingsProviderService} from './groups-settings-provider.service';
+import {GROUPS_SETTINGS_EMITTER_TOKEN, GroupsSettingsEmitterService} from './groups-settings-emitter.service';
 
 @Component({
   selector: 'sqc-groups',
@@ -85,10 +86,13 @@ export class GroupsComponent {
   treeControl = new NestedTreeControl<GroupDetails>(node => node.groups);
   dataSource = new MatTreeNestedDataSource<GroupDetails>();
 
-  rootGroup$: Observable<GroupDetails> = this.groupsSettingsService.loadRootGroup();
-  loading$: Observable<any> = this.groupsSettingsService.groupsSettingsIsLoading();
+  rootGroup$: Observable<GroupDetails> = this.provider.getRootGroup();
+  loading$: Observable<any> = this.provider.groupsSettingsIsLoading();
 
-  constructor(private store: Store, private router: Router, @Inject(GROUPS_SETTINGS_SERVICE_TOKEN) private groupsSettingsService: GroupsSettingsService) {
+  constructor(private store: Store, private router: Router,
+              @Inject(GROUPS_SETTINGS_PROVIDER_TOKEN) private provider: GroupsSettingsProviderService,
+              @Inject(GROUPS_SETTINGS_EMITTER_TOKEN) private emitter: GroupsSettingsEmitterService,
+  ) {
   }
 
   hasChild = (_: number, node: GroupDetails) => !!node.groups && node.groups.length > 0;
@@ -103,7 +107,7 @@ export class GroupsComponent {
   }
 
   addChild(parent: GroupDetails): void {
-    this.groupsSettingsService.addChild(parent);
+    this.emitter.addChild(parent);
   }
 
   save(): void {

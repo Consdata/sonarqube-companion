@@ -14,6 +14,10 @@ export class ServersConfigService {
     return this.http.get<ServerConfig[]>(`/api/v1/settings/general/server/`);
   }
 
+  public get(uuid: string): Observable<ServerConfig> {
+    return this.http.get<ServerConfig>(`/api/v1/settings/general/server/${uuid}`);
+  }
+
   public create(): Observable<void> {
     return this.http.post<void>(`/api/v1/settings/general/server/create`, {});
   }

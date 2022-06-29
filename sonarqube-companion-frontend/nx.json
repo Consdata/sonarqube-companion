@@ -103,6 +103,24 @@
     },
     "ui-components-list-side-nav": {
       "tags": []
+    },
+    "state": {
+      "tags": []
+    },
+    "data-access-server-settings": {
+      "tags": []
+    },
+    "data-access-state": {
+      "tags": []
+    },
+    "shared-servers": {
+      "tags": []
+    },
+    "shared-settings-servers": {
+      "tags": []
+    },
+    "data-access-state-settings": {
+      "tags": []
     }
   }
 }
