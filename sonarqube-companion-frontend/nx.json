@@ -107,19 +107,37 @@
     "state": {
       "tags": []
     },
-    "data-access-server-settings": {
-      "tags": []
-    },
-    "data-access-state": {
-      "tags": []
-    },
     "shared-servers": {
       "tags": []
     },
     "shared-settings-servers": {
       "tags": []
     },
-    "data-access-state-settings": {
+    "data-access-settings": {
+      "tags": []
+    },
+    "data-access-state": {
+      "tags": []
+    },
+    "feature-settings": {
+      "tags": []
+    },
+    "feature-settings-servers": {
+      "tags": []
+    },
+    "ui-side-tree": {
+      "tags": []
+    },
+    "ui-side-list": {
+      "tags": []
+    },
+    "ui-button": {
+      "tags": []
+    },
+    "ui-input": {
+      "tags": []
+    },
+    "ui-tabs": {
       "tags": []
     }
   }

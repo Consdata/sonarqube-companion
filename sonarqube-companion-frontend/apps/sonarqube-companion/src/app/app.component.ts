@@ -5,9 +5,9 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   template: `
     <sqc-topbar></sqc-topbar>
     <div class="sidenav">
-      <sqc-main-sidenav>
+      <sqc-app-sidenav>
         <router-outlet></router-outlet>
-      </sqc-main-sidenav>
+      </sqc-app-sidenav>
     </div>
   `,
   styleUrls: ['./app.component.scss'],

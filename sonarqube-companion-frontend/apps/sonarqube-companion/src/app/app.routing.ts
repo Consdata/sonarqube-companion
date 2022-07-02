@@ -21,8 +21,8 @@ export const appRoutes = [
   {
     path: 'settings',
     loadChildren: () =>
-      import('@sonarqube-companion-frontend/settings').then(
-        (module) => module.SettingsModule
+      import('@sonarqube-companion-frontend/feature/settings').then(
+        (module) => module.FeatureSettingsModule
       ),
   },
   {
