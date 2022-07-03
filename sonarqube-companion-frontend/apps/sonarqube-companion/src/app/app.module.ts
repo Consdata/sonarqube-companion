@@ -13,6 +13,9 @@ import {AppSidenavComponent} from './sidenav/app-sidenav.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import {MatListModule} from '@angular/material/list';
     HttpClientModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    StoreModule.forRoot([]),
+    StoreDevtoolsModule.instrument(),
+    StoreRouterConnectingModule.forRoot(),
 
   ],
   providers: [],

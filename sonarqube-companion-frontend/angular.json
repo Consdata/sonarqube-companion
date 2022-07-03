@@ -829,56 +829,6 @@
         }
       }
     },
-    "shared-servers": {
-      "projectType": "library",
-      "root": "libs/shared-servers",
-      "sourceRoot": "libs/shared-servers/src",
-      "prefix": "sonarqube-companion-frontend",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared-servers"],
-          "options": {
-            "jestConfig": "libs/shared-servers/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/shared-servers/src/**/*.ts",
-              "libs/shared-servers/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "shared-settings-servers": {
-      "projectType": "library",
-      "root": "libs/shared-settings-servers",
-      "sourceRoot": "libs/shared-settings-servers/src",
-      "prefix": "sonarqube-companion-frontend",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared-settings-servers"],
-          "options": {
-            "jestConfig": "libs/shared-settings-servers/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/shared-settings-servers/src/**/*.ts",
-              "libs/shared-settings-servers/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
     "data-access-settings": {
       "projectType": "library",
       "root": "libs/data-access/settings",
@@ -899,31 +849,6 @@
             "lintFilePatterns": [
               "libs/data-access/settings/src/**/*.ts",
               "libs/data-access/settings/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "data-access-state": {
-      "projectType": "library",
-      "root": "libs/data-access/state",
-      "sourceRoot": "libs/data-access/state/src",
-      "prefix": "sonarqube-companion-frontend",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/data-access/state"],
-          "options": {
-            "jestConfig": "libs/data-access/state/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/data-access/state/src/**/*.ts",
-              "libs/data-access/state/src/**/*.html"
             ]
           }
         }

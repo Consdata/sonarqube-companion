@@ -107,16 +107,7 @@
     "state": {
       "tags": []
     },
-    "shared-servers": {
-      "tags": []
-    },
-    "shared-settings-servers": {
-      "tags": []
-    },
     "data-access-settings": {
-      "tags": []
-    },
-    "data-access-state": {
       "tags": []
     },
     "feature-settings": {

@@ -1,17 +1,40 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'sqc-settings-servers',
   template: `
-    <ng-container>asdasdasdasd
-<!--      <sqc-settings-servers-sidenav (add)="addServer()">-->
+
+    <sqc-side-list
+      [title]="'Servers'"
+      [showBackButton]="true"
+      (back)="back()"
+    >
+      <div sqc-side-list-items>
+        <mat-nav-list>
+          <mat-list-item>
+            <div class="item">
+              <div class="title">Servers</div>
+              <div class="description">Data sources</div>
+            </div>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+      <div sqc-side-list-content>
         <router-outlet></router-outlet>
-<!--      </sqc-settings-servers-sidenav>-->
-    </ng-container>
+      </div>
+      <div sqc-side-list-bottom-bar>
+        <button mat-button class="add"><mat-icon>add</mat-icon>new server</button>
+      </div>
+    </sqc-side-list>
   `,
   styleUrls: ['./servers.component.scss']
 })
 export class ServersComponent {
+
+  constructor(private router: Router) {
+  }
+
   // subject: ReplaySubject<void> = new ReplaySubject<void>();
   // vm$ = this.subject.asObservable().pipe(
   //   switchMap(() =>
@@ -57,4 +80,7 @@ export class ServersComponent {
   // isAddServerAllowed(): boolean {
   //   return this.spinnerService.isUnlocked(Locks.ADD_SERVER);
   // }
+  back():void {
+    this.router.navigate(['settings'])
+  }
 }

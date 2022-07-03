@@ -1,0 +1,37 @@
+@import "libs/ui-theme/src/guidline";
+@import "libs/ui-theme/src/palette";
+
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.list {
+  width: 300px;
+  background-color: map-get($primary-palette, 200);
+  color: map-get($primary-palette, 600);
+  border-right: solid 1px rgba(0, 0, 0, 0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.items {
+  overflow-y: auto;
+}
+
+.bottom-bar {
+  position: relative;
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 8px;
+}
