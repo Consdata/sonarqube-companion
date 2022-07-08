@@ -32,7 +32,7 @@
     "@swimlane/ngx-charts": "16.0.0",
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
-    "moment": "2.28.0",
+    "moment": "2.29.4",
     "node-sass": "^4.13.1",
     "rxjs": "6.6.3",
     "spinkit": "1.2.5",
