@@ -7,6 +7,7 @@ import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.config.model.ServerAuthentication;
 import pl.consdata.ico.sqcompanion.config.model.ServerDefinition;
 import pl.consdata.ico.sqcompanion.config.service.SettingsService;
+import pl.consdata.ico.sqcompanion.config.validation.ValidationException;
 import pl.consdata.ico.sqcompanion.config.validation.ValidationResult;
 import pl.consdata.ico.sqcompanion.config.validation.general.server.ServerConfigValidator;
 import pl.consdata.ico.sqcompanion.event.EventService;
@@ -43,13 +44,14 @@ public class ServerConfigService {
             server.setAliases(serverDefinition.getAliases());
             validationResult = settingsService.save();
         } else {
-            log.info("Invalid server definition {} reason: {}", serverDefinition, validationResult);
+            throw new ValidationException(validationResult);
         }
 
         if (validationResult.isValid()) {
             eventService.addEvent(eventsFactory.serverUpdate(serverDefinition, oldDefinition));
         }
-        return validationResult;
+
+        return ValidationResult.valid();
     }
 
     public void create() {
@@ -80,6 +82,11 @@ public class ServerConfigService {
     public List<ServerDefinition> get() {
         log.info("Get servers list");
         return appConfig.getServers();
+    }
+
+    public ServerDefinition get(String uuid) {
+        log.info("Get servers list");
+        return appConfig.getServer(uuid);
     }
 }
 

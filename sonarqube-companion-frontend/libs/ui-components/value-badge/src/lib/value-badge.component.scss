@@ -1,4 +1,4 @@
-@import "libs/ui-theme/src/palette";
+@import 'libs/ui-theme/src/palette';
 
 .content {
   display: flex;
@@ -7,7 +7,6 @@
   align-items: center;
   margin: auto 10px auto auto;
 }
-
 
 .badge {
   border-color: map-get($primary-palette, 300);
@@ -25,7 +24,6 @@
   font-weight: 500;
   font-size: 16px;
 }
-
 
 .value {
   font-weight: 600;

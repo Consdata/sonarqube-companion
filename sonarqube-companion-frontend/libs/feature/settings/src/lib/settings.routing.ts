@@ -1,5 +1,5 @@
-import {Route} from '@angular/router';
-import {SettingsComponent} from './settings.component';
+import { Route } from '@angular/router';
+import { SettingsComponent } from './settings.component';
 
 export const settingsRouting: Route[] = [
   {
@@ -22,7 +22,7 @@ export const settingsRouting: Route[] = [
       //   path: 'integrations',
       //   component: IntegrationsComponent
       // }
-    ]
+    ],
   },
   {
     path: `servers`,

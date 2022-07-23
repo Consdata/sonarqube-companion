@@ -36,5 +36,10 @@ module.exports = {
     '<rootDir>/libs/ui/button',
     '<rootDir>/libs/ui/input',
     '<rootDir>/libs/ui/tabs',
+    '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
   ],
 };

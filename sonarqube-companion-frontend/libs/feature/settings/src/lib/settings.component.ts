@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sqc-settings',
@@ -7,30 +7,30 @@ import {Router} from '@angular/router';
     <sqc-side-list [title]="'Settings'">
       <div sqc-side-list-items>
         <mat-nav-list>
-          <mat-list-item (click)="goToServers()">
-            <div class="item">
-              <div class="title">Groups</div>
-              <div class="description">Organizations groups</div>
-            </div>
-          </mat-list-item>
-          <mat-list-item (click)="goToServers()">
-            <div class="item">
-              <div class="title">Members</div>
-              <div class="description">Organization members</div>
-            </div>
-          </mat-list-item>
+<!--          <mat-list-item (click)="goToServers()">-->
+<!--            <div class="item">-->
+<!--              <div class="title">Groups</div>-->
+<!--              <div class="description">Organizations groups</div>-->
+<!--            </div>-->
+<!--          </mat-list-item>-->
+<!--          <mat-list-item (click)="goToServers()">-->
+<!--            <div class="item">-->
+<!--              <div class="title">Members</div>-->
+<!--              <div class="description">Organization members</div>-->
+<!--            </div>-->
+<!--          </mat-list-item>-->
           <mat-list-item (click)="goToServers()">
             <div class="item">
               <div class="title">Servers</div>
               <div class="description">Data sources</div>
             </div>
           </mat-list-item>
-          <mat-list-item (click)="goToServers()">
-            <div class="item">
-              <div class="title">Integrations</div>
-              <div class="description">Third party integrations</div>
-            </div>
-          </mat-list-item>
+<!--          <mat-list-item (click)="goToServers()">-->
+<!--            <div class="item">-->
+<!--              <div class="title">Integrations</div>-->
+<!--              <div class="description">Third party integrations</div>-->
+<!--            </div>-->
+<!--          </mat-list-item>-->
         </mat-nav-list>
       </div>
       <div sqc-side-list-content>
@@ -38,14 +38,12 @@ import {Router} from '@angular/router';
       </div>
     </sqc-side-list>
   `,
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent {
-
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   goToServers(): void {
-    this.router.navigate(['settings', 'servers'])
+    this.router.navigate(['settings', 'servers']);
   }
 }

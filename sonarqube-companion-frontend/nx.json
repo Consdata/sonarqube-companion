@@ -18,118 +18,38 @@
       }
     }
   },
-  "projects": {
-    "sonarqube-companion": {
-      "tags": []
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
     },
-    "sonarqube-companion-e2e": {
-      "tags": [],
-      "implicitDependencies": ["sonarqube-companion"]
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress",
+      "inlineTemplate": true
     },
-    "overview": {
-      "tags": []
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "style": "scss",
+      "inlineTemplate": true
     },
-    "ui-components-sidebar": {
-      "tags": []
-    },
-    "group-overview": {
-      "tags": []
-    },
-    "ui-theme": {
-      "tags": []
-    },
-    "ui-components-value-badge": {
-      "tags": []
-    },
-    "ui-components-timeline": {
-      "tags": []
-    },
-    "ui-components-heatmap": {
-      "tags": []
-    },
-    "group": {
-      "tags": []
-    },
-    "sidenav": {
-      "tags": []
-    },
-    "ui-components-side-groups-tree": {
-      "tags": []
-    },
-    "ui-components-table": {
-      "tags": []
-    },
-    "project": {
-      "tags": []
-    },
-    "member": {
-      "tags": []
-    },
-    "ui-components-select": {
-      "tags": []
-    },
-    "settings": {
-      "tags": []
-    },
-    "event": {
-      "tags": []
-    },
-    "ui-components-time-select": {
-      "tags": []
-    },
-    "ui-components-chips": {
-      "tags": []
-    },
-    "ui-components-input": {
-      "tags": []
-    },
-    "ui-components-toggle": {
-      "tags": []
-    },
-    "utils": {
-      "tags": []
-    },
-    "ui-components-crumbs": {
-      "tags": []
-    },
-    "ui-components-projects": {
-      "tags": []
-    },
-    "ui-components-events": {
-      "tags": []
-    },
-    "groups": {
-      "tags": []
-    },
-    "ui-components-list-side-nav": {
-      "tags": []
-    },
-    "state": {
-      "tags": []
-    },
-    "data-access-settings": {
-      "tags": []
-    },
-    "feature-settings": {
-      "tags": []
-    },
-    "feature-settings-servers": {
-      "tags": []
-    },
-    "ui-side-tree": {
-      "tags": []
-    },
-    "ui-side-list": {
-      "tags": []
-    },
-    "ui-button": {
-      "tags": []
-    },
-    "ui-input": {
-      "tags": []
-    },
-    "ui-tabs": {
-      "tags": []
+    "@nrwl/angular:component": {
+      "style": "scss",
+      "inlineTemplate": true
     }
-  }
+  },
+  "defaultProject": "sonarqube-companion"
 }

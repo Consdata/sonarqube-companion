@@ -1,5 +1,5 @@
-@import "libs/ui-theme/src/palette";
-@import "libs/ui-theme/src/guidline";
+@import 'libs/ui-theme/src/palette';
+@import 'libs/ui-theme/src/guidline';
 
 mat-selection-list {
   padding-top: 0;
@@ -45,12 +45,14 @@ mat-divider {
   justify-content: center;
 }
 
-.mat-list-single-selected-option, .mat-list-single-selected-option:hover, .mat-list-single-selected-option:focus {
+.mat-list-single-selected-option,
+.mat-list-single-selected-option:hover,
+.mat-list-single-selected-option:focus {
   background-color: map-get($primary-palette, 1000);
 }
 
 .git {
-  background: url("/assets/github-icon.png");
+  background: url('/assets/github-icon.png');
   background-size: contain;
   background-repeat: no-repeat;
   width: 24px;

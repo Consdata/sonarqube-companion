@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {TableCell} from './table-cell';
-import {Cell} from '../table-model';
+import { Component } from '@angular/core';
+import { TableCell } from './table-cell';
+import { Cell } from '../table-model';
 
 @Component({
   selector: 'sqc-table-date-cell',
@@ -8,7 +8,7 @@ import {Cell} from '../table-model';
     <ng-container *ngIf="_cell">
       <mat-icon>delete</mat-icon>
     </ng-container>
-  `
+  `,
 })
 export class TableActionsCellComponent implements TableCell {
   _cell?: Cell;
@@ -16,5 +16,4 @@ export class TableActionsCellComponent implements TableCell {
   setCell(cell: Cell): void {
     this._cell = cell;
   }
-
 }

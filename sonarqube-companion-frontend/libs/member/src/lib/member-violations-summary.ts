@@ -8,7 +8,6 @@ export interface MemberViolationsSummary {
   toDate: Date;
 }
 
-
 export interface Violations {
   blockers: number;
   criticals: number;
@@ -16,4 +15,3 @@ export interface Violations {
   minors: number;
   infos: number;
 }
-

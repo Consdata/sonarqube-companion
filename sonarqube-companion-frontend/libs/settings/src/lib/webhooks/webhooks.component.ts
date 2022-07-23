@@ -2,18 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'sqc-webhooks',
-  template: `
-    <p>
-      webhooks works!
-    </p>
-  `,
-  styleUrls: ['./webhooks.component.scss']
+  template: ` <p>webhooks works!</p> `,
+  styleUrls: ['./webhooks.component.scss'],
 })
 export class WebhooksComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

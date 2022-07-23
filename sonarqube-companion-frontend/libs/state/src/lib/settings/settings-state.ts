@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {State} from '@ngxs/store';
+import { Injectable } from '@angular/core';
+import { State } from '@ngxs/store';
 
 export interface Settings {
   servers: ServerConfig[];
@@ -8,9 +8,7 @@ export interface Settings {
 
 @State<Settings>({
   name: 'settings',
-  children: [GroupsSettingsState, GroupSettingsState]
+  children: [GroupsSettingsState, GroupSettingsState],
 })
-@Injectable({providedIn: 'root'})
-export class SettingsState {
-
-}
+@Injectable({ providedIn: 'root' })
+export class SettingsState {}

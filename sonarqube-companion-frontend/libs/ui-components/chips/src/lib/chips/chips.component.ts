@@ -1,27 +1,33 @@
-import {Component, Input} from '@angular/core';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { Component, Input } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'sqc-chips',
   template: `
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <div class="chips">
       <mat-chip-list #chipList aria-label="Fruit selection">
-        <mat-chip *ngFor="let item of items" [selectable]="selectable"
-                  [removable]="removable" (removed)="remove(item)">
-          {{item}}
+        <mat-chip
+          *ngFor="let item of items"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(item)"
+        >
+          {{ item }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input [placeholder]="placeholder"
-               [matChipInputFor]="chipList"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matChipInputAddOnBlur]="addOnBlur"
-               (matChipInputTokenEnd)="add($event)">
+        <input
+          [placeholder]="placeholder"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
       </mat-chip-list>
     </div>
   `,
-  styleUrls: ['./chips.component.scss']
+  styleUrls: ['./chips.component.scss'],
 })
 export class ChipsComponent {
   @Input()

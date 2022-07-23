@@ -1,19 +1,30 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'sqc-input',
   template: `
     <ng-container *ngIf="!disabled">
-      <label *ngIf="label">{{label}}</label>
-      <input [value]="value" (change)="onValueChange($event)" [class.center]="center" [class.nounderline]="nounderline"/>
+      <label *ngIf="label">{{ label }}</label>
+      <input
+        [value]="value"
+        (change)="onValueChange($event)"
+        [class.center]="center"
+        [class.nounderline]="nounderline"
+      />
     </ng-container>
     <ng-container *ngIf="disabled">
-      <label *ngIf="label">{{label}}</label>
-      <span>{{value}}</span>
+      <label *ngIf="label">{{ label }}</label>
+      <span>{{ value }}</span>
     </ng-container>
   `,
   styleUrls: ['./input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent {
   @Input()
@@ -30,6 +41,6 @@ export class InputComponent {
   valueChange: EventEmitter<string> = new EventEmitter<string>();
 
   onValueChange(event: Event): void {
-    this.valueChange.emit((<HTMLInputElement>event.target).value)
+    this.valueChange.emit((<HTMLInputElement>event.target).value);
   }
 }

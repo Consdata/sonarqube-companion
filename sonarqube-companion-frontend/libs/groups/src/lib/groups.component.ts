@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'sqc-groups',
@@ -8,8 +8,6 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
     </sqc-group-sidenav>
   `,
   styleUrls: ['./groups.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GroupsComponent {
-
-}
+export class GroupsComponent {}

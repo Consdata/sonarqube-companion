@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Observable} from 'rxjs';
-import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
-import {OverviewService} from '../../../../overview/src/lib/overview.service';
-import {Router} from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { GroupLightModel } from '@sonarqube-companion-frontend/group-overview';
+import { OverviewService } from '../../../../overview/src/lib/overview.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sqc-group-sidenav',
@@ -12,8 +12,10 @@ import {Router} from '@angular/router';
         <div class="wrapper">
           <mat-divider></mat-divider>
           <mat-nav-list>
-            <sqc-side-groups-tree-wrapper [rootGroup]="rootGroup$"
-                                          (groupSelect)="onSelect($event)"></sqc-side-groups-tree-wrapper>
+            <sqc-side-groups-tree-wrapper
+              [rootGroup]="rootGroup$"
+              (groupSelect)="onSelect($event)"
+            ></sqc-side-groups-tree-wrapper>
             <mat-divider></mat-divider>
             <!--            <mat-list-item>-->
             <!--              <div class="section">-->
@@ -38,16 +40,17 @@ import {Router} from '@angular/router';
     </mat-sidenav-container>
   `,
   styleUrls: ['./group-sidenav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GroupSidenavComponent {
-
   rootGroup$: Observable<GroupLightModel> = this.overviewService.list();
 
-  constructor(private overviewService: OverviewService, private router: Router) {
-  }
+  constructor(
+    private overviewService: OverviewService,
+    private router: Router
+  ) {}
 
   onSelect(event: GroupLightModel) {
-    this.router.navigate(['group', event.uuid])
+    this.router.navigate(['group', event.uuid]);
   }
 }

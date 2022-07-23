@@ -33,6 +33,7 @@ public class GroupService {
                 .builder()
                 .uuid(group.getUuid())
                 .name(group.getName())
+                .description(group.getDescription())
                 .parentUuid(ofNullable(group.getParentGroups()).filter(list -> !list.isEmpty()).map(list -> list.get(list.size() - 1).getUuid()).orElse("root"))
                 .projects(group.getAllProjects().size())
                 .groups(group.getGroups().stream().map(this::getGroupDetails).collect(Collectors.toList()))

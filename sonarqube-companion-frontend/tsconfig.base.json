@@ -15,88 +15,96 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sonarqube-companion-frontend/overview": ["libs/overview/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/sidebar": [
-        "libs/ui-components/sidebar/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/group-overview": [
-        "libs/group-overview/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-theme": ["libs/ui-theme/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/value-badge": [
-        "libs/ui-components/value-badge/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/timeline": [
-        "libs/ui-components/timeline/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/heatmap": [
-        "libs/ui-components/heatmap/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/group": ["libs/group/src/index.ts"],
-      "@sonarqube-companion-frontend/sidenav": ["libs/sidenav/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/side-groups-tree": [
-        "libs/ui-components/side-groups-tree/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/table": [
-        "libs/ui-components/table/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/project": ["libs/project/src/index.ts"],
-      "@sonarqube-companion-frontend/member": ["libs/member/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/select": [
-        "libs/ui-components/select/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/settings": ["libs/settings/src/index.ts"],
-      "@sonarqube-companion-frontend/event": ["libs/event/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/time-select": [
-        "libs/ui-components/time-select/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/chips": [
-        "libs/ui-components/chips/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/input": [
-        "libs/ui-components/input/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/toggle": [
-        "libs/ui-components/toggle/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/utils": ["libs/utils/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/crumbs": [
-        "libs/ui-components/crumbs/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/projects": [
-        "libs/ui-components/projects/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/events": [
-        "libs/ui-components/events/src/index.ts"
-      ],
       "@environment": [
         "apps/sonarqube-companion/src/environments/environment.ts"
       ],
-      "@sonarqube-companion-frontend/groups": ["libs/groups/src/index.ts"],
-      "@sonarqube-companion-frontend/ui-components/list-side-nav": [
-        "libs/ui-components/list-side-nav/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/state": ["libs/state/src/index.ts"],
       "@sonarqube-companion-frontend/data-access/settings": [
         "libs/data-access/settings/src/index.ts"
       ],
+      "@sonarqube-companion-frontend/event": ["libs/event/src/index.ts"],
       "@sonarqube-companion-frontend/feature/settings": [
         "libs/feature/settings/src/index.ts"
       ],
       "@sonarqube-companion-frontend/feature/settings-servers": [
         "libs/feature/settings-servers/src/index.ts"
       ],
-      "@sonarqube-companion-frontend/ui/side-tree": [
-        "libs/ui/side-tree/src/index.ts"
+      "@sonarqube-companion-frontend/group": ["libs/group/src/index.ts"],
+      "@sonarqube-companion-frontend/group-overview": [
+        "libs/group-overview/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/groups": ["libs/groups/src/index.ts"],
+      "@sonarqube-companion-frontend/member": ["libs/member/src/index.ts"],
+      "@sonarqube-companion-frontend/overview": ["libs/overview/src/index.ts"],
+      "@sonarqube-companion-frontend/project": ["libs/project/src/index.ts"],
+      "@sonarqube-companion-frontend/settings": ["libs/settings/src/index.ts"],
+      "@sonarqube-companion-frontend/shared/effects": [
+        "libs/shared/effects/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/sidenav": ["libs/sidenav/src/index.ts"],
+      "@sonarqube-companion-frontend/state": ["libs/state/src/index.ts"],
+      "@sonarqube-companion-frontend/ui-components/chips": [
+        "libs/ui-components/chips/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/crumbs": [
+        "libs/ui-components/crumbs/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/events": [
+        "libs/ui-components/events/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/input": [
+        "libs/ui-components/input/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/list-side-nav": [
+        "libs/ui-components/list-side-nav/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/projects": [
+        "libs/ui-components/projects/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/select": [
+        "libs/ui-components/select/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/side-groups-tree": [
+        "libs/ui-components/side-groups-tree/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/sidebar": [
+        "libs/ui-components/sidebar/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/table": [
+        "libs/ui-components/table/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/time-select": [
+        "libs/ui-components/time-select/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/timeline": [
+        "libs/ui-components/timeline/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/toggle": [
+        "libs/ui-components/toggle/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-components/value-badge": [
+        "libs/ui-components/value-badge/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui-theme": ["libs/ui-theme/src/index.ts"],
+      "@sonarqube-companion-frontend/ui/button": [
+        "libs/ui/button/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/ui/chips": ["libs/ui/chips/src/index.ts"],
+      "@sonarqube-companion-frontend/ui/frame": ["libs/ui/frame/src/index.ts"],
+      "@sonarqube-companion-frontend/ui/input": ["libs/ui/input/src/index.ts"],
+      "@sonarqube-companion-frontend/ui/select": [
+        "libs/ui/select/src/index.ts"
       ],
       "@sonarqube-companion-frontend/ui/side-list": [
         "libs/ui/side-list/src/index.ts"
       ],
-      "@sonarqube-companion-frontend/ui/button": [
-        "libs/ui/button/src/index.ts"
+      "@sonarqube-companion-frontend/ui/side-tree": [
+        "libs/ui/side-tree/src/index.ts"
       ],
-      "@sonarqube-companion-frontend/ui/input": ["libs/ui/input/src/index.ts"],
-      "@sonarqube-companion-frontend/ui/tabs": ["libs/ui/tabs/src/index.ts"]
+      "@sonarqube-companion-frontend/ui/tabs": ["libs/ui/tabs/src/index.ts"],
+      "@sonarqube-companion-frontend/util/state": [
+        "libs/util/state/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

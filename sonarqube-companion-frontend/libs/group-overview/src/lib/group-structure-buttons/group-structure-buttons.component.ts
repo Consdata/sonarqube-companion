@@ -1,10 +1,16 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {DateRange} from '@sonarqube-companion-frontend/ui-components/time-select';
-import {DEFAULT_DATE_RANGE} from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
-import {ReplaySubject} from 'rxjs';
-import {GroupService} from '@sonarqube-companion-frontend/group';
-import {switchMap, tap} from 'rxjs/operators';
-import {GroupFilter} from '../group-filter';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { DateRange } from '@sonarqube-companion-frontend/ui-components/time-select';
+import { DEFAULT_DATE_RANGE } from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
+import { ReplaySubject } from 'rxjs';
+import { GroupService } from '@sonarqube-companion-frontend/group';
+import { switchMap, tap } from 'rxjs/operators';
+import { GroupFilter } from '../group-filter';
 
 @Component({
   selector: 'sqc-group-structure-buttons',
@@ -13,14 +19,14 @@ import {GroupFilter} from '../group-filter';
       <ng-container *ngIf="!loading">
         <button mat-button (click)="onSelect('projects')" matTooltip="Projects">
           <div class="item">
-            <span class="label">{{details.projects}}</span>
+            <span class="label">{{ details.projects }}</span>
             <mat-icon class="settings">code</mat-icon>
           </div>
         </button>
         <mat-divider vertical></mat-divider>
         <button mat-button (click)="onSelect('members')" matTooltip="Members">
           <div class="item">
-            <span class="label">{{details.members}}</span>
+            <span class="label">{{ details.members }}</span>
             <mat-icon class="settings">group</mat-icon>
           </div>
         </button>
@@ -46,22 +52,21 @@ import {GroupFilter} from '../group-filter';
     </ng-container>
   `,
   styleUrls: ['./group-structure-buttons.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GroupStructureButtonsComponent {
   @Output()
   select: EventEmitter<string> = new EventEmitter<string>();
   loading: boolean = false;
-  filter: GroupFilter = {uuid: '', range: DEFAULT_DATE_RANGE};
+  filter: GroupFilter = { uuid: '', range: DEFAULT_DATE_RANGE };
   filterSubject: ReplaySubject<GroupFilter> = new ReplaySubject<GroupFilter>();
   vm$ = this.filterSubject.asObservable().pipe(
-    tap(_ => this.loading = true),
-    switchMap(data => this.groupService.groupDetails(data.uuid, data.range)),
-    tap(_ => this.loading = false)
+    tap((_) => (this.loading = true)),
+    switchMap((data) => this.groupService.groupDetails(data.uuid, data.range)),
+    tap((_) => (this.loading = false))
   );
 
-  constructor(private groupService: GroupService) {
-  }
+  constructor(private groupService: GroupService) {}
 
   _uuid: string = '';
 

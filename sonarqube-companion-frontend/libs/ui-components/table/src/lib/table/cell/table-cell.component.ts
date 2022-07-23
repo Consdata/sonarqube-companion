@@ -6,27 +6,25 @@ import {
   Input,
   OnDestroy,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
-import {Cell} from '../table-model';
-import {TableCell} from './table-cell';
-import {TableCellFactoryService} from './table-cell-factory.service';
+import { Cell } from '../table-model';
+import { TableCell } from './table-cell';
+import { TableCellFactoryService } from './table-cell-factory.service';
 
 @Component({
   selector: 'sqc-table-cell',
-  template: `
-    <ng-container #container></ng-container>
-  `
+  template: ` <ng-container #container></ng-container> `,
 })
-
 export class TableCellComponent implements OnDestroy, AfterViewInit {
-
-  @ViewChild('container', {read: ViewContainerRef})
+  @ViewChild('container', { read: ViewContainerRef })
   container?: ViewContainerRef;
   componentRef?: ComponentRef<TableCell>;
 
-  constructor(private resolver: ComponentFactoryResolver, private cellFactory: TableCellFactoryService) {
-  }
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private cellFactory: TableCellFactoryService
+  ) {}
 
   _cell?: Cell;
 
@@ -36,7 +34,6 @@ export class TableCellComponent implements OnDestroy, AfterViewInit {
     this.createCell(_cell);
   }
 
-
   ngAfterViewInit(): void {
     this.createCell(this._cell);
   }
@@ -45,12 +42,13 @@ export class TableCellComponent implements OnDestroy, AfterViewInit {
     if (this.container && cell) {
       this.container.clear();
       const type = this.cellFactory.createCell(cell);
-      this.componentRef = this.container.createComponent(this.resolver.resolveComponentFactory(type));
+      this.componentRef = this.container.createComponent(
+        this.resolver.resolveComponentFactory(type)
+      );
       this.componentRef.instance.setCell(cell);
       this.componentRef.changeDetectorRef.detectChanges();
     }
   }
-
 
   ngOnDestroy(): void {
     if (this.componentRef) {
@@ -58,4 +56,3 @@ export class TableCellComponent implements OnDestroy, AfterViewInit {
     }
   }
 }
-

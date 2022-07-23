@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {GroupsTreeComponent} from './groups-tree.component';
-import {MatTreeModule} from '@angular/material/tree';
-import {MatIconModule} from '@angular/material/icon';
-import {GroupsTreeWrapperComponent} from './groups-tree-wrapper.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {GroupsTreeItemComponent} from './groups-tree-item.component';
-import {MatListModule} from '@angular/material/list';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { GroupsTreeComponent } from './groups-tree.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { GroupsTreeWrapperComponent } from './groups-tree-wrapper.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { GroupsTreeItemComponent } from './groups-tree-item.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -14,16 +14,13 @@ import {MatListModule} from '@angular/material/list';
     MatTreeModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatListModule
+    MatListModule,
   ],
   declarations: [
     GroupsTreeComponent,
     GroupsTreeWrapperComponent,
-    GroupsTreeItemComponent
+    GroupsTreeItemComponent,
   ],
-  exports: [
-    GroupsTreeWrapperComponent
-  ]
+  exports: [GroupsTreeWrapperComponent],
 })
-export class UiComponentsSideGroupsTreeModule {
-}
+export class UiComponentsSideGroupsTreeModule {}

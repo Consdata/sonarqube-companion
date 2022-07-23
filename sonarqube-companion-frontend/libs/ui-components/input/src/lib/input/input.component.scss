@@ -1,5 +1,5 @@
-@import "libs/ui-theme/src/palette";
-@import "libs/ui-theme/src/mixins";
+@import 'libs/ui-theme/src/palette';
+@import 'libs/ui-theme/src/mixins';
 
 :host {
   display: flex;
@@ -9,7 +9,6 @@
 input {
   @include sqc-input;
 }
-
 
 input.center {
   text-align: center;

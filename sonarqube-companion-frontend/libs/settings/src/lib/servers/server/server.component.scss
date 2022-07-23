@@ -1,5 +1,4 @@
-@import "libs/ui-theme/src/palette";
-
+@import 'libs/ui-theme/src/palette';
 
 .item {
   display: flex;
@@ -35,7 +34,6 @@
   border: 1px solid map-get($primary-palette, 300);
   margin-bottom: 10px;
   cursor: pointer;
-
 }
 
 .wrapper {
@@ -49,7 +47,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .actions-spinner {
   display: flex;
@@ -65,5 +62,4 @@
 }
 
 .auth {
-
 }

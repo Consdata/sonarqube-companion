@@ -1,11 +1,15 @@
-import {NotFoundComponent} from './not-found/not-found.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const appRoutes = [
   {
-    path: '', redirectTo: '/overview', pathMatch: 'full'
+    path: '',
+    loadChildren: () =>
+      import('@sonarqube-companion-frontend/overview').then(
+        (module) => module.OverviewModule
+      ),
   },
   {
-    path: 'overview', pathMatch: 'full',
+    path: 'overview',
     loadChildren: () =>
       import('@sonarqube-companion-frontend/overview').then(
         (module) => module.OverviewModule
@@ -27,6 +31,6 @@ export const appRoutes = [
   },
   {
     path: '**',
-    component: NotFoundComponent
-  }
+    component: NotFoundComponent,
+  },
 ];

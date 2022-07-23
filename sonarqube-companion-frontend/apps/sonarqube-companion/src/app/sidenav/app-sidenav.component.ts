@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sqc-app-sidenav',
@@ -30,17 +30,16 @@ import {Router} from '@angular/router';
     </mat-sidenav-container>
   `,
   styleUrls: ['./app-sidenav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppSidenavComponent {
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   goToSettings() {
-    this.router.navigate(['settings'])
+    this.router.navigate(['settings']);
   }
 
   goToOverview() {
-    this.router.navigate(['overview'])
+    this.router.navigate(['overview']);
   }
 }

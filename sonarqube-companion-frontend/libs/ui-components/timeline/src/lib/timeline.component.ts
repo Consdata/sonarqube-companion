@@ -1,14 +1,18 @@
-import {ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, ViewChild} from '@angular/core';
-import {Timeline, TimelineSeries} from './timeline';
-
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  ViewChild,
+} from '@angular/core';
+import { Timeline, TimelineSeries } from './timeline';
 
 @Component({
   selector: 'sqc-timeline',
-  template: `
-    <div class="wrapper" #timeline></div>
-  `,
+  template: ` <div class="wrapper" #timeline></div> `,
   styleUrls: ['./timeline.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimelineComponent {
   data?: TimelineSeries;
@@ -18,7 +22,7 @@ export class TimelineComponent {
   set timelineElement(element: ElementRef) {
     this.timeline = new Timeline(element);
     if (this.data) {
-      this.redraw(this.data)
+      this.redraw(this.data);
     }
   }
 
@@ -33,7 +37,7 @@ export class TimelineComponent {
   @HostListener('window:resize')
   onResize() {
     if (this.data) {
-      this.redraw(this.data)
+      this.redraw(this.data);
     }
   }
 
@@ -44,4 +48,3 @@ export class TimelineComponent {
     }
   }
 }
-

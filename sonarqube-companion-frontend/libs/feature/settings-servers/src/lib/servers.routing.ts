@@ -4,7 +4,10 @@ import {ServersComponent} from './servers.component';
 export const serversRouting: Route[] = [
   {
     path: ``,
-    component: ServersComponent,
-    children: []
+    component: ServersComponent
   },
+  {
+    path: `:id`,
+    component: ServersComponent
+  }
 ];

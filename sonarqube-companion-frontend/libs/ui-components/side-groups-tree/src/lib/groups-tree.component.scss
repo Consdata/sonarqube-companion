@@ -1,4 +1,4 @@
-@import "libs/ui-theme/src/palette";
+@import 'libs/ui-theme/src/palette';
 
 .tree-invisible {
   display: none;
@@ -11,11 +11,11 @@
   list-style-type: none;
 }
 
-.tree .mat-nested-tree-node div[role=group] {
+.tree .mat-nested-tree-node div[role='group'] {
   padding-left: 20px;
 }
 
-.tree div[role=group] > .mat-tree-node {
+.tree div[role='group'] > .mat-tree-node {
   padding-left: 20px;
 }
 
@@ -42,4 +42,3 @@ sqc-groups-tree-item {
 sqc-side-groups-tree-item {
   width: 100%;
 }
-

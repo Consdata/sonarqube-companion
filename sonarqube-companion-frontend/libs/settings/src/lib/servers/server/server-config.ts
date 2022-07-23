@@ -9,5 +9,5 @@ export interface ServerConfig {
 
 export interface Authentication {
   type: string;
-  params: { [key: string]: string }
+  params: { [key: string]: string };
 }

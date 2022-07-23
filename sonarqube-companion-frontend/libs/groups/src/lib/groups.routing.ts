@@ -1,5 +1,5 @@
-import {Route} from '@angular/router';
-import {GroupsComponent} from './groups.component';
+import { Route } from '@angular/router';
+import { GroupsComponent } from './groups.component';
 
 export const groupsRouting: Route[] = [
   {
@@ -12,7 +12,7 @@ export const groupsRouting: Route[] = [
           import('@sonarqube-companion-frontend/group-overview').then(
             (module) => module.GroupOverviewModule
           ),
-      }
-    ]
-  }
-]
+      },
+    ],
+  },
+];

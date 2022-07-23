@@ -1,2 +1,2 @@
 export * from './lib/utils.module';
-export * from './lib/locks'
+export * from './lib/locks';

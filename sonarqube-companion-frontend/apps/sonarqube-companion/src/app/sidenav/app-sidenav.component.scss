@@ -1,4 +1,4 @@
-@import "libs/ui-theme/src/palette";
+@import 'libs/ui-theme/src/palette';
 .wrapper {
   background-color: map-get($primary-palette, 200);
   height: 100%;
@@ -20,4 +20,8 @@ mat-sidenav-container {
 
 .mat-list-base {
   padding-top: 0;
+}
+
+.mat-drawer-content {
+  overflow: hidden;
 }

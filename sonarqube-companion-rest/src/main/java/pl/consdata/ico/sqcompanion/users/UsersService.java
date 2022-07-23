@@ -6,11 +6,14 @@ import pl.consdata.ico.sqcompanion.config.AppConfig;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeFacade;
 import pl.consdata.ico.sqcompanion.sonarqube.SonarQubeUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
@@ -27,16 +30,15 @@ public class UsersService {
 
     public List<SonarQubeUser> users(final String serverId) {
         final List<String> blacklist = appConfig.getServer(serverId).getBlacklistUsers();
-        final List<SonarQubeUser> users = sonarQubeFacade.users(serverId)
+        return sonarQubeFacade.users(serverId)
                 .stream()
                 .filter(user -> blacklist.stream().noneMatch(blacklisted -> user.getUserId().matches(blacklisted)))
                 .map(user -> resolveAliases(serverId, user))
                 .collect(Collectors.toList());
-        return users;
     }
 
     private SonarQubeUser resolveAliases(String serverId, SonarQubeUser user) {
-        Set<String> aliases = appConfig.getServer(serverId).getAliases()
+        Set<String> aliases = ofNullable(appConfig.getServer(serverId).getAliases()).orElse(new ArrayList<>())
                 .stream()
                 .map(alias -> resolveVariables(user, alias))
                 .collect(Collectors.toSet());

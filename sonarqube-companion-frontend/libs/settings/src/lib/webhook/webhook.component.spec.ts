@@ -8,9 +8,8 @@ describe('WebhookComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WebhookComponent ]
-    })
-    .compileComponents();
+      declarations: [WebhookComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

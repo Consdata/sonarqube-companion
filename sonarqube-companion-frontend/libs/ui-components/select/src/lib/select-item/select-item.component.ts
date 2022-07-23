@@ -1,4 +1,11 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'sqc-select-item',
@@ -9,10 +16,9 @@ import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@an
       </div>
     </div>
   `,
-  styleUrls: ['./select-item.component.scss']
+  styleUrls: ['./select-item.component.scss'],
 })
 export class SelectItemComponent {
-
   @Input()
   id: string = '';
 
@@ -21,5 +27,4 @@ export class SelectItemComponent {
 
   @Output()
   click: EventEmitter<string> = new EventEmitter();
-
 }

@@ -8,9 +8,8 @@ describe('GroupEventsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupEventsComponent ]
-    })
-    .compileComponents();
+      declarations: [GroupEventsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
-@import "libs/ui-theme/src/palette";
-@import "libs/ui-theme/src/guidline";
+@import 'libs/ui-theme/src/palette';
+@import 'libs/ui-theme/src/guidline';
 
 .section {
   display: flex;
@@ -15,11 +15,9 @@ mat-sidenav-container {
   height: 100%;
 }
 
-
 mat-sidenav {
   width: 300px;
 }
-
 
 .wrapper {
   height: 100%;
@@ -43,7 +41,9 @@ mat-divider {
   border-top-color: map-get($primary-palette, 200);
 }
 
-.mat-list-single-selected-option, .mat-list-single-selected-option:hover, .mat-list-single-selected-option:focus {
+.mat-list-single-selected-option,
+.mat-list-single-selected-option:hover,
+.mat-list-single-selected-option:focus {
   background-color: map-get($primary-palette, 300);
 }
 
@@ -57,14 +57,12 @@ mat-divider {
   overflow-x: hidden;
 }
 
-
 .section {
   padding: 20px;
   .icon {
     margin-right: 5px;
   }
   .label {
-
   }
 }
 
@@ -76,7 +74,7 @@ mat-sidenav-content {
   overflow: hidden;
 }
 
-.bottom-list, .version {
+.bottom-list,
+.version {
   display: flex;
 }
-

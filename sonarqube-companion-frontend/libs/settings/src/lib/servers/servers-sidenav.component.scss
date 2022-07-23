@@ -1,5 +1,5 @@
-@import "libs/ui-theme/src/palette";
-@import "libs/ui-theme/src/guidline";
+@import 'libs/ui-theme/src/palette';
+@import 'libs/ui-theme/src/guidline';
 
 .section {
   display: flex;
@@ -15,7 +15,6 @@ mat-sidenav-container {
   height: 100%;
 }
 
-
 mat-sidenav {
   width: 300px;
 }
@@ -27,16 +26,18 @@ mat-sidenav {
   padding: 10px;
   justify-content: space-between;
 
-  .title, .back, .add {
+  .title,
+  .back,
+  .add {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .back, .add {
+  .back,
+  .add {
     cursor: pointer;
   }
-
 }
 
 .wrapper {
@@ -61,7 +62,9 @@ mat-divider {
   border-top-color: map-get($primary-palette, 300);
 }
 
-.mat-list-single-selected-option, .mat-list-single-selected-option:hover, .mat-list-single-selected-option:focus {
+.mat-list-single-selected-option,
+.mat-list-single-selected-option:hover,
+.mat-list-single-selected-option:focus {
   background-color: map-get($primary-palette, 300);
 }
 
@@ -85,23 +88,20 @@ mat-divider {
   overflow-x: hidden;
 }
 
-
 .section {
   padding: 20px;
   .icon {
     margin-right: 5px;
   }
   .label {
-
   }
 }
-
 
 mat-sidenav-content {
   overflow: hidden;
 }
 
-.bottom-list, .version {
+.bottom-list,
+.version {
   display: flex;
 }
-

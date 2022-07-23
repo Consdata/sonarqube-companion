@@ -1,21 +1,23 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {combineLatest, ReplaySubject} from 'rxjs';
-import {GroupService} from '@sonarqube-companion-frontend/group';
-import {GroupViolationsHistory} from '../../../../group/src/lib/group-violations-history';
-import {Event, EventService} from '@sonarqube-companion-frontend/event';
-import {TimelineSeries} from '../../../../ui-components/timeline/src/lib/timeline';
-import {map, switchMap, tap} from 'rxjs/operators';
-import {DateRange} from '@sonarqube-companion-frontend/ui-components/time-select';
-import {DEFAULT_DATE_RANGE} from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
-import {GroupFilter} from '../group-filter';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { combineLatest, ReplaySubject } from 'rxjs';
+import { GroupService } from '@sonarqube-companion-frontend/group';
+import { GroupViolationsHistory } from '../../../../group/src/lib/group-violations-history';
+import { Event, EventService } from '@sonarqube-companion-frontend/event';
+import { TimelineSeries } from '../../../../ui-components/timeline/src/lib/timeline';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { DateRange } from '@sonarqube-companion-frontend/ui-components/time-select';
+import { DEFAULT_DATE_RANGE } from '../../../../ui-components/time-select/src/lib/time-select/time-select.component';
+import { GroupFilter } from '../group-filter';
 
 @Component({
   selector: 'sqc-group-timeline',
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <ng-container *ngIf="!loading">
-        <sqc-timeline [series]="asSeries(vm.violationsHistory, vm.events )"
-                      *ngIf="!noData(vm.violationsHistory); else noDataMsg"></sqc-timeline>
+        <sqc-timeline
+          [series]="asSeries(vm.violationsHistory, vm.events)"
+          *ngIf="!noData(vm.violationsHistory); else noDataMsg"
+        ></sqc-timeline>
         <ng-template #noDataMsg>
           <div class="noData">No data :(</div>
         </ng-template>
@@ -28,33 +30,32 @@ import {GroupFilter} from '../group-filter';
     </ng-container>
   `,
   styleUrls: ['./group-timeline.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GroupTimelineComponent {
   filterSubject: ReplaySubject<GroupFilter> = new ReplaySubject<GroupFilter>();
-  filter: GroupFilter = {uuid: '', range: DEFAULT_DATE_RANGE};
+  filter: GroupFilter = { uuid: '', range: DEFAULT_DATE_RANGE };
   loading: boolean = false;
   vm$ = this.filterSubject.asObservable().pipe(
-    tap(_ => this.loading = true),
-    switchMap(data =>
+    tap((_) => (this.loading = true)),
+    switchMap((data) =>
       combineLatest([
         this.groupService.groupViolationsHistoryRange(data.uuid, data.range),
-        this.eventService.getByGroup(data.uuid, 30)
+        this.eventService.getByGroup(data.uuid, 30),
       ]).pipe(
-        map(([
-               violationsHistory,
-               events
-             ]) => ({
+        map(([violationsHistory, events]) => ({
           violationsHistory: violationsHistory,
-          events: events
+          events: events,
         }))
       )
     ),
-    tap(_ => this.loading = false)
-  )
+    tap((_) => (this.loading = false))
+  );
 
-  constructor(private groupService: GroupService, private eventService: EventService) {
-  }
+  constructor(
+    private groupService: GroupService,
+    private eventService: EventService
+  ) {}
 
   @Input()
   set uuid(data: string) {
@@ -73,18 +74,33 @@ export class GroupTimelineComponent {
   }
 
   noData(history: GroupViolationsHistory): boolean {
-    return !history || !history.violationHistoryEntries || history.violationHistoryEntries.length == 0;
+    return (
+      !history ||
+      !history.violationHistoryEntries ||
+      history.violationHistoryEntries.length == 0
+    );
   }
 
-  asSeries(violationsHistory: GroupViolationsHistory | null, events: Event[] | null): TimelineSeries {
+  asSeries(
+    violationsHistory: GroupViolationsHistory | null,
+    events: Event[] | null
+  ): TimelineSeries {
     if (violationsHistory && events) {
       return {
-        events: events.map(item => ({name: item.name, fromDate: new Date(item.dateString)})),
-        data: violationsHistory.violationHistoryEntries.map(entry => ({
+        events: events.map((item) => ({
+          name: item.name,
+          fromDate: new Date(item.dateString),
+        })),
+        data: violationsHistory.violationHistoryEntries.map((entry) => ({
           date: new Date(entry.dateString),
-          value: entry.violations.blockers + entry.violations.criticals + entry.violations.majors + entry.violations.minors + entry.violations.infos
-        }))
-      }
+          value:
+            entry.violations.blockers +
+            entry.violations.criticals +
+            entry.violations.majors +
+            entry.violations.minors +
+            entry.violations.infos,
+        })),
+      };
     }
     return {};
   }

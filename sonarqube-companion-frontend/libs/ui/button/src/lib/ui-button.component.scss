@@ -1,0 +1,18 @@
+
+@import 'libs/ui-theme/src/palette';
+button {
+  color: map-get($primary-palette, 800);
+  border-radius: 4px;
+  border: 1px map-get($primary-palette, 500) solid;
+  background-color: transparent;
+  padding: 8px;
+  margin: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.warn {
+  color: map-get($warn-palette, 100);
+  border: 1px map-get($warn-palette, 100) solid;
+}
+

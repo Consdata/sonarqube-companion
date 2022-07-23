@@ -56,4 +56,12 @@ public class ServerConfigController extends SettingsExceptionHandler {
         return serverConfigService.get();
     }
 
+    @ApiOperation(value = "Get server definitions",
+            httpMethod = "GET",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServerDefinition get(@PathVariable String uuid) {
+        log.info("Get server {} definition", uuid);
+        return serverConfigService.get(uuid);
+    }
 }

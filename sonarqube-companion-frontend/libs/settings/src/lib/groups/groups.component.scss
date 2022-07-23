@@ -1,6 +1,6 @@
 @import '~@angular/material/theming';
-@import "libs/ui-theme/src/palette";
-@import "libs/ui-theme/src/guidline";
+@import 'libs/ui-theme/src/palette';
+@import 'libs/ui-theme/src/guidline';
 
 .example-tree-invisible {
   display: none;
@@ -15,16 +15,13 @@
   margin-top: 0;
   margin-bottom: 0;
   list-style-type: none;
-
 }
 
-
-.example-tree .mat-nested-tree-node div[role=group] {
+.example-tree .mat-nested-tree-node div[role='group'] {
   padding-left: 40px;
 }
 
-
-.example-tree div[role=group] > .mat-tree-node {
+.example-tree div[role='group'] > .mat-tree-node {
   padding-left: 40px;
 }
 
@@ -34,12 +31,13 @@
   user-select: none;
   cursor: move;
 
-
-  &.cdk-drag-preview { // while dragging
+  &.cdk-drag-preview {
+    // while dragging
     @include mat-elevation(12);
   }
 
-  &.cdk-drag-placeholder { // potential drop area
+  &.cdk-drag-placeholder {
+    // potential drop area
     opacity: 0;
   }
 }
@@ -59,7 +57,6 @@
   width: 100%;
   align-content: center;
   justify-content: space-between;
-
 }
 
 .part {
@@ -72,7 +69,8 @@
   align-items: center;
 }
 
-.right, .description {
+.right,
+.description {
   display: none;
 }
 .stat {
@@ -104,7 +102,11 @@
 }
 
 .hover {
-  .right, .sep, .description, .stat, .actions {
+  .right,
+  .sep,
+  .description,
+  .stat,
+  .actions {
     display: flex;
   }
 

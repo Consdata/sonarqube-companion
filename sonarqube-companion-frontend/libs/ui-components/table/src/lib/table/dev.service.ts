@@ -1,90 +1,89 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {Table} from './table-model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Table } from './table-model';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DevService {
-
-
   public get(): Observable<Table> {
     return of({
       columns: {
-        'project': {
+        project: {
           name: 'Project',
-          id: 'project'
+          id: 'project',
         },
-        'server': {
+        server: {
           name: 'server',
-          id: 'server'
+          id: 'server',
         },
-        'regexp': {
+        regexp: {
           name: 'regexp',
-          id: 'regexp'
+          id: 'regexp',
         },
-        'exclude': {
+        exclude: {
           name: 'exclude',
-          id: 'exclude'
+          id: 'exclude',
         },
-        'eee': {
+        eee: {
           name: 'eee',
-          id: 'eee'
+          id: 'eee',
         },
-        'actions': {
+        actions: {
           name: 'actions',
-          id: 'actions'
+          id: 'actions',
         },
       },
-      rows: [{
-        cells: {
-          'project': {
-            column: 'project',
-            value: 'elo',
-            type: {
-              name: 'input'
-            }
+      rows: [
+        {
+          cells: {
+            project: {
+              column: 'project',
+              value: 'elo',
+              type: {
+                name: 'input',
+              },
+            },
+            server: {
+              column: 'server',
+              value: 'true',
+              type: {
+                name: 'checkbox',
+              },
+            },
+            regexp: {
+              column: 'regexp',
+              value: 'elo',
+              type: {
+                name: 'combo',
+                domain: {
+                  '1': 'Test1',
+                  '2': 'Test2',
+                },
+              },
+            },
+            exclude: {
+              column: 'exclude',
+              value: '',
+              type: {
+                name: 'date',
+              },
+            },
+            eee: {
+              column: 'exclude',
+              value: 'https://www.google.pl',
+              type: {
+                name: 'link',
+              },
+            },
+            actions: {
+              column: 'actions',
+              value: '',
+              type: {
+                name: 'actions',
+              },
+            },
           },
-          'server': {
-            column: 'server',
-            value: 'true',
-            type: {
-              name: 'checkbox'
-            }
-          },
-          'regexp': {
-            column: 'regexp',
-            value: 'elo',
-            type: {
-              name: 'combo',
-              domain: {
-                '1': 'Test1',
-                '2': 'Test2'
-              }
-            }
-          },
-          'exclude': {
-            column: 'exclude',
-            value: '',
-            type: {
-              name: 'date'
-            }
-          },
-          'eee': {
-            column: 'exclude',
-            value: 'https://www.google.pl',
-            type: {
-              name: 'link'
-            }
-          },
-          'actions': {
-            column: 'actions',
-            value: '',
-            type: {
-              name: 'actions'
-            }
-          }
-        }
-      }]
+        },
+      ],
     });
   }
-
 }

@@ -2,18 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'sqc-members',
-  template: `
-    <p>
-      members works!
-    </p>
-  `,
-  styleUrls: ['./members.component.scss']
+  template: ` <p>members works!</p> `,
+  styleUrls: ['./members.component.scss'],
 })
 export class MembersComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

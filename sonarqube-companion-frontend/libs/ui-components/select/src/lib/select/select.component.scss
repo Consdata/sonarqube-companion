@@ -1,4 +1,4 @@
-@import "libs/ui-theme/src/palette";
+@import 'libs/ui-theme/src/palette';
 
 .select-button {
   position: relative;
@@ -18,7 +18,7 @@
 
 .items {
   background-color: map-get($primary-palette, 50);
-  padding: 5px
+  padding: 5px;
 }
 
 .select {

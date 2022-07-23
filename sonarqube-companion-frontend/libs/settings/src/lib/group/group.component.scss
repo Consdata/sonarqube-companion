@@ -1,5 +1,5 @@
-@import "libs/ui-theme/src/palette";
-@import "libs/ui-theme/src/guidline";
+@import 'libs/ui-theme/src/palette';
+@import 'libs/ui-theme/src/guidline';
 
 .crumbs {
   display: flex;
@@ -51,7 +51,6 @@
   width: 100%;
   justify-content: center;
 }
-
 
 .example-accordion {
   display: block;

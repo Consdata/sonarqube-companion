@@ -15,4 +15,3 @@ export interface Violations {
   minors: number;
   infos: number;
 }
-

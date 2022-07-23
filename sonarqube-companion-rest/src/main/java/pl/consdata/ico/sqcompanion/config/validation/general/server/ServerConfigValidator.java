@@ -19,17 +19,12 @@ public class ServerConfigValidator {
     private final AppConfig appConfig;
 
     public ValidationResult validate(final ServerDefinition serverDefinition) {
-        return Stream.of(validateId(serverDefinition),
+        return Stream.of(
+                validateId(serverDefinition),
+                validateIdExistence(serverDefinition),
                 validateUrl(serverDefinition),
-                validateAuthMethod(serverDefinition),
-                validateBlacklistUsers(serverDefinition)).filter(ValidationResult::isInvalid).findFirst().orElse(ValidationResult.valid());
-    }
-
-    private ValidationResult validateBlacklistUsers(ServerDefinition serverDefinition) {
-        if (serverDefinition.getBlacklistUsers() != null && serverDefinition.getBlacklistUsers().stream().anyMatch(StringUtils::isBlank)) {
-            return ValidationResult.invalid("BLACKLIST_CONSTRAINT", "Users blacklist contains empty entries!");
-        }
-        return ValidationResult.valid();
+                validateAuthMethod(serverDefinition)
+        ).filter(ValidationResult::isInvalid).findFirst().orElse(ValidationResult.valid());
     }
 
     private ValidationResult validateAuthMethod(ServerDefinition serverDefinition) {
@@ -48,14 +43,17 @@ public class ServerConfigValidator {
         if (authentication.getParams() == null
                 || StringUtils.isBlank(authentication.getParams().get("token"))
         ) {
-            return ValidationResult.invalid("AUTH_CONSTRAINT", "Insufficient authentication parameters");
+            return ValidationResult.invalid("AUTH_TOKEN_CONSTRAINT", "Insufficient authentication parameters");
         }
         return ValidationResult.valid();
     }
 
     private ValidationResult validateBasicAuth(ServerAuthentication authentication) {
-        if (authentication.getParams() == null || StringUtils.isBlank(authentication.getParams().get("user")) || StringUtils.isBlank(authentication.getParams().get("password"))) {
-            return ValidationResult.invalid("AUTH_CONSTRAINT", "Insufficient authentication parameters");
+        if (authentication.getParams() == null || StringUtils.isBlank(authentication.getParams().get("user"))) {
+            return ValidationResult.invalid("AUTH_PASSWORD_CONSTRAINT", "Insufficient authentication parameters");
+        }
+        if (authentication.getParams() == null || StringUtils.isBlank(authentication.getParams().get("password"))) {
+            return ValidationResult.invalid("AUTH_USER_CONSTRAINT", "Insufficient authentication parameters");
         }
         return ValidationResult.valid();
     }
@@ -69,7 +67,14 @@ public class ServerConfigValidator {
 
     private ValidationResult validateId(ServerDefinition serverDefinition) {
         if (StringUtils.isBlank(serverDefinition.getId())) {
-            return ValidationResult.invalid("UUID_CONSTRAINT", "Server id cannot be empty!");
+            return ValidationResult.invalid("ID_CONSTRAINT", "Server id cannot be empty!");
+        }
+        return ValidationResult.valid();
+    }
+
+    private ValidationResult validateIdExistence(ServerDefinition serverDefinition) {
+        if (appConfig.getServers().stream().anyMatch(item -> item.getId().equals(serverDefinition.getId()) && !item.getUuid().equals(serverDefinition.getUuid()))) {
+            return ValidationResult.invalid("ID_CONSTRAINT", "Server with given id already exists!");
         }
         return ValidationResult.valid();
     }

@@ -1,5 +1,5 @@
-@import "libs/ui-theme/src/guidline";
-@import "libs/ui-theme/src/palette";
+@import 'libs/ui-theme/src/guidline';
+@import 'libs/ui-theme/src/palette';
 
 :host {
   display: flex;
@@ -34,4 +34,16 @@
   width: 100%;
   padding-top: 16px;
   padding-bottom: 8px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.content {
+  margin: 32px;
+  width: 100%;
+  overflow-y: auto;
 }

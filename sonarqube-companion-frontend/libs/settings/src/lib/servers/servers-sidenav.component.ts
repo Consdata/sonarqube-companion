@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
-import {combineLatest, ReplaySubject} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {SpinnerService} from '../../../../utils/src/lib/spinner.service';
-import {ServersConfigService} from './servers-config.service';
-import {Router} from '@angular/router';
-import {ServerConfig} from './server/server-config';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { combineLatest, ReplaySubject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { SpinnerService } from '../../../../utils/src/lib/spinner.service';
+import { ServersConfigService } from './servers-config.service';
+import { Router } from '@angular/router';
+import { ServerConfig } from './server/server-config';
 
 @Component({
   selector: 'sqc-settings-servers-sidenav',
@@ -24,9 +24,11 @@ import {ServerConfig} from './server/server-config';
             </div>
             <mat-divider></mat-divider>
             <mat-nav-list>
-              <mat-list-item *ngFor="let server of vm.servers; trackBy:serverUid">
+              <mat-list-item
+                *ngFor="let server of vm.servers; trackBy: serverUid"
+              >
                 <div class="item" (click)="goToServer(server.uuid)">
-                  <div class="title">{{server.id}}</div>
+                  <div class="title">{{ server.id }}</div>
                 </div>
               </mat-list-item>
             </mat-nav-list>
@@ -53,49 +55,46 @@ import {ServerConfig} from './server/server-config';
     <!--        <mat-spinner diameter="20"></mat-spinner>-->
     <!--      </ng-template>-->
   `,
-  styleUrls: ['./servers-sidenav.component.scss']
+  styleUrls: ['./servers-sidenav.component.scss'],
 })
 export class ServersSidenavComponent implements AfterViewInit {
   subject: ReplaySubject<void> = new ReplaySubject<void>();
   vm$ = this.subject.asObservable().pipe(
     switchMap(() =>
-      combineLatest([
-        this.configService.list()
-      ]).pipe(
-        map(([
-               servers,
-             ]) => ({
+      combineLatest([this.configService.list()]).pipe(
+        map(([servers]) => ({
           servers: servers,
         }))
       )
     )
-  )
+  );
 
-  constructor(private configService: ServersConfigService, private spinnerService: SpinnerService, private router: Router) {
-  }
+  constructor(
+    private configService: ServersConfigService,
+    private spinnerService: SpinnerService,
+    private router: Router
+  ) {}
 
   @Output()
   private add: EventEmitter<void> = new EventEmitter<void>();
-
 
   ngAfterViewInit(): void {
     this.subject.next();
   }
 
   back(): void {
-    this.router.navigate(['settings'])
+    this.router.navigate(['settings']);
   }
 
   addServer(): void {
     this.add.next();
   }
 
-
   serverUid(index: number, server: ServerConfig): string {
     return server.uuid;
   }
 
   goToServer(uuid: string): void {
-    this.router.navigate(['settings', 'servers', uuid])
+    this.router.navigate(['settings', 'servers', uuid]);
   }
 }
