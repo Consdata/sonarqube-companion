@@ -5,7 +5,7 @@ import {State} from './state/servers.reducer';
 import {selectedServer, selectServerErrors, selectServers, selectServersLoading} from './state/servers.selectors';
 import {ServerConfig} from '@sonarqube-companion-frontend/data-access/settings';
 import {createServer, selectServerById} from './state/servers.actions';
-import {tap} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 // TODO na zapis jak jest sukces to reducer. Kręcioł na serverze.
 // TODO czy produce jest dobrze użyty w state

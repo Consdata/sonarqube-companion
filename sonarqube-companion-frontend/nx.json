@@ -34,21 +34,17 @@
       }
     },
     "@nrwl/angular:application": {
-      "style": "scss",
+      "style": "css",
       "linter": "eslint",
       "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress",
-      "inlineTemplate": true
+      "e2eTestRunner": "none"
     },
     "@nrwl/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "jest",
-      "style": "scss",
-      "inlineTemplate": true
+      "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
-      "style": "scss",
-      "inlineTemplate": true
+      "style": "css"
     }
   },
   "defaultProject": "sonarqube-companion"

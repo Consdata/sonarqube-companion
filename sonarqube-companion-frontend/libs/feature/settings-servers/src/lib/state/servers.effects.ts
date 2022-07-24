@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {ServersSettingsService} from '@sonarqube-companion-frontend/data-access/settings';
 import {routerNavigationAction} from '@ngrx/router-store';
-import {catchError, exhaustMap, filter, map, of, tap} from 'rxjs';
 import {
   createServer,
   createServerFailed,
@@ -18,6 +17,8 @@ import {
   saveServerSuccess
 } from './servers.actions';
 import {Store} from '@ngrx/store';
+import {catchError, exhaustMap, filter, map, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ServersEffects {

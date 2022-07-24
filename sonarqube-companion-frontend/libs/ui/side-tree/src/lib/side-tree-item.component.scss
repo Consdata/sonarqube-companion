@@ -1,0 +1,12 @@
+@import 'libs/ui-theme/src/palette';
+
+.item {
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  color: map-get($primary-palette, 800);
+  font-size: 16px
+}
+
+.mat-list-item-content {
+  padding-left: 0;
+}

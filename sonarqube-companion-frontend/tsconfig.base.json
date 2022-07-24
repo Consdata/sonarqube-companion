@@ -25,6 +25,9 @@
       "@sonarqube-companion-frontend/feature/settings": [
         "libs/feature/settings/src/index.ts"
       ],
+      "@sonarqube-companion-frontend/feature/settings-groups": [
+        "libs/feature/settings-groups/src/index.ts"
+      ],
       "@sonarqube-companion-frontend/feature/settings-servers": [
         "libs/feature/settings-servers/src/index.ts"
       ],
@@ -36,7 +39,6 @@
       "@sonarqube-companion-frontend/member": ["libs/member/src/index.ts"],
       "@sonarqube-companion-frontend/overview": ["libs/overview/src/index.ts"],
       "@sonarqube-companion-frontend/project": ["libs/project/src/index.ts"],
-      "@sonarqube-companion-frontend/settings": ["libs/settings/src/index.ts"],
       "@sonarqube-companion-frontend/shared/effects": [
         "libs/shared/effects/src/index.ts"
       ],
@@ -44,9 +46,6 @@
       "@sonarqube-companion-frontend/state": ["libs/state/src/index.ts"],
       "@sonarqube-companion-frontend/ui-components/chips": [
         "libs/ui-components/chips/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/crumbs": [
-        "libs/ui-components/crumbs/src/index.ts"
       ],
       "@sonarqube-companion-frontend/ui-components/events": [
         "libs/ui-components/events/src/index.ts"
@@ -62,9 +61,6 @@
       ],
       "@sonarqube-companion-frontend/ui-components/select": [
         "libs/ui-components/select/src/index.ts"
-      ],
-      "@sonarqube-companion-frontend/ui-components/side-groups-tree": [
-        "libs/ui-components/side-groups-tree/src/index.ts"
       ],
       "@sonarqube-companion-frontend/ui-components/sidebar": [
         "libs/ui-components/sidebar/src/index.ts"

@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { GroupLightModel } from '@sonarqube-companion-frontend/group-overview';
-import { OverviewService } from '../../../../overview/src/lib/overview.service';
-import { Router } from '@angular/router';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Observable} from 'rxjs';
+import {GroupLightModel} from '@sonarqube-companion-frontend/group-overview';
+import {OverviewService} from '../../../../overview/src/lib/overview.service';
+import {Router} from '@angular/router';
+import {map} from 'rxjs/operators';
+import {SideTreeItem} from '@sonarqube-companion-frontend/ui/side-tree';
 
 @Component({
   selector: 'sqc-group-sidenav',
@@ -12,10 +14,12 @@ import { Router } from '@angular/router';
         <div class="wrapper">
           <mat-divider></mat-divider>
           <mat-nav-list>
-            <sqc-side-groups-tree-wrapper
-              [rootGroup]="rootGroup$"
-              (groupSelect)="onSelect($event)"
-            ></sqc-side-groups-tree-wrapper>
+            <sqc-side-tree
+              *ngIf="rootGroup$ | async as root"
+              [root]="root"
+              [title]="'Groups'"
+              (itemClick)="onSelect($event)"
+            ></sqc-side-tree>
             <mat-divider></mat-divider>
             <!--            <mat-list-item>-->
             <!--              <div class="section">-->
@@ -43,14 +47,28 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GroupSidenavComponent {
-  rootGroup$: Observable<GroupLightModel> = this.overviewService.list();
+  rootGroup$: Observable<SideTreeItem> = this.overviewService.list().pipe(map(model => this.toSidTreeItem(model)));
 
   constructor(
     private overviewService: OverviewService,
     private router: Router
-  ) {}
+  ) {
+  }
 
-  onSelect(event: GroupLightModel) {
-    this.router.navigate(['group', event.uuid]);
+  onSelect(event: SideTreeItem) {
+    const group = <GroupLightModel>event.data;
+    this.router.navigate(['group', group.uuid]);
+  }
+
+  toSidTreeItem(model: GroupLightModel): SideTreeItem {
+    const item: SideTreeItem = {
+      data: model,
+      children: [],
+      label: model.name
+    };
+    if (model.groups) {
+      model.groups.forEach(group => item.children.push(this.toSidTreeItem(group)))
+    }
+    return item;
   }
 }
