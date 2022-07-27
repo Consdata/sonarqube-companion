@@ -7,12 +7,12 @@ import { Router } from '@angular/router';
     <sqc-side-list [title]="'Settings'">
       <div sqc-side-list-items>
         <mat-nav-list>
-<!--          <mat-list-item (click)="goToServers()">-->
-<!--            <div class="item">-->
-<!--              <div class="title">Groups</div>-->
-<!--              <div class="description">Organizations groups</div>-->
-<!--            </div>-->
-<!--          </mat-list-item>-->
+          <mat-list-item (click)="goToGroups()">
+            <div class="item">
+              <div class="title">Groups</div>
+              <div class="description">Organizations groups</div>
+            </div>
+          </mat-list-item>
 <!--          <mat-list-item (click)="goToServers()">-->
 <!--            <div class="item">-->
 <!--              <div class="title">Members</div>-->
@@ -45,5 +45,9 @@ export class SettingsComponent {
 
   goToServers(): void {
     this.router.navigate(['settings', 'servers']);
+  }
+
+  goToGroups(): void {
+    this.router.navigate(['settings', 'groups']);
   }
 }

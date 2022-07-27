@@ -31,4 +31,11 @@ export const settingsRouting: Route[] = [
         (module) => module.FeatureSettingsServersModule
       ),
   },
+  {
+    path: `groups`,
+    loadChildren: () =>
+      import('@sonarqube-companion-frontend/feature/settings-groups').then(
+        (module) => module.FeatureSettingsGroupsModule
+      ),
+  },
 ];

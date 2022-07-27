@@ -42,5 +42,8 @@ module.exports = {
     '<rootDir>/$"14.4.0-beta.5"root}',
     '<rootDir>/$"14.4.0-beta.5"root}',
     '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
+    '<rootDir>/$"14.4.0-beta.5"root}',
   ],
 };

@@ -1,6 +1,32 @@
 {
   "version": 1,
   "projects": {
+    "data-access-groups": {
+      "projectType": "library",
+      "root": "libs/data-access/groups",
+      "sourceRoot": "libs/data-access/groups/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/data-access/groups"],
+          "options": {
+            "jestConfig": "libs/data-access/groups/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/data-access/groups/**/*.ts",
+              "libs/data-access/groups/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
     "data-access-settings": {
       "projectType": "library",
       "root": "libs/data-access/settings",
@@ -96,6 +122,58 @@
             "lintFilePatterns": [
               "libs/feature/settings-groups/**/*.ts",
               "libs/feature/settings-groups/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "feature-settings-integrations": {
+      "projectType": "library",
+      "root": "libs/feature/settings-integrations",
+      "sourceRoot": "libs/feature/settings-integrations/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feature/settings-integrations"],
+          "options": {
+            "jestConfig": "libs/feature/settings-integrations/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/feature/settings-integrations/**/*.ts",
+              "libs/feature/settings-integrations/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "feature-settings-members": {
+      "projectType": "library",
+      "root": "libs/feature/settings-members",
+      "sourceRoot": "libs/feature/settings-members/src",
+      "prefix": "sonarqube-companion-frontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feature/settings-members"],
+          "options": {
+            "jestConfig": "libs/feature/settings-members/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/feature/settings-members/**/*.ts",
+              "libs/feature/settings-members/**/*.html"
             ]
           }
         }

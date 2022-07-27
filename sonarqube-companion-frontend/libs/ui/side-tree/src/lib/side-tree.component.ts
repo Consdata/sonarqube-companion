@@ -70,8 +70,8 @@ export class SideTreeComponent {
   itemClick = new EventEmitter<SideTreeItem>();
 
   @Input()
-  set root(rootGroup: SideTreeItem) {
-    this.dataSource.data = [rootGroup];
+  set root(rootItem: SideTreeItem) {
+    this.dataSource.data = [rootItem];
   }
 
   hasChild = (_: number, node: SideTreeItem) =>

@@ -18,6 +18,9 @@
       "@environment": [
         "apps/sonarqube-companion/src/environments/environment.ts"
       ],
+      "@sonarqube-companion-frontend/data-access/groups": [
+        "libs/data-access/groups/src/index.ts"
+      ],
       "@sonarqube-companion-frontend/data-access/settings": [
         "libs/data-access/settings/src/index.ts"
       ],
@@ -27,6 +30,12 @@
       ],
       "@sonarqube-companion-frontend/feature/settings-groups": [
         "libs/feature/settings-groups/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/feature/settings-integrations": [
+        "libs/feature/settings-integrations/src/index.ts"
+      ],
+      "@sonarqube-companion-frontend/feature/settings-members": [
+        "libs/feature/settings-members/src/index.ts"
       ],
       "@sonarqube-companion-frontend/feature/settings-servers": [
         "libs/feature/settings-servers/src/index.ts"
