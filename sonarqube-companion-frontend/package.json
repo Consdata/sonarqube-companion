@@ -29,7 +29,7 @@
     "@angular/platform-browser-dynamic": "10.1.2",
     "@angular/router": "10.1.2",
     "@circlon/angular-tree-component": "10.0.0",
-    "@swimlane/ngx-charts": "16.0.0",
+    "@swimlane/ngx-charts": "20.1.2",
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
     "moment": "2.28.0",
