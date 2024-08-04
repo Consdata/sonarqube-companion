@@ -1,0 +1,28 @@
+echo:
+  auth:
+    basic:
+      enabled: true
+      users:
+        - username: admin
+          password: "{noop}q1w2e3r4"
+          roles:
+            - ADMIN
+            - USER
+
+  organization:
+    name: dupasa
+
+  teams:
+    source: classpath://teams.json
+
+ #TODO disable devtools on prod
+
+management:
+  server:
+    port: 8081
+  endpoint:
+    health:
+      enabled: true
+spring:
+  ldap:
+    urls: ldap://172.19.121.15:389
