@@ -4,78 +4,19 @@ import {Button} from "@/ui-components/ui/button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "@/api/api.ts";
 import {useDashboardStore} from "@/feature/dashboard/dashboard-state.ts";
+import {teamsToTree} from "@/feature/sidebar/teamsToTree.ts";
 
 
 export function Sidebar() {
 
-    const data = [
-        {id: "1", name: "Unread"},
-        {id: "2", name: "Threads"},
-        {
-            id: "3",
-            name: "Chat Roasdsdasdaadsdasdsadsadsaoms",
-            children: [
-                {id: "c1", name: "General"},
-                {id: "c2", name: "Random"},
-                {id: "c3", name: "Open Source Projects"},
-            ],
-        },
-        {
-            id: "4",
-            name: "Direct Messages",
-            children: [
-                {
-                    id: "d1",
-                    name: "Alice",
-                    children: [
-                        {id: "d11", name: "Alice2"},
-                        {id: "d12", name: "Bob2"},
-                        {id: "d13", name: "Charlie2"},
-                    ],
-                },
-                {id: "d2", name: "Bob"},
-                {id: "d3", name: "Charlie"},
-            ],
-        },
-        {
-            id: "5",
-            name: "Direct Messages",
-            children: [
-                {
-                    id: "e1",
-                    name: "Alice",
-                    children: [
-                        {id: "e11", name: "Alice2"},
-                        {id: "e12", name: "Bob2"},
-                        {id: "e13", name: "Charlie2"},
-                    ],
-                },
-                {id: "e2", name: "Bob"},
-                {id: "e3", name: "Charlie"},
-            ],
-        },
-        {
-            id: "6",
-            name: "Direct Messages",
-            children: [
-                {
-                    id: "f1",
-                    name: "Alice",
-                    children: [
-                        {id: "f11", name: "Alice2"},
-                        {id: "f12", name: "Bob2"},
-                        {id: "f13", name: "Charlie2"},
-                    ],
-                },
-                {id: "f2", name: "Bob"},
-                {id: "f3", name: "Charlie"},
-            ],
-        },
-    ];
-
+    const organizationInfoQuery = useQuery(api.organization.infoQuery);
     const dashboardStore = useDashboardStore();
 
-    const organizationInfoQuery = useQuery(api.organization.infoQuery)
+    const teamsTreeQuery = useQuery({
+        queryKey: ["organizationTeamTree"],
+        queryFn: () => teamsToTree(organizationInfoQuery.data?.teams),
+        enabled: !!organizationInfoQuery.data
+    });
 
     return (
         <div className="hidden border-r bg-muted/40 md:block">
@@ -88,7 +29,7 @@ export function Sidebar() {
                     <RefreshCw className="animate-spin"></RefreshCw>
                 </div>
                 <Tree
-                    data={data}
+                    data={teamsTreeQuery.data ?? []}
                     className="h-full"
                     initialSlelectedItemId="f12"
                     onSelectChange={(item) => dashboardStore.selectTeam(item?.name ?? "")}

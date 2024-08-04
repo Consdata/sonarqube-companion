@@ -8,6 +8,7 @@ import React from "react";
 interface TreeDataItem {
   id: string;
   name: string;
+  type: string;
   icon?: LucideIcon,
   children?: TreeDataItem[];
 }

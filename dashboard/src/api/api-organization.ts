@@ -1,7 +1,19 @@
 import {http} from "@/api/api.ts";
 
 interface OrganizationInfo {
-    name: string
+    name: string,
+    teams: Team[]
+}
+
+export interface Team {
+    id: string,
+    name: string,
+    teams: Team[],
+    members: TeamMember[]
+}
+
+export interface TeamMember {
+    id: string
 }
 
 export class OrganizationApi {
