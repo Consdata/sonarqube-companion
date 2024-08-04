@@ -1,9 +1,10 @@
-import {BookUser, Building, RefreshCw, Users} from "lucide-react";
+import {Building, RefreshCw, User, Users} from "lucide-react";
 import {Tree} from "@/ui-components/ui/tree.tsx";
 import {Button} from "@/ui-components/ui/button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "@/api/api.ts";
 import {useDashboardStore} from "@/feature/dashboard/dashboard-state.ts";
+import {teamsToTree} from "@/feature/sidebar/teamsToTree.ts";
 
 
 export function Sidebar() {
@@ -13,7 +14,7 @@ export function Sidebar() {
 
     const teamsTreeQuery = useQuery({
         queryKey: ["organizationTeamTree"],
-        queryFn: () => organizationInfoQuery.data?.teams,
+        queryFn: () => teamsToTree(organizationInfoQuery.data?.teams),
         enabled: !!organizationInfoQuery.data
     });
 
@@ -32,8 +33,8 @@ export function Sidebar() {
                     className="h-full"
                     initialSlelectedItemId="f12"
                     onSelectChange={(item) => dashboardStore.selectTeam(item?.name ?? "")}
-                    folderIcon={BookUser}
-                    itemIcon={Users}
+                    folderIcon={Users}
+                    itemIcon={User}
                 />
                 <div className="flex p-4 border-t h-20">
                     <Button
