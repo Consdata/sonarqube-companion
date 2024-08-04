@@ -14,20 +14,14 @@ echo:
     teams:
       - name: GroupA
         id: 1
-        members:
-          - id: member1
-          - id: member2
         teams:
           - name: GroupAA
             id: 11
-            members:
-              - id: member11
-              - id: member12
+            teams:
+              - name: test
+                id: elo
       - name: GroupB
         id: 2
-        members:
-          - id: member3
-          - id: member4
 
   teams:
     source: classpath://teams.json

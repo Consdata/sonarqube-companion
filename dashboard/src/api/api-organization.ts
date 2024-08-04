@@ -9,7 +9,6 @@ export interface Team {
     id: string,
     name: string,
     teams: Team[],
-    members: TeamMember[]
 }
 
 export interface TeamMember {

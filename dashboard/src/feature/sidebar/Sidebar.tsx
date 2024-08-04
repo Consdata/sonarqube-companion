@@ -4,7 +4,6 @@ import {Button} from "@/ui-components/ui/button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "@/api/api.ts";
 import {useDashboardStore} from "@/feature/dashboard/dashboard-state.ts";
-import {teamsToTree} from "@/feature/sidebar/teamsToTree.ts";
 
 
 export function Sidebar() {
@@ -14,7 +13,7 @@ export function Sidebar() {
 
     const teamsTreeQuery = useQuery({
         queryKey: ["organizationTeamTree"],
-        queryFn: () => teamsToTree(organizationInfoQuery.data?.teams),
+        queryFn: () => organizationInfoQuery.data?.teams,
         enabled: !!organizationInfoQuery.data
     });
 
