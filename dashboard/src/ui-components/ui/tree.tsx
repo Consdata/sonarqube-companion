@@ -8,6 +8,7 @@ import React from "react";
 interface TreeDataItem {
     id: string;
     name: string;
+    type: string;
     icon?: LucideIcon,
     teams?: TreeDataItem[];
 }
@@ -212,8 +213,8 @@ const AccordionTrigger = React.forwardRef<
             {...props}
         >
             {children}
-            <ChevronRight
-                className="h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 ml-auto"/>
+            {!children && <ChevronRight
+                className="h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 ml-auto"/>}
         </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
 ));

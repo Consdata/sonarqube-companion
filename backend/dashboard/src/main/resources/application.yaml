@@ -28,6 +28,9 @@ echo:
         members:
           - id: member3
           - id: member4
+        teams:
+          - name: test
+            id: 231123
 
   teams:
     source: classpath://teams.json

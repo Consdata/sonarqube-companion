@@ -14,13 +14,15 @@ export function teamsToTree(teams: Team[] | undefined): TreeDataItem[] {
                 team.members.forEach(member => {
                     children.push({
                         id: member.id,
-                        name: member.id
+                        name: member.id,
+                        type: 'member'
                     });
                 })
             }
             tree.push({
                 id: team.id,
                 name: team.name,
+                type: 'team',
                 teams: children
             });
         });

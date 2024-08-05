@@ -5,18 +5,25 @@ import {useQuery} from "@tanstack/react-query";
 import {api} from "@/api/api.ts";
 import {useDashboardStore} from "@/feature/dashboard/dashboard-state.ts";
 import {teamsToTree} from "@/feature/sidebar/teamsToTree.ts";
-
+import {useState} from "react";
 
 export function Sidebar() {
 
     const organizationInfoQuery = useQuery(api.organization.infoQuery);
+    const syncStatusQuery = useQuery(api.synchronization.statusQuery);
     const dashboardStore = useDashboardStore();
+    const [sync, setSync] = useState(false);
 
     const teamsTreeQuery = useQuery({
         queryKey: ["organizationTeamTree"],
         queryFn: () => teamsToTree(organizationInfoQuery.data?.teams),
         enabled: !!organizationInfoQuery.data
     });
+
+    function scheduleSync() {
+        api.synchronization.schedule().then(() => setSync(!sync));
+
+    }
 
     return (
         <div className="hidden border-r bg-muted/40 md:block">
@@ -25,8 +32,7 @@ export function Sidebar() {
                     <Building>
                     </Building>
                     {organizationInfoQuery.data?.name}
-
-                    <RefreshCw className="animate-spin"></RefreshCw>
+                    <RefreshCw className={sync && "animate-spin"} onClick={scheduleSync}></RefreshCw>
                 </div>
                 <Tree
                     data={teamsTreeQuery.data ?? []}

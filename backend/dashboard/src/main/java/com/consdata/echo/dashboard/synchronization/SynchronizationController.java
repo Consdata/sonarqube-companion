@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SynchronizationController {
 
+    boolean sync = false;
 
     @GetMapping("schedule")
     @PreAuthorize("hasRole('" + Roles.ADMIN + "')")
     public void scheduleSynchronization() {
-
+        sync = true;
     }
 
     @GetMapping("status")
     @PreAuthorize("hasRole('" + Roles.USER + "')")
     public SynchronizationStatus status() {
-        return new SynchronizationStatus(true);
+        return new SynchronizationStatus(sync);
     }
 }
