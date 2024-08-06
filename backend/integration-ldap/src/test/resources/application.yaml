@@ -1,0 +1,13 @@
+echo:
+  integration:
+    ldap:
+      enabled: true
+      url: "ldap://localhost:9321"
+      base: "dc=echo,dc=com"
+      security:
+        enabled: true
+        group-search-base: "ou=groups"
+        group-search-filter: "(uniqueMember={0})"
+        user-search-base: "ou=company1,ou=Sweden"
+        user-search-filter: "cn={0}"
+        rolePrefix: ""

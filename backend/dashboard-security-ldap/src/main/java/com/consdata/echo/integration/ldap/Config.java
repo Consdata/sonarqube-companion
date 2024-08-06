@@ -1,4 +1,4 @@
-package com.consdata.echo.ldap;
+package com.consdata.echo.integration.ldap;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;

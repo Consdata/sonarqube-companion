@@ -1,7 +1,7 @@
 package com.consdata.echo.dashboard.organization;
 
 import com.consdata.echo.configuration.organization.OrganizationProperties;
-import com.consdata.echo.configuration.organization.team.Team;
+import com.consdata.echo.integration.ldap.configuration.team.Team;
 
 import java.util.List;
 

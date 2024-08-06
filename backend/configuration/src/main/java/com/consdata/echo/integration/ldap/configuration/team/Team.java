@@ -1,4 +1,4 @@
-package com.consdata.echo.configuration.organization.team;
+package com.consdata.echo.integration.ldap.configuration.team;
 
 import java.util.List;
 
