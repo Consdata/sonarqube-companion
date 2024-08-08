@@ -1,1 +1,1 @@
-com.consdata.echo.basic.BasicAuthFilter
+com.consdata.echo.security.basic.BasicAuthFilter

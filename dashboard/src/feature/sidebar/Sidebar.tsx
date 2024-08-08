@@ -16,7 +16,7 @@ export function Sidebar() {
 
     const teamsTreeQuery = useQuery({
         queryKey: ["organizationTeamTree"],
-        queryFn: () => teamsToTree(organizationInfoQuery.data?.teams),
+        queryFn: () => teamsToTree(organizationInfoQuery.data?.organizationalUnits),
         enabled: !!organizationInfoQuery.data
     });
 

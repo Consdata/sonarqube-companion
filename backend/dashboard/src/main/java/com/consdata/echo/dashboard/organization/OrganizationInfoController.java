@@ -2,6 +2,7 @@ package com.consdata.echo.dashboard.organization;
 
 import com.consdata.echo.api.Roles;
 import com.consdata.echo.configuration.organization.OrganizationProperties;
+import com.consdata.echo.organization.OrganizationStorage;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrganizationInfoController {
 
+    private final OrganizationStorage organizationStorage;
     private final OrganizationProperties organizationProperties;
 
     @GetMapping("info")
     @PreAuthorize("hasRole('" + Roles.USER + "')")
     @Operation(summary = "Returns basic information about organization")
     public OrganizationInfo info() {
-        return OrganizationInfo.of(organizationProperties);
+        return new OrganizationInfo(organizationProperties.name(), organizationStorage.allUnits());
 
     }
 

@@ -1,4 +1,4 @@
-package com.consdata.echo.basic;
+package com.consdata.echo.security.basic;
 
 import com.consdata.echo.api.User;
 import org.springframework.boot.context.properties.ConfigurationProperties;

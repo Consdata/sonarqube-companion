@@ -1,4 +1,4 @@
-package com.consdata.echo.basic;
+package com.consdata.echo.security.basic;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

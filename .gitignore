@@ -1,3 +1,6 @@
+units.yaml
+echo.mv.db
+echo.trace.db
 .idea
 .gradle
 build/

@@ -11,29 +11,7 @@ echo:
 
   organization:
     name: dupasa
-    teams:
-      - name: GroupA
-        id: 1
-        members:
-          - id: member1
-          - id: member2
-        teams:
-          - name: GroupAA
-            id: 11
-            members:
-              - id: member11
-              - id: member12
-      - name: GroupB
-        id: 2
-        members:
-          - id: member3
-          - id: member4
-        teams:
-          - name: test
-            id: 231123
-
-  teams:
-    source: classpath://teams.json
+    definition-path: ./units.yaml
 
   #TODO disable devtools on prod
 
@@ -43,6 +21,15 @@ management:
   endpoint:
     health:
       enabled: true
+
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:file:./echo;DB_CLOSE_ON_EXIT=FALSE
   ldap:
     urls: ldap://172.19.121.15:389

@@ -24,18 +24,14 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":backend:dashboard-security-api"))
-    implementation(project(":backend:dashboard-security-basic"))
     implementation(project(":backend:organization-api"))
-    implementation(project(":backend:storage-jpa"))
-    implementation(project(":backend:configuration"))
-    implementation(project(":backend:synchronization-manager"))
-
-    runtimeOnly("com.h2database:h2:2.3.230")
+    implementation("com.h2database:h2:2.3.230")
+    implementation("org.flywaydb:flyway-core:10.17.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
