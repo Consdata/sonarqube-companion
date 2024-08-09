@@ -20,7 +20,7 @@ public class TestController {
     // TODO POST & form
     @GetMapping
     public String elo() {
-        storage.save(new OrganizationalUnit("sad222as", "222asdas", Collections.emptyList(), Collections.emptyList()));
+        storage.saveOrganizationRoot(new OrganizationalUnit("sad222as", "222asdas", Collections.emptyList(), Collections.emptyList()));
         return "asd22";
     }
 

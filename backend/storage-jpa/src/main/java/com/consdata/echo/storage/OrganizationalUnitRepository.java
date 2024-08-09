@@ -5,4 +5,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrganizationalUnitRepository extends JpaRepository<OrganizationalUnitEntity, String> {
+    OrganizationalUnitEntity getOrganizationalUnitEntityById(String id);
+
+    default OrganizationalUnitEntity root() {
+        return getOrganizationalUnitEntityById("0");
+    }
 }

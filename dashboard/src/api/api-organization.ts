@@ -1,8 +1,7 @@
 import {http} from "@/api/api.ts";
 
 interface OrganizationInfo {
-    name: string,
-    organizationalUnits: OrganizationalUnit[]
+    root: OrganizationalUnit
 }
 
 export interface OrganizationalUnit {

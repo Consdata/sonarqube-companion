@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 public class YamlOrganizationStructureParser {
@@ -15,9 +15,13 @@ public class YamlOrganizationStructureParser {
     private final String path;
     private final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 
-    @SneakyThrows
-    public List<OrganizationalUnit> parse() {
-        return objectMapper.readerForListOf(OrganizationalUnit.class).readValue(new File(path));
+    @SneakyThrows(IOException.class)
+    public OrganizationalUnit parse() {
+        OrganizationalUnit output = objectMapper.readerFor(OrganizationalUnit.class).readValue(new File(path));
+        if (!output.id().equals("0")) {
+            throw new IllegalStateException("Root unit id cannot be different than 0");
+        }
+        return output;
     }
 
 

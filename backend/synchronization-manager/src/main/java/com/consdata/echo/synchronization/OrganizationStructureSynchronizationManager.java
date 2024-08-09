@@ -14,6 +14,7 @@ public class OrganizationStructureSynchronizationManager implements Synchronizat
 
     @Override
     public void sync() {
-        organizationStorage.save(structureProvider.getOrganizationalUnits());
+        organizationStorage.saveUsers(structureProvider.getUsers());
+        organizationStorage.saveOrganizationRoot(structureProvider.getRootUnit());
     }
 }

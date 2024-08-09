@@ -16,7 +16,7 @@ export function Sidebar() {
 
     const teamsTreeQuery = useQuery({
         queryKey: ["organizationTeamTree"],
-        queryFn: () => teamsToTree(organizationInfoQuery.data?.organizationalUnits),
+        queryFn: () => teamsToTree(organizationInfoQuery.data?.root.units),
         enabled: !!organizationInfoQuery.data
     });
 
@@ -31,7 +31,7 @@ export function Sidebar() {
                 <div className="flex h-14 items-center border-b px-4 min-h-14 lg:px-6  justify-between w-full">
                     <Building>
                     </Building>
-                    {organizationInfoQuery.data?.name}
+                    {organizationInfoQuery.data?.root.name}
                     <RefreshCw className={sync && "animate-spin"} onClick={scheduleSync}></RefreshCw>
                 </div>
                 <Tree

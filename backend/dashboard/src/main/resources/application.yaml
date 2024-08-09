@@ -10,7 +10,6 @@ echo:
             - USER
 
   organization:
-    name: dupasa
     definition-path: ./units.yaml
 
   #TODO disable devtools on prod

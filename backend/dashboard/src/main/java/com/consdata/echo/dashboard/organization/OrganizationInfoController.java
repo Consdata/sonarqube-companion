@@ -22,7 +22,7 @@ public class OrganizationInfoController {
     @PreAuthorize("hasRole('" + Roles.USER + "')")
     @Operation(summary = "Returns basic information about organization")
     public OrganizationInfo info() {
-        return new OrganizationInfo(organizationProperties.name(), organizationStorage.allUnits());
+        return new OrganizationInfo(organizationStorage.root());
 
     }
 

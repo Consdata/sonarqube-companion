@@ -23,4 +23,12 @@ public class UserEntity {
         entity.lastName = user.lastName();
         return entity;
     }
+
+    public static User toUser(UserEntity entity) {
+        return new User(
+                entity.id,
+                entity.name,
+                entity.lastName
+        );
+    }
 }

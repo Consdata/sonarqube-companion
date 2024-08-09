@@ -15,24 +15,28 @@ import static com.consdata.echo.storage.OrganizationalUnitEntity.toOrganizationa
 public class OrganizationStorageService implements OrganizationStorage {
 
     private final OrganizationalUnitRepository organizationalUnitRepository;
+    private final UsersRepository usersRepository;
+    private final OrganizationTreeJpaAdapter organizationTreeJpaAdapter;
 
     @Override
-    public OrganizationalUnit save(OrganizationalUnit unit) {
-        return toOrganizationalUnit(organizationalUnitRepository.save(OrganizationalUnitEntity.of(unit)));
+    public OrganizationalUnit saveOrganizationRoot(OrganizationalUnit unit) {
+        List<OrganizationalUnit> units = organizationTreeJpaAdapter.adapt(unit);
+        organizationalUnitRepository.saveAll(units.stream().map(OrganizationalUnitEntity::of).toList());
+        return unit;
     }
 
     @Override
-    public void save(List<OrganizationalUnit> unit) {
-        organizationalUnitRepository.saveAll(unit.stream().map(OrganizationalUnitEntity::of).toList());
-    }
-
-    @Override
-    public List<OrganizationalUnit> allUnits() {
-        return organizationalUnitRepository.findAll().stream().map(OrganizationalUnitEntity::toOrganizationalUnit).toList();
+    public OrganizationalUnit root() {
+        return toOrganizationalUnit(organizationalUnitRepository.root());
     }
 
     @Override
     public User save(User user) {
         return null;
+    }
+
+    @Override
+    public void saveUsers(List<User> users) {
+        usersRepository.saveAll(users.stream().map(UserEntity::of).toList());
     }
 }

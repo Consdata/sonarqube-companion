@@ -4,12 +4,11 @@ import java.util.List;
 
 public interface OrganizationStorage {
 
-    OrganizationalUnit save(OrganizationalUnit unit);
+    OrganizationalUnit saveOrganizationRoot(OrganizationalUnit unit);
 
-    void save(List<OrganizationalUnit> unit);
-
-    List<OrganizationalUnit> allUnits();
+    OrganizationalUnit root();
 
     User save(User user);
 
+    void saveUsers(List<User> users);
 }
