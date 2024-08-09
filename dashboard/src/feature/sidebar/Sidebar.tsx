@@ -10,7 +10,7 @@ import {useState} from "react";
 export function Sidebar() {
 
     const organizationInfoQuery = useQuery(api.organization.infoQuery);
-    const syncStatusQuery = useQuery(api.synchronization.statusQuery);
+    const scheduleQuery = useQuery(api.synchronization.scheduleQuery);
     const dashboardStore = useDashboardStore();
     const [sync, setSync] = useState(false);
 
@@ -21,8 +21,7 @@ export function Sidebar() {
     });
 
     function scheduleSync() {
-        api.synchronization.schedule().then(() => setSync(!sync));
-
+        setSync(scheduleQuery.data?.pending ?? false);
     }
 
     return (
