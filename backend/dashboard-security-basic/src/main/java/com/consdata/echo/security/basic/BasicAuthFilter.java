@@ -1,5 +1,6 @@
 package com.consdata.echo.security.basic;
 
+import com.consdata.echo.api.Role;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+
+import java.util.Arrays;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
@@ -34,6 +37,7 @@ public class BasicAuthFilter {
                 .map(user -> User.withUsername(user.username())
                         .password(user.password())
                         .roles(user.roles().toArray(new String[0]))
+                        .authorities(user.roles().stream().map(role -> Role.valueOf(role).getAuthorities()).flatMap(Arrays::stream).toList().toArray(new String[0]))
                         .build())
                 .toList());
     }

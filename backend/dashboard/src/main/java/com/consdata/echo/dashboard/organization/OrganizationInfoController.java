@@ -1,6 +1,7 @@
 package com.consdata.echo.dashboard.organization;
 
-import com.consdata.echo.api.Roles;
+import com.consdata.echo.api.Authorities;
+import com.consdata.echo.api.Role;
 import com.consdata.echo.configuration.organization.OrganizationProperties;
 import com.consdata.echo.organization.OrganizationStorage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ public class OrganizationInfoController {
     private final OrganizationProperties organizationProperties;
 
     @GetMapping("info")
-    @PreAuthorize("hasRole('" + Roles.USER + "')")
+    @PreAuthorize("hasAuthority('" + Authorities.VIEW_ALL_UNITS + "')")
     @Operation(summary = "Returns basic information about organization")
     public OrganizationInfo info() {
         return new OrganizationInfo(organizationStorage.root());
