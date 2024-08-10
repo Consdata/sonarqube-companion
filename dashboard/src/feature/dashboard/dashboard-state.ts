@@ -3,16 +3,16 @@ import {devtools, persist} from "zustand/middleware";
 
 
 interface DashboardState {
-    selectedTeam: string | null;
+    selectedUnit: string | null;
 
-    selectTeam: (id: string) => void;
-    clearSelectedTeam: () => void;
+    selectUnit: (id: string) => void;
+    clearSelectedUnit: () => void;
 }
 
 const dashboardStateSlice: StateCreator<DashboardState> = (set) => ({
-    selectedTeam: null,
-    selectTeam: (id: string) => set({selectedTeam: id}),
-    clearSelectedTeam: () => set({selectedTeam: null})
+    selectedUnit: null,
+    selectUnit: (id: string) => set({selectedUnit: id}),
+    clearSelectedUnit: () => set({selectedUnit: null})
 });
 
 const persistedDashboardStateStore = persist<DashboardState>(dashboardStateSlice, {

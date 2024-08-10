@@ -2,7 +2,7 @@ import {useSuspenseQuery} from "@tanstack/react-query";
 import {api} from "@/api/api.ts";
 import {useDashboardStore} from "@/feature/dashboard/dashboard-state.ts";
 import {teamsToTree} from "@/feature/sidebar/teamsToTree.ts";
-import {Users} from "lucide-react";
+import {User, Users} from "lucide-react";
 import {Tree} from "@/ui-components/ui/tree.tsx";
 
 export function OrganizationTree() {
@@ -17,9 +17,10 @@ export function OrganizationTree() {
         data={structure}
         className="h-full"
         initialSlelectedItemId="f12"
-        onSelectChange={(item) => dashboardStore.selectTeam(item?.name ?? "")}
+        onSelectChange={(item) => dashboardStore.selectUnit(item?.name ?? "")}
         folderIcon={Users}
-        itemIcon={Users}
+        itemIcon={User}
+        expandAll={true}
     />;
 
 }
