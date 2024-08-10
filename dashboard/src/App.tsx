@@ -1,7 +1,7 @@
 import './App.css'
-import {Sidebar} from "@/feature/sidebar/Sidebar.tsx";
 import {Topbar} from "@/feature/topbar/Topbar.tsx";
 import {Settings} from "@/feature/settings/Settings.tsx";
+import {Sidebar} from "@/feature/sidebar/sidebar.tsx";
 
 export default function App() {
     return (

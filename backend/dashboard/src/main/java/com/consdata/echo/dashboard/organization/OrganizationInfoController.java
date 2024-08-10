@@ -23,7 +23,6 @@ public class OrganizationInfoController {
     @Operation(summary = "Returns basic information about organization")
     public OrganizationInfo info() {
         return new OrganizationInfo(organizationStorage.root());
-
     }
 
 }
