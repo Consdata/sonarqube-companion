@@ -16,7 +16,6 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class TestController {
     private final OrganizationStorage storage;
-
     // TODO POST & form
     @GetMapping
     public String elo() {

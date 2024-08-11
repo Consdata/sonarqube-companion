@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface UsersProvider {
     List<User> getUsers();
+
+    User next();
 }

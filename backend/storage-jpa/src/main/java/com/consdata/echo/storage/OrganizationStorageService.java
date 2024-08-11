@@ -36,7 +36,7 @@ public class OrganizationStorageService implements OrganizationStorage {
     }
 
     @Override
-    public void saveUsers(List<User> users) {
+    public void saveUsers(List<? extends User> users) {
         usersRepository.saveAll(users.stream().map(UserEntity::of).toList());
     }
 }

@@ -10,5 +10,5 @@ public interface OrganizationStorage {
 
     User save(User user);
 
-    void saveUsers(List<User> users);
+    void saveUsers(List<? extends User> users);
 }

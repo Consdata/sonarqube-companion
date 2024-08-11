@@ -7,5 +7,7 @@ include(":backend:configuration")
 include(":backend:integration-ldap")
 include(":backend:storage-jpa")
 include(":backend:organization-api")
-include(":backend:synchronization-manager")
+include(":backend:issues-api")
+include(":backend:synchronization")
 include(":backend:synchronization-api")
+
