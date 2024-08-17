@@ -24,8 +24,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":backend:organization-api"))
-    implementation(project(":backend:synchronization-api"))
+    implementation(project(":backend:organization"))
+    implementation(project(":backend:synchronization"))
     implementation("org.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-batch")

@@ -1,7 +1,7 @@
 package com.consdata.echo.configuration.organization.job;
 
 import com.consdata.echo.SynchronizationStepsOrder;
-import com.consdata.echo.configuration.organization.StaticOrganizationStructureProvider;
+import com.consdata.echo.organization.StaticOrganizationStructureProvider;
 import com.consdata.echo.organization.OrganizationStorage;
 import com.consdata.echo.organization.OrganizationalUnit;
 import com.consdata.echo.organization.User;
@@ -21,7 +21,7 @@ public class OrganizationSyncJobConfiguration {
     private final OrganizationStorage organizationStorage;
 
     @Bean
-    @Order(SynchronizationStepsOrder.ORGANIZATION_STRUCTURE_SYNCHRONIZATION)
+    @Order(SynchronizationStepsOrder.ORGANIZATION_STRUCTURE)
     public Step organizationStructureSync(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("organizationStructureStep", jobRepository)
                 .allowStartIfComplete(true)
@@ -33,7 +33,7 @@ public class OrganizationSyncJobConfiguration {
     }
 
     @Bean
-    @Order(SynchronizationStepsOrder.USERS_SYNCHRONIZATION)
+    @Order(SynchronizationStepsOrder.USERS)
     public Step usersSync(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("usersStep", jobRepository)
                 .<User, User>chunk(20, transactionManager)

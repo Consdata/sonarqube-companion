@@ -24,12 +24,12 @@ repositories {
 }
 
 dependencies {
-	implementation(project(":backend:dashboard-security"))
+	implementation(project(":backend:synchronization"))
+	implementation("org.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.security:spring-security-ldap")
-	implementation("org.springframework.ldap:spring-ldap-core")
-	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-batch")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")

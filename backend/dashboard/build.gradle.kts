@@ -24,12 +24,14 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":backend:dashboard-security-api"))
+    implementation(project(":backend:dashboard-security"))
     implementation(project(":backend:dashboard-security-basic"))
-    implementation(project(":backend:organization-api"))
+    implementation(project(":backend:organization"))
     implementation(project(":backend:storage-jpa"))
     implementation(project(":backend:configuration"))
-    implementation(project(":backend:synchronization"))
+    implementation(project(":backend:synchronization-manager"))
+    implementation(project(":backend:issues"))
+    implementation(project(":backend:integration-sonar"))
 
     runtimeOnly("com.h2database:h2:2.3.230")
     implementation("org.springframework.boot:spring-boot-starter-web")

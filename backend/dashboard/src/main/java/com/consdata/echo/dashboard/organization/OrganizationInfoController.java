@@ -2,7 +2,7 @@ package com.consdata.echo.dashboard.organization;
 
 import com.consdata.echo.api.Authorities;
 import com.consdata.echo.api.Role;
-import com.consdata.echo.configuration.organization.OrganizationProperties;
+import com.consdata.echo.organization.OrganizationProperties;
 import com.consdata.echo.organization.OrganizationStorage;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
