@@ -30,7 +30,7 @@ dependencies {
     implementation(project(":backend:storage-jpa"))
     implementation(project(":backend:configuration"))
     implementation(project(":backend:synchronization-manager"))
-    implementation(project(":backend:issues"))
+    implementation(project(":backend:metrics"))
     implementation(project(":backend:integration-sonar"))
 
     runtimeOnly("com.h2database:h2:2.3.230")

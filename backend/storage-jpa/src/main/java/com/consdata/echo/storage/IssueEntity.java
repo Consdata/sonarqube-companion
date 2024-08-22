@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -15,9 +16,12 @@ public class IssueEntity {
     @Id
     private String id;
 
+    private LocalDateTime createdAt;
+
     public static IssueEntity of(Issue issue) {
         IssueEntity entity = new IssueEntity();
         entity.id = issue.id();
+        entity.createdAt = issue.createdAt();
         return entity;
     }
 
@@ -26,7 +30,7 @@ public class IssueEntity {
     }
 
     public static Issue toIssue(IssueEntity entity) {
-        return new Issue(entity.id);
+        return new Issue(entity.id, entity.createdAt);
     }
 
     public static List<Issue> toIssue(List<IssueEntity> entities) {

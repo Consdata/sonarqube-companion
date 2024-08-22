@@ -25,7 +25,7 @@ repositories {
 
 dependencies {
     implementation(project(":backend:organization"))
-    implementation(project(":backend:issues"))
+    implementation(project(":backend:metrics"))
     implementation("com.h2database:h2:2.3.230")
     implementation("org.flywaydb:flyway-core:10.17.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

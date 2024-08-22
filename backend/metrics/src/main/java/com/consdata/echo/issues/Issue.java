@@ -1,14 +1,14 @@
 package com.consdata.echo.issues;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record Issue(
-        String id
+        String id,
 //        String component,
 //        String source,
 //        IssueType type,
 //        String severity,
 //        String author,
-//        LocalDate created
+        LocalDateTime createdAt
 ) {
 }

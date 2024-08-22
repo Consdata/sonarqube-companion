@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestClient;
 
@@ -18,11 +17,9 @@ import org.springframework.web.client.RestClient;
 public class SonarIntegrationAutoConfiguration {
 
     @Bean("sonarRestClient")
-    public RestClient sonarRestClient(SonarProperties properties) {
+    public RestClient sonarRestClient() {
         return RestClient.builder()
-                .baseUrl(properties.url())
                 .messageConverters(c -> c.add(new MappingJackson2HttpMessageConverter()))
-                .defaultHeader(HttpHeaders.AUTHORIZATION, properties.auth().asBasic())
                 .build();
     }
 }

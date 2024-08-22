@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @AutoConfiguration
 @ComponentScan("com.consdata.echo.storage")
 @EnableJpaRepositories
-@EntityScan("com.consdata.echo.storage")
+@EntityScan({"com.consdata.echo.storage"})
 public class JpaStorageAutoconfiguration {
 }

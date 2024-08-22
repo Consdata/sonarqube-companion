@@ -4,6 +4,8 @@ import java.util.List;
 
 public record SqSearchIssuesResponse(
         SqPaging paging,
-        List<SqIssue> issues
+        List<SqIssue> issues,
+        List<Facet> facets
 ) {
 }
+

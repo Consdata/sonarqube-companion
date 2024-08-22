@@ -18,6 +18,6 @@ public record SqIssue(
 ) {
 
     public static Issue toIssue(SqIssue sqIssue) {
-        return new Issue(sqIssue.key);
+        return new Issue(sqIssue.key, sqIssue.creationDate);
     }
 }

@@ -6,16 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = SonarIntegrationAutoConfiguration.class)
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatterBuilder;
+
 class SonarConnectorTest {
-    @Autowired
-    SonarConnector connector;
 
     @Test
     public void test() {
-        SqSearchIssuesResponse r = connector.search("", 0, 0);
+        LocalDateTime now = LocalDateTime.now();
 
-        Assertions.assertThat(r).isNull();
+        Assertions.assertThat(
+                now.format(new DateTimeFormatterBuilder()
+                                .appendPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                        .toFormatter())).isBlank();
     }
 
 }
